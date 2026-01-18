@@ -43,30 +43,56 @@ jobs:
           script: |
             // 1. Configure the 2026 Payload (v1/responses)
             const payload = {
-              model: "gpt-5.2",
-              reasoning: { effort: "low" }, // Save cost on simple triage
-              input: `You are a triage bot. Analyze this feedback: "${process.env.FEEDBACK}".
-                      Return a JSON object with:
-                      - classification: "SPAM" or "VALID"
-                      - category: "bug", "feature", or "ux"
-                      - reply: "Short markdown technical response"`,
-              
-              // New Structured Output Syntax for GPT-5
+              prompt: {
+                id: "pmpt_696d5dc776d481949cd2c59100d1c716021abdc584703216",
+                version: "1"
+              },
+              input: [process.env.FEEDBACK],
               text: {
                 format: {
                   type: "json_schema",
+                  name: "classified_response",
+                  strict: true,
                   schema: {
                     type: "object",
                     properties: {
-                      classification: { type: "string", enum: ["SPAM", "VALID"] },
-                      category: { type: "string", enum: ["bug", "feature", "ux"] },
-                      reply: { type: "string" }
+                      classification: {
+                        type: "string",
+                        description: "Overall label for the content",
+                        enum: [
+                          "SPAM",
+                          "VALID"
+                        ]
+                      },
+                      category: {
+                        type: "string",
+                        description: "Specific type of request or comment",
+                        enum: [
+                          "bug",
+                          "feature",
+                          "ux"
+                        ]
+                      },
+                      reply: {
+                        type: "string",
+                        description: "Assistant's written response"
+                      }
                     },
-                    required: ["classification", "category", "reply"],
+                    required: [
+                      "classification",
+                      "category",
+                      "reply"
+                    ],
                     additionalProperties: false
                   }
                 }
-              }
+              },
+              reasoning: {},
+              store: true,
+              include: [
+                "reasoning.encrypted_content",
+                "web_search_call.action.sources"
+              ]
             };
 
             // 2. Call OpenAI (v1/responses)

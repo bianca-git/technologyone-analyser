@@ -57,10 +57,22 @@ export class DataModelGenerator {
         // Variables
         // Variables
         const rawVars = this.getList(content.Variables?.ArrayOfVariableDef?.VariableDef);
+        const resolveType = (t: string) => {
+            const types: Record<string, string> = {
+                'A': 'String',
+                'L': 'Boolean',
+                'N': 'Numeric',
+                'D': 'Date',
+                'I': 'Integer',
+                'F': 'Float'
+            };
+            return types[t] || t || 'String';
+        };
+
         const variables = rawVars.map((v: any) => ({
             Name: v.Name,
             Value: v.DefaultValue,
-            Type: v.DataType || v.VariableType || 'String',
+            Type: resolveType(v.DataType || v.VariableType),
             Source: v.DataSourceName || '',
             Description: v.Description
         }));
@@ -72,6 +84,7 @@ export class DataModelGenerator {
             Name: idx.Name,
             Columns: this.getList(idx.Columns?.Column).map((c: any) => c.Name).join(', ')
         }));
+        const indexMap = new Map(indexes.map((i: any) => [i.Name, i]));
 
         // Drilldown Views (Detail Views)
         const rawViews = this.getList(content.DataModel?.Definition?.DataModelDefinition?.DetailViews?.View);
@@ -101,7 +114,8 @@ export class DataModelGenerator {
                 let w = '';
                 // Specific sizing for Column Table
                 if (h === 'Column') w = 'w-[30%]';
-                else if (h === 'Type' && headers.length === 3) w = 'w-[30%]';
+                else if (h === 'Type' && headers.length === 3) w = 'w-[20%]';
+                else if (h === 'Name' && headers.length === 3) w = 'w-[30%]';
 
                 return `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0 ${w}">${h}</th>`;
             }).join('');
@@ -112,10 +126,10 @@ export class DataModelGenerator {
 
                     const isVarName = h === 'Variable Name';
                     // Don't format merged HTML columns
-                    const isMergedHtml = h === 'Column' || (h === 'Type' && headers.length === 3);
+                    const isMergedHtml = h === 'Column' || (h === 'Type' && headers.length === 3) || (h === 'Name' && headers.length === 3);
 
                     let val = rawVal;
-                    if (!isVarName && !isMergedHtml) {
+                    if (!isVarName && !isMergedHtml && !(typeof rawVal === 'string' && rawVal.trim().startsWith('<div'))) {
                         val = ExpressionFormatter.formatExpression(rawVal, variableSet, tableSet);
                     }
 
@@ -130,13 +144,14 @@ export class DataModelGenerator {
 
                     const cellClass = (i === 0) ? 'font-medium text-slate-900' : 'text-gray-700';
                     const alignClass = 'align-top';
+                    const monoClass = (headers.length === 3 && i === 2) ? 'font-mono' : '';
 
-                    return `<td class="px-4 py-3 text-sm ${cellClass} ${alignClass}">${cellContent}</td>`;
+                    return `<td class="px-4 py-2 text-sm ${cellClass} ${alignClass} ${monoClass}">${cellContent}</td>`;
                 }).join('');
                 return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
             }).join('');
 
-            return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3 min-w-full"><table class="w-full divide-y divide-slate-300 text-left"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
+            return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3 min-w-full"><table class="w-full divide-y divide-slate-300 text-left bg-slate-50"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
         };
 
         // --- Helper: Summary Generator ---
@@ -183,50 +198,55 @@ export class DataModelGenerator {
 
                 <!-- Variables Section -->
                 ${variables.length > 0 ? `
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-                    <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
-                        <span class="text-slate-500 text-lg">#</span>
-                        <h3 class="text-lg font-bold text-slate-800">Global Variables</h3>
-                    </div>
-                    <div class="p-6">
+                <details open class="group mb-8">
+                     <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors select-none border-t border-b border-gray-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-slate-500 text-lg">#</span> Global Variables
+                        </span>
+                        <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
+                    </summary>
+                    <div class="pt-6 pb-2 px-2">
                         ${renderTable(
-            ['Variable Name', 'Value', 'Type', 'Source', 'Description'],
-            variables.map((v: any) => ({
-                Col1: v.Name,
-                Col2: v.Value,
-                Col3: v.Type,
-                Col4: v.Source,
-                Col5: v.Description
-            }))
-        )}
+                            ['Variable Name', 'Value', 'Type', 'Description'],
+                            variables.map((v: any) => ({
+                                Col1: v.Name,
+                                Col2: v.Value,
+                                Col3: v.Type,
+                                Col4: v.Description
+                            }))
+                        )}
                     </div>
-                </div>
+                </details>
                 ` : ''}
 
                 <!-- Indexes Section -->
                 ${indexes.length > 0 ? `
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-                     <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
-                        <span class="text-slate-500 text-lg">⚡</span>
-                        <h3 class="text-lg font-bold text-slate-800">Indexes</h3>
-                    </div>
-                    <div class="p-6">
+                <details open class="group mb-8">
+                     <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors select-none border-t border-b border-gray-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-slate-500 text-lg">⚡</span> Indexes
+                        </span>
+                        <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
+                    </summary>
+                    <div class="pt-6 pb-2 px-2">
                          ${renderTable(['Index Name', 'Columns'], indexes.map((i: any) => ({ Col1: i.Name, Col2: i.Columns })))}
                     </div>
-                </div>
+                </details>
                 ` : ''}
 
                 <!-- Drilldown Views Section -->
                 ${views.length > 0 ? `
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-                     <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
-                        <span class="text-slate-500 text-lg">🔍</span>
-                        <h3 class="text-lg font-bold text-slate-800">Drilldown Views</h3>
-                    </div>
-                    <div class="p-6">
+                <details open class="group mb-8">
+                     <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors select-none border-t border-b border-gray-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-slate-500 text-lg">🔍</span> Drilldown Views
+                        </span>
+                        <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
+                    </summary>
+                    <div class="pt-6 pb-2 px-2">
                          ${renderTable(['View Name', 'Columns'], views.map((v: any) => ({ Col1: v.Name, Col2: v.Columns })))}
                     </div>
-                </div>
+                </details>
                 ` : ''}
 
                  <!-- Final Output Section -->
@@ -239,7 +259,7 @@ export class DataModelGenerator {
                             <h2 class="text-2xl font-bold text-gray-800">Final Output</h2>
                          </div>
                          <div class="bg-white rounded-xl shadow-sm border border-emerald-100 overflow-hidden">
-                            ${this.renderQueryCard(finalQuery, content, renderTable, variableSet, tableSet, true, id, stepNotes)}
+                            ${this.renderQueryCard(finalQuery, content, renderTable, variableSet, tableSet, indexMap, true, id, stepNotes)}
                          </div>
                     </div>
                  ` : ''}
@@ -256,7 +276,7 @@ export class DataModelGenerator {
                          </div>
                          <div class="hidden">
                             <div class="grid grid-cols-1 gap-6">
-                                ${intermediateQueries.map(q => this.renderQueryCard(q, content, renderTable, variableSet, tableSet, false, id, stepNotes)).join('')}
+                                ${intermediateQueries.map(q => this.renderQueryCard(q, content, renderTable, variableSet, tableSet, indexMap, false, id, stepNotes)).join('')}
                             </div>
                          </div>
                      </div>
@@ -265,7 +285,7 @@ export class DataModelGenerator {
         `;
     }
 
-    private static renderQueryCard(query: any, content: any, renderTable: (h: string[], r: any[]) => string, variableSet: Set<string>, tableSet: Set<string>, isFinal: boolean = false, reportId: number = 0, stepNotes: any = {}): string {
+    private static renderQueryCard(query: any, content: any, renderTable: (h: string[], r: any[]) => string, variableSet: Set<string>, tableSet: Set<string>, indexMap: Map<string, any>, isFinal: boolean = false, reportId: number = 0, stepNotes: any = {}): string {
         const qName = query.QueryName;
         const id = query.Id;
 
@@ -313,22 +333,26 @@ export class DataModelGenerator {
             if (c.Expression) {
                 source = c.Expression;
             } else if (c.DataSourceName && c.FieldId) {
-                source = `${c.DataSourceName}.${c.FieldId}`;
+                source = `<div>${ExpressionFormatter.formatTable(`${c.DataSourceName}.${c.FieldId}`)}</div>`;
             } else {
                 source = c.DataSourceName || '';
             }
 
+            const nameHtml = `<div class="font-medium text-slate-900">${c.ColumnName || 'Unknown Column'}</div>` +
+                (c.Description ? `<div class="text-xs text-gray-500 italic mt-0.5">${ExpressionFormatter.colouriseTextHTML(c.Description, variableSet, tableSet)}</div>` : '');
+
+            const typeHtml = `<div class="text-slate-700">${c.JavaType || c.DataType || 'String'}</div>` +
+                (c.Format && c.Format !== '-' ? `<div class="text-xs text-gray-500 italic mt-0.5">${c.Format}</div>` : '');
+
             return {
-                Col1: c.ColumnName || 'Unknown Column',
-                Col2: c.Description || '',
-                Col3: c.Format || '-',
-                Col4: c.JavaType || c.DataType || 'String',
-                Col5: source
+                Col1: nameHtml,
+                Col2: typeHtml,
+                Col3: source
             };
         });
 
         // Find Filters (Criteria)
-        const filters: { col: string, op: string, val: string, rawOp: string }[] = [];
+        const filters: { col: string, op: string, val: string, rawOp: string, isIndex: boolean, indexCols?: string }[] = [];
         const processCriteria = (crit: any) => {
             if (!crit) return;
             const values = this.getList(crit.CriteriaValues?.CriteriaValue);
@@ -352,7 +376,17 @@ export class DataModelGenerator {
                     // Handle generic empty string visuals
                     if (val === '') val = '<span class="italic text-gray-400">nothing</span>';
 
-                    filters.push({ col: v.ColumnId, op: op, val: val, rawOp: rawOp });
+                    // Check if col is an Index
+                    const index = indexMap.get(v.ColumnId);
+
+                    filters.push({
+                        col: v.ColumnId,
+                        op: op,
+                        val: val,
+                        rawOp: rawOp,
+                        isIndex: !!index,
+                        indexCols: index ? index.Columns : undefined
+                    });
                 }
             });
             if (crit.NestedSets?.CriteriaSetItem) {
@@ -400,7 +434,10 @@ export class DataModelGenerator {
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                                          </span>
                                          <div class="flex items-baseline gap-2 text-sm font-mono break-all flex-1">
-                                             <span class="font-bold text-slate-700">${f.col}</span>
+                                             ${f.isIndex
+                                        ? `<div class="flex flex-col"><span class="font-bold text-slate-700 flex items-center gap-1">${f.col}<span class="text-[10px] bg-slate-200 text-slate-600 px-1 rounded uppercase tracking-wider font-sans border border-slate-300">Index</span></span><span class="text-xs text-slate-500 italic block mt-0.5" title="${f.indexCols}">On: ${f.indexCols}</span></div>`
+                                        : `<span class="font-bold text-slate-700">${f.col}</span>`
+                                             }
                                              <span class="text-amber-700 font-medium text-sm px-1 cursor-help border-b border-dotted border-amber-200" title="${f.rawOp}">${f.op}</span>
                                              <span class="text-slate-800 bg-white px-1.5 py-0.5 rounded border border-amber-100 shadow-sm">${f.val}</span>
                                          </div>
@@ -492,7 +529,7 @@ export class DataModelGenerator {
                     <div>
                         <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Columns</h4>
                         ${renderTable(
-            ['Name', 'Description', 'Format', 'Type', 'Source'],
+                            ['Name', 'Type', 'Source'],
             colRows
         )}
                     </div>

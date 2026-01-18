@@ -15,9 +15,19 @@ export class ExpressionFormatter {
         if (text === null || text === undefined) return "";
         let str = String(text);
 
-        // 1. Handle explicit TechOne variable syntax: {&VAR_NAME} using a regex that matches the pattern
-        // We style this immediately as a variable badge
-        str = str.replace(/\{&([a-zA-Z0-9_]+)\}/g, '<span class="var-badge">$1</span>');
+        // Placeholder strategy to prevent double wrapping
+        const placeholders: Record<string, string> = {};
+        const createPlaceholder = (content: string, type: 'var' | 'table') => {
+            const key = `__T1_${type.toUpperCase()}_${Object.keys(placeholders).length}__`;
+            placeholders[key] = content;
+            return key;
+        };
+
+        // 1. Handle explicit TechOne variable syntax: {&VAR_NAME}
+        // We replace with placeholder immediately
+        str = str.replace(/\{&([a-zA-Z0-9_]+)\}/g, (match, name) => {
+            return createPlaceholder(`<span class="var-badge">${name}</span>`, 'var');
+        });
 
         // 2. Handle generic variable names found in the set
         if (varSet.size > 0) {
@@ -25,8 +35,19 @@ export class ExpressionFormatter {
                 const esc = this.escapeRegExp(v);
                 return `\\[?${esc}\\]?`;
             });
+            // Match var names NOT inside our placeholders (placeholders use underscores so \w might catch them,
+            // but the variable names shouldn't match the unique placeholder keys easily unless user has vars named __T1_VAR_0__).
+            // Best to rely on the fact that existing placeholders won't be in the varSet.
             const varRegex = new RegExp(`(?<!\\w)(${varPatterns.join('|')})(?!\\w)`, 'g');
-            str = str.replace(varRegex, (match) => `<span class="var-badge">${match}</span>`);
+
+            str = str.replace(varRegex, (match) => {
+                // If this match happens to be part of a placeholder (unlikely given naming), ignore
+                // But better: since we already replaced the explicit ones with tokens, this regex won't match tokens if tokens don't look like vars
+                // Our tokens look like __T1_VAR_0__ -> if var names are alphanumeric, this might be safe
+                // but just to be sure, check if we are inside a placeholder?
+                // actually, our regex looks for generic names. If a name is "REPORT_DATE", it won't match "__T1_..."
+                return createPlaceholder(`<span class="var-badge">${match.replace(/^\[|\]$/g, '')}</span>`, 'var');
+            });
         }
 
         // 3. Handle table names found in the table set
@@ -36,8 +57,17 @@ export class ExpressionFormatter {
                 return `\\[?${esc}\\]?`;
             });
             const tableRegex = new RegExp(`(?<!\\w)(${tablePatterns.join('|')})(?!\\w)`, 'g');
-            str = str.replace(tableRegex, (match) => this.formatTable(match.replace(/^\[|\]$/g, '')));
+            str = str.replace(tableRegex, (match) => {
+                return createPlaceholder(this.formatTable(match.replace(/^\[|\]$/g, '')), 'table');
+            });
         }
+
+        // 4. Restore Placeholders
+        // We do this in reverse order of creation just in case of nesting (though we shouldn't have nesting here)
+        // or just iterate keys
+        Object.keys(placeholders).forEach(key => {
+            str = str.replace(key, placeholders[key]);
+        });
 
         return str;
     }
@@ -144,10 +174,16 @@ export class ExpressionFormatter {
         parts.push(content.substring(lastSplitIndex).trim());
 
         if (parts.length === 3) {
-            return [
-                { condition: parts[0], outcome: parts[1] },
-                { condition: 'ELSE', outcome: parts[2] }
-            ];
+            const truePart = { condition: parts[0], outcome: parts[1] };
+
+            // Recursive check for nested IIF in the 'else' part
+            // "IIF(Cond, True, IIF(Cond2, True2, Else2))" -> "When Cond Then True, When Cond2 Then True2, Else Else2"
+            const nestedIif = this.parseIifStatement(parts[2]);
+            if (nestedIif) {
+                return [truePart, ...nestedIif];
+            } else {
+                return [truePart, { condition: 'ELSE', outcome: parts[2] }];
+            }
         }
 
         return null;
