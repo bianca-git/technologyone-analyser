@@ -37,7 +37,7 @@ function header() {
     <header class="bg-slate-800 text-white p-4 shadow-md z-10 transition-transform duration-300">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="window.navigateTo('dashboard')">
-                <div class="h-8 w-8 bg-white" style="mask: url(/t1gurulogo.svg) no-repeat center / contain; -webkit-mask: url(/t1gurulogo.svg) no-repeat center / contain;"></div>
+                <div class="h-8 w-8 bg-white" style="mask: url(/t1analyserlogo.svg) no-repeat center / contain; -webkit-mask: url(/t1analyserlogo.svg) no-repeat center / contain;"></div>
                 <h1 class="text-xl font-bold tracking-tight hover:text-blue-300">TechnologyOne Analyser</h1>
             </div>
             <div class="flex items-center">

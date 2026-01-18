@@ -13,7 +13,7 @@ const ASSETS_TO_CACHE = [
     '/src/main.ts',
     '/src/style.css',
     '/manifest.json',
-    '/t1gurulogo.svg',
+    '/t1analyserlogo.svg',
     '/favicon.svg'
 ];
 

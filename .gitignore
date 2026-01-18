@@ -29,3 +29,5 @@ dist-ssr
 /scripts/analysis
 /scripts/extraction
 /scripts/inspection
+.vercel
+/coverage
