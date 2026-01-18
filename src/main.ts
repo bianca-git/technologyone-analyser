@@ -41,7 +41,7 @@ function header() {
                 <h1 class="text-xl font-bold tracking-tight hover:text-blue-300">TechnologyOne Analyser</h1>
             </div>
             <div class="flex items-center">
-                <span class="text-xs text-slate-400 mr-4">v3.1 (Local)</span>
+                <span class="text-xs text-slate-400 mr-4">v0.1.0 (Testing)</span>
 
                 <div id="header-controls" class="flex items-center gap-2">
                     <button onclick="window.verifyOffline()" title="Verify Privacy" class="group bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-full font-medium transition-all duration-300 ease-in-out border border-emerald-700 flex items-center shadow-sm">
@@ -445,36 +445,53 @@ window.openFeedback = () => {
 // --- Tour Logic ---
 function checkAndShowTour() {
   if (localStorage.getItem('t1guru_tour_seen')) return;
-  const overlay = document.createElement('div');
-  overlay.className = "fixed inset-0 bg-black/70 z-40 animate-fade-in backdrop-blur-sm";
-  overlay.id = "tour-overlay";
+
   const controls = document.getElementById('header-controls');
-  if (controls) controls.classList.add('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2');
+  if (!controls) return;
+
+  // Create Overlay
+  const overlay = document.createElement('div');
+  overlay.className = "fixed inset-0 bg-black/30 z-40 animate-fade-in"; // Reduced opacity, no blur
+  overlay.id = "tour-overlay";
+
+  // Highlight Controls
+  controls.classList.add('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2', 'ring-4', 'ring-blue-500/30');
+
+  // Create Popup
   const popup = document.createElement('div');
-  popup.className = "fixed top-24 right-6 max-w-sm bg-white p-6 rounded-xl shadow-2xl z-50 animate-scale-in text-slate-800 border border-blue-100 ring-4 ring-blue-500/20";
+  popup.className = "fixed max-w-sm bg-white p-6 rounded-xl shadow-2xl z-50 animate-scale-in text-slate-800 border border-blue-500/20";
+
+  // Calculate Position
+  const rect = controls.getBoundingClientRect();
+  popup.style.top = `${rect.bottom + 16}px`;
+  popup.style.right = `${window.innerWidth - rect.right}px`;
+
   popup.innerHTML = `
-        <div class="absolute -top-2 right-12 w-4 h-4 bg-white transform rotate-45 border-l border-t border-blue-100"></div>
+        <div class="absolute -top-2 right-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-blue-500/20"></div>
         <div class="flex items-center mb-3">
-             <span class="text-2xl mr-3">🚀</span>
-             <h3 class="font-bold text-lg text-slate-900">New Toolkit Available!</h3>
+             <span class="text-2xl mr-3">👋</span>
+             <h3 class="font-bold text-lg text-slate-900">Welcome to the Analyser!</h3>
         </div>
-        <p class="text-sm text-gray-600 mb-4 leading-relaxed">We've upgraded your top bar with essential utilities. Hover over the icons to identify them:</p>
+        <p class="text-sm text-gray-600 mb-4 leading-relaxed">It looks like you're new here. We've equipped your workspace with some essential tools to keep your data safe and your library organized:</p>
         <div class="bg-slate-50 rounded-lg p-3 mb-5 border border-slate-100">
-            <ul class="text-xs space-y-2 text-gray-600">
-                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-2 shrink-0">🛡️</div> <b>Verify Privacy:</b> &nbsp;Ensure zero-data exfiltration.</li>
-                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2 shrink-0">💬</div> <b>Feedback:</b> &nbsp;Share bugs or features.</li>
-                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center mr-2 shrink-0">💾</div> <b>Backup:</b> &nbsp;Save your library locally.</li>
+            <ul class="text-xs space-y-3 text-gray-600">
+                <li class="flex items-start"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-2 shrink-0">🛡️</div> <div><b>Privacy Guard:</b> Run a quick check to verify your session is 100% offline and secure.</div></li>
+                <li class="flex items-start"><div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2 shrink-0">💬</div> <div><b>Feedback:</b> Spotted a bug or have an idea? We'd love to hear from you.</div></li>
+                <li class="flex items-start"><div class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center mr-2 shrink-0">💾</div> <div><b>Library Backup:</b> Export your offline database as a JSON file at any time.</div></li>
             </ul>
         </div>
         <div class="text-right">
-            <button id="close-tour" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-md transition-transform transform active:scale-95 flex items-center ml-auto">
-                Got it
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <button id="close-tour" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-md transition-all transform active:scale-95 flex items-center ml-auto">
+                Start Exploring
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
             </button>
         </div>
     `;
+
   document.body.appendChild(overlay);
   document.body.appendChild(popup);
+
+  // Close Handler
   const close = () => {
     localStorage.setItem('t1guru_tour_seen', 'true');
     overlay.classList.add('opacity-0');
@@ -482,9 +499,10 @@ function checkAndShowTour() {
     setTimeout(() => {
       if (document.body.contains(overlay)) document.body.removeChild(overlay);
       if (document.body.contains(popup)) document.body.removeChild(popup);
-      if (controls) controls.classList.remove('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2');
+      controls.classList.remove('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2', 'ring-4', 'ring-blue-500/30');
     }, 300);
   };
+
   document.getElementById('close-tour')?.addEventListener('click', close);
   overlay.addEventListener('click', close);
 }
