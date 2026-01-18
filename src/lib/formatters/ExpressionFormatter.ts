@@ -25,7 +25,7 @@ export class ExpressionFormatter {
 
         // 1. Handle explicit TechOne variable syntax: {&VAR_NAME}
         // We replace with placeholder immediately
-        str = str.replace(/\{&([a-zA-Z0-9_]+)\}/g, (match, name) => {
+        str = str.replace(/\{&([a-zA-Z0-9_]+)\}/g, (_match, name) => {
             return createPlaceholder(`<span class="var-badge">${name}</span>`, 'var');
         });
 
