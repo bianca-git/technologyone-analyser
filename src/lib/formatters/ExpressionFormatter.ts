@@ -25,7 +25,7 @@ export class ExpressionFormatter {
                 const esc = this.escapeRegExp(v);
                 return `\\[?${esc}\\]?`;
             });
-            const varRegex = new RegExp(`\\b(${varPatterns.join('|')})\\b`, 'g');
+            const varRegex = new RegExp(`(?<!\\w)(${varPatterns.join('|')})(?!\\w)`, 'g');
             str = str.replace(varRegex, (match) => `<span class="var-badge">${match}</span>`);
         }
 
@@ -35,7 +35,7 @@ export class ExpressionFormatter {
                 const esc = this.escapeRegExp(t);
                 return `\\[?${esc}\\]?`;
             });
-            const tableRegex = new RegExp(`\\b(${tablePatterns.join('|')})\\b`, 'g');
+            const tableRegex = new RegExp(`(?<!\\w)(${tablePatterns.join('|')})(?!\\w)`, 'g');
             str = str.replace(tableRegex, (match) => this.formatTable(match.replace(/^\[|\]$/g, '')));
         }
 
@@ -89,7 +89,7 @@ export class ExpressionFormatter {
         // NOTE: This is a simple regex parser; it will fail on nested CASE statements inside string literals etc.
         // But for Data Model expressions it covers 95% of cases.
 
-        const whenRegex = /^WHEN\s+(.+?)\s+THEN\s+(.+?)\s+(?=WHEN|ELSE|END)/i;
+        const whenRegex = /^WHEN\s+(.+?)\s+THEN\s+(.+?)\s+(?=WHEN|ELSE|END|$)/i;
 
         // Remove 'END' from the very end if present to simplify lookaheads
         if (/END\s*$/i.test(remaining)) {

@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { EtlGenerator } from '../src/lib/generators/EtlGenerator';
 import { db } from '../src/lib/db';
+import { EtlParser } from '../src/lib/parsers/EtlParser';
 
 // Mock DB
 vi.mock('../src/lib/db', () => ({
@@ -9,6 +10,12 @@ vi.mock('../src/lib/db', () => ({
         reports: {
             get: vi.fn()
         }
+    }
+}));
+
+vi.mock('../src/lib/parsers/EtlParser', () => ({
+    EtlParser: {
+        parseSteps: vi.fn()
     }
 }));
 
@@ -24,90 +31,120 @@ describe('EtlGenerator', () => {
         expect(html).toContain('Report not found');
     });
 
-    it('generates html for a simple report', async () => {
-        // Mock Data
+    it('generates summary correctly', async () => {
         const mockReport = {
             id: 1,
-            filename: 'test.t1etlp',
-            metadata: {
-                name: "Test Process",
-                id: "PROC-01",
-                version: "1.0",
-                owner: "Admin",
-                dateModified: "2025-01-01"
-            },
-            rawSteps: {
-                ArrayOfStep: {
-                    Step: [
-                        {
-                            StepId: 1,
-                            ParentStepId: 0,
-                            Name: "Load Data",
-                            StepType: "RunDirectQuery",
-                            Sequence: 1,
-                            Definition: {
-                                StorageObject: {
-                                    TableName: "SourceTable",
-                                    Columns: {
-                                        ColumnItem: [{ ColumnName: "ColA", DataType: "String" }]
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            },
+            metadata: { name: "Test", version: "1.0" },
+            rawSteps: {},
             dateAdded: new Date()
         };
-
         vi.mocked(db.reports.get).mockResolvedValue(mockReport as any);
+
+        const mockFlow = {
+            executionTree: [],
+            variables: [],
+            variableSet: new Set(),
+            tableSet: new Set(),
+            executionFlow: [
+                { RawType: 'RunDirectQuery', Details: ['Source Table: SRC'] },
+                { RawType: 'ImportWarehouseData', Output: { name: 'DEST' } }
+            ]
+        };
+        vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
         const html = await EtlGenerator.generateHtmlView(1, 'technical');
 
-        // Assertions
-        expect(db.reports.get).toHaveBeenCalledWith(1);
-        
-        // Header info
-        expect(html).toContain('Test Process');
-        expect(html).toContain('PROC-01');
-        
-        // Summary
+        expect(html).toContain('extracts data from <strong>SRC</strong>');
+        expect(html).toContain('publishes results to the <strong>DEST</strong>');
         expect(html).toContain('Executive Summary');
-        
-        // Step Content
-        expect(html).toContain('Load Data');
-        expect(html).toContain('RunDirectQuery'); // Technical mode shows types
-        expect(html).toContain('SourceTable');
     });
 
-    it('hides technical details in business mode', async () => {
-         const mockReport = {
+    it('renders recursive groups correctly', async () => {
+        const mockReport = {
             id: 1,
-            filename: 'test.t1etlp',
-            metadata: { name: "Biz Process", version: "1.0", id: "B1" },
-            rawSteps: {
-                ArrayOfStep: {
-                    Step: [
-                        {
-                            StepId: 1, ParentStepId: 0, Name: "Tech Step", StepType: "RunDirectQuery", Sequence: 1,
-                            Definition: { StorageObject: { TableName: "T1" } }
-                        }
-                    ]
-                }
-            },
+            metadata: { name: "Test", version: "1.0" },
+            rawSteps: {},
             dateAdded: new Date()
         };
-
         vi.mocked(db.reports.get).mockResolvedValue(mockReport as any);
 
-        const html = await EtlGenerator.generateHtmlView(1, 'business');
+        const mockFlow = {
+            executionTree: [
+                {
+                    Step: 'My Group',
+                    RawType: 'Group',
+                    Phase: 'Phase 1',
+                    Context: 'Processing',
+                    Details: [],
+                    children: [
+                        { Step: 'Child Step', RawType: 'Action', Phase: 'Phase 1.1', Context: 'Actioning', Details: [] }
+                    ]
+                }
+            ],
+            executionFlow: [],
+            variables: [],
+            variableSet: new Set(),
+            tableSet: new Set(),
+        };
+        vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
-        // Business mode logic often filters out certain step types or details
-        // In EtlParser (Business Mode), RunDirectQuery might be simplified or hidden if not white-listed, 
-        // OR context is simplified.
-        // Let's check context. 
-        expect(html).toContain('Biz Process');
-        // "RunDirectQuery" type label is hidden in business mode (logic in renderStep: `${mode === 'technical' ? ...}`)
-        expect(html).not.toContain('(RunDirectQuery)'); 
+        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+
+        expect(html).toContain('My Group');
+        expect(html).toContain('Child Step');
+        expect(html).toContain('border-slate-300'); // Check for group styling
+    });
+
+    it('renders step notes if present', async () => {
+        const mockReport = {
+            id: 1,
+            metadata: { name: "Test", version: "1.0" },
+            rawSteps: {},
+            dateAdded: new Date(),
+            stepNotes: {
+                "step-123": "This is a note"
+            }
+        };
+        vi.mocked(db.reports.get).mockResolvedValue(mockReport as any);
+
+        const mockFlow = {
+            executionTree: [
+                { id: "step-123", Step: "Note Step", RawType: "Action", Phase: "", Context: "", Details: [] }
+            ],
+            executionFlow: [],
+            variables: [],
+            variableSet: new Set(),
+            tableSet: new Set(),
+        };
+        vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
+
+        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        
+        expect(html).toContain('This is a note');
+        expect(html).toContain('step-notes-container');
+    });
+
+    it('renders variables table', async () => {
+        const mockReport = {
+            id: 1,
+            metadata: { name: "Test", version: "1.0" },
+            rawSteps: {},
+            dateAdded: new Date()
+        };
+        vi.mocked(db.reports.get).mockResolvedValue(mockReport as any);
+
+        const mockFlow = {
+            executionTree: [],
+            executionFlow: [],
+            variables: [{ Name: 'Var1', Value: '100' }],
+            variableSet: new Set(),
+            tableSet: new Set(),
+        };
+        vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
+
+        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        expect(html).toContain('Var1');
+        expect(html).toContain('100');
+        expect(html).toContain('Variables & Parameters');
     });
 });

@@ -42,6 +42,15 @@ describe('EtlParser', () => {
             expect(result?.[1]).toEqual({ outcome: '"Beta"', condition: 'Type="B"' });
             expect(result?.[2]).toEqual({ outcome: '"Gamma"', condition: 'Default - When nothing fits the above cases' });
         });
+
+        it('handles deeply nested IIF logic', () => {
+            const expr = 'IIF(C1, R1, IIF(C2, R2, IIF(C3, R3, R4)))';
+            const result = EtlParser.flattenLogic(expr);
+            expect(result).toHaveLength(4);
+            expect(result?.[2].condition).toBe('C3');
+            expect(result?.[2].outcome).toBe('R3');
+            expect(result?.[3].outcome).toBe('R4');
+        });
     });
 
     describe('parseSteps', () => {
@@ -105,6 +114,21 @@ describe('EtlParser', () => {
             expect(root.children[0].Step).toBe('Child Action');
         });
 
+        it('should correctly link parents and children in arbitrary order', () => {
+            const mockSteps = {
+                ArrayOfStep: {
+                    Step: [
+                        { StepId: 20, ParentStepId: 10, Name: "Child", StepType: "Action", Sequence: "1" },
+                        { StepId: 10, ParentStepId: 0, Name: "Parent", StepType: "Group", Sequence: "1" }
+                    ]
+                }
+            };
+            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            expect(result.executionTree).toHaveLength(1);
+            expect(result.executionTree[0].Step).toBe('Parent');
+            expect(result.executionTree[0].children[0].Step).toBe('Child');
+        });
+
         it('should extract variables from SetVariable', () => {
             const mockSteps = {
                 ArrayOfStep: {
@@ -129,6 +153,19 @@ describe('EtlParser', () => {
             expect(result.variableSet.has('myVar')).toBe(true);
             const variable = result.variables.find(v => v.Name === 'myVar');
             expect(variable?.Value).toBe('123');
+        });
+
+        it('should handle orphans by promoting them to root', () => {
+            const mockSteps = {
+                ArrayOfStep: {
+                    Step: [
+                        { StepId: 1, ParentStepId: 999, Name: "Orphan", StepType: "Action" }
+                    ]
+                }
+            };
+            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            expect(result.executionTree).toHaveLength(1);
+            expect(result.executionTree[0].Step).toBe("Orphan");
         });
     });
 });

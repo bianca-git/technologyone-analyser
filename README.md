@@ -7,10 +7,11 @@
 ## Documentation Index
 
 - **[Architecture](./docs/ARCHITECTURE.md)**: High-level overview of the application structure, technology stack, and core data flows.
+- **[API Reference](./docs/API_REFERENCE.md)**: Technical detail on core classes (`FileProcessor`, `Parsers`, `Generators`).
 - **[File Processor](./docs/FILE_PROCESSOR.md)**: Details on the file ingestion pipeline, validation, and storage mechanisms.
 - **[Generators](./docs/GENERATORS.md)**: Explanation of the logic used to generate HTML views and downloadable DOCX reports.
-- **[GitHub Integration](./docs/GITHUB_INTEGRATION.md)**: Guide on setting up feedback mechanisms and handling API security.
-- **Parsers (Coming Soon)**: Deep dive into the XML parsing logic for T1 file formats.
+- **[Test Coverage Report](./docs/TEST_COVERAGE_REPORT.md)**: Current status of unit testing coverage for core libraries.
+- **[GitHub Integration](./docs/GITHUB_INTEGRATION.md)**: Guide on setting up feedback mechanisms.
 
 ## Key Features
 

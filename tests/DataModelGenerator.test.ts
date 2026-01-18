@@ -22,6 +22,7 @@ describe('DataModelGenerator', () => {
         await expect(DataModelGenerator.generateHtmlView(999)).rejects.toThrow("Data Model not found");
     });
 
+
     it('generates complex html view for data model', async () => {
         const mockDM = {
             id: 202,
@@ -50,7 +51,7 @@ describe('DataModelGenerator', () => {
                     ArrayOfQuery: {
                         Query: [
                             { QueryName: "BaseData", Sequence: "1", Id: "Q1" },
-                            { QueryName: "FinalAggregation", Sequence: "2", Id: "Q2" }
+                            { QueryName: "FinalAggregation", Sequence: "2", Id: "Q2", Criteria: { CriteriaSetItem: { CriteriaValues: { CriteriaValue: [{ ColumnId: "Status", Operator: { Value: "Equal" }, Value1: "Active" }] } } } }
                         ]
                     }
                 },
@@ -103,5 +104,53 @@ describe('DataModelGenerator', () => {
         // Joins
         expect(html).toContain('Left');
         expect(html).toContain('BaseData.ID');
+
+        // Filters
+        expect(html).toContain('equal'); // Normalized operator
+        expect(html).toContain('Active');
+    });
+
+    it('renders drilldown views and indexes', async () => {
+        const mockDM = {
+            id: 203,
+            filename: 'views.t1dm',
+            metadata: { name: "Views Model", version: "1.0" },
+            content: {
+                DataModel: {
+                    Definition: {
+                        DataModelDefinition: {
+                            Indexes: { Index: [{ Name: "PK_ID", Columns: { Column: [{ Name: "ID" }] } }] },
+                            DetailViews: { View: [{ Name: "DetailView1", Columns: { Column: [{ Name: "ColA" }] } }] }
+                        }
+                    }
+                }
+            },
+            dateAdded: new Date()
+        };
+        vi.mocked(db.dataModels.get).mockResolvedValue(mockDM as any);
+
+        const html = await DataModelGenerator.generateHtmlView(203);
+
+        expect(html).toContain('Drilldown Views');
+        expect(html).toContain('DetailView1');
+        expect(html).toContain('ColA');
+
+        expect(html).toContain('Indexes');
+        expect(html).toContain('PK_ID');
+    });
+
+    it('handles RealTime process mode styling', async () => {
+        const mockDM = {
+            id: 204,
+            content: { DataModel: { DataModelDef: { ProcessMode: 'RealTime' } } },
+            metadata: { name: "RT", version: "1.0" },
+            dateAdded: new Date()
+        };
+        vi.mocked(db.dataModels.get).mockResolvedValue(mockDM as any);
+
+        const html = await DataModelGenerator.generateHtmlView(204);
+        expect(html).toContain('RealTime');
+        // Checks default class for non-stored
+        expect(html).toContain('bg-gray-100'); 
     });
 });
