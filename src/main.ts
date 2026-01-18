@@ -5,39 +5,24 @@ import { EtlGenerator } from './lib/generators/EtlGenerator';
 import { DataModelGenerator } from './lib/generators/DataModelGenerator';
 import { DocxGenerator } from './lib/generators/DocxGenerator';
 import { OfflineVerifier } from './lib/ux/OfflineVerifier';
-// Not using react hooks in vanilla, but querying directly
-
-// --- Subscribable State Implementation for Vanilla ---
-// We'll just re-render when needed for simplicity in Vanilla JS
-// In a real app we might use signals or observables.
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-
-// main.ts
 
 const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.ts', {
+      // Use sw.js for production, sw.ts for development
+      const swUrl = import.meta.env.PROD ? '/sw.js' : '/sw.ts';
+      await navigator.serviceWorker.register(swUrl, {
         scope: '/',
       });
-
-      if (registration.installing) {
-        console.log('SW: Installing');
-      } else if (registration.waiting) {
-        console.log('SW: Installed and waiting');
-      } else if (registration.active) {
-        console.log('SW: Active');
-      }
+      console.log('SW registration successful');
     } catch (error) {
       console.error('SW: Registration failed:', error);
     }
-  } else {
-    console.warn('SW: Not supported in this browser');
   }
 };
 
-// Execute
 registerServiceWorker();
 
 // --- Routing State ---
@@ -55,31 +40,39 @@ function header() {
                 <div class="h-8 w-8 bg-white" style="mask: url(/t1gurulogo.svg) no-repeat center / contain; -webkit-mask: url(/t1gurulogo.svg) no-repeat center / contain;"></div>
                 <h1 class="text-xl font-bold tracking-tight hover:text-blue-300">TechnologyOne Analyser</h1>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center">
                 <span class="text-xs text-slate-400 mr-4">v3.1 (Local)</span>
-                <button onclick="window.verifyOffline()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md font-medium transition-colors border border-emerald-700 flex items-center shadow-sm">
-                    <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Verify Privacy
-                </button>
-                <button onclick="window.exportJson()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-md font-medium transition-colors border border-slate-600 flex items-center">
-                    <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Backup Library
-                </button>
+
+                <div id="header-controls" class="flex items-center gap-2">
+                    <button onclick="window.verifyOffline()" title="Verify Privacy" class="group bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-full font-medium transition-all duration-300 ease-in-out border border-emerald-700 flex items-center shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap text-xs">Verify Privacy</span>
+                    </button>
+
+                    <button onclick="window.openFeedback()" title="Feedback" class="group bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full font-medium transition-all duration-300 ease-in-out border border-indigo-600 flex items-center shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap text-xs">Feedback</span>
+                    </button>
+
+                    <button onclick="window.exportJson()" title="Backup Library" class="group bg-slate-700 hover:bg-slate-600 text-slate-200 p-2 rounded-full font-medium transition-all duration-300 ease-in-out border border-slate-600 flex items-center shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="max-w-0 overflow-hidden opacity-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap text-xs">Backup Library</span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
     `;
 }
 
-const formatDate = (date: Date) => {
+function formatDate(date: Date) {
   const d = new Date(date);
   const day = d.getDate();
   const month = d.toLocaleString('en-US', { month: 'short' });
   const year = d.getFullYear();
   const currentYear = new Date().getFullYear();
-
   return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
-};
+}
 
 function dashboardLayout(items: any[]) {
   const list = items.map(r => `
@@ -140,20 +133,15 @@ function dashboardLayout(items: any[]) {
 }
 
 async function render() {
-  // 1. Header
   let content = header();
 
-  // 2. Body
   if (currentView === 'dashboard') {
     const reports = await db.reports.toArray();
     const dms = await db.dataModels.toArray();
-
     const allItems = [
       ...reports.map(r => ({ ...r, type: 'report' })),
       ...dms.map(d => ({ ...d, type: 'datamodel' }))
     ];
-
-    // Sort by date desc
     allItems.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
     content += dashboardLayout(allItems);
   } else if (currentView === 'detail' && currentReportId) {
@@ -171,14 +159,12 @@ async function render() {
                         <button class="mode-btn ${currentMode === 'business' ? 'active' : ''} px-6 py-2 rounded-lg transition-all duration-200 text-gray-500 hover:text-gray-900" onclick="window.setMode('business')">Business View</button>
                         <button class="mode-btn ${currentMode === 'technical' ? 'active' : ''} px-6 py-2 rounded-lg transition-all duration-200 text-gray-500 hover:text-gray-900" onclick="window.setMode('technical')">Technical View</button>
                     </div>
-
                     <button onclick="window.exportDocx()" class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-sm flex items-center justify-center">
                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                          Export
                     </button>
                     ` : '<div></div>'}
                  </div>
-
                  <div id="detailContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden w-full flex flex-col max-w-4xl mx-auto">
                     <div class="p-12 text-center text-gray-400">
                         <div class="animate-pulse flex flex-col items-center">
@@ -192,10 +178,9 @@ async function render() {
         `;
   }
 
-  app.className = "flex flex-col min-h-screen text-left"; // Tailwind classes
+  app.className = "flex flex-col min-h-screen text-left";
   app.innerHTML = content;
 
-  // Post-render logic
   if (currentView === 'detail' && currentReportId) {
     try {
       let html = '';
@@ -204,7 +189,6 @@ async function render() {
       } else {
         html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
       }
-
       const container = document.getElementById('detailContainer');
       if (container) container.innerHTML = html;
     } catch (e: any) {
@@ -239,12 +223,9 @@ function setupDragAndDrop() {
   dropZone.addEventListener('drop', async (e) => {
     e.preventDefault();
     dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-
     const files = Array.from(e.dataTransfer?.files || []);
     if (files.length === 0) return;
-
     dropZone.innerHTML = `<div class="text-blue-600 font-bold animate-pulse">Processing ${files.length} file(s)...</div>`;
-
     for (const file of files) {
       try {
         await FileProcessor.processAndSave(file);
@@ -253,10 +234,9 @@ function setupDragAndDrop() {
         alert(`Failed to process ${file.name}`);
       }
     }
-    render(); // Refresh list
+    render();
   });
 
-  // Click to upload
   dropZone.addEventListener('click', () => {
     const input = document.getElementById('fileInput') as HTMLInputElement;
     if (input) input.click();
@@ -281,7 +261,7 @@ function setupDragAndDrop() {
   }
 }
 
-// --- Global Actions (attached to window for HTML onclicks) ---
+// --- Global Actions ---
 declare global {
   interface Window {
     navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel') => void;
@@ -293,6 +273,7 @@ declare global {
     cancelNote: (stepId: string) => void;
     exportJson: () => void;
     verifyOffline: () => void;
+    openFeedback: () => void;
   }
 }
 
@@ -327,19 +308,13 @@ window.exportJson = async () => {
   try {
     const reports = await db.reports.toArray();
     const dataModels = await db.dataModels.toArray();
-
     const exportData = {
       generated: new Date().toISOString(),
       version: '1.0',
       appVersion: '3.1',
-      library: {
-        reports,
-        dataModels
-      }
+      library: { reports, dataModels }
     };
-
     const filename = `t1guru-library-backup-${new Date().toISOString().slice(0, 10)}.json`;
-
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -349,7 +324,6 @@ window.exportJson = async () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-
   } catch (e) {
     console.error(e);
     alert('Library backup failed');
@@ -362,12 +336,9 @@ window.verifyOffline = () => {
 
 window.deleteEntity = async (id: number, type: 'report' | 'datamodel') => {
   if (confirm(`Are you sure you want to delete this ${type === 'report' ? 'Report' : 'Data Model'}?`)) {
-    if (type === 'report') {
-      await db.reports.delete(id);
-    } else {
-      await db.dataModels.delete(id);
-    }
-    render(); // Refresh list
+    if (type === 'report') await db.reports.delete(id);
+    else await db.dataModels.delete(id);
+    render();
   }
 };
 
@@ -390,16 +361,12 @@ window.saveStepNote = async (reportId: string, stepId: string) => {
   const editor = document.getElementById(`note-editor-${stepId}`);
   const textarea = editor?.querySelector('textarea');
   if (!textarea) return;
-
   const text = textarea.value.trim();
-
   if (currentType === 'report') {
     const report = await db.reports.get(rid);
     if (report) {
       const stepNotes = report.stepNotes || {};
-      if (text) stepNotes[stepId] = text;
-      else delete stepNotes[stepId];
-
+      if (text) stepNotes[stepId] = text; else delete stepNotes[stepId];
       await db.reports.update(rid, { stepNotes });
       render();
     }
@@ -407,26 +374,122 @@ window.saveStepNote = async (reportId: string, stepId: string) => {
     const dm = await db.dataModels.get(rid);
     if (dm) {
       const stepNotes = dm.stepNotes || {};
-      if (text) stepNotes[stepId] = text;
-      else delete stepNotes[stepId];
-
+      if (text) stepNotes[stepId] = text; else delete stepNotes[stepId];
       await db.dataModels.update(rid, { stepNotes });
       render();
     }
   }
 };
 
-// Initial Render
-// Initial Render
-render();
+// --- Feedback Integration ---
+const FORM_ID = "1FAIpQLSd6QUXK9Rk2zBi_HFSA-freeSqQMRbKPxkaNndL_QczQ1nbUQ";
+const ENTRY_BROWSER = "entry.924115014";
+const ENTRY_OS = "entry.495502239";
 
-// Service Worker Registration
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.ts').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
-    });
-  });
+function getOS(): string {
+  const n = window.navigator;
+  const ua = n.userAgent;
+  // @ts-ignore
+  const platform = n.userAgentData?.platform || n.platform || 'Unknown';
+  if (platform.toLowerCase().startsWith('win')) return 'Windows';
+  if (platform.toLowerCase().startsWith('mac')) return 'MacOS';
+  if (ua.includes('Android')) return 'Android';
+  if (ua.includes('Linux')) return 'Linux';
+  if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
+  return platform;
 }
+
+window.openFeedback = () => {
+  const browserInfo = `${navigator.userAgent} (v3.1 Local)`;
+  const osInfo = getOS();
+  const params = new URLSearchParams();
+  params.append(ENTRY_BROWSER, browserInfo);
+  params.append(ENTRY_OS, osInfo);
+  params.append("embedded", "true");
+  const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?${params.toString()}`;
+
+  const modal = document.createElement('div');
+  modal.id = 'feedback-modal';
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in";
+  modal.innerHTML = `
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col overflow-hidden relative animate-scale-in">
+        <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center shrink-0">
+            <h3 class="font-bold text-lg flex items-center">
+                <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" /></svg>
+                Send Feedback
+            </h3>
+            <button id="close-feedback" class="text-slate-400 hover:text-white transition-colors p-1 rounded hover:bg-slate-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="grow bg-slate-50 relative">
+             <div class="absolute inset-0 flex items-center justify-center z-0 text-slate-400">
+                <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+             </div>
+            <iframe src="${formUrl}" class="absolute inset-0 w-full h-full z-10" frameborder="0" marginheight="0" marginwidth="0">Just a moment...</iframe>
+        </div>
+        <div class="bg-gray-100 px-4 py-2 text-[10px] text-gray-500 border-t border-gray-200 text-center">
+            Operating System: <span class="font-mono text-gray-600">${osInfo}</span> • 
+            Browser: <span class="font-mono text-gray-600">${navigator.userAgent.substring(0, 30)}...</span>
+        </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.querySelector('#close-feedback')?.addEventListener('click', () => document.body.removeChild(modal));
+  modal.addEventListener('click', (e) => { if (e.target === modal) document.body.removeChild(modal); });
+};
+
+// --- Tour Logic ---
+function checkAndShowTour() {
+  if (localStorage.getItem('t1guru_tour_seen')) return;
+  const overlay = document.createElement('div');
+  overlay.className = "fixed inset-0 bg-black/70 z-40 animate-fade-in backdrop-blur-sm";
+  overlay.id = "tour-overlay";
+  const controls = document.getElementById('header-controls');
+  if (controls) controls.classList.add('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2');
+  const popup = document.createElement('div');
+  popup.className = "fixed top-24 right-6 max-w-sm bg-white p-6 rounded-xl shadow-2xl z-50 animate-scale-in text-slate-800 border border-blue-100 ring-4 ring-blue-500/20";
+  popup.innerHTML = `
+        <div class="absolute -top-2 right-12 w-4 h-4 bg-white transform rotate-45 border-l border-t border-blue-100"></div>
+        <div class="flex items-center mb-3">
+             <span class="text-2xl mr-3">🚀</span>
+             <h3 class="font-bold text-lg text-slate-900">New Toolkit Available!</h3>
+        </div>
+        <p class="text-sm text-gray-600 mb-4 leading-relaxed">We've upgraded your top bar with essential utilities. Hover over the icons to identify them:</p>
+        <div class="bg-slate-50 rounded-lg p-3 mb-5 border border-slate-100">
+            <ul class="text-xs space-y-2 text-gray-600">
+                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-2 shrink-0">🛡️</div> <b>Verify Privacy:</b> &nbsp;Ensure zero-data exfiltration.</li>
+                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2 shrink-0">💬</div> <b>Feedback:</b> &nbsp;Share bugs or features.</li>
+                <li class="flex items-center"><div class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center mr-2 shrink-0">💾</div> <b>Backup:</b> &nbsp;Save your library locally.</li>
+            </ul>
+        </div>
+        <div class="text-right">
+            <button id="close-tour" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-md transition-transform transform active:scale-95 flex items-center ml-auto">
+                Got it
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </button>
+        </div>
+    `;
+  document.body.appendChild(overlay);
+  document.body.appendChild(popup);
+  const close = () => {
+    localStorage.setItem('t1guru_tour_seen', 'true');
+    overlay.classList.add('opacity-0');
+    popup.classList.add('opacity-0', 'translate-y-4');
+    setTimeout(() => {
+      if (document.body.contains(overlay)) document.body.removeChild(overlay);
+      if (document.body.contains(popup)) document.body.removeChild(popup);
+      if (controls) controls.classList.remove('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2');
+    }, 300);
+  };
+  document.getElementById('close-tour')?.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+}
+
+// Start App
+render().then(() => {
+  setTimeout(checkAndShowTour, 1000);
+});

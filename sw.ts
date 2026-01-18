@@ -52,24 +52,38 @@ self.addEventListener('activate', (event: any) => {
 // --- FETCH EVENT ---
 // The core logic: Intercepts every HTTP request.
 self.addEventListener('fetch', (event: any) => {
-    // Bypass SW for connectivity checks
+    // 1. Skip non-GET requests and browser extensions/internal urls
+    if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
+        return;
+    }
+
+    // 2. Bypass SW for connectivity checks (OfflineVerifier uses this)
     if (event.request.url.includes('generate_204')) {
         return;
     }
 
+    const request = event.request;
+
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
+        caches.match(request).then((cachedResponse) => {
             // Strategy: Cache First, Fallback to Network
-            // If we found it in cache, return it.
             if (cachedResponse) {
                 return cachedResponse;
             }
-            // If not, try to fetch it from the network.
-            return fetch(event.request).catch(() => {
-                // If network fails (Airplane mode) and it's not in cache:
-                // You could return a custom offline page here, but for your app,
-                // it should have been cached in the Install phase.
-                console.error('SW: Fetch failed and not in cache', event.request.url);
+
+            // If not in cache, try network
+            return fetch(request).catch(() => {
+                // 3. SPA Fallback: If network fails and it's a navigation request (HTML),
+                // return the cached /index.html. This allows deep links to work offline.
+                if (request.mode === 'navigate' ||
+                    (request.method === 'GET' && request.headers.get('accept')?.includes('text/html'))) {
+                    console.log('SW: Serving SPA fallback [index.html] for:', request.url);
+                    return caches.match('/index.html');
+                }
+
+                // For other assets (images, etc.), just let it fail
+                console.warn('SW: Resource not found and no fallback:', request.url);
+                return null as any;
             });
         })
     );

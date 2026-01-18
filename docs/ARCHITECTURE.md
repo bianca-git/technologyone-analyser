@@ -59,7 +59,15 @@ The application is "Local-First". All data is stored in the user's browser using
 
 ## Data Flow
 
-1.  **Upload**: User drops a file -> `FileProcessor` reads it -> `Parser` converts it -> `db` stores it.
-2.  **Dashboard**: `main.ts` queries `db.reports` and `db.dataModels` -> Renders list.
-3.  **Detail View**: User clicks item -> `main.ts` switches view -> Calls `Generator.generateHtmlView(id)` -> Injects HTML into DOM.
-4.  **Export**: User clicks Export -> Calls `DocxGenerator` -> Triggers browser download.
+1.  **Security Check**: `OfflineVerifier` interrupts usage until the device is confirmed offline (Air-Gapped state).
+2.  **Upload**: User drops a file -> `FileProcessor` reads it -> `Parser` converts it -> `db` stores it.
+3.  **Dashboard**: `main.ts` queries `db.reports` and `db.dataModels` -> Renders list.
+4.  **Detail View**: User clicks item -> `main.ts` switches view -> Calls `Generator.generateHtmlView(id)` -> Injects HTML into DOM.
+5.  **Export**: User clicks Export -> Calls `DocxGenerator` -> Triggers browser download.
+
+### 4. UX / Security Components (`src/lib/ux/`)
+
+-   **`OfflineVerifier.ts`**:
+    -   **Purpose**: Enforces a strict "Air-Gapped" environment for data privacy.
+    -   **Mechanism**: Monitors `navigator.onLine` and performs active "pings" (HEAD requests to reliable endpoints) to detect true connectivity status (e.g., distinguishing between "LAN connected but no internet" vs "True Offline").
+    -   **UI**: Injects a strictly styled overlay that blocks interaction until the user disconnects Wi-Fi/Ethernet.

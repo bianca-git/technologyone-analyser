@@ -57,12 +57,15 @@ This class mirrors the logic of the HTML generators but outputs a `.docx` file u
 
 Renders the visual representation of a `.t1dm` file.
 
-### features
+### Key Features
 
-- **Metadata**: Shows Process Mode (Stored vs Live).
-- **Source Analysis**: Lists all SQL sources or tables feeding the model.
-- **Variable List**: Global variables used in the model.
-- **Table Relations**: (Planned) Visualizing joins between tables.
+- **Executive Summary**: Auto-generated narrative describing the model's output, complexity, and sources.
+- **Drilldown Analysis**: Visualizes "Detail Views" defined in the model.
+- **Transformation Layers**: Breakdown of intermediate queries leading to the final dataset.
+- **Joins Visualization**: Renders join logic (e.g., `Left Join TableA.ID = TableB.ID`) in a readable table format.
+- **Filters**: Displays criteria/filters applied to queries (e.g., `Status = 'Active'`).
+- **Interactive Notes**: Allows users to add and persist technical/business notes to specific queries/steps.
+- **Metadata**: Shows Process Mode (Stored vs Live), Indexes, and Global Variables.
 
 ## Shared Utilities
 
