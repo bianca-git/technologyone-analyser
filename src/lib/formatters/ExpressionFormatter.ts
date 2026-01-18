@@ -9,9 +9,9 @@ export class ExpressionFormatter {
     }
 
     /**
-     * Colorizes text by highlighting variables and tables found in the respective sets.
+     * Colourises text by highlighting variables and tables found in the respective sets.
      */
-    static colorizeTextHTML(text: any, varSet: Set<string>, tableSet: Set<string> = new Set()): string {
+    static colouriseTextHTML(text: any, varSet: Set<string>, tableSet: Set<string> = new Set()): string {
         if (text === null || text === undefined) return "";
         let str = String(text);
 
@@ -162,16 +162,16 @@ export class ExpressionFormatter {
         // Try parsing as CASE statement
         const caseRules = this.parseCaseStatement(expr);
         if (caseRules) {
-            return this.renderLogicTable(caseRules, (t) => this.colorizeTextHTML(t, varSet || new Set(), tableSet || new Set()));
+            return this.renderLogicTable(caseRules, (t) => this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set()));
         }
 
         // Try parsing as IIF statement
         const iifRules = this.parseIifStatement(expr);
         if (iifRules) {
-            return this.renderLogicTable(iifRules, (t) => this.colorizeTextHTML(t, varSet || new Set(), tableSet || new Set()));
+            return this.renderLogicTable(iifRules, (t) => this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set()));
         }
 
         // Default: just colorize
-        return this.colorizeTextHTML(expr, varSet || new Set(), tableSet || new Set());
+        return this.colouriseTextHTML(expr, varSet || new Set(), tableSet || new Set());
     }
 }

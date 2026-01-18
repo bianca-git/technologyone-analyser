@@ -472,7 +472,7 @@ function checkAndShowTour() {
              <span class="text-2xl mr-3">👋</span>
              <h3 class="font-bold text-lg text-slate-900">Welcome to the Analyser!</h3>
         </div>
-        <p class="text-sm text-gray-600 mb-4 leading-relaxed">It looks like you're new here. We've equipped your workspace with some essential tools to keep your data safe and your library organized:</p>
+        <p class="text-sm text-gray-600 mb-4 leading-relaxed">It looks like you're new here. We've equipped your workspace with some essential tools to keep your data safe and your library organised:</p>
         <div class="bg-slate-50 rounded-lg p-3 mb-5 border border-slate-100">
             <ul class="text-xs space-y-3 text-gray-600">
                 <li class="flex items-start"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-2 shrink-0">🛡️</div> <div><b>Privacy Guard:</b> Run a quick check to verify your session is 100% offline and secure.</div></li>

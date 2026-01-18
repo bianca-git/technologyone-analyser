@@ -1,10 +1,8 @@
-# Documentation - 2026-01-19
-
-This directory contains automatically generated documentation for the TechnologyOne Analyser project.
+# TechnologyOne Analyser
 
 ## Project Overview
 
-**TechnologyOne Analyser** is a web-based utility for analyzing, visualizing, and documenting Technology One (T1) ETL processes and Data Models. It allows users to upload `.t1etlp` (ETL) and `.t1dm` (Data Model) files, which are then parsed, stored locally (using IndexedDB), and presented in both "Business" and "Technical" views.
+**TechnologyOne Analyser** is a web-based utility for analysing, visualising, and documenting Technology One (T1) ETL processes and Data Models. It allows users to upload `.t1etlp` (ETL) and `.t1dm` (Data Model) files, which are then parsed, stored locally (using IndexedDB), and presented in both "Business" and "Technical" views.
 
 ## Documentation Index
 
@@ -18,10 +16,10 @@ This directory contains automatically generated documentation for the Technology
 
 1.  **File Ingestion**: Drag-and-drop support for `.t1etlp` and `.t1dm` files via `FileProcessor`.
 2.  **Local Storage**: Uses `Dexie.js` to store parsed data in the browser (IndexedDB).
-3.  **Visualization**:
+3.  **Visualisation**:
     - **Dashboard**: List of uploaded models and reports.
     - **ETL View**: Detailed step-by-step breakdown of ETL processes.
-    - **Data Model View**: Visualization of tables, joins, filters, and sources.
+    - **Data Model View**: Visualisation of tables, joins, filters, and sources.
 4.  **Reporting**: Export documentation to Microsoft Word (`.docx`).
 5.  **Views**: Toggle between "Business" (high-level) and "Technical" (detailed) perspectives.
 6.  **Offline Security**: Integrated `OfflineVerifier` ensures zero-data exfiltration by enforcing a physical network disconnect before processing sensitive data.
@@ -30,7 +28,7 @@ This directory contains automatically generated documentation for the Technology
 
 We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. We specifically seek feedback on:
 
-1.  **ETL Visualization**: Does the "Business View" accurately summarize your complex ETL processes? Are complex loops and branches rendering logically?
+1.  **ETL Visualisation**: Does the "Business View" accurately summarise your complex ETL processes? Are complex loops and branches rendering logically?
 2.  **Data Model Accuracy**: Are all Tables, Joins, and Filters displaying correctly for your `.t1dm` files?
 3.  **Parsing Edge Cases**: If you have a file that fails to parse or looks "empty", please report it.
 
@@ -44,12 +42,12 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
 - [x] **Export Engine**: Universal `.docx` generator for documentation.
 
 ### 🔄 Module: Integration & ETL (Current)
-- [x] **ETL Parser (`.t1etlp`)**: Full step-by-step visualization, loop handling, and logic extraction.
+- [x] **ETL Parser (`.t1etlp`)**: Full step-by-step visualisation, loop handling, and logic extraction.
 - [ ] **Advanced Logic**: Better distinct handling for `StartProcess`, `Script`, and `DTS` tasks.
 
 ### 📊 Module: BI & Analytics (Active Development)
 - [x] **Data Models (`.t1dm`)**:
-    - Visualization of Tables, Joins, and Sources.
+    - Visualisation of Tables, Joins, and Sources.
     - Deep parsing of "Query" definitions and variable dependencies.
     - Business/Technical view toggles.
 - [ ] **Dashboards (`.t1db`)**:

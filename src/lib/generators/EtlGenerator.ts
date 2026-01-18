@@ -30,7 +30,7 @@ export class EtlGenerator {
                     if (i === 1 && (headers.includes('Formula') || headers.includes('Value / Expression') || headers.includes('Expression'))) {
                         val = ExpressionFormatter.formatExpression(val);
                     } else {
-                        val = ExpressionFormatter.colorizeTextHTML(val, variableSet, tableSet);
+                        val = ExpressionFormatter.colouriseTextHTML(val, variableSet, tableSet);
                     }
 
                     return `<td class="px-4 py-2 text-sm text-gray-700 ${i === 0 ? 'font-mono' : ''}">${val}</td>`;
@@ -176,7 +176,7 @@ export class EtlGenerator {
             let detailsHtml = '';
             if (item.Details.length > 0) {
                 detailsHtml += `<ul class="mt-2 space-y-1 pl-4 border-l-2 border-gray-100">` +
-                    item.Details.map((d: string) => `<li class="text-xs text-gray-600">• ${ExpressionFormatter.colorizeTextHTML(d, variableSet, tableSet)}</li>`).join('') +
+                    item.Details.map((d: string) => `<li class="text-xs text-gray-600">• ${ExpressionFormatter.colouriseTextHTML(d, variableSet, tableSet)}</li>`).join('') +
                     `</ul>`;
             }
 
@@ -201,7 +201,7 @@ export class EtlGenerator {
 
             // --- New: Exists Logic (Critical Filter) ---
             if (item.ExistsLogic && item.ExistsLogic.length > 0) {
-                const existsRows = item.ExistsLogic.map((logic: string) => `<li class="text-sm text-amber-800 font-mono bg-amber-50 px-2 py-1 rounded border border-amber-200 mb-1">⚠ ${ExpressionFormatter.colorizeTextHTML(logic, variableSet, tableSet)}</li>`).join('');
+                const existsRows = item.ExistsLogic.map((logic: string) => `<li class="text-sm text-amber-800 font-mono bg-amber-50 px-2 py-1 rounded border border-amber-200 mb-1">⚠ ${ExpressionFormatter.colouriseTextHTML(logic, variableSet, tableSet)}</li>`).join('');
                 tableHtml += `<div class="mt-3 mb-2"><div class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Advanced Filters</div><ul class="list-none pl-0">${existsRows}</ul></div>`;
             }
 
@@ -253,7 +253,7 @@ export class EtlGenerator {
                         <div class="p-4">
                             <div class="mb-3 text-sm text-gray-700">
                                 ${mode === 'technical' ? '<span class="font-bold text-slate-600 text-xs uppercase tracking-wide">Purpose:</span> ' : ''}
-                                <span class="font-medium">${ExpressionFormatter.colorizeTextHTML(item.Context, variableSet, tableSet)}</span>
+                                <span class="font-medium">${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}</span>
                                 ${mode === 'business' && item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${item.SmartDesc}</span>` : ''}
                             </div>
                             <div class="pl-2 space-y-4">
@@ -271,7 +271,7 @@ export class EtlGenerator {
                     ${stepNote ? `
                         <div class="relative bg-amber-50 border border-amber-200 p-2 rounded text-xs text-amber-900 group/note mb-2">
                             <div class="flex justify-between items-start">
-                                <span class="grow italic whitespace-pre-wrap">${ExpressionFormatter.colorizeTextHTML(stepNote, variableSet, tableSet)}</span>
+                                <span class="grow italic whitespace-pre-wrap">${ExpressionFormatter.colouriseTextHTML(stepNote, variableSet, tableSet)}</span>
                                 <button onclick="window.editStepNote('${reportId}', '${item.id}')" class="opacity-0 group-hover/note:opacity-100 transition text-amber-600 hover:text-amber-800 ml-2" title="Edit Note">✎</button>
                             </div>
                         </div>
@@ -307,11 +307,11 @@ export class EtlGenerator {
                     ${showContext ? `
                     <div class="text-sm text-gray-600 mb-1">
                         ${mode === 'technical' ? '<span class="font-semibold text-emerald-600 text-xs uppercase tracking-wide">Purpose:</span> ' : ''}
-                        ${ExpressionFormatter.colorizeTextHTML(item.Context, variableSet, tableSet)}
+                        ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
                         ${mode === 'business' && item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${item.SmartDesc}</span>` : ''}
                     </div>` : ''}
                     
-                    ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${ExpressionFormatter.colorizeTextHTML(item.Description, variableSet, tableSet)}</div>` : ''}
+                    ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${ExpressionFormatter.colouriseTextHTML(item.Description, variableSet, tableSet)}</div>` : ''}
                     
                     ${notesHtml}
                     ${detailsHtml}

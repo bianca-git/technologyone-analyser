@@ -24,7 +24,7 @@ The `main.ts` file acts as the central controller. It is responsible for:
 
 ### 2. Core Library (`src/lib/`)
 
-The core logic is modularized into the `lib` directory:
+The core logic is modularised into the `lib` directory:
 
 #### File Processing Pipeline
 `FileProcessor.ts` is the gateway for data ingestion.

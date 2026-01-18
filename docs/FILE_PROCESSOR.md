@@ -7,7 +7,7 @@ The `FileProcessor` class (`src/lib/FileProcessor.ts`) is responsible for handli
 1.  **File Type Detection**: Distinguishes between ETL processes (`.t1etlp`) and Data Models (`.t1dm`).
 2.  **Decompression**: Handles `.zip` archives (for ETL files).
 3.  **Parsing**: Orchestrates XML parsing using `fast-xml-parser`.
-4.  **Metadata Extraction**: Normalizes headers (Name, Owner, Date) from different file versions.
+4.  **Metadata Extraction**: Normalises headers (Name, Owner, Date) from different file versions.
 5.  **Storage**: Persists the processed data into `IndexedDB`.
 
 ## Supported File Types

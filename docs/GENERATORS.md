@@ -22,9 +22,9 @@ This class renders the detailed step-by-step view of an ETL process.
 
 2.  **Header Generation**:
     - Renders title, description, and a metadata grid.
-    - Color-coded "Business View" or "Technical View" badge.
+    - Colour-coded "Business View" or "Technical View" badge.
 
-3.  **Automatic Summarization**:
+3.  **Automatic Summarisation**:
     - Scans the execution tree for key actions (Source extraction, Calculations, Exports).
     - Generates a natural language narrative (e.g., _"This process extracts data from 'GeneralLedger', performs business calculations, and publishes results to the 'Warehouse'."_).
 
@@ -34,7 +34,7 @@ This class renders the detailed step-by-step view of an ETL process.
 5.  **Recursive Step Rendering**:
     - Iterates through the execution tree.
     - **Grouping**: Handles nested structures like `loops`, `groups`, and `decisions` by rendering distinct visual containers with icons (e.g., ↻ for loops, ❓ for decisions).
-    - **Contextualization**: Uses logic to determine if a step is "Technical" or "Business" relevant.
+    - **Contextualisation**: Uses logic to determine if a step is "Technical" or "Business" relevant.
     - **Formatting**: Applies `ExpressionFormatter` to SQL snippets or code blocks to provide syntax highlighting.
     - **Annotations**: Renders user-added "Step Notes" (persisted in DB).
 
@@ -62,7 +62,7 @@ Renders the visual representation of a `.t1dm` file.
 - **Executive Summary**: Auto-generated narrative describing the model's output, complexity, and sources.
 - **Drilldown Analysis**: Visualizes "Detail Views" defined in the model.
 - **Transformation Layers**: Breakdown of intermediate queries leading to the final dataset.
-- **Joins Visualization**: Renders join logic (e.g., `Left Join TableA.ID = TableB.ID`) in a readable table format.
+- **Joins Visualisation**: Renders join logic (e.g., `Left Join TableA.ID = TableB.ID`) in a readable table format.
 - **Filters**: Displays criteria/filters applied to queries (e.g., `Status = 'Active'`).
 - **Interactive Notes**: Allows users to add and persist technical/business notes to specific queries/steps.
 - **Metadata**: Shows Process Mode (Stored vs Live), Indexes, and Global Variables.
@@ -73,6 +73,6 @@ Renders the visual representation of a `.t1dm` file.
 
 Used by all generators to:
 
-- Colorize table names (e.g., wrapper in a badge).
+- Colourise table names (e.g., wrapper in a badge).
 - Highlight SQL keywords.
 - Format logic tables into readable HTML/Word tables.

@@ -276,7 +276,7 @@ export class DataModelGenerator {
                 ${stepNote ? `
                     <div class="relative bg-amber-50 border border-amber-200 p-2 rounded text-xs text-amber-900 group/note mb-2">
                         <div class="flex justify-between items-start">
-                            <span class="grow italic whitespace-pre-wrap">${ExpressionFormatter.colorizeTextHTML(stepNote, variableSet, tableSet)}</span>
+                            <span class="grow italic whitespace-pre-wrap">${ExpressionFormatter.colouriseTextHTML(stepNote, variableSet, tableSet)}</span>
                             <button onclick="window.editStepNote('${reportId}', '${id}')" class="opacity-0 group-hover/note:opacity-100 transition text-amber-600 hover:text-amber-800 ml-2" title="Edit Note">✎</button>
                         </div>
                     </div>
@@ -478,9 +478,9 @@ export class DataModelGenerator {
                                         ${myJoins.map((j: any) => `
                                             <tr class="hover:bg-slate-50">
                                                 <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-500 font-mono border-r border-slate-100">${j.JoinType || 'Inner'}</td>
-                                                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700 font-mono">${ExpressionFormatter.colorizeTextHTML((j.DataSource1 ? j.DataSource1 + '.' : '') + (j.Field1 || '?'), variableSet, tableSet)}</td>
+                                                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700 font-mono">${ExpressionFormatter.colouriseTextHTML((j.DataSource1 ? j.DataSource1 + '.' : '') + (j.Field1 || '?'), variableSet, tableSet)}</td>
                                                 <td class="px-3 py-2 whitespace-nowrap text-xs text-gray-400 text-center">=</td>
-                                                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700 font-mono">${ExpressionFormatter.colorizeTextHTML((j.DataSource2 ? j.DataSource2 + '.' : '') + (j.Field2 || '?'), variableSet, tableSet)}</td>
+                                                <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700 font-mono">${ExpressionFormatter.colouriseTextHTML((j.DataSource2 ? j.DataSource2 + '.' : '') + (j.Field2 || '?'), variableSet, tableSet)}</td>
                                             </tr>
                                         `).join('')}
                                     </tbody>

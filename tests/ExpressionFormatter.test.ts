@@ -4,11 +4,11 @@ import { ExpressionFormatter } from '../src/lib/formatters/ExpressionFormatter';
 
 describe('ExpressionFormatter', () => {
 
-    describe('colorizeTextHTML', () => {
+    describe('colouriseTextHTML', () => {
         it('should wrap known variables in var-badges', () => {
             const varSet = new Set(['MyVar', 'OtherVar']);
             const input = 'Value = MyVar + 10';
-            const output = ExpressionFormatter.colorizeTextHTML(input, varSet);
+            const output = ExpressionFormatter.colouriseTextHTML(input, varSet);
             
             expect(output).toContain('<span class="var-badge">MyVar</span>');
             expect(output).not.toContain('<span class="var-badge">Value</span>');
@@ -16,7 +16,7 @@ describe('ExpressionFormatter', () => {
 
         it('should wrap T1 variable syntax {&Var}', () => {
             const input = 'Select {&GlobalVar}';
-            const output = ExpressionFormatter.colorizeTextHTML(input, new Set());
+            const output = ExpressionFormatter.colouriseTextHTML(input, new Set());
             
             expect(output).toContain('<span class="var-badge">GlobalVar</span>');
         });
