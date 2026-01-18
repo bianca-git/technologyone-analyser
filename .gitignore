@@ -25,7 +25,6 @@ dist-ssr
 /dist
 /node_modules
 /samples
-/tests
 /temp
 /scripts/analysis
 /scripts/extraction

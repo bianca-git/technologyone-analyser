@@ -6,18 +6,25 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/build-sw.js",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
     "esbuild": "^0.27.2",
     "glob": "^13.0.0",
+    "jsdom": "^27.4.0",
     "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.3.1"
+    "vite": "npm:rolldown-vite@7.3.1",
+    "vitest": "^4.0.17"
   },
   "pnpm": {
     "overrides": {
       "vite": "npm:rolldown-vite@7.2.5"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
