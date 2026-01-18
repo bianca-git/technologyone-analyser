@@ -105,7 +105,11 @@ jobs:
               body: JSON.stringify(payload)
             });
 
-            if (!response.ok) throw new Error(`OpenAI API Error: ${response.statusText}`);
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.log('API Error Body:', errorText);
+              throw new Error(`OpenAI API Error: ${response.statusText}`);
+            }
 
             const data = await response.json();
 
