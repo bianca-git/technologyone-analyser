@@ -45,7 +45,10 @@ jobs:
             const payload = {
               prompt: {
                 id: "pmpt_696d5dc776d481949cd2c59100d1c716021abdc584703216",
-                version: "1"
+                version: "1",
+                variables: {
+                  feedback: process.env.FEEDBACK
+                }
               },
               input: [],
               text: {
