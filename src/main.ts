@@ -312,7 +312,7 @@ window.exportJson = async () => {
       appVersion: '3.1',
       library: { reports, dataModels }
     };
-    const filename = `t1guru-library-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    const filename = `library-backup-${new Date().toISOString().slice(0, 10)}.json`;
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

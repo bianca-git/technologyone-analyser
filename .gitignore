@@ -31,3 +31,4 @@ dist-ssr
 /scripts/inspection
 .vercel
 /coverage
+package-lock.json
