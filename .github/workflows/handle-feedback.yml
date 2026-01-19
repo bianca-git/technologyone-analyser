@@ -47,7 +47,7 @@ jobs:
                 id: "pmpt_696d5dc776d481949cd2c59100d1c716021abdc584703216",
                 version: "1"
               },
-              input: [process.env.FEEDBACK],
+              input: [],
               text: {
                 format: {
                   type: "json_schema",
