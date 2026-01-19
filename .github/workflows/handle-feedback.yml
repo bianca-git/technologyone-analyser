@@ -115,11 +115,10 @@ jobs:
             }
 
             const data = await response.json();
-            console.log('API Response Data:', JSON.stringify(data, null, 2));
-            
-            // 3. Parse Output (Note: v1/responses returns 'output_text' at top level for convenience)
-            // If raw JSON schema is strict, we parse the text string.
-            const result = JSON.parse(data.output_text || data.items[0].content[0].text);
+            // 3. Parse Output
+            const outputItem = data.output.find(item => item.type === 'message');
+            const resultText = outputItem ? outputItem.content[0].text : "{}";
+            const result = JSON.parse(resultText);
             const issue_number = parseInt(process.env.ISSUE_NUM);
 
             // 4. Action Logic (Same as before)
