@@ -47,6 +47,7 @@
     "docx": "^9.5.1",
     "fast-xml-parser": "^5.3.3",
     "jszip": "^3.10.1",
+    "mermaid": "^11.12.2",
     "tailwindcss": "^4.1.18"
   }
 }

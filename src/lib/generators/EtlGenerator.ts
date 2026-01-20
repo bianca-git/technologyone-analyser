@@ -1,8 +1,49 @@
+
 import { db } from '../db';
 import { EtlParser } from '../parsers/EtlParser';
 import { ExpressionFormatter } from '../formatters/ExpressionFormatter';
+import { MermaidGenerator } from './MermaidGenerator';
 
 export class EtlGenerator {
+
+    static generateSummary(flow: any[]) {
+        const getSourceNames = (s: any) => {
+            if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery')
+                return s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
+            if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery')
+                return s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
+            if (s.RawType === 'LoadTextFile')
+                return s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
+            return null;
+        };
+
+        const getTargetNames = (s: any) => {
+            if (s.RawType === 'ImportWarehouseData') return `the <strong>${s.Output?.name || 'Warehouse'}</strong>`;
+            if (s.RawType === 'ExportToExcel') return `an <strong>Excel file</strong>`;
+            if (s.RawType === 'SendEmail') return `<strong>Email</strong> recipients`;
+            if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') return `a <strong>Text file</strong>`;
+            return null;
+        };
+
+        const sources = [...new Set(flow.map(getSourceNames).filter(Boolean))];
+        const targets = [...new Set(flow.map(getTargetNames).filter(Boolean))];
+
+        const hasCalcs = flow.some(s => s.RawType === 'AddColumn' || s.RawType === 'UpdateColumn' || s.RawType === 'CalculateVariable');
+        const hasJoins = flow.some(s => s.RawType === 'JoinTable');
+        const hasConditions = flow.some(s => s.RawType === 'Decision' || s.RawType === 'Branch');
+
+        let parts = [];
+        if (sources.length > 0) parts.push(`extracts data from <strong>${sources.join(', ')}</strong>`);
+        if (hasJoins) parts.push(`combines multiple datasets`);
+        if (hasCalcs) parts.push(`performs business calculations`);
+
+        let targetAction = hasConditions ? "and, based on certain conditions, distributes results to " : "and publishes results to ";
+        if (targets.length > 0) parts.push(`${targetAction}${targets.join(', ')}`);
+
+        if (parts.length === 0) return "This process performs a sequence of data operations.";
+        const narrative = parts.slice(0, -1).join(', ') + (parts.length > 1 ? ' and ' : '') + parts.slice(-1);
+        return `This process ${narrative}.`;
+    }
 
     static async generateHtmlView(reportId: number, mode: 'business' | 'technical'): Promise<string> {
         const report = await db.reports.get(reportId);
@@ -10,7 +51,8 @@ export class EtlGenerator {
 
         const flowData = EtlParser.parseSteps(report.rawSteps, mode);
         const metadata = report.metadata;
-        const { executionTree, variables, variableSet, tableSet } = flowData;
+        const { executionTree, variables, variableSet, tableSet, stepSet } = flowData;
+
 
         // --- Helper: Table Renderer ---
         const renderTable = (headers: string[], rows: any[]) => {
@@ -28,9 +70,9 @@ export class EtlGenerator {
 
                     // Apply standard formatting if it's not a logic table
                     if (i === 1 && (headers.includes('Formula') || headers.includes('Value / Expression') || headers.includes('Expression'))) {
-                        val = ExpressionFormatter.formatExpression(val);
+                        val = ExpressionFormatter.formatExpression(val, variableSet, tableSet, stepSet);
                     } else {
-                        val = ExpressionFormatter.colouriseTextHTML(val, variableSet, tableSet);
+                        val = ExpressionFormatter.colouriseTextHTML(val, variableSet, tableSet, stepSet);
                     }
 
                     return `<td class="px-4 py-2 text-sm text-gray-700 ${i === 0 ? 'font-mono' : ''}">${val}</td>`;
@@ -77,44 +119,32 @@ export class EtlGenerator {
             </div>
         `;
 
-        const generateSummary = (flow: any[]) => {
-            const getSourceNames = (s: any) => {
-                if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery')
-                    return s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
-                if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery')
-                    return s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
-                if (s.RawType === 'LoadTextFile')
-                    return s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                return null;
-            };
 
-            const getTargetNames = (s: any) => {
-                if (s.RawType === 'ImportWarehouseData') return `the <strong>${s.Output?.name || 'Warehouse'}</strong>`;
-                if (s.RawType === 'ExportToExcel') return `an <strong>Excel file</strong>`;
-                if (s.RawType === 'SendEmail') return `<strong>Email</strong> recipients`;
-                if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') return `a <strong>Text file</strong>`;
-                return null;
-            };
+        // --- Mermaid Chart ---
 
-            const sources = [...new Set(flow.map(getSourceNames).filter(Boolean))];
-            const targets = [...new Set(flow.map(getTargetNames).filter(Boolean))];
 
-            const hasCalcs = flow.some(s => s.RawType === 'AddColumn' || s.RawType === 'UpdateColumn' || s.RawType === 'CalculateVariable');
-            const hasJoins = flow.some(s => s.RawType === 'JoinTable');
-            const hasConditions = flow.some(s => s.RawType === 'Decision' || s.RawType === 'Branch');
-
-            let parts = [];
-            if (sources.length > 0) parts.push(`extracts data from <strong>${sources.join(', ')}</strong>`);
-            if (hasJoins) parts.push(`combines multiple datasets`);
-            if (hasCalcs) parts.push(`performs business calculations`);
-
-            let targetAction = hasConditions ? "and, based on certain conditions, distributes results to " : "and publishes results to ";
-            if (targets.length > 0) parts.push(`${targetAction}${targets.join(', ')}`);
-
-            if (parts.length === 0) return "This process performs a sequence of data operations.";
-            const narrative = parts.slice(0, -1).join(', ') + (parts.length > 1 ? ' and ' : '') + parts.slice(-1);
-            return `This process ${narrative}.`;
-        };
+        // --- Mermaid Chart ---
+        let flowChartHtml = '';
+        try {
+            // Get simplified or detailed syntax
+            const mermaidSyntax = MermaidGenerator.getRawSyntax(flowData.executionTree, mode);
+            if (mermaidSyntax) {
+                // Initialize Mermaid (Client-Side)
+                // We inject a small script to render this specific block if needed, or rely on global init.
+                // Since this is HTML returned to a container, we need to trigger render or use the <pre class="mermaid"> tag which mermaid auto-scans.
+                // We'll use the .mermaid class div which is standard.
+                flowChartHtml = `
+                    <div class="mt-6 border-t border-slate-200 pt-6">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Process Flow (${mode})</h4>
+                        <div class="mermaid flex justify-center bg-white p-4 rounded-lg border border-slate-100 shadow-inner overflow-x-auto min-h-[150px]">
+                            ${mermaidSyntax}
+                        </div>
+                    </div>
+                `;
+            }
+        } catch (e) {
+            console.error(e);
+        }
 
         const summaryHtml = `
             <div class="p-6 bg-slate-50 border-l-4 border-slate-400 rounded-r-xl shadow-sm">
@@ -122,8 +152,9 @@ export class EtlGenerator {
                     <span class="text-lg">📋</span> Executive Summary
                 </h3>
                 <p class="text-slate-700 text-lg leading-relaxed italic">
-                    "${generateSummary(flowData.executionFlow)}"
+                    "${EtlGenerator.generateSummary(flowData.executionFlow)}"
                 </p>
+                ${flowChartHtml}
             </div>
         `;
 
@@ -174,9 +205,25 @@ export class EtlGenerator {
 
             // --- Details/Table ---
             let detailsHtml = '';
+
+            // --- I/O Flow Section ---
+            if (item.Inputs && item.Inputs.length > 0 || item.Outputs && item.Outputs.length > 0) {
+                const inputs = item.Inputs && item.Inputs.length > 0
+                    ? `<div class="flex flex-col gap-1"><span class="text-[10px] uppercase font-bold text-slate-400">Inputs</span><div class="flex flex-wrap gap-1">${item.Inputs.map((i: string) => ExpressionFormatter.colouriseTextHTML(i, variableSet, tableSet, stepSet)).join('')}</div></div>`
+                    : '';
+                const arrow = (item.Inputs && item.Inputs.length > 0 && item.Outputs && item.Outputs.length > 0)
+                    ? `<div class="text-slate-300 px-2 flex items-center">➔</div>`
+                    : '';
+                const outputs = item.Outputs && item.Outputs.length > 0
+                    ? `<div class="flex flex-col gap-1"><span class="text-[10px] uppercase font-bold text-slate-400">Outputs</span><div class="flex flex-wrap gap-1">${item.Outputs.map((o: string) => ExpressionFormatter.colouriseTextHTML(o, variableSet, tableSet, stepSet)).join('')}</div></div>`
+                    : '';
+
+                detailsHtml += `<div class="mt-2 mb-2 p-2 bg-slate-50 border border-slate-100 rounded flex items-start gap-2">${inputs}${arrow}${outputs}</div>`;
+            }
+
             if (item.Details.length > 0) {
                 detailsHtml += `<ul class="mt-2 space-y-1 pl-4 border-l-2 border-gray-100">` +
-                    item.Details.map((d: string) => `<li class="text-xs text-gray-600">• ${ExpressionFormatter.colouriseTextHTML(d, variableSet, tableSet)}</li>`).join('') +
+                    item.Details.map((d: string) => `<li class="text-xs text-gray-600">• ${ExpressionFormatter.colouriseTextHTML(d, variableSet, tableSet, stepSet)}</li>`).join('') +
                     `</ul>`;
             }
 
@@ -200,9 +247,10 @@ export class EtlGenerator {
             }
 
             // --- New: Exists Logic (Critical Filter) ---
+            // --- New: Exists Logic (Critical Filter) ---
             if (item.ExistsLogic && item.ExistsLogic.length > 0) {
-                const existsRows = item.ExistsLogic.map((logic: string) => `<li class="text-sm text-amber-800 font-mono bg-amber-50 px-2 py-1 rounded border border-amber-200 mb-1">⚠ ${ExpressionFormatter.colouriseTextHTML(logic, variableSet, tableSet)}</li>`).join('');
-                tableHtml += `<div class="mt-3 mb-2"><div class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Advanced Filters</div><ul class="list-none pl-0">${existsRows}</ul></div>`;
+                const existsRows = item.ExistsLogic.map((logic: string) => `<li class="text-sm text-rose-900 font-mono bg-rose-50 px-3 py-2 rounded-md border-l-4 border-rose-500 shadow-sm mb-2 flex items-start gap-2"><span class="text-lg">🌪️</span><div class="flex-1">${ExpressionFormatter.colouriseTextHTML(logic, variableSet, tableSet, stepSet)}</div></li>`).join('');
+                tableHtml += `<div class="mt-4 mb-3"><div class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2 flex items-center gap-2"><span>🛡️</span> Active Filters Applied</div><ul class="list-none pl-0 space-y-2">${existsRows}</ul></div>`;
             }
 
             // --- Render ---

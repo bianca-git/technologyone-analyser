@@ -14,9 +14,11 @@ import {
     AlignmentType,
     ShadingType,
     PageNumber,
-    BorderStyle
+    BorderStyle,
+    ImageRun
 } from 'docx';
 import { EtlParser } from '../parsers/EtlParser';
+import { MermaidGenerator } from './MermaidGenerator';
 
 export class DocxGenerator {
 
@@ -114,10 +116,34 @@ export class DocxGenerator {
         }));
         sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
 
-        // 2. Executive Summary
+        // 2. Executive Summary & Flow Chart
         sections.push(new Paragraph({ children: [this.createText("Executive Summary", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
         sections.push(new Paragraph({ children: [this.createText(this.generateEtlSummary(flowData.executionFlow), { italic: true })], spacing: { after: 300 } }));
 
+        try {
+            const imageBase64 = await MermaidGenerator.getFlowChartImage(flowData.executionTree, mode);
+            if (imageBase64) {
+                // Convert Base64 (data:image/png;base64,...) to Uint8Array/Buffer
+                const res = await fetch(imageBase64);
+                const blob = await res.blob();
+                const buffer = await blob.arrayBuffer();
+
+                sections.push(new Paragraph({
+                    children: [
+                        new ImageRun({
+                            data: buffer,
+                            transformation: { width: 600, height: 300 }, // Default size, aspect ratio is generally preserved but constrained
+                            type: 'png'
+                        })
+                    ],
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 300 }
+                }));
+            }
+        } catch (e) {
+            console.error("Failed to generate DOCX Flow Chart", e);
+            sections.push(new Paragraph({ children: [this.createText("(Flow Chart could not be generated)", { color: "red", italic: true })] }));
+        }
         // 3. Variables & Parameters
         if (flowData.variables.length > 0) {
             sections.push(new Paragraph({ children: [this.createText("Variables & Parameters", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));

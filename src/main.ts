@@ -1,6 +1,7 @@
 import './style.css'
 import { db } from './lib/db';
 import { FileProcessor } from './lib/FileProcessor';
+import { EtlParser } from './lib/parsers/EtlParser';
 import { EtlGenerator } from './lib/generators/EtlGenerator';
 import { DataModelGenerator } from './lib/generators/DataModelGenerator';
 import { DocxGenerator } from './lib/generators/DocxGenerator';
@@ -75,25 +76,32 @@ function formatDate(date: Date) {
 }
 
 function dashboardLayout(items: any[]) {
-  const list = items.map(r => `
+
+  const list = items.map(r => {
+    let summaryText = r.metadata.description;
+    if (r.type === 'report') {
+      try {
+        const flowData = EtlParser.parseSteps(r.rawSteps, 'business');
+        summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
+      } catch (e) {
+        console.error('Failed dashboard summary', e);
+      }
+    }
+
+    return `
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition flex justify-between items-center group relative">
             <div class="cursor-pointer grow" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
                 <div class="flex items-center space-x-2 mb-1">
                     <span class="text-[0.65rem] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded border ${r.type === 'report' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-purple-50 text-purple-700 border-purple-200'}">
                         ${r.type === 'report' ? 'ETL' : 'Data Model'}
                     </span>
-                    ${r.type === 'datamodel' && r.metadata?.processMode ? `
-                        <span class="text-[0.65rem] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded border ${r.metadata.processMode === 'Stored' ? 'bg-cyan-50 text-cyan-700 border-cyan-200' : 'bg-gray-50 text-gray-500 border-gray-200'}">
-                            ${r.metadata.processMode}
-                        </span>
-                    ` : ''}
                     <h3 class="font-bold text-gray-800 group-hover:text-blue-600">${r.metadata.name}</h3>
                 </div>
                 <p class="text-xs text-gray-500">Publisher: ${r.metadata.owner} • Ver: ${r.metadata.version}</p>
-                <p class="text-xs text-gray-400 mt-1 truncate max-w-md">${r.metadata.description}</p>
+                 <p class="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">${summaryText}</p>
             </div>
-             <div class="flex items-center space-x-4">
-                <div class="text-xs text-gray-400">
+             <div class="flex items-center space-x-4 ml-4">
+                <div class="text-xs text-gray-400 whitespace-nowrap">
                     ${formatDate(r.dateAdded)}
                 </div>
                 <button onclick="event.stopPropagation(); window.deleteEntity(${r.id}, '${r.type}')" class="text-gray-300 hover:text-red-500 transition p-1" title="Delete">
@@ -103,7 +111,7 @@ function dashboardLayout(items: any[]) {
                 </button>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 
   return `
     <main class="grow p-6 bg-gray-100 w-full">
@@ -188,7 +196,22 @@ async function render() {
         html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
       }
       const container = document.getElementById('detailContainer');
-      if (container) container.innerHTML = html;
+      if (container) {
+        container.innerHTML = html;
+        // Initialize Mermaid if charts are present
+        if (container.querySelector('.mermaid')) {
+          try {
+            const { MermaidGenerator } = await import('./lib/generators/MermaidGenerator');
+            MermaidGenerator.initialize();
+            const { default: mermaid } = await import('mermaid');
+            await mermaid.run({
+              querySelector: '.mermaid'
+            });
+          } catch (err) {
+            console.error('Failed to render flow chart:', err);
+          }
+        }
+      }
     } catch (e: any) {
       const container = document.getElementById('detailContainer');
       if (container) container.innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded border border-red-200">
