@@ -1,7 +1,7 @@
 import { db } from '../db';
 
 export class DashboardGenerator {
-    static async generateHtmlView(id: number, _viewMode: 'business' | 'technical' = 'business'): Promise<string> {
+    static async generateHtmlView(id: number, _mode: 'business' | 'technical' = 'business'): Promise<string> {
         const dashboard = await db.dashboards.get(id);
         if (!dashboard) throw new Error("Dashboard not found");
 
@@ -19,7 +19,11 @@ export class DashboardGenerator {
             try {
                 const d = new Date(dateStr);
                 if (isNaN(d.getTime())) return dateStr;
-                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                const day = d.getDate();
+                const month = d.toLocaleString('en-US', { month: 'short' });
+                const year = d.getFullYear();
+                const currentYear = new Date().getFullYear();
+                return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
             } catch {
                 return dateStr;
             }
@@ -35,6 +39,19 @@ export class DashboardGenerator {
                 .replace(/'/g, '&#039;');
         };
 
+        const renderTable = (headers: string[], rows: any[]) => {
+            if (!rows || rows.length === 0) return '';
+            const ths = headers.map(h => `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`).join('');
+            const trs = rows.map((r) => {
+                const cells = headers.map((_, i) => {
+                    const val = r[`Col${i + 1}`] || '';
+                    return `<td class="px-4 py-2 text-sm text-gray-700">${val}</td>`;
+                }).join('');
+                return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
+            }).join('');
+            return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3"><table class="w-full divide-y divide-slate-300"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
+        };
+
         // --- Extract Data ---
         const dashDef = content.Dashboard?.EntityDef || {};
         const dashLayout = dashDef.Definition?.Dashboard || {};
@@ -42,85 +59,65 @@ export class DashboardGenerator {
         const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
         const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef || []);
 
-        // --- Build Widget Map ---
         const widgetMap = new Map(visualizations.map((v: any) => [v.GenericEntityId, v]));
+        const displayDate = formatDate(metadata.dateModified || dashboard.dateAdded.toISOString());
 
-        // --- 1. OVERVIEW SECTION ---
-        const buildOverview = () => {
-            const widgetTypes = new Map<string, number>();
-            visualizations.forEach((v: any) => {
-                const type = v.EntitySubType || 'UNKNOWN';
-                widgetTypes.set(type, (widgetTypes.get(type) || 0) + 1);
-            });
-
-            const typeList = Array.from(widgetTypes.entries())
-                .map(([type, count]) => `<li class="text-sm text-gray-700">${type}: <strong>${count}</strong></li>`)
-                .join('');
-
-            return `
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <div class="text-2xl font-bold text-blue-800">${visualizations.length}</div>
-                        <div class="text-xs text-blue-600 uppercase font-semibold">Total Widgets</div>
-                    </div>
-                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                        <div class="text-2xl font-bold text-purple-800">${new Set(visualizations.map((v: any) => v.AttributeString1)).size}</div>
-                        <div class="text-xs text-purple-600 uppercase font-semibold">Data Models</div>
-                    </div>
-                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <div class="text-2xl font-bold text-green-800">${variables.length}</div>
-                        <div class="text-xs text-green-600 uppercase font-semibold">Variables</div>
-                    </div>
-                    <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                        <div class="text-2xl font-bold text-orange-800">${layoutItems.length}</div>
-                        <div class="text-xs text-orange-600 uppercase font-semibold">Layout Items</div>
-                    </div>
+        // --- Metadata Grid ---
+        const metaGrid = `
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4 bg-white border border-gray-200 rounded-lg text-sm shadow-sm">
+                <div>
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Owner</span>
+                    <span class="font-medium text-gray-800">${metadata.owner || dashDef.Owner || '-'}</span>
                 </div>
-                ${typeList ? `<div class="bg-gray-50 p-4 rounded border border-gray-200 mb-8"><div class="font-semibold text-gray-700 mb-2">Widget Breakdown:</div><ul>${typeList}</ul></div>` : ''}
-            `;
-        };
-
-        // --- 2. DASHBOARD METADATA SECTION ---
-        const buildMetadata = () => {
-            return `
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-slate-100 p-2 rounded">ℹ️</span> Dashboard Metadata
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white border border-gray-200 rounded-lg p-6">
-                        <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase">Name</div>
-                            <div class="text-gray-800 font-medium">${escapeHtml(metadata.name || dashDef.Description || 'N/A')}</div>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase">Owner</div>
-                            <div class="text-gray-800 font-medium">${escapeHtml(metadata.owner || dashDef.Owner || 'N/A')}</div>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase">System ID</div>
-                            <div class="font-mono text-sm text-gray-600">${escapeHtml((dashDef.GenericEntityId || 'N/A').substring(0, 12))}...</div>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase">Reporting System</div>
-                            <div class="text-gray-800 font-medium">${escapeHtml(dashDef.ReportingSystem || 'N/A')}</div>
-                        </div>
-                        <div class="md:col-span-2">
-                            <div class="text-xs font-semibold text-gray-500 uppercase">Folder Path</div>
-                            <div class="font-mono text-sm text-gray-600 break-words">${escapeHtml(metadata.parentPath || dashDef.ParentFileItemPath || 'N/A')}</div>
-                        </div>
-                        <div class="md:col-span-2">
-                            <div class="text-xs font-semibold text-gray-500 uppercase">Last Modified</div>
-                            <div class="text-gray-800 font-medium">${formatDate(metadata.dateModified || dashboard.dateAdded.toISOString())}</div>
-                        </div>
-                    </div>
+                <div>
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Folder</span>
+                    <span class="font-medium text-gray-800 text-xs truncate" title="${metadata.parentPath || dashDef.ParentFileItemPath || ''}">${(metadata.parentPath || dashDef.ParentFileItemPath || '-').split('/').pop()}</span>
                 </div>
-            `;
-        };
+                <div class="text-right">
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">System ID</span>
+                    <span class="font-mono text-gray-600 text-xs">${(dashDef.GenericEntityId || '-').substring(0, 12)}...</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Reporting System</span>
+                    <span class="font-medium text-gray-800">${dashDef.ReportingSystem || '-'}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Published Date</span>
+                    <span class="font-medium text-gray-800">${displayDate}</span>
+                </div>
+                <div class="text-right">
+                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Dashboard ID</span>
+                    <span class="font-mono text-gray-500 text-[11px] truncate inline-block" title="${dashDef.GenericEntityId}">${(dashDef.GenericEntityId || 'N/A').substring(0, 12)}</span>
+                </div>
+            </div>
+        `;
 
-        // --- 3. LAYOUT DIAGRAM ---
+        // --- Executive Summary ---
+        const widgetTypes = new Map<string, number>();
+        visualizations.forEach((v: any) => {
+            const type = v.EntitySubType || 'UNKNOWN';
+            widgetTypes.set(type, (widgetTypes.get(type) || 0) + 1);
+        });
+
+        const typeBreakdown = Array.from(widgetTypes.entries())
+            .map(([type, count]) => `${type}: ${count}`)
+            .join(' • ');
+
+        const summaryHtml = `
+            <div class="p-6 bg-slate-50 border-l-4 border-emerald-400 rounded-r-xl shadow-sm">
+                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span class="text-lg">📋</span> Executive Summary
+                </h3>
+                <p class="text-slate-700 text-lg leading-relaxed">
+                    This dashboard contains <strong>${visualizations.length} widgets</strong> (${typeBreakdown}) across <strong>${new Set(visualizations.map((v: any) => v.AttributeString1)).size} data models</strong> to provide business intelligence and reporting capabilities.
+                </p>
+            </div>
+        `;
+
+        // --- Layout Diagram ---
         const buildLayoutDiagram = () => {
             if (layoutItems.length === 0) {
-                return '<p class="text-gray-500 italic bg-gray-50 p-4 rounded">No layout items defined</p>';
+                return '<p class="text-gray-500 italic">No layout items defined</p>';
             }
 
             let maxX = 0, maxY = 0;
@@ -150,7 +147,7 @@ export class DashboardGenerator {
                 }
             });
 
-            let diagram = '<pre class="bg-gray-50 border border-gray-300 rounded p-4 overflow-x-auto text-xs font-mono text-gray-700 mb-4">';
+            let diagram = '<pre class="bg-slate-50 border border-slate-300 rounded p-3 overflow-x-auto text-xs font-mono text-slate-700 mb-4">';
             diagram += '╔' + Array(12).fill('═════════╦').slice(0, -1).join('') + '═════════╗\n';
 
             for (let row = 0; row <= maxRow; row++) {
@@ -171,104 +168,40 @@ export class DashboardGenerator {
             return diagram;
         };
 
-        // --- 4. DETAILED WIDGETS SECTION ---
-        const buildWidgetDetails = () => {
-            if (visualizations.length === 0) {
-                return '<p class="text-gray-500 italic">No widgets in dashboard</p>';
-            }
-
-            let html = '<div class="space-y-6">';
-
-            visualizations.forEach((widget: any, idx: number) => {
-                const typeColor: Record<string, string> = {
-                    'SLICER': 'blue',
-                    'TABLE': 'purple',
-                    'CHART': 'pink',
+        // --- Widget Details Section ---
+        let widgetDetailsHtml = '';
+        if (visualizations.length > 0) {
+            const widgetRows = visualizations.map((v: any) => {
+                const filterCount = this.countFilters(v.AttributeText1);
+                const paramCount = this.countParams(v.AttributeText2);
+                return {
+                    Col1: v.Description || 'Unnamed',
+                    Col2: v.EntitySubType || 'UNKNOWN',
+                    Col3: (v.AttributeString1 || '-').substring(0, 12) + '...',
+                    Col4: v.DatamodelDescription || '-',
+                    Col5: filterCount > 0 ? filterCount.toString() : '-',
+                    Col6: paramCount > 0 ? paramCount.toString() : '-'
                 };
-                const color = typeColor[widget.EntitySubType] || 'gray';
-
-                // Extract criteria
-                const criteria = widget.AttributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue || [];
-                const criteriaList = getList(criteria);
-
-                // Extract parameters
-                const params = widget.AttributeText2?.Parameters?.ParameterField || [];
-                const paramsList = getList(params);
-
-                html += `
-                    <div class="border border-${color}-200 bg-${color}-50 rounded-lg p-4">
-                        <div class="flex items-start justify-between mb-3">
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-800">${escapeHtml(widget.Description || 'Unnamed Widget')}</h3>
-                                <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded bg-${color}-100 text-${color}-800">${widget.EntitySubType || 'UNKNOWN'}</span>
-                            </div>
-                            <div class="text-right text-xs text-gray-500">Widget #${idx + 1}</div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-4">
-                            <div>
-                                <div class="font-semibold text-gray-700">ID</div>
-                                <div class="font-mono text-xs text-gray-600 break-all">${escapeHtml(widget.GenericEntityId?.substring(0, 12) || 'N/A')}...</div>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-700">Data Model</div>
-                                <div class="font-mono text-xs text-gray-600 break-all">${escapeHtml((widget.AttributeString1 || 'N/A').substring(0, 12))}...</div>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-gray-700">Data Model Name</div>
-                                <div class="text-gray-600">${escapeHtml(widget.DatamodelDescription || 'N/A')}</div>
-                            </div>
-                        </div>
-
-                        ${criteriaList.length > 0 ? `
-                            <div class="mb-3 p-3 bg-white rounded border border-gray-200">
-                                <div class="font-semibold text-gray-700 mb-2">Criteria/Filters (${criteriaList.length}):</div>
-                                <ul class="text-sm space-y-1">
-                                    ${criteriaList.map((c: any) => `
-                                        <li class="text-gray-600">
-                                            <strong>${escapeHtml(c.ColumnId || 'N/A')}</strong> 
-                                            ${escapeHtml(c.Operator?.Value || '=')} 
-                                            <span class="font-mono text-xs bg-gray-100 px-1 rounded">${escapeHtml(c.Value1 || 'N/A')}</span>
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                        ` : ''}
-
-                        ${paramsList.length > 0 ? `
-                            <div class="mb-3 p-3 bg-white rounded border border-gray-200">
-                                <div class="font-semibold text-gray-700 mb-2">Parameters (${paramsList.length}):</div>
-                                <ul class="text-sm space-y-1">
-                                    ${paramsList.map((p: any) => `
-                                        <li class="text-gray-600">
-                                            <strong>${escapeHtml(p.FieldName || 'N/A')}</strong> = 
-                                            <span class="font-mono text-xs bg-gray-100 px-1 rounded">${escapeHtml(p.Value || 'N/A')}</span>
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                        ` : ''}
-
-                        ${widget.Owner ? `
-                            <div class="text-xs text-gray-500">
-                                <strong>Owner:</strong> ${escapeHtml(widget.Owner)}
-                                ${widget.OwnerType ? ` (${widget.OwnerType === 'E' ? 'Employee' : widget.OwnerType === 'R' ? 'Role' : widget.OwnerType})` : ''}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
             });
 
-            html += '</div>';
-            return html;
-        };
+            widgetDetailsHtml = `
+                <details open class="group">
+                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-purple-500 text-lg">🎛️</span> Widget Details
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full border border-purple-200">${visualizations.length}</span>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 px-2">
+                        ${renderTable(['Widget Name', 'Type', 'Data Model ID', 'Data Model Name', 'Filters', 'Parameters'], widgetRows)}
+                    </div>
+                </details>
+            `;
+        }
 
-        // --- 5. VARIABLES SECTION ---
-        const buildVariablesSection = () => {
-            if (variables.length === 0) {
-                return '<p class="text-gray-500 italic">No variables defined</p>';
-            }
-
+        // --- Variables Section ---
+        let variablesHtml = '';
+        if (variables.length > 0) {
             const typeMap: Record<string, string> = {
                 'A': 'String',
                 'L': 'Boolean',
@@ -278,127 +211,100 @@ export class DashboardGenerator {
                 'F': 'Float'
             };
 
-            let html = '<div class="space-y-3">';
-            variables.forEach((v: any) => {
-                html += `
-                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
-                        <div class="font-bold text-gray-800">${escapeHtml(v.Name || 'Unnamed')}</div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mt-2">
-                            <div>
-                                <div class="text-xs font-semibold text-gray-600">Type</div>
-                                <div class="text-gray-800">${typeMap[v.VariableType] || v.VariableType || 'N/A'}</div>
-                            </div>
-                            <div>
-                                <div class="text-xs font-semibold text-gray-600">Default Value</div>
-                                <div class="font-mono text-xs text-gray-700">${escapeHtml(v.DefaultValue || 'N/A')}</div>
-                            </div>
-                            <div>
-                                <div class="text-xs font-semibold text-gray-600">List Source</div>
-                                <div class="text-gray-800">${escapeHtml(v.SelectionTypeListType || v.ListType || 'N/A')}</div>
-                            </div>
-                            <div>
-                                <div class="text-xs font-semibold text-gray-600">Description</div>
-                                <div class="text-gray-800">${escapeHtml(v.Description || 'N/A')}</div>
-                            </div>
-                        </div>
+            const varRows = variables.map((v: any) => ({
+                Col1: v.Name || '-',
+                Col2: typeMap[v.VariableType || ''] || v.VariableType || '-',
+                Col3: v.DefaultValue || '-',
+                Col4: v.SelectionTypeListType || v.ListType || '-',
+                Col5: v.Description || '-'
+            }));
+
+            variablesHtml = `
+                <details open class="group">
+                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-green-50 hover:bg-green-100 transition-colors select-none border-t border-b border-green-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-green-600 text-lg">#️⃣</span> Variables
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200">${variables.length}</span>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 px-2">
+                        <p class="text-sm text-slate-600 mb-3">Dashboard-level variables and their definitions:</p>
+                        ${renderTable(['Name', 'Type', 'Default Value', 'List Source', 'Description'], varRows)}
                     </div>
-                `;
+                </details>
+            `;
+        }
+
+        // --- Data Model Dependencies ---
+        const dmIds = new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean));
+        let dependenciesHtml = '';
+        if (dmIds.size > 0) {
+            const dmRows = Array.from(dmIds).map((id: any) => {
+                const dmName = visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription || 'Unknown';
+                const widgetCount = visualizations.filter((v: any) => v.AttributeString1 === id).length;
+                return {
+                    Col1: dmName,
+                    Col2: id.substring(0, 12) + '...',
+                    Col3: `${widgetCount} widget${widgetCount !== 1 ? 's' : ''}`
+                };
             });
-            html += '</div>';
-            return html;
-        };
 
-        // --- 6. DATA MODELS SECTION ---
-        const buildDataModelsSection = () => {
-            const dmIds = new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean));
-            if (dmIds.size === 0) {
-                return '<p class="text-gray-500 italic">No data models referenced</p>';
-            }
-
-            let html = '<div class="space-y-3">';
-            Array.from(dmIds).forEach((dmId: any) => {
-                const dmName = visualizations.find((v: any) => v.AttributeString1 === dmId)?.DatamodelDescription || 'Unknown';
-                const widgetCount = visualizations.filter((v: any) => v.AttributeString1 === dmId).length;
-
-                html += `
-                    <div class="border border-cyan-200 bg-cyan-50 rounded-lg p-4">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="font-bold text-gray-800">${escapeHtml(dmName)}</div>
-                                <div class="font-mono text-xs text-gray-600 mt-1">${escapeHtml(dmId)}</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-sm font-semibold text-cyan-700">${widgetCount} widgets</div>
-                                <div class="text-xs text-cyan-600">reference this DM</div>
-                            </div>
-                        </div>
+            dependenciesHtml = `
+                <details open class="group">
+                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-cyan-50 hover:bg-cyan-100 transition-colors select-none border-t border-b border-cyan-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-cyan-600 text-lg">🔗</span> Data Model Dependencies
+                            <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full border border-cyan-200">${dmIds.size}</span>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 px-2">
+                        <p class="text-sm text-slate-600 mb-3">Data models referenced by widgets in this dashboard:</p>
+                        ${renderTable(['Data Model Name', 'ID', 'Widget Count'], dmRows)}
                     </div>
-                `;
-            });
-            html += '</div>';
-            return html;
-        };
+                </details>
+            `;
+        }
 
-        // --- FINAL OUTPUT ---
+        // --- Final Output ---
         return `
-            <div class="doc-header mb-8">
-                <div class="flex items-center justify-between mb-4">
+            <div class="doc-header">
+                <div class="flex justify-between items-start">
                     <div>
-                        <h1 class="text-4xl font-bold text-gray-900">${escapeHtml(metadata.name || dashDef.Description || 'Dashboard')}</h1>
-                        <p class="text-gray-600 mt-2">Comprehensive dashboard documentation and analysis</p>
+                        <h2 class="text-3xl font-bold text-slate-800 tracking-tight">${escapeHtml(metadata.name || dashDef.Description || 'Dashboard')}</h2>
                     </div>
-                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Dashboard</span>
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-emerald-200">Dashboard</span>
                 </div>
+                ${metaGrid}
             </div>
-
             <div class="doc-body space-y-8">
-                <!-- Overview Stats -->
-                <section>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-blue-100 p-2 rounded">📊</span> Overview
-                    </h2>
-                    ${buildOverview()}
-                </section>
-
-                <!-- Metadata -->
-                <section>
-                    ${buildMetadata()}
-                </section>
+                ${summaryHtml}
 
                 <!-- Layout Diagram -->
-                <section>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-orange-100 p-2 rounded">📐</span> Layout Diagram
-                    </h2>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout Diagram (12-column grid)</h3>
                     ${buildLayoutDiagram()}
-                </section>
+                </div>
 
-                <!-- Widget Details -->
-                <section>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-purple-100 p-2 rounded">🎛️</span> Widget Details (${visualizations.length})
-                    </h2>
-                    ${buildWidgetDetails()}
-                </section>
-
-                <!-- Variables -->
-                ${variables.length > 0 ? `
-                    <section>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="bg-green-100 p-2 rounded">📋</span> Variables (${variables.length})
-                        </h2>
-                        ${buildVariablesSection()}
-                    </section>
-                ` : ''}
-
-                <!-- Data Models -->
-                <section>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-cyan-100 p-2 rounded">🔗</span> Data Models Referenced
-                    </h2>
-                    ${buildDataModelsSection()}
-                </section>
+                ${widgetDetailsHtml}
+                ${variablesHtml}
+                ${dependenciesHtml}
             </div>
         `;
+    }
+
+    private static countFilters(criteriaText: any): number {
+        if (!criteriaText) return 0;
+        const criteria = criteriaText.CriteriaSetItem;
+        if (!criteria) return 0;
+        const values = criteria.CriteriaValues?.CriteriaValue;
+        if (!values) return 0;
+        return Array.isArray(values) ? values.length : 1;
+    }
+
+    private static countParams(paramsText: any): number {
+        if (!paramsText) return 0;
+        const params = paramsText.Parameters?.ParameterField;
+        if (!params) return 0;
+        return Array.isArray(params) ? params.length : 1;
     }
 }
