@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFileLocation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FileLocation>
+    <ProcessId>79c6f76f-5326-4d0e-a06b-29587914b3a0</ProcessId>
+    <Version>1</Version>
+    <Name>USERS FILES</Name>
+    <LocationType>ServerFolder</LocationType>
+    <Description />
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;42c69494-073e-4604-bf67-5ae877ac0298&lt;/DefKey&gt;
+  &lt;ServerFolder Description="User Area"&gt;$USRAREA&lt;/ServerFolder&gt;
+  &lt;SubPath&gt;&lt;/SubPath&gt;
+  &lt;OverrideSuite&gt;&lt;/OverrideSuite&gt;
+  &lt;AllowUpload&gt;true&lt;/AllowUpload&gt;
+&lt;/StorageObject&gt;</Definition>
+    <SourceFileLocation />
+  </FileLocation>
+</ArrayOfFileLocation>

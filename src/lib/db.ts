@@ -41,9 +41,26 @@ export interface DataModel {
     stepNotes?: Record<string, string>; // Map of QueryName/Id -> note text
 }
 
+export interface Dashboard {
+    id?: number;
+    filename: string;
+    metadata: {
+        name: string;
+        id?: string;
+        description?: string;
+        owner?: string;
+        parentPath?: string;
+        dateModified?: string;
+    };
+    content: any; // Holds parsed JSON from all XMLs
+    dateAdded: Date;
+    stepNotes?: Record<string, string>; // Map of widgetId -> note text
+}
+
 export class T1AnalyserDB extends Dexie {
     reports!: Table<Report>;
     dataModels!: Table<DataModel>;
+    dashboards!: Table<Dashboard>;
 
     constructor() {
         super('T1AnalyserDB');
@@ -53,6 +70,10 @@ export class T1AnalyserDB extends Dexie {
         // Version 2: Add dataModels
         this.version(2).stores({
             dataModels: '++id, filename, dateAdded'
+        });
+        // Version 3: Add dashboards
+        this.version(3).stores({
+            dashboards: '++id, filename, dateAdded'
         });
     }
 }

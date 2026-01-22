@@ -6,6 +6,26 @@ import { MermaidGenerator } from './MermaidGenerator';
 
 export class EtlGenerator {
 
+    private static normalizeTableName(name: string): string {
+        return name.trim().toUpperCase().replace(/\s+/g, ' ');
+    }
+
+    private static formatSummaryTable(name: string): string {
+        return `<span class="text-blue-800">${name}</span>`;
+    }
+
+    private static formatSummaryFile(name: string): string {
+        return `<span class="text-green-700">${name}</span>`;
+    }
+
+    private static formatSummaryTarget(name: string): string {
+        return `<span class="text-emerald-700">${name}</span>`;
+    }
+
+    private static formatSummaryAnalyser(name: string): string {
+        return `<span class="text-pink-600">${name}</span>`;
+    }
+
     static generateSummary(flow: any[]) {
         const sources: string[] = [];
         const targets: string[] = [];
@@ -17,10 +37,10 @@ export class EtlGenerator {
             if (s.Inputs && Array.isArray(s.Inputs)) {
                 s.Inputs.forEach((input: string) => {
                     if (input && input !== 'dataset' && input !== 'target' && input !== 'DATA') {
-                        const sourceName = input.trim();
-                        if (sourceName && !sourceNames.has(sourceName)) {
-                            sourceNames.add(sourceName);
-                            sources.push(ExpressionFormatter.formatTable(sourceName));
+                        const sourceKey = EtlGenerator.normalizeTableName(input);
+                        if (sourceKey && !sourceNames.has(sourceKey)) {
+                            sourceNames.add(sourceKey);
+                            sources.push(EtlGenerator.formatSummaryTable(sourceKey));
                         }
                     }
                 });
@@ -29,21 +49,49 @@ export class EtlGenerator {
             // Query-specific sources (more detailed context)
             if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery') {
                 const tableName = s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
-                if (tableName && !sourceNames.has(tableName)) {
-                    sourceNames.add(tableName);
-                    sources.push(ExpressionFormatter.formatTable(tableName));
+                if (tableName) {
+                    const sourceKey = EtlGenerator.normalizeTableName(tableName);
+                    if (!sourceNames.has(sourceKey)) {
+                        sourceNames.add(sourceKey);
+                        sources.push(EtlGenerator.formatSummaryTable(sourceKey));
+                    }
                 }
             } else if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery') {
                 const source = s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
-                if (source && !sourceNames.has(source)) {
-                    sourceNames.add(source);
-                    sources.push(ExpressionFormatter.formatTable(source));
+                if (source) {
+                    const sourceKey = EtlGenerator.normalizeTableName(source);
+                    if (!sourceNames.has(sourceKey)) {
+                        sourceNames.add(sourceKey);
+                        sources.push(EtlGenerator.formatSummaryTable(sourceKey));
+                    }
+                }
+            } else if (s.RawType === 'RunAnalyserQuery' || s.RawType === 'LoadAnalyserData') {
+                // Analyser datasource
+                const analyserName = s.Details.find((d: string) => d.startsWith('Analyser:') || d.startsWith('Source:'))?.split(': ')[1];
+                if (analyserName) {
+                    const sourceKey = EtlGenerator.normalizeTableName(analyserName);
+                    if (!sourceNames.has(sourceKey)) {
+                        sourceNames.add(sourceKey);
+                        sources.push(EtlGenerator.formatSummaryAnalyser(sourceKey));
+                    }
                 }
             } else if (s.RawType === 'LoadTextFile') {
                 const file = s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
                 if (file && !sourceNames.has(file)) {
                     sourceNames.add(file);
-                    sources.push(ExpressionFormatter.formatFile(file));
+                    sources.push(EtlGenerator.formatSummaryFile(file.trim()));
+                }
+            }
+
+            // Check for Analyser type in source metadata
+            if (s.SourceType === 'Analyser') {
+                const analyserName = s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1] || s.Step;
+                if (analyserName) {
+                    const sourceKey = EtlGenerator.normalizeTableName(analyserName);
+                    if (!sourceNames.has(sourceKey)) {
+                        sourceNames.add(sourceKey);
+                        sources.push(EtlGenerator.formatSummaryAnalyser(sourceKey));
+                    }
                 }
             }
 
@@ -53,11 +101,11 @@ export class EtlGenerator {
                 const targetKey = `WAREHOUSE_${warehouse}`;
                 if (!targetNames.has(targetKey)) {
                     targetNames.add(targetKey);
-                    targets.push(`<strong>the ${warehouse}</strong>`);
+                    targets.push(EtlGenerator.formatSummaryTarget(warehouse.trim()));
                 }
             } else if (s.RawType === 'ExportToExcel') {
                 const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                const targetName = filename ? ExpressionFormatter.formatFile(filename) + ` <span>(Excel)</span>` : `an <strong><span class="font-mono">Excel file</span></strong>`;
+                const targetName = filename ? `${EtlGenerator.formatSummaryFile(filename.trim())} (Excel)` : `an Excel file`;
                 const targetKey = `EXCEL_${filename}`;
                 if (!targetNames.has(targetKey)) {
                     targetNames.add(targetKey);
@@ -67,11 +115,11 @@ export class EtlGenerator {
                 const targetKey = 'EMAIL';
                 if (!targetNames.has(targetKey)) {
                     targetNames.add(targetKey);
-                    targets.push(`<strong>Email</strong> recipients`);
+                    targets.push(`<span class="text-amber-700">Email</span> recipients`);
                 }
             } else if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') {
                 const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                const targetName = filename ? ExpressionFormatter.formatFile(filename) + ` <span>(Text file)</span>` : `a <strong>Text file</strong>`;
+                const targetName = filename ? `${EtlGenerator.formatSummaryFile(filename.trim())} (Text file)` : `a Text file`;
                 const targetKey = `TEXT_${filename}`;
                 if (!targetNames.has(targetKey)) {
                     targetNames.add(targetKey);
@@ -81,10 +129,10 @@ export class EtlGenerator {
                 // Extract targets from step Outputs
                 s.Outputs.forEach((output: string) => {
                     if (output && output !== 'dataset' && output !== 'target') {
-                        const targetName = output.trim();
-                        if (targetName && !targetNames.has(targetName)) {
-                            targetNames.add(targetName);
-                            targets.push(ExpressionFormatter.formatTable(targetName));
+                        const targetKey = EtlGenerator.normalizeTableName(output);
+                        if (targetKey && !targetNames.has(targetKey)) {
+                            targetNames.add(targetKey);
+                            targets.push(EtlGenerator.formatSummaryTable(targetKey));
                         }
                     }
                 });
@@ -266,8 +314,8 @@ export class EtlGenerator {
                 <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span class="text-lg">📋</span> Executive Summary
                 </h3>
-                <p class="text-slate-700 text-lg leading-relaxed italic">
-                    "${EtlGenerator.generateSummary(flowData.executionFlow)}"
+                <p class="text-slate-700 text-lg leading-relaxed">
+                    ${EtlGenerator.generateSummary(flowData.executionFlow)}
                 </p>
                 ${flowChartHtml}
             </div>

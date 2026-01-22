@@ -1,0 +1,3204 @@
+{
+  "process": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfProcess": {
+      "Process": {
+        "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+        "Version": 9,
+        "Status": "P",
+        "ProcessType": "$ETL",
+        "Name": "AFRG_I&E_CHART",
+        "Description": "Chart of Accounts Data",
+        "LoggingMode": "D",
+        "ErrorHandling": "N",
+        "Narration": "",
+        "VersionNarration": "Published by BWILKINS on 25-Nov-2025 11:32:47",
+        "BaseVersion": 0,
+        "Category": "",
+        "Owner": "BWILKINS",
+        "ExecuteSuite": "CES",
+        "ParentFileItemPath": "/Data/AFRG/ETLs"
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "steps": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfStep": {
+      "Step": [
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 1,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 21,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "24665714-2b60-405e-b786-28b6b256c4e0",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "F1",
+                "@_Description": "Financials"
+              },
+              "TableName": "GLF_CHART_ACCT",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "f340f21f-2b0b-4123-87c0-e5e1ba40a93c",
+                    "ColumnName": "VERSION",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[VERS]",
+                    "ColumnDataType": "INT",
+                    "Criteria": {
+                      "DefKey": "aad4626f-fafe-4e89-bfa3-ec7348909a36",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "b1609d4b-58a0-496a-8d83-48e05ca17aef",
+                    "ColumnName": "CHART_NAME",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[CHART_NAME]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "5835540f-85bc-43a2-9d2e-007553b2d909",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "f9fe18e9-d7a3-4079-9a5a-e30ec10fc737",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[ACCNBRI]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "f34a52f9-2e42-4e14-bbb8-217895e0f7da",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "e1450df7-33e7-45ab-9733-a6b091e5bdfa",
+                    "ColumnName": "DESCR1",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[DESCR1]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "4b99e1b6-4125-41b7-906c-ee2c926521ea",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "e8dbe950-aec4-46f6-b214-4cb41444ffeb",
+                    "ColumnName": "STAT_IND",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[STAT_IND]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "9160a2ec-4b6f-4410-ad33-87c51e681c05",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "1e3aabe6-39fb-4862-9cd4-cf016136b70d",
+                    "ColumnName": "A1_SERV",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE26_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "3483a1b4-878c-47db-8d63-edbf33341c91",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "2a5b8ce7-68ea-4e46-84d1-407b7b4635c9",
+                    "ColumnName": "A1_STYP",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE27_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "582cac15-e0d8-4a9d-833d-90268d91c24e",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "0a5c32a0-a01d-4aff-b5d2-5bde7b36b295",
+                    "ColumnName": "REP_DET",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE28_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "99b29014-1455-40ad-b513-836cfce2da6f",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "bca08ecf-3ee5-48d5-871f-419748f68b46",
+                    "ColumnName": "REP_SUM",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE29_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "300633f3-416a-488d-a015-d40c2bb12fd7",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "d417c0db-6b58-491a-97c4-f6f005f39e4b",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE38_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "dd7dc463-3ac0-4a54-b587-db9f6d513b41",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "a2aeba0e-4504-44eb-8324-bec0a5fb82a6",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE39_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "57e28a3b-4329-43b1-9102-4f174f8649b2",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "6e0ddfad-b782-4233-a37c-cb6e51a301db",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "5f466dc5-c471-41fc-8f1c-100fc9295541",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "CHART_NAME",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "GLCHART",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "eb75e52f-6c4f-482d-a391-c1f13e466eff",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_CHART_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "f1a293c4-a1fe-4a67-8318-aa36de7ff9f2",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "34046644-0e41-4350-ad17-f8ae45cbeb88",
+                    "ColumnName": "VERSION",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "6f847430-b509-41b8-980c-1f9c6f060296",
+                    "ColumnName": "CHART_NAME",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "8d98f0b0-8791-4173-a09c-d20237975e66",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d8ffb578-3c0c-45de-ad1c-855d58cc6fba",
+                    "ColumnName": "DESCR1",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "29085543-78c0-4375-a647-33d4c7f9d36b",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "03bf66c4-81f6-4a52-bcde-38bfd961520a",
+                    "ColumnName": "A1_SERV",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "7daa585e-c517-477a-b51b-6788ca8cdd41",
+                    "ColumnName": "A1_STYP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d4fcf5b6-0eb3-4016-9ac7-b377fb78fc6f",
+                    "ColumnName": "REP_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "1e944cac-7198-4ae7-9261-deefa0789a0a",
+                    "ColumnName": "REP_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4ab8b6de-8ed0-4f93-9ccd-7aa0a2f465a9",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "b8e2a2d2-682b-42dd-838f-4cde33d99fb9",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 4,
+          "StepType": "AddColumn",
+          "ParentStepId": 21,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "5f30df54-fc39-4e5b-a651-118e93f28ccd",
+              "InputTableName": "TEMP_CHART_RAW",
+              "Columns": {
+                "ColumnItemDef": {
+                  "DefKey": "0db0618e-4091-4672-b922-6d25a3adbb66",
+                  "ColumnName": "ChartAcctType",
+                  "ColumnType": "STR",
+                  "ColumnAction": {
+                    "#text": "CAL",
+                    "@_Description": "Calculate"
+                  },
+                  "Expression": "IIF(RegexIsMatch([ACCNBRI], '^&{13}$'), 'Entity',\nIIF(RegexIsMatch([ACCNBRI], '^&{9}.*&{3}$'), 'Account Classification',\nIIF(RegexIsMatch([ACCNBRI], '^&{6}.*&{4}$'), 'Activity Code',\nIIF(RegexIsMatch([ACCNBRI], '^.*&{7}$'), 'Cost Centre',\nIIF(RegexIsMatch([ACCNBRI], '^&{9}'), 'Natural Account', 'Other')))))",
+                  "ColumnToTotal": "",
+                  "ColumnToRestartOnChange": "",
+                  "DefaultValue": "",
+                  "LookupName": "",
+                  "LookupColumnName": ""
+                }
+              },
+              "Lookups": "",
+              "AddKeyColumn": false,
+              "KeyColumnName": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_CHART_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "f1a293c4-a1fe-4a67-8318-aa36de7ff9f2",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "34046644-0e41-4350-ad17-f8ae45cbeb88",
+                    "ColumnName": "VERSION",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "6f847430-b509-41b8-980c-1f9c6f060296",
+                    "ColumnName": "CHART_NAME",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "8d98f0b0-8791-4173-a09c-d20237975e66",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d8ffb578-3c0c-45de-ad1c-855d58cc6fba",
+                    "ColumnName": "DESCR1",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "29085543-78c0-4375-a647-33d4c7f9d36b",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "03bf66c4-81f6-4a52-bcde-38bfd961520a",
+                    "ColumnName": "A1_SERV",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "7daa585e-c517-477a-b51b-6788ca8cdd41",
+                    "ColumnName": "A1_STYP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d4fcf5b6-0eb3-4016-9ac7-b377fb78fc6f",
+                    "ColumnName": "REP_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "1e944cac-7198-4ae7-9261-deefa0789a0a",
+                    "ColumnName": "REP_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4ab8b6de-8ed0-4f93-9ccd-7aa0a2f465a9",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "b8e2a2d2-682b-42dd-838f-4cde33d99fb9",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "34698471-4819-4e3a-9edb-eb8fd0445200",
+                    "ColumnName": "ChartAcctType",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Add Column",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 5,
+          "StepType": "RunTableQuery",
+          "ParentStepId": 15,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "4585353f-25a7-4e7b-80cc-c43bdb67f895",
+              "InputTableName": "TEMP_CHART_RAW",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "99cb8a68-3b80-4c90-b2fc-062c6bac7423",
+                    "ColumnName": "COSTCEN",
+                    "ColumnSource": "LEFT([ACCNBRI],6)",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "c8201078-626e-4ab8-b2eb-ddeb9cd8c7e0",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "fa265ad1-5f81-4794-8df0-2029c0478cf7",
+                    "ColumnName": "DESCR1",
+                    "ColumnSource": "[DESCR1]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "8cfd25bc-f676-44a8-8558-64c7991426d5",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "35be7b08-9b2d-4dd1-a4d6-93576cd01827",
+                    "ColumnName": "STAT_IND",
+                    "ColumnSource": "[STAT_IND]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "45b77f4a-d279-4cee-9d6e-f13bf298ee2b",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "a4477b5d-a02d-47f6-8d44-53e45912c0d5",
+                    "ColumnName": "A1_SERV",
+                    "ColumnSource": "[A1_SERV]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "2feb14c8-573f-423b-b36b-f6c5b4f0c8c3",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "c564cd89-92c2-40e9-9076-695ced961428",
+                    "ColumnName": "A1_STYP",
+                    "ColumnSource": "[A1_STYP]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "70603a67-8159-4508-8728-903a18e8747f",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "df30b4da-e5ca-4b8d-8be1-eb13b506c1a2",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnSource": "[A1_SGRP]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "f2d16076-413a-41e2-b509-31a3920dd620",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "b0006a5d-4e59-43b8-8434-4a1d802e714c",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnSource": "[BUS_DEPN]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "c1e85754-fb74-4d5b-9ca9-d90a71e4a774",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "9bbf2df9-3376-40c8-9dfc-5bb903a0635b",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnSource": "[ACCNBRI]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "6cad09d7-24a7-47ab-bc5b-b5baa847da29",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "60384e40-d0c9-4b36-94ec-b6f1e0e31511",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "5d712139-ac3d-424b-9003-5d634c5d9e1a",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "ChartAcctType",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "Cost Centre",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "Filter": {
+                "DefKey": "5ca8f76e-d41b-44b4-8132-3aae8abd7154",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "SortItems": "",
+              "DistinctOnly": true,
+              "UseBareColumnsForDisplay": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_COSTCEN_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "fa52e1e6-eeae-46dd-a33e-a4dd3ffe1a8d",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "bbdc8539-3260-42d8-ae36-2cbbe4b6e9e8",
+                    "ColumnName": "COSTCEN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "06eb3702-94b9-49e2-9f58-bb71e6ebe019",
+                    "ColumnName": "DESCR1",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "e0b7a5ab-b334-4ea0-9478-3623d54887aa",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "cb4967d6-352d-4d0f-bad4-1070533dae0d",
+                    "ColumnName": "A1_SERV",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "0e89b8bd-495c-40d5-9e34-ec03dc0e9b9d",
+                    "ColumnName": "A1_STYP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "6a4b7491-6a4c-4101-866b-34c8866dd2d8",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "87b454f1-bea4-4481-913d-b2329212f802",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4a6d023d-2859-45c2-80c8-a74d2818a574",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Cost Centres",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 7,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 22,
+          "Sequence": 5,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "589906bf-c994-4440-8d0d-388b18415c6f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_SELN_CODE",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "bcd78a94-ca8f-4b4d-9697-77cef55114f3",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "77f2da95-0444-4d7b-9466-374ebd1f935d",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "90d93966-f6f4-4021-a04b-fdecef8980ce",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "06086622-0892-4cfd-bed6-f84b165f83e4",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "861ca0eb-62bd-41b7-9510-cc98eb1a8333",
+                    "ColumnName": "DESCR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[FDESCR]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "ad286b25-109a-441a-a3f1-6039e9f76883",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "fc23092e-9631-422a-9141-934f26f9468d",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "0c750973-77f9-4434-8adc-c91778bbbef5",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "A1_SGRP",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "d6808b59-d180-4e52-a7f2-2d00e6e289f0",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_A1_SGRP",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "6a2f462a-ddd4-41e0-9437-64770db21f2e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "48e9d325-f1d0-42c8-9419-2f7cade14051",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "80bd135e-cfb2-4271-80a8-a319e6b8442d",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "56dcead8-381e-40c5-b399-fe820fbaa697",
+                    "ColumnName": "DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query - Selection Codes for A1 Service Group",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 8,
+          "StepType": "RunTableQuery",
+          "ParentStepId": 15,
+          "Sequence": 3,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "4585353f-25a7-4e7b-80cc-c43bdb67f895",
+              "InputTableName": "TEMP_CHART_RAW",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "572b5af4-1185-4c94-ae6d-e325e664c4b7",
+                    "ColumnName": "NATACCT",
+                    "ColumnSource": "Right([ACCNBRI],4)",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "1f1e0adc-351b-4555-b8fb-eafe5e9960e8",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "712c6465-14b6-4fa7-a59a-874cde1ddeaf",
+                    "ColumnName": "DESCR1",
+                    "ColumnSource": "[DESCR1]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "8532bc62-738d-4d65-b87b-5e9ee387ebcc",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "40487bfa-2170-45a9-9b5b-4f1c3fe77af0",
+                    "ColumnName": "STAT_IND",
+                    "ColumnSource": "[STAT_IND]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "4fcc854c-290b-4fc4-84c0-fe6412525667",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "603ddac3-4641-4f7a-ab4d-a0e2e53fcbf5",
+                    "ColumnName": "REP_DET",
+                    "ColumnSource": "[REP_DET]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "3e74f134-0908-4831-989b-eca734783332",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "9520b13a-8f94-4306-8bc6-3089cc647387",
+                    "ColumnName": "REP_SUM",
+                    "ColumnSource": "[REP_SUM]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "b4af4398-51fa-4b49-b76f-504df37d6477",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "a4f987ba-d146-4200-84df-d868a94a4d9d",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnSource": "[ACCNBRI]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "4e4f3008-f278-4f00-ac21-fd2f4b059a90",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "60384e40-d0c9-4b36-94ec-b6f1e0e31511",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "f9d536a3-801e-4dc1-91f5-1c417e541657",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "ChartAcctType",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "Natural Account",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "Filter": {
+                "DefKey": "5ca8f76e-d41b-44b4-8132-3aae8abd7154",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "SortItems": "",
+              "DistinctOnly": true,
+              "UseBareColumnsForDisplay": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_NATACCT_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "fa52e1e6-eeae-46dd-a33e-a4dd3ffe1a8d",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "5e6cf350-ade2-455e-979b-ca685e243e81",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "60f38913-bb7e-418e-b8fc-ab30ff437b5a",
+                    "ColumnName": "DESCR1",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "2e9cc85c-7d63-4cbf-9d5e-bd54eaf9497e",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "bdfeff52-1dd8-475e-96a2-3b2a4498ac43",
+                    "ColumnName": "REP_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "2d478519-e660-459f-a2a0-7fac91c4e4a5",
+                    "ColumnName": "REP_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "35f72373-63e6-4701-9fbc-e36f75118a79",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Natural Accounts",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 9,
+          "StepType": "RunTableQuery",
+          "ParentStepId": 15,
+          "Sequence": 8,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "4585353f-25a7-4e7b-80cc-c43bdb67f895",
+              "InputTableName": "TEMP_CHART_RAW",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "c94f5c97-f6db-4759-9241-8c52fe3db31b",
+                    "ColumnName": "ACTIVITY",
+                    "ColumnSource": "Left(Right([ACCNBRI], 7),3)",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "b44281d3-c6e7-4b27-a815-ab1ff8c6ab7c",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "34f0c2fc-2bf3-41c5-9950-f7ef05617732",
+                    "ColumnName": "DESCR1",
+                    "ColumnSource": "[DESCR1]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "98f08192-be53-4158-ac0d-49c9cab49a35",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "634ce8ee-23df-4bce-bafb-d587f112fbe7",
+                    "ColumnName": "STAT_IND",
+                    "ColumnSource": "[STAT_IND]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "df73b389-b597-4558-88a9-057b90359616",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "c1c8e214-668e-489b-8be6-ae45f070898e",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnSource": "[ACCNBRI]",
+                    "ColumnDataType": "STR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnCriteria": {
+                      "DefKey": "21880989-e825-4f29-a638-2fb61aafd969",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "60384e40-d0c9-4b36-94ec-b6f1e0e31511",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "133e5367-e20b-441b-84e2-8d5f439570fd",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "ChartAcctType",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "Activity Code",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "Filter": {
+                "DefKey": "5ca8f76e-d41b-44b4-8132-3aae8abd7154",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "SortItems": "",
+              "DistinctOnly": true,
+              "UseBareColumnsForDisplay": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_ACTCODES_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "fa52e1e6-eeae-46dd-a33e-a4dd3ffe1a8d",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "2eb822b5-f93c-482d-978f-2c4f949d9840",
+                    "ColumnName": "ACTIVITY",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "f9b53a0f-f2c4-4370-8daf-d8aa85a243a3",
+                    "ColumnName": "DESCR1",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "abf5f575-5b63-4767-b9b7-00bbb5fa105f",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "a62f1985-7e51-490b-a883-9e607b171f92",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Activity Codes",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 11,
+          "StepType": "ImportWarehouseData",
+          "ParentStepId": 0,
+          "Sequence": 4,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "56c3faba-9c3c-4e90-aded-859642b2f4db",
+              "InputTableName": "AFRG_B_COSTCEN_RAW",
+              "SuiteId": {
+                "#text": "CES",
+                "@_Description": "Core Enterprise Suite"
+              },
+              "WarehouseName": {
+                "#text": "AFRG",
+                "@_Description": "Aligned Financial Reporting Governance Data"
+              },
+              "TableName": {
+                "#text": "AFRG_B_COSTCEN_RAW",
+                "@_Description": "Cost Centres"
+              },
+              "ImportOption": {
+                "#text": "IU",
+                "@_Description": "Insert and Update"
+              },
+              "ColumnMapping": {
+                "TableColumnMapping": [
+                  {
+                    "ColumnName": "COSTCEN",
+                    "MappedValue": "[COSTCEN]"
+                  },
+                  {
+                    "ColumnName": "DESCR1",
+                    "MappedValue": "[COSTCEN_DESCR]"
+                  },
+                  {
+                    "ColumnName": "STAT_IND",
+                    "MappedValue": "[STAT_IND]"
+                  },
+                  {
+                    "ColumnName": "A1_SGRP",
+                    "MappedValue": "[A1_SGRP]"
+                  },
+                  {
+                    "ColumnName": "A1_SGRP_DESC",
+                    "MappedValue": "[A1_SGRP_DESCR]"
+                  },
+                  {
+                    "ColumnName": "A1_STYP",
+                    "MappedValue": "[A1_STYP]"
+                  },
+                  {
+                    "ColumnName": "A1_STYPE_DESC",
+                    "MappedValue": "[A1_STYPE_DESCR]"
+                  },
+                  {
+                    "ColumnName": "A1_SERV",
+                    "MappedValue": "[A1_SERV]"
+                  },
+                  {
+                    "ColumnName": "A1_SERV_DESC",
+                    "MappedValue": "[A1_SERV_DESCR3]"
+                  },
+                  {
+                    "ColumnName": "BUS_DEPN",
+                    "MappedValue": "[BUS_DEPN]"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Warehouse Table - Import Cost Centres",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 12,
+          "StepType": "ImportWarehouseData",
+          "ParentStepId": 0,
+          "Sequence": 6,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "f7d59b9c-3723-4010-81bd-ab71760d2f1a",
+              "InputTableName": "AFRG_B_NATACCT_RAW",
+              "SuiteId": {
+                "#text": "CES",
+                "@_Description": "Core Enterprise Suite"
+              },
+              "WarehouseName": {
+                "#text": "AFRG",
+                "@_Description": "Aligned Financial Reporting Governance Data"
+              },
+              "TableName": {
+                "#text": "AFRG_B_NATACCT_RAW",
+                "@_Description": "AFRG_B_NATACCT_RAW"
+              },
+              "ImportOption": {
+                "#text": "IU",
+                "@_Description": "Insert and Update"
+              },
+              "ColumnMapping": {
+                "TableColumnMapping": [
+                  {
+                    "ColumnName": "NATACCT",
+                    "MappedValue": "[NATACCT]"
+                  },
+                  {
+                    "ColumnName": "DESCR1",
+                    "MappedValue": "[NATACCT_DESCR]"
+                  },
+                  {
+                    "ColumnName": "STAT_IND",
+                    "MappedValue": "[STAT_IND]"
+                  },
+                  {
+                    "ColumnName": "REP_SUM",
+                    "MappedValue": "[RPT_SUM]"
+                  },
+                  {
+                    "ColumnName": "RPT_SUM_DESCR",
+                    "MappedValue": "[RPT_SUM_DESCR]"
+                  },
+                  {
+                    "ColumnName": "REP_DET",
+                    "MappedValue": "[RPT_DET]"
+                  },
+                  {
+                    "ColumnName": "RPT_DET_DESCR",
+                    "MappedValue": "[RPT_DET_DESCR]"
+                  },
+                  {
+                    "ColumnName": "RPT_SECTION",
+                    "MappedValue": "[RPT_SECTION]"
+                  },
+                  {
+                    "ColumnName": "RPT_SECTION_DESC",
+                    "MappedValue": "[RPT_SECTION_DESC]"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Warehouse Table - Import Natural Accounts",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 13,
+          "StepType": "ImportWarehouseData",
+          "ParentStepId": 0,
+          "Sequence": 5,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "3d202077-f6f5-4c14-97cb-a606f0249d16",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "InputTableName": "AFRG_B_ACTCODES_RAW",
+              "SuiteId": {
+                "#text": "CES",
+                "@_Description": "Core Enterprise Suite"
+              },
+              "WarehouseName": {
+                "#text": "AFRG",
+                "@_Description": "Aligned Financial Reporting Governance Data"
+              },
+              "TableName": {
+                "#text": "AFRG_B_ACTCODES_RAW",
+                "@_Description": "AFRG_B_ACTCODES_RAW"
+              },
+              "ImportOption": {
+                "#text": "IU",
+                "@_Description": "Insert and Update"
+              },
+              "ColumnMapping": {
+                "TableColumnMapping": [
+                  {
+                    "ColumnName": "ACTIVITY",
+                    "MappedValue": "[ACTIVITY]"
+                  },
+                  {
+                    "ColumnName": "DESCR1",
+                    "MappedValue": "[DESCR1]"
+                  },
+                  {
+                    "ColumnName": "STAT_IND",
+                    "MappedValue": "[STAT_IND]"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Warehouse Table - Import Activity Codes",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 15,
+          "StepType": "Group",
+          "ParentStepId": 0,
+          "Sequence": 3,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "352924b3-41c5-433b-9b9d-46141ede2231",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Prep Chart of Accounts",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 17,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 22,
+          "Sequence": 4,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "589906bf-c994-4440-8d0d-388b18415c6f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_SELN_CODE",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "4f39170e-67b8-405d-9d7c-0e9b8aec2565",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "b33c8028-bd35-413e-9673-9f2ebd1f4b08",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "715380ef-f92d-436f-8c93-76d62e13db70",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "d313c80e-8522-45d7-b4d2-dde5dce3cb58",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "c9187843-6167-4a8f-872e-7cbe25fe98b0",
+                    "ColumnName": "DESCR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[FDESCR]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "1bd5270a-9e1e-482f-91e5-9cf32b7e72b1",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "fc23092e-9631-422a-9141-934f26f9468d",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "4fba5b4e-ece8-43b0-9533-88df4627c105",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "RPT_DET",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "d6808b59-d180-4e52-a7f2-2d00e6e289f0",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_RPT_DET",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "6a2f462a-ddd4-41e0-9437-64770db21f2e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "eb21a908-3f0f-4379-8124-245889f67ee4",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d0a50414-e581-4ec7-8d4d-8bdc3c2ea044",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "92b969cb-c810-4ac2-9eb8-3258db428e86",
+                    "ColumnName": "DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query - Selection Codes for Report Detail",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 18,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 22,
+          "Sequence": 3,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "589906bf-c994-4440-8d0d-388b18415c6f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_SELN_CODE",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "74ddd864-ef28-49a8-bcec-a4775080e834",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "ad118698-14c7-4f58-a5d5-3cfd5d407376",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "b3996206-3383-4184-b0dd-c0319e2ea09e",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "e5a00cd1-511f-417d-a99d-b6b7ee8932b6",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "868a5665-46cd-4b27-b276-f04e82630142",
+                    "ColumnName": "DESCR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[FDESCR]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "75707986-7e9a-4729-9082-81ab45c5269e",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "fc23092e-9631-422a-9141-934f26f9468d",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "d097c56c-7206-428a-8a55-0cc78a8f78de",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "RPT_SUM",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "d6808b59-d180-4e52-a7f2-2d00e6e289f0",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_RPT_SUM",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "6a2f462a-ddd4-41e0-9437-64770db21f2e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "fd868ee5-028f-4bef-a195-b1a1fc20f94d",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "9c04182b-34d9-43e9-b101-61a1aa0dbf31",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "0370c1a8-597f-4bbc-8874-2a56e5969181",
+                    "ColumnName": "DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query - Selection Codes for Report Summary",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 19,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 22,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "589906bf-c994-4440-8d0d-388b18415c6f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_SELN_CODE",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "87c3440a-582a-4039-820c-d7300c00593d",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "667f8fe8-fc9f-4e24-9713-c4d454a0e75f",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "ce672a0b-33c4-4d20-8615-61c0ce41671f",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "bec8e43e-2120-409c-aad9-e479e3383369",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "7abe3c2f-36e9-4e27-adcc-5141ce5456d2",
+                    "ColumnName": "DESCR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[FDESCR]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "7aecc7a5-d3f8-4c10-9609-46a5419a8bb7",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "fc23092e-9631-422a-9141-934f26f9468d",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "bf0c4650-54b2-4f27-acad-e6ee0ab5addf",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "A1_SERV",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "d6808b59-d180-4e52-a7f2-2d00e6e289f0",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_A1_SERV",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "6a2f462a-ddd4-41e0-9437-64770db21f2e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "5e852d54-1780-45b9-8760-094ef604ef62",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "99c73929-00cc-4557-aa42-8eb661277213",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "20b1d071-ce1b-4cc7-8609-44fd256e82d4",
+                    "ColumnName": "DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query - Selection Codes for A1 Service",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 20,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 22,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "589906bf-c994-4440-8d0d-388b18415c6f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_SELN_CODE",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "352e5e06-dd8d-48b6-a313-88cdf9ccc174",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_TYPE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "429a3306-96bb-4b95-88fe-9dc12cfc198b",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "1dd69e90-dff9-40eb-be57-db1b20732572",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[SELN_CODE]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "2d731310-b18a-4eac-aa6f-c7a85d91bf1a",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "ba98c004-ed04-4299-8ac3-286500ef1e8a",
+                    "ColumnName": "DESCR",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[FDESCR]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "bbea9556-67bd-400b-95bd-40ce895559a1",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "fc23092e-9631-422a-9141-934f26f9468d",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "a3216a89-d02a-4fbd-842a-265a3be1f1ef",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELN_TYPE",
+                    "Operator": {
+                      "Value": "OneOf",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "A1_STYPE",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": "",
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DefKey": "d6808b59-d180-4e52-a7f2-2d00e6e289f0",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_A1_STYPE",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "6a2f462a-ddd4-41e0-9437-64770db21f2e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "a80863bb-06fe-496e-931d-625d8769e522",
+                    "ColumnName": "SELN_TYPE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "66679ba5-5282-4b41-8483-297b66440687",
+                    "ColumnName": "SELN_CODE",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d8c6cd3f-ed20-46e8-a9e2-a9e6d6492996",
+                    "ColumnName": "DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query - Selection Codes for A1 Service Type",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 21,
+          "StepType": "Group",
+          "ParentStepId": 0,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "20a3ce5a-dd8d-4668-a6db-f81ca8b46e86",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Chart Of Accounts Extract",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 22,
+          "StepType": "Group",
+          "ParentStepId": 0,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "72cf83f1-16c9-4c34-85ba-8ae9ef5331b9",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Selection Codes",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 23,
+          "StepType": "JoinTable",
+          "ParentStepId": 15,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "68655ef5-348d-4b60-bc99-50abde29c9e8",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "OutputTableName": "AFRG_B_COSTCEN_RAW",
+              "JoinOption": {
+                "#text": "DEFINED",
+                "@_Description": "Define table joins"
+              },
+              "FilterCriteria": {
+                "DefKey": "4f386048-72ec-4b8b-96e7-77d7834e3860",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "InputTables": {
+                "InputTableDef": [
+                  {
+                    "DefKey": "0343d45e-2d26-4a4f-9f7f-4cc9eb5d5128",
+                    "InputTableName": "AFRG_B_COSTCEN_RAW"
+                  },
+                  {
+                    "DefKey": "d78b176f-7d9f-4ff2-9df8-de7de6581246",
+                    "InputTableName": "TEMP_A1_SGRP"
+                  },
+                  {
+                    "DefKey": "de0d9392-67ea-4c25-b860-57dfe36a8816",
+                    "InputTableName": "TEMP_A1_STYPE"
+                  },
+                  {
+                    "DefKey": "2b5cb689-7cf2-4750-a19f-411ed794cb09",
+                    "InputTableName": "TEMP_A1_SERV"
+                  }
+                ]
+              },
+              "Joins": {
+                "JoinItemDef": [
+                  {
+                    "DefKey": "21d3ef4b-ccba-49b6-a384-b1323528ca90",
+                    "JoinTable1": "AFRG_B_COSTCEN_RAW",
+                    "JoinColumn1": {
+                      "#text": "A1_SGRP",
+                      "@_Description": "A1_SGRP"
+                    },
+                    "JoinTable2": "TEMP_A1_SGRP",
+                    "JoinColumn2": {
+                      "#text": "SELN_CODE",
+                      "@_Description": "SELN_CODE"
+                    },
+                    "JoinType": {
+                      "#text": "LEFTOUTER",
+                      "@_Description": "Left Outer"
+                    }
+                  },
+                  {
+                    "DefKey": "fd796e66-0981-494a-8c78-c68534d080a5",
+                    "JoinTable1": "AFRG_B_COSTCEN_RAW",
+                    "JoinColumn1": {
+                      "#text": "A1_STYP",
+                      "@_Description": "A1_STYP"
+                    },
+                    "JoinTable2": "TEMP_A1_STYPE",
+                    "JoinColumn2": {
+                      "#text": "SELN_CODE",
+                      "@_Description": "SELN_CODE"
+                    },
+                    "JoinType": {
+                      "#text": "LEFTOUTER",
+                      "@_Description": "Left Outer"
+                    }
+                  },
+                  {
+                    "DefKey": "870dd58d-a658-485f-9d49-f3b8697648f6",
+                    "JoinTable1": "AFRG_B_COSTCEN_RAW",
+                    "JoinColumn1": {
+                      "#text": "A1_SERV",
+                      "@_Description": "A1_SERV"
+                    },
+                    "JoinTable2": "TEMP_A1_SERV",
+                    "JoinColumn2": {
+                      "#text": "SELN_CODE",
+                      "@_Description": "SELN_CODE"
+                    },
+                    "JoinType": {
+                      "#text": "LEFTOUTER",
+                      "@_Description": "Left Outer"
+                    }
+                  }
+                ]
+              },
+              "ColumnAliases": {
+                "ColumnAliasDef": [
+                  {
+                    "DefKey": "3866ae40-bd11-46b6-a90c-4284c5f8a8dd",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "COSTCEN",
+                    "AliasName": "COSTCEN"
+                  },
+                  {
+                    "DefKey": "8cda46cd-652c-4fa9-b3ab-0ba0bc09bb6d",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "DESCR1",
+                    "AliasName": "COSTCEN_DESCR"
+                  },
+                  {
+                    "DefKey": "42b6b6a5-606c-4c5d-a9d1-5a623867dc26",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "STAT_IND",
+                    "AliasName": "STAT_IND"
+                  },
+                  {
+                    "DefKey": "a6942c3e-43f5-4936-8884-357e2d87ac37",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "A1_SERV",
+                    "AliasName": "A1_SERV"
+                  },
+                  {
+                    "DefKey": "a525ffae-eaca-4b26-9c55-3308eb2ceb5b",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "A1_STYP",
+                    "AliasName": "A1_STYP"
+                  },
+                  {
+                    "DefKey": "bae24ed5-40b9-4500-b9fe-cca4d2bd8486",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "A1_SGRP",
+                    "AliasName": "A1_SGRP"
+                  },
+                  {
+                    "DefKey": "a2b92815-7cee-4348-bdb6-a852b2c45bc2",
+                    "AliasTableName": "AFRG_B_COSTCEN_RAW",
+                    "AliasColumnName": "BUS_DEPN",
+                    "AliasName": "BUS_DEPN"
+                  },
+                  {
+                    "DefKey": "f287401c-fff1-4135-8eed-07bfded36340",
+                    "AliasTableName": "TEMP_A1_SGRP",
+                    "AliasColumnName": "DESCR",
+                    "AliasName": "A1_SGRP_DESCR"
+                  },
+                  {
+                    "DefKey": "2df67226-5b1a-4383-a13f-12b951611719",
+                    "AliasTableName": "TEMP_A1_STYPE",
+                    "AliasColumnName": "DESCR",
+                    "AliasName": "A1_STYPE_DESCR"
+                  },
+                  {
+                    "DefKey": "30536b01-4475-49f3-acd3-dd33168151a0",
+                    "AliasTableName": "TEMP_A1_SERV",
+                    "AliasColumnName": "DESCR",
+                    "AliasName": "A1_SERV_DESCR3"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_COSTCEN_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "ad6cc74b-ee04-4a77-b039-f97c61804e56",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "e5119fc4-beeb-429b-8255-e9204b1af8a8",
+                    "ColumnName": "COSTCEN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4514bb15-b363-4da8-b43f-ac5b10728562",
+                    "ColumnName": "COSTCEN_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "883b838b-8786-4010-a41c-27db461cdd1a",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "ee0667cc-f688-452f-a285-ce4b400863cb",
+                    "ColumnName": "A1_SERV",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "97639762-1544-42ab-a886-864b68ca8cab",
+                    "ColumnName": "A1_STYP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "47aefdb1-c5a1-48a2-914a-a4c6a0e61408",
+                    "ColumnName": "A1_SGRP",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "26a035df-167b-4f52-a002-186f2f95277a",
+                    "ColumnName": "BUS_DEPN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "76b3232e-4df2-492d-aa6b-daf2a9c617a9",
+                    "ColumnName": "A1_SGRP_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "bc5ca9bd-eea6-4b4e-a7e9-551936d8d9e3",
+                    "ColumnName": "A1_STYPE_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d5c194da-ec0a-4187-8f2f-1e2b805a29cb",
+                    "ColumnName": "A1_SERV_DESCR3",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Join Table",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 24,
+          "StepType": "JoinTable",
+          "ParentStepId": 15,
+          "Sequence": 4,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "14ecf309-f7c9-43f1-85ba-631cda7765a9",
+              "OutputTableName": "AFRG_B_NATACCT_RAW",
+              "JoinOption": {
+                "#text": "DEFINED",
+                "@_Description": "Define table joins"
+              },
+              "FilterCriteria": {
+                "DefKey": "dbcf0360-aac5-46bd-9cdd-0919aef1848e",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "InputTables": {
+                "InputTableDef": [
+                  {
+                    "DefKey": "81bedb1b-81d8-4b26-9b34-1b1229db9f04",
+                    "InputTableName": "AFRG_B_NATACCT_RAW"
+                  },
+                  {
+                    "DefKey": "d9a534ad-7d95-4661-8b29-b64379f923be",
+                    "InputTableName": "TEMP_RPT_SUM"
+                  },
+                  {
+                    "DefKey": "675e5732-5647-4bdc-a7a0-fdde518b8dd3",
+                    "InputTableName": "TEMP_RPT_DET"
+                  }
+                ]
+              },
+              "Joins": {
+                "JoinItemDef": [
+                  {
+                    "DefKey": "faa91e4b-eb64-4170-8fcb-1a9dfdcac504",
+                    "JoinTable1": "AFRG_B_NATACCT_RAW",
+                    "JoinColumn1": {
+                      "#text": "REP_SUM",
+                      "@_Description": "REP_SUM"
+                    },
+                    "JoinTable2": "TEMP_RPT_SUM",
+                    "JoinColumn2": {
+                      "#text": "SELN_CODE",
+                      "@_Description": "SELN_CODE"
+                    },
+                    "JoinType": {
+                      "#text": "LEFTOUTER",
+                      "@_Description": "Left Outer"
+                    }
+                  },
+                  {
+                    "DefKey": "dfaf7f34-7bdf-4587-9d74-4c3c9c5739bf",
+                    "JoinTable1": "AFRG_B_NATACCT_RAW",
+                    "JoinColumn1": {
+                      "#text": "REP_DET",
+                      "@_Description": "REP_DET"
+                    },
+                    "JoinTable2": "TEMP_RPT_DET",
+                    "JoinColumn2": {
+                      "#text": "SELN_CODE",
+                      "@_Description": "SELN_CODE"
+                    },
+                    "JoinType": {
+                      "#text": "LEFTOUTER",
+                      "@_Description": "Left Outer"
+                    }
+                  }
+                ]
+              },
+              "ColumnAliases": {
+                "ColumnAliasDef": [
+                  {
+                    "DefKey": "cd565392-27f8-4dec-962f-5f5a23462c35",
+                    "AliasTableName": "AFRG_B_NATACCT_RAW",
+                    "AliasColumnName": "NATACCT",
+                    "AliasName": "NATACCT"
+                  },
+                  {
+                    "DefKey": "86d6a1d9-9922-4620-96d5-f8f3f6e85601",
+                    "AliasTableName": "AFRG_B_NATACCT_RAW",
+                    "AliasColumnName": "DESCR1",
+                    "AliasName": "NATACCT_DESCR"
+                  },
+                  {
+                    "DefKey": "ab5bbe3c-d8c5-4f73-b3d8-af522f04e593",
+                    "AliasTableName": "AFRG_B_NATACCT_RAW",
+                    "AliasColumnName": "STAT_IND",
+                    "AliasName": "STAT_IND"
+                  },
+                  {
+                    "DefKey": "42bd12f4-6ef4-4106-9d4e-c39a9d5ab7d1",
+                    "AliasTableName": "AFRG_B_NATACCT_RAW",
+                    "AliasColumnName": "REP_DET",
+                    "AliasName": "RPT_DET"
+                  },
+                  {
+                    "DefKey": "af5770be-fa23-46c6-9337-ecd8201565d1",
+                    "AliasTableName": "AFRG_B_NATACCT_RAW",
+                    "AliasColumnName": "REP_SUM",
+                    "AliasName": "RPT_SUM"
+                  },
+                  {
+                    "DefKey": "555388d9-1bc6-4e94-8e7d-9944984fdac4",
+                    "AliasTableName": "TEMP_RPT_SUM",
+                    "AliasColumnName": "DESCR",
+                    "AliasName": "RPT_SUM_DESCR"
+                  },
+                  {
+                    "DefKey": "eb552686-64ac-480b-9db8-cad63571b332",
+                    "AliasTableName": "TEMP_RPT_DET",
+                    "AliasColumnName": "DESCR",
+                    "AliasName": "RPT_DET_DESCR"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_NATACCT_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "995904e7-1bb6-420e-bdc0-e6aa0383bab4",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "b9a5d9d6-1b6e-41e4-b0c6-eda02d0d0d1f",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "2c8f1c40-7da5-494a-9cb3-b89c19997f2f",
+                    "ColumnName": "NATACCT_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "67fe1b57-5e7e-4a5e-ad6b-b32ba93b5b8f",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d792e672-10c0-4047-a1d0-72a43b48a42e",
+                    "ColumnName": "RPT_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "bc8f3a57-ca37-40e4-a25b-5aa63ef67081",
+                    "ColumnName": "RPT_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "119f3366-c51c-4dec-9c80-e93817c442a9",
+                    "ColumnName": "RPT_SUM_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "addb3b4a-1ac5-4f1d-baf5-50844a56af5a",
+                    "ColumnName": "RPT_DET_DESCR",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Join Table 1",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 25,
+          "StepType": "AddColumn",
+          "ParentStepId": 15,
+          "Sequence": 5,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "91eb0f30-e9d9-487a-926a-480dec622404",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "InputTableName": "AFRG_B_NATACCT_RAW",
+              "Columns": {
+                "ColumnItemDef": {
+                  "DefKey": "2a53d913-2f3f-4e76-81dd-55034cd85e81",
+                  "ColumnName": "RPT_SECTION",
+                  "ColumnType": "",
+                  "ColumnAction": {
+                    "#text": "CAL",
+                    "@_Description": "Calculate"
+                  },
+                  "Expression": "ToNumber(Left([RPT_SUM], 2))",
+                  "ColumnToTotal": "",
+                  "ColumnToRestartOnChange": "",
+                  "DefaultValue": "",
+                  "LookupName": "",
+                  "LookupColumnName": ""
+                }
+              },
+              "Lookups": "",
+              "AddKeyColumn": false,
+              "KeyColumnName": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_NATACCT_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "f83af1a5-fd94-459a-ab6c-2faad7a9b3ea",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "b9a5d9d6-1b6e-41e4-b0c6-eda02d0d0d1f",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "2c8f1c40-7da5-494a-9cb3-b89c19997f2f",
+                    "ColumnName": "NATACCT_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "67fe1b57-5e7e-4a5e-ad6b-b32ba93b5b8f",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d792e672-10c0-4047-a1d0-72a43b48a42e",
+                    "ColumnName": "RPT_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "bc8f3a57-ca37-40e4-a25b-5aa63ef67081",
+                    "ColumnName": "RPT_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "119f3366-c51c-4dec-9c80-e93817c442a9",
+                    "ColumnName": "RPT_SUM_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "addb3b4a-1ac5-4f1d-baf5-50844a56af5a",
+                    "ColumnName": "RPT_DET_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "a3398530-d78c-454c-9b29-97d979be09a8",
+                    "ColumnName": "RPT_SECTION",
+                    "ColumnType": ""
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Add Report Section",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 26,
+          "StepType": "UpdateColumn",
+          "ParentStepId": 15,
+          "Sequence": 6,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "ExplicitKey": {
+                "#text": "463c1953-1fa8-4506-8c57-7c2cff8d69c0",
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "InputTableName": "AFRG_B_NATACCT_RAW",
+              "Columns": {
+                "ColumnItemDef": {
+                  "DefKey": "2566c6b3-f337-40af-b279-2a31536b9d73",
+                  "ColumnName": "RPT_SECTION",
+                  "ColumnType": "",
+                  "ColumnAction": {
+                    "#text": "CAL",
+                    "@_Description": "Calculate"
+                  },
+                  "Expression": 30,
+                  "ColumnToTotal": "",
+                  "ColumnToRestartOnChange": "",
+                  "ValueNotFoundOption": "D",
+                  "DefaultValue": "",
+                  "LookupName": "",
+                  "LookupColumnName": ""
+                }
+              },
+              "Lookups": "",
+              "FilterCriteria": {
+                "DefKey": "08a11257-b646-4f06-8bd0-106c121bfbb1",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "d73fcdcb-7006-4945-9f91-d24c365be7ab",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "RPT_SECTION",
+                    "Operator": {
+                      "Value": "GreaterThan",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 30,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_NATACCT_RAW",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Update Columns",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "0912deea-77c2-4eb3-a9e5-98a4b3b4f70f",
+          "Version": 9,
+          "StepId": 27,
+          "StepType": "AddColumn",
+          "ParentStepId": 15,
+          "Sequence": 7,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "4891d562-e47e-40f6-81d2-37ce4ed3ce27",
+              "InputTableName": "AFRG_B_NATACCT_RAW",
+              "Columns": {
+                "ColumnItemDef": {
+                  "DefKey": "c3a9435f-54cd-478d-b995-c9450ef3cc3f",
+                  "ColumnName": "RPT_SECTION_DESC",
+                  "ColumnType": "",
+                  "ColumnAction": {
+                    "#text": "CAL",
+                    "@_Description": "Calculate"
+                  },
+                  "Expression": "IIF([RPT_SECTION]=10, 'Operating Income', IIF([RPT_SECTION]=20, 'Operating Expenditure', IIF([RPT_SECTION]=25, 'Net Contribution', IIF([RPT_SECTION]=30, 'Non Operating Income and Expenditure', ''))))",
+                  "ColumnToTotal": "",
+                  "ColumnToRestartOnChange": "",
+                  "DefaultValue": "",
+                  "LookupName": "",
+                  "LookupColumnName": ""
+                }
+              },
+              "Lookups": "",
+              "AddKeyColumn": false,
+              "KeyColumnName": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_NATACCT_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "5601c8b8-5f0f-47d4-8de5-702047dea56e",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "b9a5d9d6-1b6e-41e4-b0c6-eda02d0d0d1f",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "2c8f1c40-7da5-494a-9cb3-b89c19997f2f",
+                    "ColumnName": "NATACCT_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "67fe1b57-5e7e-4a5e-ad6b-b32ba93b5b8f",
+                    "ColumnName": "STAT_IND",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d792e672-10c0-4047-a1d0-72a43b48a42e",
+                    "ColumnName": "RPT_DET",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "bc8f3a57-ca37-40e4-a25b-5aa63ef67081",
+                    "ColumnName": "RPT_SUM",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "119f3366-c51c-4dec-9c80-e93817c442a9",
+                    "ColumnName": "RPT_SUM_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "addb3b4a-1ac5-4f1d-baf5-50844a56af5a",
+                    "ColumnName": "RPT_DET_DESCR",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "a3398530-d78c-454c-9b29-97d979be09a8",
+                    "ColumnName": "RPT_SECTION",
+                    "ColumnType": ""
+                  },
+                  {
+                    "DefKey": "d2de9369-900e-494a-8664-cbd46e8dac68",
+                    "ColumnName": "RPT_SECTION_DESC",
+                    "ColumnType": ""
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Add Report Section Description",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

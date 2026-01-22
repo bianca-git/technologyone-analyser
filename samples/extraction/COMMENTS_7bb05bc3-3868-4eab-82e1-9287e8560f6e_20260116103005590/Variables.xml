@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfC2GenericVariable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <C2GenericVariable>
+    <VariableId>b56843ef-2517-4405-b26d-a6868208cbf3</VariableId>
+    <Version>1</Version>
+    <OwnerId>7bb05bc3-3868-4eab-82e1-9287e8560f6e</OwnerId>
+    <Name>VAR_JSON</Name>
+    <Description>Json</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>[{"Code Type":"A1_SVGP","Code":"ME","Period":5,"Summary Code":"10RS01","Commentary":"Government grants within Mission Enterprises are down -$1.4 million, primarily driven by higher budgeted subsidy rates in Residential Aged Care and slower growth in the Home Care Program.","Ledger":"26ACTLDG"},{"Code Type":"A1_SVGP","Code":"ME","Period":5,"Summary Code":"10RS05","Commentary":"Mission Enterprises +$0.5 million within Aged care reflecting the timing of client income within the Retirement Living stream of Aged Care.","Ledger":"26ACTLDG"},{"Code Type":"A1_SVGP","Code":"ME","Period":5,"Summary Code":"20RS01","Commentary":"Employment Plus -$0.6 million hiring of new staff for new Inclusive Employment Services program; Salvos Stores -$0.6 million mainly for stores transitioned from Corps;","Ledger":"26ACTLDG"},{"Code Type":"A1_SVGP","Code":"ME","Period":5,"Summary Code":"20RS03","Commentary":"Mission Enterprises mainly timing of repairs and maintenance across Aged Care, Housing and setting up new sites within Salvos Stores","Ledger":"26ACTLDG"},{"Code Type":"A1_SVGP","Code":"ME","Period":5,"Summary Code":"20RS08","Commentary":"Mission Enterprises +$0.9 million mainly within Aged care related to timing of software maintenance and minor assets purchases within Residential Aged Care;","Ledger":"26ACTLDG"},{"Code Type":"A1_STYPE","Code":"STOR","Period":5,"Summary Code":"10RS01","Commentary":"Landfill Levy rebates higher than budget, consistent with higher than budget waste costs.  Driven by donation volume.","Ledger":"26ACTLDG"},{"Code Type":"A1_STYPE","Code":"STOR","Period":5,"Summary Code":"10RS02","Commentary":"Stores sales growth not hitting budget assumptions, albeit same store growth on prior year +5.3% YTD.  $1.5m of sales from stores not budgeted, net of stores budgeted but since closed, plus $0.7m upside from eCommerce and wholesale textile excesss, masking an underlying sales miss to budget from established stores.   Starting to see an increase in average unit price</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>1</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;02b53526-ab19-4996-8395-a4b373874e7f&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+</ArrayOfC2GenericVariable>

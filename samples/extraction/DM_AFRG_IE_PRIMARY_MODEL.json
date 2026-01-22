@@ -1,0 +1,4705 @@
+{
+  "DataModel": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "DataModelDef": {
+      "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+      "Description": "AFRG_IE_PRIMARY_MODEL Using Analyser",
+      "Notes": "Summarised Periodic General Ledger Balance by Natural Accounts",
+      "Category": "AFRG Reporting and Analysis",
+      "ParentEntityCode": "",
+      "EntityCode": "F1.LEDGER",
+      "Definition": {
+        "?xml": {
+          "@_version": "1.0",
+          "@_encoding": "utf-8"
+        },
+        "DataModelDefinition": {
+          "DefKey": "8714f675-f38d-4380-acd5-12782eb6f32d",
+          "DetailViews": {
+            "DetailView": {
+              "DetailViewName": "VIEW1",
+              "Description": "View 1",
+              "IsDefault": true,
+              "Columns": {
+                "DetailViewColumnItem": [
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "REPORTINGSUMMARYDESCRIPTION",
+                    "Sequence": 0,
+                    "Description": "Reporting Summary Description",
+                    "Width": 200,
+                    "Format": "General",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "REP_DET_DESC",
+                    "Sequence": 1,
+                    "Description": "Reporting Detail Description",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "GLNATURALACCOUNTCODE",
+                    "Sequence": 2,
+                    "Description": "GL Natural Account Code",
+                    "Width": 200,
+                    "Format": "General",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "ACTUAL",
+                    "Sequence": 3,
+                    "Description": "$Actual",
+                    "Width": 100,
+                    "Format": "#,##0.00;-#,##0.00",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "BUDGET",
+                    "Sequence": 4,
+                    "Description": "$Budget",
+                    "Width": 100,
+                    "Format": "#,##0.00;-#,##0.00",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "VARIANCE",
+                    "Sequence": 5,
+                    "Description": "Variance Actual Vs Budget",
+                    "Width": 100,
+                    "Format": "#,##0.00;-#,##0.00",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "VAR_PERCENTAGE",
+                    "Sequence": 6,
+                    "Description": "%Var (Actual vs Budget)",
+                    "Width": 100,
+                    "Format": "0.0%;-0.0%",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Indexes": "",
+          "ProcessingPreferences": {
+            "DefKey": "070d5d03-1821-4522-bfb2-9a61a12e7d15",
+            "DeleteStorageMethod": "Auto"
+          },
+          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+        }
+      },
+      "ProcessMode": "Stored",
+      "Owner": "MGUPTA",
+      "OwnerType": "",
+      "ReportingSystem": "$DEFAULT",
+      "DataSourceStatus": "Available",
+      "ParentFileItemPath": "/Data/Aligned Financial Reporting & Governance/AFRG Dashboards",
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Queries": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQuery": {
+      "Query": [
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "QueryType": "Run",
+          "Sequence": 1,
+          "Description": "Query to extract periodic balances by Natural Account",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "097214fe-eceb-4c15-a522-d09129566459",
+              "CriteriaValues": {
+                "CriteriaValue": [
+                  {
+                    "DefKey": "b4445b6b-19c8-4b56-8d0a-21f7e61d8000",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "LDGPBAL_BAL_AMT1",
+                    "Operator": {
+                      "Value": "NotEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 0,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  },
+                  {
+                    "DefKey": "5aa8a6d1-d14b-4831-9f7d-d2e73908e0ba",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "LDGPBAL_LDG_NAME",
+                    "Operator": {
+                      "Value": "GreaterThanEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "{&ACT_LDG},{&BUD_LDG}",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                ]
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "777cee80-2984-4078-8a18-a71db2c5a0b9",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": {
+                "SortItem": [
+                  {
+                    "ExplicitKey": {
+                      "#text": "664e9840-0d23-47e4-9719-ee5045afdb98",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "FINANCIALYEAR",
+                      "@_Description": "Financial Year"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "419cd409-98d5-4a71-b7a3-c9d5df786938",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "PERIOD",
+                      "@_Description": "Period"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "d25bbfc1-ce86-46f9-bebe-72b1383e83e2",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "ACCOUNT",
+                      "@_Description": "Account"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 0,
+          "ReplaceNullsWithDefaults": false,
+          "ApplyDistinct": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "QueryType": "Run",
+          "Sequence": 2,
+          "Description": "Extract Natural Accounts from WH; AFRGNaturalAccounts",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "5890eb10-4bad-4262-b793-2e413cbb42bd",
+              "CriteriaValues": {
+                "CriteriaValue": [
+                  {
+                    "DefKey": "6f23287a-82cd-4a8d-9e8a-2164970e241f",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "NA_COA_NaturalAccount",
+                    "Operator": {
+                      "Value": "GreaterThanEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 4000,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  },
+                  {
+                    "DefKey": "c0d152b3-729a-4b6c-b6e9-0d7b604d011e",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "NA_COA_NaturalAccount",
+                    "Operator": {
+                      "Value": "LessThanEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 7999,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                ]
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "e9b772a9-8c9b-43c2-8635-961b3d7debec",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 0,
+          "ReplaceNullsWithDefaults": true,
+          "ApplyDistinct": true
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "QueryType": "Run",
+          "Sequence": 3,
+          "Description": "Extract Cost Centre from WareHouse Table <CostCentres_Raw>",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "a1bac25b-633e-4826-ac0b-2cdd4fec53ff",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "e9b772a9-8c9b-43c2-8635-961b3d7debec",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 10000000,
+          "ReplaceNullsWithDefaults": true,
+          "ApplyDistinct": true
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "QueryType": "Run",
+          "Sequence": 4,
+          "Description": "Extract GL Activity Codes from WH <AFRG_Activities_Raw>",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "e5958853-5bbe-4f9f-bbed-803b17b8ae0d",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "e9b772a9-8c9b-43c2-8635-961b3d7debec",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 0,
+          "ReplaceNullsWithDefaults": true,
+          "ApplyDistinct": true
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "QueryType": "Run",
+          "Sequence": 5,
+          "Description": "Extract Financial Ledger's info from WH<AFRG_ Ledgers_FYs>",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "ae397875-d756-46c7-80e3-e72cf7d43871",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "e9b772a9-8c9b-43c2-8635-961b3d7debec",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 10000000,
+          "ReplaceNullsWithDefaults": true,
+          "ApplyDistinct": true
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "QueryType": "Run",
+          "Sequence": 6,
+          "Description": "PERIOD CALENDAR",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "1d239063-5d4c-49b4-a004-7c334b3ff432",
+              "CriteriaValues": {
+                "CriteriaValue": {
+                  "DefKey": "469075d9-38da-4051-aeb8-ff19f57ce5ed",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "CD_YEAR_NAME",
+                  "Operator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "2023/24",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "AND"
+                }
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "4b0c9d36-1c13-44b4-8b56-5b270a3ece95",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": {
+                "SortItem": {
+                  "ExplicitKey": {
+                    "#text": "75fbb7f7-497c-4e76-9d41-c5579ec05583",
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "SortColumn": {
+                    "#text": "PERIOD",
+                    "@_Description": "Period"
+                  },
+                  "SortOrder": {
+                    "#text": "Asc",
+                    "@_Description": "Ascending"
+                  }
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 10000000,
+          "ReplaceNullsWithDefaults": false,
+          "ApplyDistinct": true
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "QueryType": "Run",
+          "Sequence": 7,
+          "Description": "Reporting Selection Code Description",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "bc7677ca-1986-48cd-a690-b951942c887e",
+              "CriteriaValues": {
+                "CriteriaValue": [
+                  {
+                    "DefKey": "b1a44f6d-5d28-4c19-b4fb-f2126d27c6d3",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SC_SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "RPT_DET",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "OR"
+                  },
+                  {
+                    "DefKey": "539a5e60-b25d-4049-9e07-a3706192e2f3",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SC_SELN_TYPE",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "N_RPTSUM",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "OR"
+                  }
+                ]
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "97df93f6-1014-4573-accf-bbd145e35ebf",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 10000000,
+          "ReplaceNullsWithDefaults": false,
+          "ApplyDistinct": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "QueryType": "Transform",
+          "Sequence": 8,
+          "Description": "Join Reporting Dimensions and Periodic Balances",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "cb35315d-f28a-4818-8bd8-cda1aa44c1cb",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "64cf09c0-72c1-43d7-b255-7895ff4001f1",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": {
+                "SortItem": [
+                  {
+                    "ExplicitKey": {
+                      "#text": "87ef330b-15ab-46bb-ae6e-b34ed3975046",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "FINANCIALYEAR",
+                      "@_Description": "Financial Year"
+                    },
+                    "SortOrder": {
+                      "#text": "Desc",
+                      "@_Description": "Descending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "e9cf19f2-0a2b-4821-8ed4-43050b57aa1d",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "PERIOD",
+                      "@_Description": "Period"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "40abde91-59e2-468d-ae23-c1b83250c69f",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "SELECTIONTYPE29CODE",
+                      "@_Description": "Selection Type 29 Code"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "d9d59d72-8854-41d7-b9a0-50a1798cfda8",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "SELECTIONTYPE28CODE",
+                      "@_Description": "Selection Type 28 Code"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "ab3cc1a7-9760-43fd-87bf-598cf18e53e4",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "GLNATURALACCOUNTCODE",
+                      "@_Description": "GL Natural Account Code"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": false,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 0,
+          "ReplaceNullsWithDefaults": true,
+          "ApplyDistinct": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "QueryType": "Run",
+          "Sequence": 9,
+          "Description": "Query to extract periodic balances by Natural Account",
+          "Notes": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "0675b433-fe57-4458-a617-4e743e16912c",
+              "CriteriaValues": {
+                "CriteriaValue": [
+                  {
+                    "DefKey": "4defb5d5-fb68-4dfb-835b-2ca458431beb",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "PB_F1Lpb_BalanceAmount1",
+                    "Operator": {
+                      "Value": "NotEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 0,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  },
+                  {
+                    "DefKey": "90147817-785f-4d57-b22c-d90d1d7ddef4",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "PB_F1La_LedgerName",
+                    "Operator": {
+                      "Value": "Equals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "{&ACT_LDG}",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                ]
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "ExtendedSql": "",
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "QueryDefinition": {
+              "DefKey": "777cee80-2984-4078-8a18-a71db2c5a0b9",
+              "OptimiseJoins": false,
+              "ConsolidationList": "",
+              "SortList": {
+                "SortItem": [
+                  {
+                    "ExplicitKey": {
+                      "#text": "664e9840-0d23-47e4-9719-ee5045afdb98",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "FINANCIALYEAR",
+                      "@_Description": "Financial Year"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "419cd409-98d5-4a71-b7a3-c9d5df786938",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "PERIOD",
+                      "@_Description": "Period"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  },
+                  {
+                    "ExplicitKey": {
+                      "#text": "d25bbfc1-ce86-46f9-bebe-72b1383e83e2",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "SortColumn": {
+                      "#text": "ACCOUNT",
+                      "@_Description": "Account"
+                    },
+                    "SortOrder": {
+                      "#text": "Asc",
+                      "@_Description": "Ascending"
+                    }
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Suite": "CES",
+          "UseDefaultSuite": false,
+          "IsActive": true,
+          "PageResult": false,
+          "PageSize": 0,
+          "OutputLimit": 0,
+          "ReplaceNullsWithDefaults": false,
+          "ApplyDistinct": false
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryColumns": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryColumn": {
+      "QueryColumn": [
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "CHARTNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Chart Name",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "ChartName",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": false,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "FINANCIALYEAR",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Financial Year",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "FINANCIALYEAR",
+          "Sequence": 1,
+          "Format": "0;-0",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 10,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "Specific",
+          "FillColour": "#2160BF",
+          "TextColour": "#FFFFFF",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "None",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "ColumnName": "PERIOD",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Period",
+          "DataSourceName": "CD",
+          "Category": "Calendar Details",
+          "FieldId": "PERIOD",
+          "Sequence": 1,
+          "Format": "0;-0",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 5,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "PERIOD",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 50,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "None",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "LEDGERNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Ledger Name",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "LDG_NAME",
+          "Sequence": 1,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 8,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "LEDGERNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Ledger Name",
+          "DataSourceName": "PB",
+          "Category": "Account Details",
+          "FieldId": "F1La_LedgerName",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 8,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "ColumnName": "CHARTNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Chart Name",
+          "DataSourceName": "AC_CODES",
+          "Category": "General",
+          "FieldId": "ChartName",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "ColumnName": "FINANCIALYEAR",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Financial Years Created in Calendar",
+          "DataSourceName": "LED_FY",
+          "Category": "General",
+          "FieldId": "FinancialYear",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "CHARTNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Chart Name",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "ChartName",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": false,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "ColumnName": "SELECTIONTYPE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Selection Type",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "SELN_TYPE",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 8,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "ColumnName": "SHORTDESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Short Description",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "DESCR",
+          "Sequence": 2,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 20,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "ColumnName": "PROCESSING_GROUP",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "FSA Processing Group by Year",
+          "DataSourceName": "LED_FY",
+          "Category": "General",
+          "FieldId": "LedgerName",
+          "Sequence": 2,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "FINANCIAL_YEAR",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "Financial Year",
+          "DataSourceName": "",
+          "Category": "General",
+          "FieldId": "",
+          "Sequence": 2,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "'20'+Left([LEDGERNAME],2)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "FINANCIAL_YEAR",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "Financial Year",
+          "DataSourceName": "",
+          "Category": "General",
+          "FieldId": "",
+          "Sequence": 2,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "'20'+Left([LEDGERNAME],2)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "ColumnName": "MONTH",
+          "ColumnType": "Expression",
+          "DataType": "Long",
+          "Description": "Calendar Month",
+          "DataSourceName": "CD",
+          "Category": "Calendar Details",
+          "FieldId": "PERIOD",
+          "Sequence": 2,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 5,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "IIF([PERIOD]>6,[PERIOD]-6,[PERIOD]+6)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "PERIOD",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Period",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "PERIOD",
+          "Sequence": 2,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 50,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "None",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "COST_CENTRE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Cost Centre Code",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "CostCentreCode",
+          "Sequence": 3,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "ColumnName": "DESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Description",
+          "DataSourceName": "CD",
+          "Category": "Calendar Details",
+          "FieldId": "DESCR",
+          "Sequence": 3,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 40,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "CALENDARMONTH",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Calendar Month",
+          "DataSourceName": "PR_CAL",
+          "Category": "General",
+          "FieldId": "MONTH",
+          "Sequence": 3,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 5,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "PERIOD",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Period",
+          "DataSourceName": "PB",
+          "Category": "Period Balance",
+          "FieldId": "F1Lpb_Period",
+          "Sequence": 3,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 2,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "PERIOD",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Period",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "PERIOD",
+          "Sequence": 3,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 5,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "NAT_ACCT",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Natural Account Code",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "NaturalAccount",
+          "Sequence": 3,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "ColumnName": "FYSTARTDATE",
+          "ColumnType": "Display",
+          "DataType": "Date",
+          "Description": "Financial Year Start Date",
+          "DataSourceName": "LED_FY",
+          "Category": "General",
+          "FieldId": "Start_Date",
+          "Sequence": 3,
+          "Format": "dd-MMM-yyyy",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 0,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "ColumnName": "SELECTIONCODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Selection Code",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "SELN_CODE",
+          "Sequence": 3,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 8,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "ColumnName": "DESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Description",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "FDESCR",
+          "Sequence": 4,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 60,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "ACCOUNT",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Account",
+          "DataSourceName": "PB",
+          "Category": "Account Details",
+          "FieldId": "F1La_AccountNumberInternal",
+          "Sequence": 4,
+          "Format": "",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 32,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": true,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "ColumnName": "SHORTDESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Short Description",
+          "DataSourceName": "CD",
+          "Category": "Calendar Details",
+          "FieldId": "SDESCR",
+          "Sequence": 4,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 15,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "ACCOUNT",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Account",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "ACCNBRI",
+          "Sequence": 4,
+          "Format": "",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 32,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": true,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "ACCOUNT",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Account",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "ACCOUNT",
+          "Sequence": 4,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "None",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "ACTUAL",
+          "ColumnType": "Display",
+          "DataType": "Decimal",
+          "Description": "$Actual",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "ACTUAL",
+          "Sequence": 5,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "ACCOUNTBALANCE",
+          "ColumnType": "Display",
+          "DataType": "Decimal",
+          "Description": "Account Balance",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "BAL_AMT1",
+          "Sequence": 5,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 15,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": false,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "ACCOUNTBALANCE",
+          "ColumnType": "Display",
+          "DataType": "Decimal",
+          "Description": "Account Balance",
+          "DataSourceName": "PB",
+          "Category": "Period Balance",
+          "FieldId": "F1Lpb_BalanceAmount1",
+          "Sequence": 5,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 14,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "ColumnName": "ACT_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Activity Description",
+          "DataSourceName": "AC_CODES",
+          "Category": "General",
+          "FieldId": "Description",
+          "Sequence": 5,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "ColumnName": "FYEND_DATE",
+          "ColumnType": "Display",
+          "DataType": "Date",
+          "Description": "Financial Year End Date",
+          "DataSourceName": "LED_FY",
+          "Category": "General",
+          "FieldId": "End_Date",
+          "Sequence": 5,
+          "Format": "dd-MMM-yyyy",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 0,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "NA_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Natural Account Name",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "Description",
+          "Sequence": 5,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "NA_STATUS",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Data Entry Status - Code",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "Status",
+          "Sequence": 6,
+          "Format": "",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "ColumnName": "ACT_STATUS",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Activity Status",
+          "DataSourceName": "AC_CODES",
+          "Category": "General",
+          "FieldId": "Status",
+          "Sequence": 6,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "ACTUAL",
+          "ColumnType": "Expression",
+          "DataType": "Decimal",
+          "Description": "$Actual",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "Actual",
+          "Sequence": 6,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "Specific",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "IIF(InStr([LEDGERNAME], 'ACT')>0,[ACCOUNTBALANCE],0)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "ACTUAL",
+          "ColumnType": "Expression",
+          "DataType": "Decimal",
+          "Description": "$Actual",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "Actual",
+          "Sequence": 6,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "Specific",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "IIF(InStr([LEDGERNAME], 'ACT')>0,[ACCOUNTBALANCE],0)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "CC_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Cost Centre Description",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "Description",
+          "Sequence": 6,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "BUDGET",
+          "ColumnType": "Display",
+          "DataType": "Decimal",
+          "Description": "$Budget",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "BUDGET",
+          "Sequence": 6,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "SELECTIONTYPE26CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode26",
+          "Sequence": 7,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "None",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "VARIANCE",
+          "ColumnType": "Display",
+          "DataType": "Decimal",
+          "Description": "Variance Actual Vs Budget",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "VARIANCE",
+          "Sequence": 7,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "BUDGET",
+          "ColumnType": "Expression",
+          "DataType": "Decimal",
+          "Description": "$Budget",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "Budget",
+          "Sequence": 7,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "IIF(InStr([LEDGERNAME], 'BUD')>0,[ACCOUNTBALANCE],0)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "BUDGET",
+          "ColumnType": "Expression",
+          "DataType": "Decimal",
+          "Description": "$Budget",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "Budget",
+          "Sequence": 7,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "IIF(InStr([LEDGERNAME], 'BUD')>0,[ACCOUNTBALANCE],0)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "ColumnName": "ACT_EXTRACTIONDATE",
+          "ColumnType": "Display",
+          "DataType": "DateTime",
+          "Description": "Activity COA Extraction Date and Time",
+          "DataSourceName": "AC_CODES",
+          "Category": "General",
+          "FieldId": "EXTRACT_DATETIME",
+          "Sequence": 7,
+          "Format": "dd-MMM-yyyy",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 0,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "SELECTIONTYPE28CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Details",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode28",
+          "Sequence": 7,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "SELECTIONTYPE29CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Summary",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode29",
+          "Sequence": 8,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "VAR_PERCENTAGE",
+          "ColumnType": "Expression",
+          "DataType": "Decimal",
+          "Description": "%Var (Actual vs Budget)",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "VAR_PERCENTAGE",
+          "Sequence": 8,
+          "Format": "0.0%;-0.0%",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "Avg",
+          "SummaryType": "None",
+          "Expression": "IIF([BUDGET]<>0,[VARIANCE]/[BUDGET],0)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "SELECTIONTYPE27CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Type",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode27",
+          "Sequence": 8,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "SELECTIONTYPE38CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Group",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode38",
+          "Sequence": 9,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE38CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Group",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE38CODE",
+          "Sequence": 9,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "EXTRACTTION_DATE",
+          "ColumnType": "Display",
+          "DataType": "DateTime",
+          "Description": "Natural Account Chart of Accounts Extraction Date and Time",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "EXTRACT_DATETIME",
+          "Sequence": 9,
+          "Format": "dd-MMM-yyyy",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 0,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Code",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "RS_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Reporting Summary Description",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "FDESCR",
+          "Sequence": 10,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 60,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "COST_CENTRE",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Cost Centre Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "CostCentre",
+          "Sequence": 10,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "None",
+          "Expression": "left([ACCOUNT],6)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "COST_CENTRE",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Cost Centre Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "CostCentre",
+          "Sequence": 10,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "None",
+          "Expression": "left([ACCOUNT],6)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE39CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Department",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE39CODE",
+          "Sequence": 10,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "ColumnName": "SELECTIONTYPE39CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Department",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SelectionCode39",
+          "Sequence": 10,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE27CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Type",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE27CODE",
+          "Sequence": 11,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "ACT_CODE",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Cost Activity Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "ActivityCode",
+          "Sequence": 11,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "",
+          "Expression": "SUBSTRING([ACCOUNT], 7, 3)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "ACT_CODE",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Cost Activity Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "ActivityCode",
+          "Sequence": 11,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "",
+          "Expression": "SUBSTRING([ACCOUNT], 7, 3)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "ColumnName": "SELECTIONTYPE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Selection Type",
+          "DataSourceName": "SC",
+          "Category": "General",
+          "FieldId": "SELN_TYPE",
+          "Sequence": 11,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 8,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "ColumnName": "NAT_ACCT",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Natural Account Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "NaturalAccount",
+          "Sequence": 12,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "None",
+          "Expression": "RIGHT([ACCOUNT],4)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "ColumnName": "NAT_ACCT",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "GL Natural Account Code",
+          "DataSourceName": "LDGPBAL",
+          "Category": "General",
+          "FieldId": "NaturalAccount",
+          "Sequence": 12,
+          "Format": "General",
+          "Alignment": "Center",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "None",
+          "SummaryType": "None",
+          "Expression": "RIGHT([ACCOUNT],4)",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE26CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE26CODE",
+          "Sequence": 12,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE29CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Summary",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE29CODE",
+          "Sequence": 13,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "REPORTINGSUMMARYDESCRIPTION",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "Specific",
+          "FillColour": "#F7F0F0",
+          "TextColour": "#14499A",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "REPORTINGSUMMARYDESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Reporting Summary Description",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "RS_DESC",
+          "Sequence": 14,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 60,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Code",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "SELECTIONTYPE28CODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Details",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "SELECTIONTYPE28CODE",
+          "Sequence": 15,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "REP_DET_DESC",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "REP_DET_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Reporting Detail Description",
+          "DataSourceName": "SC_RED",
+          "Category": "General",
+          "FieldId": "DESCRIPTION",
+          "Sequence": 16,
+          "Format": "",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 60,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "GLCOSTCENTRECODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Cost Centre Code",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "COST_CENTRE",
+          "Sequence": 17,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "GLCOSTCENTREDESCRIPTION",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "GLCOSTCENTREDESCRIPTION",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Cost Centre Description",
+          "DataSourceName": "CC_COA",
+          "Category": "General",
+          "FieldId": "CC_DESC",
+          "Sequence": 18,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": false,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "GLNATURALACCOUNTCODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Natural Account Code",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "NAT_ACCT",
+          "Sequence": 19,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "NATURALACCOUNTNAME",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "NATURALACCOUNTNAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Natural Account Name",
+          "DataSourceName": "NA_COA",
+          "Category": "General",
+          "FieldId": "NA_DESC",
+          "Sequence": 20,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": false,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "GLCOSTACTIVITYCODE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "GL Cost Activity Code",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "ACT_CODE",
+          "Sequence": 21,
+          "Format": "General",
+          "Alignment": "Left",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "ColumnName": "BALANCEEXTRACTIONDATETIME",
+          "ColumnType": "Display",
+          "DataType": "DateTime",
+          "Description": "Balance Extraction DateTime",
+          "DataSourceName": "DS_PBAL",
+          "Category": "General",
+          "FieldId": "EXTRACT_DATETIME",
+          "Sequence": 22,
+          "Format": "dd-MMM-yyyy",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 0,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryJoins": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryJoin": {
+      "QueryJoin": [
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "Sequence": 1,
+          "DataSource1": "DS_PBAL",
+          "Field1": "NAT_ACCT",
+          "DataSource2": "NA_COA",
+          "Field2": "NAT_ACCT",
+          "JoinType": "LeftOuter",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "7659b21a-8e28-41d2-bae7-e021101ee35c",
+                "ColumnId1": {
+                  "Value": "NAT_ACCT",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "NAT_ACCT",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "Sequence": 1,
+          "DataSource1": "NA_COA",
+          "Field1": "SelectionCode29",
+          "DataSource2": "SC",
+          "Field2": "SELN_CODE",
+          "JoinType": "LeftOuter",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": [
+                {
+                  "DefKey": "38ed2a69-fba8-406d-a2db-a376c4f00422",
+                  "ColumnId1": {
+                    "Value": "SelectionCode29",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ColumnId2": {
+                    "Value": "SELN_CODE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "LogicalOperator": {
+                    "Value": "AND",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperatorAndValue": {
+                    "Value": "",
+                    "IsAssigned": false,
+                    "IsNull": true
+                  },
+                  "InheritJoinType": {
+                    "Value": false,
+                    "IsAssigned": false,
+                    "IsNull": false
+                  }
+                },
+                {
+                  "DefKey": "b65ff310-857b-4095-aa6e-3ce93b2a6846",
+                  "ColumnId1": {
+                    "Value": "SelectionCode29",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ColumnId2": {
+                    "Value": "SELN_TYPE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "LogicalOperator": {
+                    "Value": "AND",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperatorAndValue": {
+                    "Value": "N_RPTSUM",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "InheritJoinType": {
+                    "Value": false,
+                    "IsAssigned": false,
+                    "IsNull": false
+                  }
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "Sequence": 2,
+          "DataSource1": "DS_PBAL",
+          "Field1": "COST_CENTRE",
+          "DataSource2": "CC_COA",
+          "Field2": "COST_CENTRE",
+          "JoinType": "LeftOuter",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "820aacad-65e1-4c52-845e-8aed24914c67",
+                "ColumnId1": {
+                  "Value": "COST_CENTRE",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "COST_CENTRE",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "Sequence": 3,
+          "DataSource1": "DS_PBAL",
+          "Field1": "PERIOD",
+          "DataSource2": "PR_CAL",
+          "Field2": "PERIOD",
+          "JoinType": "LeftOuter",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "8d12e449-ba41-4135-a714-63230c672bec",
+                "ColumnId1": {
+                  "Value": "PERIOD",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "PERIOD",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "Sequence": 4,
+          "DataSource1": "NA_COA",
+          "Field1": "SELECTIONTYPE28CODE",
+          "DataSource2": "SC_RED",
+          "Field2": "SELECTIONCODE",
+          "JoinType": "LeftOuter",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": [
+                {
+                  "DefKey": "81a1723c-9152-4cae-80ee-025117c20e92",
+                  "ColumnId1": {
+                    "Value": "SELECTIONTYPE28CODE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ColumnId2": {
+                    "Value": "SELECTIONCODE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "LogicalOperator": {
+                    "Value": "AND",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperatorAndValue": {
+                    "Value": "",
+                    "IsAssigned": false,
+                    "IsNull": true
+                  },
+                  "InheritJoinType": {
+                    "Value": false,
+                    "IsAssigned": false,
+                    "IsNull": false
+                  }
+                },
+                {
+                  "DefKey": "2af0e058-73d3-4f33-85a8-d723f0326e58",
+                  "ColumnId1": {
+                    "Value": "SELECTIONTYPE28CODE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ColumnId2": {
+                    "Value": "SELECTIONTYPE",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "LogicalOperator": {
+                    "Value": "AND",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "ComparisonOperatorAndValue": {
+                    "Value": "RPT_DET",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "InheritJoinType": {
+                    "Value": false,
+                    "IsAssigned": false,
+                    "IsNull": false
+                  }
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryDatasources": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryDatasource": {
+      "QueryDatasource": [
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "COSTCENTRE_COA",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "CC_COA",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG_DATA_WAREHOUSE"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_COSTCENTRES_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "DataSourceId": "753be647-6f54-43a6-a198-c1badf67e259",
+          "DataSourceName": "CC_COA",
+          "DataSourceType": "Query",
+          "AnalyserItemService": "T1.Analytics.Compatibility.Query.QueryAnalyserItemService,T1.Analytics.Compatibility",
+          "AnalyserItemParameters": "T1.Analytics.Compatibility.Query.QueryAnalyserItemParameters,T1.Analytics.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "DataModelId",
+                  "Value": "81a18902-2a36-41ae-9d86-b0191bc5717e"
+                },
+                {
+                  "FieldName": "QueryName",
+                  "Value": "COSTCENTRE_COA"
+                },
+                {
+                  "FieldName": "CurrentQueryName",
+                  "Value": "PBAL_NA_JOIN"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "DataSourceId": "753be647-6f54-43a6-a198-c1badf67e259",
+          "DataSourceName": "DS_PBAL",
+          "DataSourceType": "Query",
+          "AnalyserItemService": "T1.Analytics.Compatibility.Query.QueryAnalyserItemService,T1.Analytics.Compatibility",
+          "AnalyserItemParameters": "T1.Analytics.Compatibility.Query.QueryAnalyserItemParameters,T1.Analytics.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "DataModelId",
+                  "Value": "81a18902-2a36-41ae-9d86-b0191bc5717e"
+                },
+                {
+                  "FieldName": "QueryName",
+                  "Value": "Q1FCTGLPERIOBAL"
+                },
+                {
+                  "FieldName": "CurrentQueryName",
+                  "Value": "PBAL_NA_JOIN"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "DataSourceId": "753be647-6f54-43a6-a198-c1badf67e259",
+          "DataSourceName": "NA_COA",
+          "DataSourceType": "Query",
+          "AnalyserItemService": "T1.Analytics.Compatibility.Query.QueryAnalyserItemService,T1.Analytics.Compatibility",
+          "AnalyserItemParameters": "T1.Analytics.Compatibility.Query.QueryAnalyserItemParameters,T1.Analytics.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "DataModelId",
+                  "Value": "81a18902-2a36-41ae-9d86-b0191bc5717e"
+                },
+                {
+                  "FieldName": "QueryName",
+                  "Value": "QRYNAT_ACCOUNTS"
+                },
+                {
+                  "FieldName": "CurrentQueryName",
+                  "Value": "PBAL_NA_JOIN"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "DataSourceId": "753be647-6f54-43a6-a198-c1badf67e259",
+          "DataSourceName": "PR_CAL",
+          "DataSourceType": "Query",
+          "AnalyserItemService": "T1.Analytics.Compatibility.Query.QueryAnalyserItemService,T1.Analytics.Compatibility",
+          "AnalyserItemParameters": "T1.Analytics.Compatibility.Query.QueryAnalyserItemParameters,T1.Analytics.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "DataModelId",
+                  "Value": "81a18902-2a36-41ae-9d86-b0191bc5717e"
+                },
+                {
+                  "FieldName": "QueryName",
+                  "Value": "PERIOD_CALENDAR"
+                },
+                {
+                  "FieldName": "CurrentQueryName",
+                  "Value": "PBAL_NA_JOIN"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PBAL_NA_JOIN",
+          "DataSourceId": "753be647-6f54-43a6-a198-c1badf67e259",
+          "DataSourceName": "SC_RED",
+          "DataSourceType": "Query",
+          "AnalyserItemService": "T1.Analytics.Compatibility.Query.QueryAnalyserItemService,T1.Analytics.Compatibility",
+          "AnalyserItemParameters": "T1.Analytics.Compatibility.Query.QueryAnalyserItemParameters,T1.Analytics.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "DataModelId",
+                  "Value": "81a18902-2a36-41ae-9d86-b0191bc5717e"
+                },
+                {
+                  "FieldName": "QueryName",
+                  "Value": "SC_REP"
+                },
+                {
+                  "FieldName": "CurrentQueryName",
+                  "Value": "PBAL_NA_JOIN"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "PERIOD_CALENDAR",
+          "DataSourceId": "acc5210a-1d03-4de4-893c-82447b14266a",
+          "DataSourceName": "CD",
+          "DataSourceType": "DirectTable",
+          "AnalyserItemService": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemService,T1.SystemSecurity.Compatibility",
+          "AnalyserItemParameters": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemServiceParameters,T1.SystemSecurity.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "SystemId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "F1CAL_CAL_PERIOD"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "Q1FCTGLPERIOBAL",
+          "DataSourceId": "acc5210a-1d03-4de4-893c-82447b14266a",
+          "DataSourceName": "LDGPBAL",
+          "DataSourceType": "DirectTable",
+          "AnalyserItemService": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemService,T1.SystemSecurity.Compatibility",
+          "AnalyserItemParameters": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemServiceParameters,T1.SystemSecurity.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "SystemId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "GLF_LDG_ACCT_PBAL"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRY9",
+          "DataSourceId": "7e5d697e-f5c0-4e46-9a75-fbf2d917a7bf",
+          "DataSourceName": "PB",
+          "DataSourceType": "Analyser",
+          "AnalyserItemService": "T1.Ledgers.Compatibility.Reporting.PeriodBalancesAnalyserItemService,T1.Ledgers.Compatibility",
+          "AnalyserItemParameters": "T1.Ledgers.Compatibility.Reporting.PeriodBalancesAnalyserItemParameters,T1.Ledgers.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "ChartName",
+                  "Value": "GLCHT"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "EnableCommitmentColumns",
+                  "Value": "N"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "F1.LEDGER",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYACT_CODES",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "AC_CODES",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG_DATA_WAREHOUSE"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_ACTIVITIES_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYFY_LEDGER",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "LED_FY",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG_DATA_WAREHOUSE"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_LEDGER_FYS"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "NA_COA",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG_DATA_WAREHOUSE"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRGNATURALACCOUNTSRAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "QRYNAT_ACCOUNTS",
+          "DataSourceId": "acc5210a-1d03-4de4-893c-82447b14266a",
+          "DataSourceName": "SC",
+          "DataSourceType": "DirectTable",
+          "AnalyserItemService": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemService,T1.SystemSecurity.Compatibility",
+          "AnalyserItemParameters": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemServiceParameters,T1.SystemSecurity.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "SystemId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "GLF_SELN_CODE"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "QueryName": "SC_REP",
+          "DataSourceId": "acc5210a-1d03-4de4-893c-82447b14266a",
+          "DataSourceName": "SC",
+          "DataSourceType": "DirectTable",
+          "AnalyserItemService": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemService,T1.SystemSecurity.Compatibility",
+          "AnalyserItemParameters": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemServiceParameters,T1.SystemSecurity.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "SystemId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "GLF_SELN_CODE"
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "FIN",
+          "IncludeFields": false
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Variables": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfVariableDef": {
+      "VariableDef": [
+        {
+          "VariableId": "09482bed-4531-45c1-8cb1-a032cd42bac1",
+          "Version": 1,
+          "OwnerId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "Name": "ACT_LDG",
+          "Description": "Actual Ledger",
+          "VariableType": "A",
+          "DefaultIsExpression": false,
+          "DefaultValue": "{&CES:F1_ACTUAL_LDG}",
+          "IsDisplayable": true,
+          "IsEditable": true,
+          "IsMandatory": false,
+          "IsUpper": false,
+          "DecimalPlaces": 6,
+          "Sequence": 1,
+          "ListType": "",
+          "StandardCodeListSystemId": "",
+          "StandardCodeListType": "",
+          "SelectionTypeListType": "",
+          "ChartListChartName": "",
+          "ChartListChartComponent": "",
+          "QueryListDatasource": "",
+          "QueryListSuite": "",
+          "QueryListSuiteIsImplicit": false,
+          "QueryListValue": "",
+          "QueryListDescription": "",
+          "QueryListCriteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "44e57a21-8dc9-415e-a278-85f03cbbbffe",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "QueryListParameters": "",
+          "IsMultiPickPicklist": false,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfCustomListItem": {
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "VariableId": "c1b5f690-7459-4c13-8e23-25bf5eff4d0a",
+          "Version": 1,
+          "OwnerId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "Name": "BUD_LDG",
+          "Description": "Budget Ledger",
+          "VariableType": "A",
+          "DefaultIsExpression": false,
+          "DefaultValue": "{&CES:F1_BUDGET_LDG}",
+          "IsDisplayable": true,
+          "IsEditable": true,
+          "IsMandatory": false,
+          "IsUpper": false,
+          "DecimalPlaces": 6,
+          "Sequence": 2,
+          "ListType": "",
+          "StandardCodeListSystemId": "",
+          "StandardCodeListType": "",
+          "SelectionTypeListType": "",
+          "ChartListChartName": "",
+          "ChartListChartComponent": "",
+          "QueryListDatasource": "",
+          "QueryListSuite": "",
+          "QueryListSuiteIsImplicit": false,
+          "QueryListValue": "",
+          "QueryListDescription": "",
+          "QueryListCriteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "8e1191e9-4161-410e-b075-dbcc90e4eb40",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "QueryListParameters": "",
+          "IsMultiPickPicklist": false,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfCustomListItem": {
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "VariableId": "7daadf23-ea97-4d51-ae88-03e66f58046d",
+          "Version": 1,
+          "OwnerId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "Name": "CUR_PER",
+          "Description": "Current Period",
+          "VariableType": "A",
+          "DefaultIsExpression": false,
+          "DefaultValue": "{&CES:F1_CUR_PERIOD}",
+          "IsDisplayable": false,
+          "IsEditable": true,
+          "IsMandatory": false,
+          "IsUpper": false,
+          "DecimalPlaces": 6,
+          "Sequence": 3,
+          "ListType": "",
+          "StandardCodeListSystemId": "",
+          "StandardCodeListType": "",
+          "SelectionTypeListType": "",
+          "ChartListChartName": "",
+          "ChartListChartComponent": "",
+          "QueryListDatasource": "",
+          "QueryListSuite": "",
+          "QueryListSuiteIsImplicit": false,
+          "QueryListValue": "",
+          "QueryListDescription": "",
+          "QueryListCriteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "e06838a3-bef1-422e-b901-20b62e444639",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "QueryListParameters": "",
+          "IsMultiPickPicklist": false,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfCustomListItem": {
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "VariableId": "87ad460d-dd13-4727-8c36-38b91e852582",
+          "Version": 1,
+          "OwnerId": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+          "Name": "HISTORICALFY",
+          "Description": "Scope : Period Balances from (Historical Financial Years)",
+          "VariableType": "N",
+          "DefaultIsExpression": true,
+          "DefaultValue": "({&CES:F1_CURR_YEAR})-2",
+          "IsDisplayable": false,
+          "IsEditable": false,
+          "IsMandatory": false,
+          "IsUpper": false,
+          "DecimalPlaces": 0,
+          "Sequence": 4,
+          "ListType": "",
+          "StandardCodeListSystemId": "",
+          "StandardCodeListType": "",
+          "SelectionTypeListType": "",
+          "ChartListChartName": "",
+          "ChartListChartComponent": "",
+          "QueryListDatasource": "",
+          "QueryListSuite": "",
+          "QueryListSuiteIsImplicit": false,
+          "QueryListValue": "",
+          "QueryListDescription": "",
+          "QueryListCriteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "5cfad726-498f-470b-b5c6-cc621de58d9c",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "QueryListParameters": "",
+          "IsMultiPickPicklist": false,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfCustomListItem": {
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

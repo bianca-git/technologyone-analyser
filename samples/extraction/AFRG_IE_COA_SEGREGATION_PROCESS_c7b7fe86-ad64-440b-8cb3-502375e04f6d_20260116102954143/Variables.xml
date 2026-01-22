@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfC2GenericVariable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <C2GenericVariable>
+    <VariableId>2416f442-b617-4ad8-b2d7-1578524290b5</VariableId>
+    <Version>2</Version>
+    <OwnerId>c7b7fe86-ad64-440b-8cb3-502375e04f6d</OwnerId>
+    <Name>VAR_SELECTIONCODES</Name>
+    <Description>Selection Codes</Description>
+    <VariableType>L</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>A1_SERV,A1_SGRP,A1_STYPE,RPT_DET,RPT_SUM,BUS_DEPT</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>1</Sequence>
+    <ListType>CTM</ListType>
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource>f2d14339-a766-475a-af99-6356f964054d</QueryListDatasource>
+    <QueryListSuite>CES</QueryListSuite>
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;2810f44a-eb4b-43c5-9032-7bcfe7dc12d5&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableAnalyserItemParameters xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;b713b4e7-67ad-41e2-aff8-656003f4fd98&lt;/DefKey&gt;
+  &lt;WarehouseName&gt;AFRG&lt;/WarehouseName&gt;
+  &lt;TableName&gt;AFRG_B_SELN_RAW&lt;/TableName&gt;
+  &lt;SuiteId&gt;&lt;/SuiteId&gt;
+&lt;/TableAnalyserItemParameters&gt;</QueryListParameters>
+    <IsMultiPickPicklist>true</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+</ArrayOfC2GenericVariable>

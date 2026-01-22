@@ -1,0 +1,364 @@
+{
+  "Report": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "MyXLOneHeader": {
+      "ReportId": "0725a29d-1be8-4651-893a-9ef859fa3661",
+      "Title": "Transactions",
+      "Description": "",
+      "Comments": "",
+      "Category": "",
+      "Type": "B",
+      "FileName": "",
+      "SheetName": "Definition",
+      "OwnerType": "U",
+      "UserId": "BWILKINS",
+      "Definition": {
+        "?xml": {
+          "@_version": "1.0",
+          "@_encoding": "utf-8"
+        },
+        "DbReportDef": {
+          "DefKey": "926aa129-cf5f-401e-8350-9eedf8fe4e1e",
+          "Title": {
+            "@_IsAssigned": "false"
+          },
+          "ReportSuite": "CES",
+          "Description": {
+            "@_IsAssigned": "false"
+          },
+          "LongDescription": {
+            "@_IsAssigned": "false"
+          },
+          "ReportCategory": {
+            "@_IsAssigned": "false"
+          },
+          "WorkbookName": {
+            "@_IsAssigned": "false"
+          },
+          "WorksheetName": {
+            "@_IsAssigned": "false"
+          },
+          "Orientation": {
+            "@_IsAssigned": "false"
+          },
+          "OverrideTitle": {
+            "@_IsAssigned": "false"
+          },
+          "TitleColour": {
+            "@_IsAssigned": "false"
+          },
+          "OutputType": {
+            "@_IsAssigned": "false"
+          },
+          "ProtectSheets": {
+            "@_IsAssigned": "false"
+          },
+          "SheetProtectionPassword": {
+            "@_IsAssigned": "false"
+          },
+          "ProtectWorkbook": {
+            "@_IsAssigned": "false"
+          },
+          "ProtectionPassword": {
+            "@_IsAssigned": "false"
+          },
+          "ProtectStructure": {
+            "@_IsAssigned": "false"
+          },
+          "ProtectWindows": {
+            "@_IsAssigned": "false"
+          },
+          "FileOpenPassword": {
+            "@_IsAssigned": "false"
+          },
+          "FileModifyPassword": {
+            "@_IsAssigned": "false"
+          },
+          "FileReadonlyRecommended": {
+            "@_IsAssigned": "false"
+          },
+          "LayoutType": "Simple",
+          "Datasource": {
+            "@_IsAssigned": "false"
+          },
+          "DatasourceParameters": {
+            "@_IsAssigned": "false"
+          },
+          "Criteria": {
+            "@_IsAssigned": "false"
+          },
+          "AllowRuntimeCriteria": true,
+          "ShowAllCriteriaFields": true,
+          "SelectedCriteriaFields": "",
+          "UseColumnDefinitionCriteria": {
+            "@_IsAssigned": "false"
+          },
+          "Variables": "",
+          "Columns": "",
+          "ConsolidationField": {
+            "@_IsAssigned": "false"
+          },
+          "ConsolidationDescriptionField": {
+            "@_IsAssigned": "false"
+          },
+          "ConsolidationFormatType": {
+            "@_IsAssigned": "false"
+          },
+          "AllowRuntimeGrouping": {
+            "@_IsAssigned": "false"
+          },
+          "ShowAllFieldsForGrouping": true,
+          "RuntimeGroupingFields": "",
+          "GroupByField1": {
+            "@_IsAssigned": "false"
+          },
+          "GroupByField2": {
+            "@_IsAssigned": "false"
+          },
+          "GroupByField3": {
+            "@_IsAssigned": "false"
+          },
+          "ShowSubtotals": {
+            "@_IsAssigned": "false"
+          },
+          "ShowSubtotalsAtTop": {
+            "@_IsAssigned": "false"
+          },
+          "ShowGroupBy1Subtotal": {
+            "@_IsAssigned": "false"
+          },
+          "ShowGroupBy2Subtotal": {
+            "@_IsAssigned": "false"
+          },
+          "ShowGroupBy3Subtotal": {
+            "@_IsAssigned": "false"
+          },
+          "ShowGroupByField": true,
+          "GroupHeaderFormat": "CD",
+          "GroupSubtotalLabel": "Sub Total",
+          "GroupSubtotalFormat": "NA",
+          "ShowGroupingOutlines": {
+            "@_IsAssigned": "false"
+          },
+          "ShowGrandTotal": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortField1": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortOrder1": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortField2": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortOrder2": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortField3": {
+            "@_IsAssigned": "false"
+          },
+          "DefaultSortOrder3": {
+            "@_IsAssigned": "false"
+          },
+          "ApplyFactor": {
+            "@_IsAssigned": "false"
+          },
+          "FactorAmount": {
+            "@_IsAssigned": "false"
+          },
+          "FactorByAmount": {
+            "@_IsAssigned": "false"
+          },
+          "FactorIsColumnSelection": {
+            "@_IsAssigned": "false"
+          },
+          "FactorColumnSelection": {
+            "@_IsAssigned": "false"
+          },
+          "ApplySign": {
+            "@_IsAssigned": "false"
+          },
+          "SignType": {
+            "@_IsAssigned": "false"
+          },
+          "ColumnSelection": {
+            "@_IsAssigned": "false"
+          },
+          "IsSelectedColumns": {
+            "@_IsAssigned": "false"
+          },
+          "IsDrilldownEnabled": {
+            "@_IsAssigned": "false"
+          },
+          "DrilldownColumn1": {
+            "@_IsAssigned": "false"
+          },
+          "DrilldownColumn2": {
+            "@_IsAssigned": "false"
+          },
+          "DrilldownColumn3": {
+            "@_IsAssigned": "false"
+          },
+          "IsDetailedDrilldownEnabled": {
+            "@_IsAssigned": "false"
+          },
+          "DetailDrilldown": {
+            "@_IsAssigned": "false"
+          },
+          "DetailedDrilldowns": "",
+          "CrosstabColumnsEnabled": {
+            "@_IsAssigned": "false"
+          },
+          "CrosstabHeaderFormat": "CD",
+          "CrosstabDefinitionField": {
+            "@_IsAssigned": "false"
+          },
+          "CrosstabDefinitionDescriptionField": {
+            "@_IsAssigned": "false"
+          },
+          "CrosstabCriteria": {
+            "DefKey": "c9883ab7-27dd-4add-bda5-c62c7e9b63bb",
+            "CriteriaValues": "",
+            "SetName": {
+              "@_IsAssigned": "false"
+            },
+            "Link": "AND",
+            "NestedSets": ""
+          },
+          "DestinationType": {
+            "@_IsAssigned": "false"
+          },
+          "AllowDestinationChange": {
+            "@_IsAssigned": "false"
+          },
+          "GroupingLevels": "",
+          "WorkbookGenerationType": {
+            "@_IsAssigned": "false"
+          },
+          "DestinationWorkbookName": {
+            "@_IsAssigned": "false"
+          },
+          "GenerateBlankWorkbooks": {
+            "@_IsAssigned": "false"
+          },
+          "DestinationSheetName": {
+            "@_IsAssigned": "false"
+          },
+          "SendEmail": {
+            "@_IsAssigned": "false"
+          },
+          "EmailGenerationType": {
+            "@_IsAssigned": "false"
+          },
+          "EmailToAddress": {
+            "@_IsAssigned": "false"
+          },
+          "EmailCcAddress": {
+            "@_IsAssigned": "false"
+          },
+          "EmailSubject": {
+            "@_IsAssigned": "false"
+          },
+          "EmailMessage": {
+            "@_IsAssigned": "false"
+          },
+          "EmailAttachReports": {
+            "@_IsAssigned": "false"
+          },
+          "SaveToFolder": {
+            "@_IsAssigned": "false"
+          },
+          "FolderGenerationType": {
+            "@_IsAssigned": "false"
+          },
+          "FolderType": {
+            "@_IsAssigned": "false"
+          },
+          "ServerFolderSuite": {
+            "@_IsAssigned": "false"
+          },
+          "ServerFolderCode": {
+            "@_IsAssigned": "false"
+          },
+          "SubFolder": {
+            "@_IsAssigned": "false"
+          },
+          "ClearExistingContents": {
+            "@_IsAssigned": "false"
+          },
+          "SendToMyReports": {
+            "@_IsAssigned": "false"
+          },
+          "MyReportsUsers": {
+            "@_IsAssigned": "false"
+          },
+          "MyReportsDescription": {
+            "@_IsAssigned": "false"
+          },
+          "MyReportsCategory": {
+            "@_IsAssigned": "false"
+          },
+          "MyReportsDate": {
+            "@_IsAssigned": "false"
+          },
+          "SendToReportsDxp": {
+            "@_IsAssigned": "false"
+          },
+          "CopyToDxpStorage": {
+            "@_IsAssigned": "false"
+          },
+          "DxpFolderCode": {
+            "@_IsAssigned": "false"
+          },
+          "DxpReportCode": {
+            "@_IsAssigned": "false"
+          },
+          "DxpReportTitle": {
+            "@_IsAssigned": "false"
+          },
+          "DxpReportDate": {
+            "@_IsAssigned": "false"
+          },
+          "DisplayGridlines": {
+            "@_IsAssigned": "false"
+          },
+          "DisplayPageBreaks": {
+            "@_IsAssigned": "false"
+          },
+          "CollapseGroups": {
+            "@_IsAssigned": "false"
+          },
+          "DisplayHeadings": true,
+          "DisplayWorkbookTabs": true,
+          "CustomProcessingType": {
+            "@_IsAssigned": "false"
+          },
+          "CustomProcessingParameters": {
+            "@_IsAssigned": "false"
+          },
+          "HasUpdatedSubtotalConfig": false,
+          "HasUpdatedFactorStringConfig": false,
+          "HideTitle": false,
+          "IsForDrilldown": false,
+          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+        }
+      },
+      "IntegrationDefinition": {},
+      "Datasource": "7f09c258-8b0e-40a8-851d-9d49c0ba6215",
+      "ReportingSystem": "$DEFAULT",
+      "ParentFileItemPath": "/Home/BWILKINS",
+      "ReportStorageType": "A",
+      "ReportServerFolderSuite": "",
+      "ReportServerFolder": "",
+      "ReportServerFile": "",
+      "Vers": 0,
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

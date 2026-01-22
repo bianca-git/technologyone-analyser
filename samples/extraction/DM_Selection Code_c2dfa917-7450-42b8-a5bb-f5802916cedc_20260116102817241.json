@@ -1,0 +1,233 @@
+{
+  "DataModel": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "DataModelDef": {
+      "DataModelId": "c2dfa917-7450-42b8-a5bb-f5802916cedc",
+      "Description": "Selection Code",
+      "Notes": "",
+      "Category": "",
+      "ParentEntityCode": "",
+      "EntityCode": "",
+      "Definition": {},
+      "ProcessMode": "Stored",
+      "Owner": "MGUPTA",
+      "OwnerType": "",
+      "ReportingSystem": "$DEFAULT",
+      "DataSourceStatus": "Available",
+      "ParentFileItemPath": "/Data/AFRG/Datamodels/DataModelsMG",
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Queries": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQuery": {
+      "Query": {
+        "DataModelId": "c2dfa917-7450-42b8-a5bb-f5802916cedc",
+        "QueryName": "QRY1",
+        "QueryType": "Run",
+        "Sequence": 1,
+        "Description": "Selection Code",
+        "Notes": "",
+        "Criteria": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "CriteriaSetItem": {
+            "DefKey": "510a829f-3686-4af4-a91e-195221288bd4",
+            "CriteriaValues": {
+              "CriteriaValue": {
+                "DefKey": "1d5a9a2c-0373-44c5-8ae0-96997e06ce82",
+                "ColumnPrefix": {
+                  "@_IsAssigned": "false"
+                },
+                "ColumnId": "SC_SELN_TYPE",
+                "Operator": {
+                  "Value": "OneOf",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "MetaOperatorText": {
+                  "@_IsAssigned": "false"
+                },
+                "Value1": "A1_SGRP,A1_STYPE,A1_SERV",
+                "Value2": "",
+                "CriteriaValue1ColumnId": {
+                  "@_IsAssigned": "false"
+                },
+                "CriteriaValue2ColumnId": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND"
+              }
+            },
+            "SetName": {
+              "@_IsAssigned": "false"
+            },
+            "Link": "AND",
+            "NestedSets": "",
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "ExtendedSql": "",
+        "Definition": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "QueryDefinition": {
+            "DefKey": "f328c5fa-64f9-4183-8a67-56ac1722274e",
+            "OptimiseJoins": false,
+            "ConsolidationList": {
+              "ConsolidationItem": {
+                "ExplicitKey": {
+                  "#text": "14b705bd-0c9f-41b1-82ee-39c9d432dd2e",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "ColumnName": {
+                  "#text": "BUSINESS_AREASEL",
+                  "@_Description": "Business Area Selection"
+                }
+              }
+            },
+            "SortList": "",
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "Suite": "CES",
+        "UseDefaultSuite": false,
+        "IsActive": true,
+        "PageResult": false,
+        "PageSize": 0,
+        "OutputLimit": 10000000,
+        "ReplaceNullsWithDefaults": false,
+        "ApplyDistinct": false
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryColumns": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryColumn": {
+      "QueryColumn": {
+        "DataModelId": "c2dfa917-7450-42b8-a5bb-f5802916cedc",
+        "QueryName": "QRY1",
+        "ColumnName": "BUSINESS_AREASEL",
+        "ColumnType": "Display",
+        "DataType": "String",
+        "Description": "Business Area Selection",
+        "DataSourceName": "SC",
+        "Category": "General",
+        "FieldId": "SELN_TYPE",
+        "Sequence": 2,
+        "Format": "",
+        "Alignment": "",
+        "ColumnIndex": 0,
+        "MaxLength": 8,
+        "DecimalPlaces": 0,
+        "DescriptionColumnName": "",
+        "DescriptionColumnFormat": "",
+        "ColourSourceType": "",
+        "FillColour": "",
+        "TextColour": "",
+        "FillColourColumnName": "",
+        "TextColourColumnName": "",
+        "Definition": {},
+        "Width": 200,
+        "IsVisible": true,
+        "IsFrozen": false,
+        "IsDefault": true,
+        "IsCalculate": false,
+        "AggregateType": "",
+        "SummaryType": "",
+        "Expression": "",
+        "Criteria": {}
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryJoins": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryJoin": {
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryDatasources": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryDatasource": {
+      "QueryDatasource": {
+        "DataModelId": "c2dfa917-7450-42b8-a5bb-f5802916cedc",
+        "QueryName": "QRY1",
+        "DataSourceId": "acc5210a-1d03-4de4-893c-82447b14266a",
+        "DataSourceName": "SC",
+        "DataSourceType": "DirectTable",
+        "AnalyserItemService": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemService,T1.SystemSecurity.Compatibility",
+        "AnalyserItemParameters": "T1.SystemSecurity.Compatibility.ExternalSource.SchemaColumnAnalyserItemServiceParameters,T1.SystemSecurity.Compatibility",
+        "ParameterValues": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "Parameters": {
+            "ParameterField": [
+              {
+                "FieldName": "SuiteId",
+                "Value": "CES"
+              },
+              {
+                "FieldName": "SystemId",
+                "Value": ""
+              },
+              {
+                "FieldName": "TableName",
+                "Value": "GLF_SELN_CODE"
+              },
+              {
+                "FieldName": "Suite",
+                "Value": "CES"
+              }
+            ],
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "EntityCode": "",
+        "ProductCode": "FIN",
+        "IncludeFields": false
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Variables": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfVariableDef": {
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

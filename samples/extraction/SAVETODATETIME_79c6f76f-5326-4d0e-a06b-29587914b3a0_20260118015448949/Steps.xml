@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfStep xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Step>
+    <ProcessId>79c6f76f-5326-4d0e-a06b-29587914b3a0</ProcessId>
+    <Version>1</Version>
+    <StepId>1</StepId>
+    <StepType>SaveText</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;32be7beb-563d-47c8-a8b4-b79b331286b3&lt;/ExplicitKey&gt;
+  &lt;FileLocation&gt;USERS FILES&lt;/FileLocation&gt;
+  &lt;FileName&gt;DateTime.txt&lt;/FileName&gt;
+  &lt;FileWriteOption Description="Delete existing file"&gt;REPLACE&lt;/FileWriteOption&gt;
+  &lt;Content&gt;{&amp;amp;VAR_REPORTTIME}&lt;/Content&gt;
+  &lt;EnableDecoding&gt;false&lt;/EnableDecoding&gt;
+  &lt;DecodeType&gt;&lt;/DecodeType&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Save Text</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+</ArrayOfStep>

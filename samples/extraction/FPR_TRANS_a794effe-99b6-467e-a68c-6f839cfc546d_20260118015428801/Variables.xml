@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfC2GenericVariable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <C2GenericVariable>
+    <VariableId>b41049a4-d013-4bc3-8cad-3ee56d14bd48</VariableId>
+    <Version>13</Version>
+    <OwnerId>a794effe-99b6-467e-a68c-6f839cfc546d</OwnerId>
+    <Name>VAR_A1_STYPE</Name>
+    <Description>A1 Service Type</Description>
+    <VariableType>L</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue />
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>1</Sequence>
+    <ListType>SEL</ListType>
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType>A1_STYPE</SelectionTypeListType>
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;a8b665c8-98d1-4f5d-aa29-f1632dc0a4bb&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>true</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>76f37dd6-91f7-47b9-8d34-92001d9e6244</VariableId>
+    <Version>13</Version>
+    <OwnerId>a794effe-99b6-467e-a68c-6f839cfc546d</OwnerId>
+    <Name>VAR_REPORTTIME</Name>
+    <Description>Report Time</Description>
+    <VariableType>N</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue />
+    <IsDisplayable>false</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>0</DecimalPlaces>
+    <Sequence>2</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;587b58a1-f5ab-4c58-96d4-bbb20b852c0d&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>93b6d92b-ee20-43e0-ad54-f071c3632f89</VariableId>
+    <Version>13</Version>
+    <OwnerId>a794effe-99b6-467e-a68c-6f839cfc546d</OwnerId>
+    <Name>VAR_REPORTDATE</Name>
+    <Description>Report Date</Description>
+    <VariableType>D</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue />
+    <IsDisplayable>false</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>3</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;cd3edc00-0ae8-451b-a8f4-3c7d2a0c7398&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>4e50ffc7-2560-4f73-a8e0-a16d921cc3c7</VariableId>
+    <Version>13</Version>
+    <OwnerId>a794effe-99b6-467e-a68c-6f839cfc546d</OwnerId>
+    <Name>VAR_LEDGER</Name>
+    <Description>Ledger</Description>
+    <VariableType>L</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>26BUDLDG,26ACTLDG</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>0</DecimalPlaces>
+    <Sequence>4</Sequence>
+    <ListType>QRY</ListType>
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource>89d4511e-18b3-45a1-acaa-6d3c6fbfd6ef</QueryListDatasource>
+    <QueryListSuite>CES</QueryListSuite>
+    <QueryListSuiteIsImplicit>true</QueryListSuiteIsImplicit>
+    <QueryListValue>F1La_LedgerName</QueryListValue>
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;9a5cf95f-9b6f-47f0-b1cf-6c5e6870fc9d&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;GlPeriodBalancesAnalyserItemParameters xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;Overrides AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext" xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;
+    &lt;ValueObjectContext NumFields="1" NumCategories="0" xmlns=""&gt;
+      &lt;Key AssemblyQualifiedTypeName="System.String"&gt;
+        &lt;string&gt;T1.Ledgers.Compatibility.External.Charts.ChartFieldIds+GlChartName&lt;/string&gt;
+      &lt;/Key&gt;
+      &lt;FieldItem AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"&gt;
+        &lt;ValueObjectFieldContextItem Mandatory="False" CharacterCasing="" FormattedTextType="" ExpressionType="" AssociatedAnalyserItem=""&gt;
+          &lt;FieldDetails AssemblyQualifiedTypeName="System.String"&gt;
+            &lt;string&gt;T1.Ledgers.Compatibility.External.Charts.ChartFieldIds+GlChartName, T1.Ledgers.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/string&gt;
+          &lt;/FieldDetails&gt;
+        &lt;/ValueObjectFieldContextItem&gt;
+      &lt;/FieldItem&gt;
+    &lt;/ValueObjectContext&gt;
+  &lt;/Overrides&gt;
+  &lt;DefKey&gt;81bcf2d7-22bd-4a6c-89c9-5bc5abc1d8f8&lt;/DefKey&gt;
+  &lt;ChartName&gt;GLCHART&lt;/ChartName&gt;
+  &lt;EnableCommitmentColumns&gt;false&lt;/EnableCommitmentColumns&gt;
+&lt;/GlPeriodBalancesAnalyserItemParameters&gt;</QueryListParameters>
+    <IsMultiPickPicklist>true</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+</ArrayOfC2GenericVariable>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfStep xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Step>
+    <ProcessId>7bb05bc3-3868-4eab-82e1-9287e8560f6e</ProcessId>
+    <Version>1</Version>
+    <StepId>2</StepId>
+    <StepType>CreateTable</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;45f3bc5a-1e0d-4237-bff1-2e6cea34c740&lt;/DefKey&gt;
+  &lt;OutputTableData&gt;[["A1_SVGP","ME","5","10RS01","Government grants within Mission Enterprises are down -$1.4 million, primarily driven by higher budgeted subsidy rates in Residential Aged Care and slower growth in the Home Care Program.","26ACTLDG"],["A1_SVGP","ME","5","10RS05","Mission Enterprises +$0.5 million within Aged care reflecting the timing of client income within the Retirement Living stream of Aged Care.","26ACTLDG"],["A1_SVGP","ME","5","20RS01","Employment Plus -$0.6 million hiring of new staff for new Inclusive Employment Services program; Salvos Stores -$0.6 million mainly for stores transitioned from Corps;","26ACTLDG"],["A1_SVGP","ME","5","20RS03","Mission Enterprises mainly timing of repairs and maintenance across Aged Care, Housing and setting up new sites within Salvos Stores","26ACTLDG"],["A1_SVGP","ME","5","20RS08","Mission Enterprises +$0.9 million mainly within Aged care related to timing of software maintenance and minor assets purchases within Residential Aged Care;","26ACTLDG"],["A1_STYPE","STOR","5","10RS01","Landfill Levy rebates higher than budget, consistent with higher than budget waste costs.  Driven by donation volume.","26ACTLDG"],["A1_STYPE","STOR","5","10RS02","Stores sales growth not hitting budget assumptions, albeit same store growth on prior year +5.3% YTD.  $1.5m of sales from stores not budgeted, net of stores budgeted but since closed, plus $0.7m upside from eCommerce and wholesale textile excesss, masking an underlying sales miss to budget from established stores.   Starting to see an increase in average unit price relative to prior year (+2.7%) alongside an increase in average daily transactions (+3.6%) - important to keep the momentum with biggest risk to sales in Q4 of FY26.","26ACTLDG"],["A1_STYPE","STOR","5","20RS01","Impact of unbudgeted stores circa $1m","26ACTLDG"],["A1_STYPE","STOR","5","20RS02","Account classification issue re WINCS - some consumables and supplies accounts should be Trading Expenses","26ACTLDG"],["A1_STYPE","STOR","5","20RS03","Impact of unbudgeted stores $536k.","26ACTLDG"],["A1_STYPE","STOR","5","20RS04","Purchased Product for resale sales below budget, hence Cost of Goods Sold below budget, some consumables being charged into Programme/Welfare Expenses and Other Expenses","26ACTLDG"],["A1_STYPE","STOR","5","20RS06","Timing difference with truck replacement rollout assumptions","26ACTLDG"],["A1_STYPE","STOR","5","20RS07","True up of insurance allocations to actual wages spend.  $90k related to Workers Comp premiums.","26ACTLDG"],["A1_STYPE","STOR","5","20RS09","Driven by postage costs for eCommerce channel being in excess of budget (sales also exceeding budget) and some auto classifications from WINC being different to where budgeted (Trading Expenses)","26ACTLDG"],["A1_STYPE","STOR","5","25RS01","Timing difference only - Doorways purchasing of EFTPOS enabled cards lumpy","26ACTLDG"],["A1_STYPE","STOR","5","25RS01","Relates to unbudgeted Corps Stores transitioned","26ACTLDG"]]&lt;/OutputTableData&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TMP_COMMENTS</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;db344e0f-9a46-45de-9531-a1b38f09734a&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;2cc637a1-8725-4bae-a232-acb00620ef5b&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Code_Type&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;06a80875-4e87-49ca-8139-f13d60708a99&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Code&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;4b916c1c-dbc6-457b-bcdd-61d106e50963&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnType Description="Integer"&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;f38a96b2-e1f2-42e1-be3a-421e425fd9ca&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Summary_Code&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;8973e88b-5e08-4de4-a40d-045891e2d56a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Commentary&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;b7fdb21b-c014-40dd-a0bb-f5d89fa05b71&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Create Table</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>7bb05bc3-3868-4eab-82e1-9287e8560f6e</ProcessId>
+    <Version>1</Version>
+    <StepId>3</StepId>
+    <StepType>ImportWarehouseData</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;bf199ca3-0dfc-442f-a0fb-74ed8a42e328&lt;/DefKey&gt;
+  &lt;InputTableName&gt;TMP_COMMENTS&lt;/InputTableName&gt;
+  &lt;SuiteId Description="Core Enterprise Suite"&gt;CES&lt;/SuiteId&gt;
+  &lt;WarehouseName Description="Aligned Financial Reporting Governance Data"&gt;AFRG&lt;/WarehouseName&gt;
+  &lt;TableName Description="Comments"&gt;AFRG_B_COMMENTS&lt;/TableName&gt;
+  &lt;ImportOption Description="Insert Only"&gt;I&lt;/ImportOption&gt;
+  &lt;ColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Code_Type&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Code_Type]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Code&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Code]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Period]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Summary_Code&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Summary_Code]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Commentary&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Commentary]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Ledger&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Ledger]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;Id&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[Id]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+  &lt;/ColumnMapping&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Warehouse Table - Import Data</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>7bb05bc3-3868-4eab-82e1-9287e8560f6e</ProcessId>
+    <Version>1</Version>
+    <StepId>4</StepId>
+    <StepType>AddColumn</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;17f2bb53-165d-45c3-921e-93e3c3796024&lt;/DefKey&gt;
+  &lt;InputTableName&gt;TMP_COMMENTS&lt;/InputTableName&gt;
+  &lt;Columns&gt;
+    &lt;ColumnItemDef&gt;
+      &lt;DefKey&gt;f8311be9-c750-44a1-8138-ce84b5d98983&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Id&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+      &lt;ColumnAction Description="Calculate"&gt;CAL&lt;/ColumnAction&gt;
+      &lt;Expression&gt;NewGuid()&lt;/Expression&gt;
+      &lt;ColumnToTotal&gt;&lt;/ColumnToTotal&gt;
+      &lt;ColumnToRestartOnChange&gt;&lt;/ColumnToRestartOnChange&gt;
+      &lt;DefaultValue&gt;&lt;/DefaultValue&gt;
+      &lt;LookupName&gt;&lt;/LookupName&gt;
+      &lt;LookupColumnName&gt;&lt;/LookupColumnName&gt;
+    &lt;/ColumnItemDef&gt;
+  &lt;/Columns&gt;
+  &lt;Lookups /&gt;
+  &lt;AddKeyColumn&gt;false&lt;/AddKeyColumn&gt;
+  &lt;KeyColumnName&gt;&lt;/KeyColumnName&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TMP_COMMENTS</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;dc79af46-f77d-4876-a345-4025cab9ab2b&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;2cc637a1-8725-4bae-a232-acb00620ef5b&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Code_Type&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;06a80875-4e87-49ca-8139-f13d60708a99&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Code&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;4b916c1c-dbc6-457b-bcdd-61d106e50963&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnType Description="Integer"&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;f38a96b2-e1f2-42e1-be3a-421e425fd9ca&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Summary_Code&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;8973e88b-5e08-4de4-a40d-045891e2d56a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Commentary&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;b7fdb21b-c014-40dd-a0bb-f5d89fa05b71&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;384b8c46-a04c-4eb1-921c-48a2c43e993a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Id&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Add Column</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+</ArrayOfStep>

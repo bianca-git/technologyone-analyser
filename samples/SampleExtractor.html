@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AFRG ETL Documentation Generator</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f3f4f6;
+            }
+
+            /* UI Components */
+            .mode-btn.active {
+                background-color: #2563eb;
+                color: white;
+                border-color: #2563eb;
+            }
+
+            /* Document Styling */
+            .doc-paper {
+                background: white;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                border-radius: 0.5rem;
+                overflow: hidden;
+            }
+
+            .doc-header {
+                background-color: #f8fafc;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 1.5rem;
+            }
+
+            .doc-body {
+                padding: 2rem;
+            }
+
+            /* Timeline / Hierarchy Lines */
+            .step-container {
+                position: relative;
+                padding-left: 1.5rem;
+                border-left: 2px solid #e2e8f0;
+                margin-left: 0.5rem;
+            }
+
+            .step-container:last-child {
+                border-left-color: transparent;
+            }
+
+            .step-node {
+                position: absolute;
+                left: -0.4rem;
+                top: 0.25rem;
+                width: 0.75rem;
+                height: 0.75rem;
+                border-radius: 50%;
+                background: white;
+                border: 2px solid #cbd5e1;
+            }
+
+            /* Accordion Styles */
+            details>summary {
+                list-style: none;
+                cursor: pointer;
+                font-weight: 600;
+                color: #1e293b;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem 1rem;
+                background: #f1f5f9;
+                border-radius: 0.375rem;
+                margin-bottom: 0.5rem;
+                transition: background 0.2s;
+            }
+
+            details>summary:hover {
+                background: #e2e8f0;
+            }
+
+            details>summary::after {
+                content: '+';
+                font-size: 1.25rem;
+                font-weight: normal;
+            }
+
+            details[open]>summary::after {
+                content: '-';
+            }
+
+            details[open]>summary {
+                margin-bottom: 1rem;
+            }
+
+            /* Syntax Highlighting */
+            .var-badge {
+                background-color: #f3e8ff;
+                color: #7e22ce;
+                padding: 0.1rem 0.4rem;
+                border-radius: 0.25rem;
+                font-family: monospace;
+                font-size: 0.9em;
+                font-weight: 600;
+                border: 1px solid #d8b4fe;
+            }
+
+            /* Output Badges by Type */
+            .out-badge-warehouse {
+                background-color: #d1fae5;
+                color: #047857;
+                border: 1px solid #6ee7b7;
+                padding: 0.1rem 0.5rem;
+                border-radius: 999px;
+                font-size: 0.85em;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+
+            .out-badge-table {
+                background-color: #dbeafe;
+                color: #1d4ed8;
+                border: 1px solid #93c5fd;
+                padding: 0.1rem 0.5rem;
+                border-radius: 999px;
+                font-size: 0.85em;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+
+            .out-badge-var {
+                background-color: #f3e8ff;
+                color: #7e22ce;
+                border: 1px solid #d8b4fe;
+                padding: 0.1rem 0.5rem;
+                border-radius: 999px;
+                font-size: 0.85em;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+
+            .out-badge-iter {
+                background-color: #fef3c7;
+                color: #b45309;
+                border: 1px solid #fcd34d;
+                padding: 0.1rem 0.5rem;
+                border-radius: 999px;
+                font-size: 0.85em;
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+        </style>
+    </head>
+
+    <body class="text-gray-800 h-screen flex flex-col">
+
+        <header class="bg-slate-800 text-white p-4 shadow-md z-10">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold tracking-tight">AFRG ETL Spec Generator</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-slate-700 p-1 rounded-lg flex text-xs font-medium">
+                        <button id="btnBusiness"
+                            class="mode-btn px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white"
+                            onclick="setMode('business')">Business View</button>
+                        <button id="btnTechnical"
+                            class="mode-btn active px-3 py-1.5 rounded-md transition text-slate-300 hover:text-white"
+                            onclick="setMode('technical')">Technical View</button>
+                    </div>
+                    <span class="text-xs text-slate-400">v2.2</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="grow p-6 overflow-auto bg-gray-100">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <!-- Upload -->
+                <div
+                    class="bg-white p-10 rounded-xl shadow-sm border border-gray-200 text-center transition-all hover:shadow-md">
+                    <label for="fileInput" class="cursor-pointer block">
+                        <div class="space-y-3">
+                            <div
+                                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-2">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900">Upload Definitions</h2>
+                            <p class="text-sm text-gray-500">Drag & drop your <code>.json</code> ETL files here to
+                                generate documentation</p>
+                        </div>
+                        <input type="file" id="fileInput" multiple accept=".json" class="hidden">
+                    </label>
+                    <div id="fileCount"
+                        class="mt-4 text-sm font-medium text-green-600 hidden bg-green-50 px-3 py-1 rounded-full">
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="resultsContainer" class="grid grid-cols-1 gap-8"></div>
+            </div>
+        </main>
+
+        <script>
+            // --- Global State ---
+            let currentMode = 'technical';
+            let parsedFilesData = new Map();
+
+            // --- 1. Core Parsing Logic ---
+            function getListSafe(obj, key) {
+                if (!obj || !obj[key]) return [];
+                const val = obj[key];
+                return Array.isArray(val) ? val : [val];
+            }
+
+            function extractMetadata(json) {
+                const proc = json?.process?.ArrayOfProcess?.Process || {};
+                return {
+                    Name: proc.Name || 'N/A',
+                    ID: proc.ProcessId || 'N/A',
+                    Version: proc.Version || 'N/A',
+                    Owner: proc.Owner || 'N/A',
+                    Description: proc.Description || proc.Narration || 'N/A'
+                };
+            }
+
+            function getFriendlyName(stepType) {
+                const map = {
+                    'RunDirectQuery': 'Extract Data',
+                    'RunTableQuery': 'Query Data',
+                    'AddColumn': 'Calculate Fields',
+                    'UpdateColumn': 'Update Fields',
+                    'ImportWarehouseData': 'Load to Warehouse',
+                    'DeleteWarehouseData': 'Delete Data',
+                    'PurgeTable': 'Clear Temp Table',
+                    'Loop': 'Loop',
+                    'JoinTable': 'Join Tables',
+                    'CreateTable': 'Create Table',
+                    'AppendTable': 'Append Data',
+                    'Group': 'Group',
+                    'SetVariable': 'Set Variable',
+                    'CalculateVariable': 'Calc Variable'
+                };
+                return map[stepType] || stepType;
+            }
+
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
+            function colorizeTextHTML(text, varSet) {
+                if (!text) return "";
+                if (varSet.size === 0) return text;
+                const patterns = Array.from(varSet).map(v => {
+                    const esc = escapeRegExp(v);
+                    return `\\[?${esc}\\]?`;
+                });
+                const regex = new RegExp(`(${patterns.join('|')})`, 'g');
+                return text.replace(regex, '<span class="var-badge">$1</span>');
+            }
+
+            function getStepContext(stepType, storage, step) {
+                const table = storage.TableName || storage.InputTableName || 'dataset';
+                const target = storage.OutputTableName || storage.TableName || 'target';
+
+                switch (stepType) {
+                    case 'RunDirectQuery': return `Connects to source system to pull data from <strong>${table}</strong>.`;
+                    case 'RunTableQuery': return `Reads from internal <strong>${table}</strong> table.`;
+                    case 'AddColumn': return `Calculates new business fields in <strong>${table}</strong>.`;
+                    case 'UpdateColumn': return `Updates existing values in <strong>${table}</strong>.`;
+                    case 'ImportWarehouseData': return `Publishes final data to <strong>${target}</strong>.`;
+                    case 'DeleteWarehouseData': return `Removes records from <strong>${target}</strong>.`;
+                    case 'PurgeTable': return `Clears temporary memory (<strong>${table}</strong>).`;
+                    case 'Loop': return `Iterates through a list of items.`;
+                    case 'JoinTable': return `Merges two datasets together.`;
+                    case 'CreateTable': return `Initializes a holding container (<strong>${target}</strong>).`;
+                    case 'AppendTable': return `Combines <strong>${storage.InputTableName}</strong> into <strong>${storage.AppendToTableName}</strong>.`;
+                    case 'Group': return `Logical container.`;
+                    case 'SetVariable': return `Sets parameter <strong>${storage.VariableName}</strong>.`;
+                    case 'CalculateVariable': return `Calculates parameter <strong>${storage.VariableName}</strong>.`;
+                    default: return `Performs ${stepType}.`;
+                }
+            }
+
+            // Updated to return Object with { type, name } for better styling
+            function getExplicitOutput(stepType, storage, step) {
+                const target = storage.OutputTableName || storage.TableName || storage.VariableName;
+                switch (stepType) {
+                    case 'ImportWarehouseData': return { type: 'WAREHOUSE', name: target };
+                    case 'JoinTable': return { type: 'TABLE', name: target };
+                    case 'CreateTable': return { type: 'TABLE', name: target };
+                    case 'AppendTable': return { type: 'TABLE', name: storage.AppendToTableName };
+                    case 'SetVariable': return { type: 'VAR', name: target };
+                    case 'CalculateVariable': return { type: 'VAR', name: target };
+                    case 'Loop': return { type: 'ITERATOR', name: storage.InputVariable?.['#text'] };
+                    default: return null;
+                }
+            }
+
+            function extractCriteria(storage) {
+                const locations = [storage.Criteria, storage.WarehouseCriteria, storage.SourceCriteria];
+                const results = [];
+                locations.forEach(loc => {
+                    if (!loc) return;
+                    if (loc.CriteriaValues?.CriteriaValue) {
+                        const cv = loc.CriteriaValues.CriteriaValue;
+                        const list = Array.isArray(cv) ? cv : [cv];
+                        list.forEach(c => results.push(`${c.ColumnId || ''} ${c.Operator?.Value || '='} ${c.Value1 || ''}`));
+                    } else if (typeof loc.CriteriaValues === 'string' && loc.CriteriaValues.trim() !== "") {
+                        results.push(loc.CriteriaValues);
+                    }
+                });
+                return results;
+            }
+
+            function parseSteps(json) {
+                let stepsRaw = getListSafe(json?.steps?.ArrayOfStep, 'Step');
+                const stepMap = new Map();
+                const rootSteps = [];
+                stepsRaw.forEach(step => { step.children = []; stepMap.set(step.StepId, step); });
+                stepsRaw.forEach(step => {
+                    const parentId = parseInt(step.ParentStepId) || 0;
+                    if (parentId !== 0 && stepMap.has(parentId)) stepMap.get(parentId).children.push(step);
+                    else rootSteps.push(step);
+                });
+
+                const sortSteps = (list) => {
+                    list.sort((a, b) => (parseInt(a.Sequence) || 999) - (parseInt(b.Sequence) || 999));
+                    list.forEach(item => sortSteps(item.children));
+                };
+                sortSteps(rootSteps);
+
+                const variables = new Map();
+                const variableNames = new Set();
+
+                stepsRaw.forEach(step => {
+                    const type = step.StepType;
+                    const storage = step.Definition?.StorageObject || {};
+                    if (type === 'SetVariable' || type === 'CalculateVariable') {
+                        variables.set(storage.VariableName, { Name: storage.VariableName, Type: 'Var', Value: storage.VariableValue || storage.Expression || 'N/A' });
+                        variableNames.add(storage.VariableName);
+                    }
+                    if (type === 'Loop' && storage.InputVariable?.['#text']) {
+                        const vName = storage.InputVariable['#text'];
+                        variables.set(vName, { Name: vName, Type: 'Iterator', Value: `Loop Condition` });
+                        variableNames.add(vName);
+                    }
+                });
+
+                const executionFlow = [];
+                const targetSchema = new Set();
+
+                const traverse = (step, depth) => {
+                    const stepType = step.StepType;
+                    const stepName = step.Name;
+                    const description = step.Description || step.Narration || step.Comments || null;
+                    const isActive = step.IsActive !== false;
+                    const storage = step.Definition?.StorageObject || {};
+
+                    let info = {
+                        RawType: stepType,
+                        Phase: getFriendlyName(stepType),
+                        Step: stepName,
+                        Context: getStepContext(stepType, storage, step),
+                        Output: getExplicitOutput(stepType, storage, step),
+                        IsActive: isActive,
+                        Description: description,
+                        Depth: depth,
+                        Details: [],
+                        TableData: null,
+                        Headers: null
+                    };
+
+                    if (!isActive) info.Phase += " [DISABLED]";
+
+                    if (stepType === 'RunDirectQuery' || stepType === 'RunTableQuery') {
+                        const table = storage.TableName || storage.InputTableName || 'Unknown';
+                        const columns = getListSafe(storage.Columns, stepType === 'RunTableQuery' ? 'ColumnItem' : 'ColumnItem');
+                        const colNames = columns.map(c => c.ColumnName).filter(Boolean);
+                        info.Details.push(`Source: ${table}`);
+                        if (colNames.length > 0) info.Details.push(`Columns: ${colNames.join(', ')}`);
+                        extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
+                    }
+                    else if (stepType === 'AddColumn' || stepType === 'UpdateColumn') {
+                        const columns = getListSafe(storage.Columns, 'ColumnItemDef');
+                        const transforms = columns.map(col => ({ Col1: col.ColumnName, Col2: col.Expression || 'N/A' }));
+                        if (transforms.length > 0) { info.TableData = transforms; info.Headers = ["Field", "Formula"]; }
+                    }
+                    else if (stepType === 'ImportWarehouseData') {
+                        const mappings = getListSafe(storage.ColumnMapping, 'TableColumnMapping');
+                        const mapData = mappings.map(m => {
+                            targetSchema.add(m.ColumnName);
+                            return { Col1: m.MappedValue || '(Source)', Col2: m.ColumnName || '(Target)' };
+                        });
+                        if (mapData.length > 0) { info.TableData = mapData; info.Headers = ["Source", "Target"]; }
+                        extractCriteria(storage).forEach(f => info.Details.push(`Criteria: ${f}`));
+                    }
+                    else if (stepType === 'JoinTable') {
+                        const joins = getListSafe(storage.Joins, 'JoinItemDef');
+                        const joinList = joins.map(j => ({ Col1: `${j.JoinTable1}.${j.JoinColumn1?.['#text']}`, Col2: `${j.JoinType?.['#text']} ${j.JoinTable2}.${j.JoinColumn2?.['#text']}` }));
+                        if (joinList.length > 0) { info.TableData = joinList; info.Headers = ["Left", "Condition"]; }
+                    }
+                    else if (stepType === 'CreateTable') {
+                        const outCols = getListSafe(step.OutputTableDefinition?.Columns, 'ColumnItem');
+                        if (outCols.length > 0) info.Details.push(`Defines: ${outCols.map(c => c.ColumnName).join(', ')}`);
+                    }
+
+                    executionFlow.push(info);
+                    step.children.forEach(child => traverse(child, depth + 1));
+                };
+
+                rootSteps.forEach(s => traverse(s, 0));
+
+                return {
+                    executionFlow,
+                    schema: Array.from(targetSchema),
+                    variables: Array.from(variables.values()),
+                    variableSet: variableNames
+                };
+            }
+
+            // --- 2. HTML UI Generation (New) ---
+            function renderHTML(metadata, flowData, mode) {
+                const { executionFlow, schema, variables, variableSet } = flowData;
+
+                // --- Helper: Table Renderer ---
+                const renderTable = (headers, rows) => {
+                    if (!rows || rows.length === 0) return '';
+                    const ths = headers.map(h => `<th class="px-4 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50">${h}</th>`).join('');
+                    const trs = rows.map(r => `
+                    <tr class="border-t border-gray-100 hover:bg-gray-50">
+                        <td class="px-4 py-2 text-sm text-gray-700 font-mono">${colorizeTextHTML(r.Col1 || r.Name, variableSet)}</td>
+                        <td class="px-4 py-2 text-sm text-gray-700">${colorizeTextHTML(r.Col2 || r.Value, variableSet)}</td>
+                    </tr>
+                `).join('');
+                    return `<div class="overflow-hidden border border-gray-200 rounded-md mb-3"><table class="min-w-full divide-y divide-gray-200"><thead><tr>${ths}</tr></thead><tbody class="bg-white">${trs}</tbody></table></div>`;
+                };
+
+                // --- Section: Header ---
+                const techMeta = mode === 'technical' ?
+                    `<div class="flex space-x-4 text-xs text-gray-500 mt-2 font-mono"><span>ID: ${metadata.ID}</span><span>•</span><span>Ver: ${metadata.Version}</span></div>` : '';
+
+                let html = `
+                <div class="doc-header">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">${metadata.Name}</h2>
+                            <p class="text-sm text-gray-500 font-medium mt-1">Owner: ${metadata.Owner}</p>
+                            ${techMeta}
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">${mode.toUpperCase()}</span>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-50 border border-gray-100 rounded-lg text-sm text-gray-700 leading-relaxed italic">
+                        "${metadata.Description}"
+                    </div>
+                </div>
+                <div class="doc-body space-y-8">
+            `;
+
+                // --- Section: Variables ---
+                if (variables.length > 0) {
+                    html += `
+                    <details open class="group">
+                        <summary><span>Variables & Parameters</span></summary>
+                        <div class="px-4 pb-2">
+                             ${renderTable(
+                        mode === 'technical' ? ['Variable Name', 'Value / Expression'] : ['Parameter', 'Setting'],
+                        variables.map(v => ({ Col1: v.Name, Col2: v.Value }))
+                    )}
+                        </div>
+                    </details>
+                `;
+                }
+
+                // --- Section: Process Logic ---
+                html += `<details open class="group"><summary><span>Process Logic</span></summary><div class="px-4 pb-2 space-y-1">`;
+
+                executionFlow.forEach(item => {
+                    if (mode === 'business') {
+                        const ignore = ['PurgeTable', 'CreateTable', 'DeleteWarehouseData', 'DeleteTable'];
+                        if (ignore.includes(item.RawType) || !item.IsActive) return;
+                    }
+
+                    const marginLeft = item.Depth * 1.5;
+
+                    // --- OUTPUT BADGE RENDERING ---
+                    let outputBadge = '';
+                    if (item.Output && item.Output.name) {
+                        const typeClass =
+                            item.Output.type === 'WAREHOUSE' ? 'out-badge-warehouse' :
+                                item.Output.type === 'TABLE' ? 'out-badge-table' :
+                                    item.Output.type === 'VAR' ? 'out-badge-var' :
+                                        item.Output.type === 'ITERATOR' ? 'out-badge-iter' : 'out-badge-table';
+
+                        outputBadge = `<span class="${typeClass} ml-2"><span class="opacity-60 text-[0.9em]">${item.Output.type}</span> ${colorizeTextHTML(item.Output.name, variableSet)}</span>`;
+                    }
+
+                    // Details Rendering
+                    let detailsHtml = '';
+                    const detailsToShow = mode === 'business'
+                        ? item.Details.filter(d => d.startsWith('Filter') || d.startsWith('Criteria'))
+                        : item.Details;
+
+                    if (detailsToShow.length > 0) {
+                        detailsHtml += `<ul class="mt-2 space-y-1 pl-4 border-l-2 border-gray-100">` +
+                            detailsToShow.map(d => `<li class="text-xs text-gray-600">• ${colorizeTextHTML(d, variableSet)}</li>`).join('') +
+                            `</ul>`;
+                    }
+
+                    // Inner Table (Transforms/Joins)
+                    let tableHtml = '';
+                    if (item.TableData && (mode === 'technical' || item.RawType === 'ImportWarehouseData')) {
+                        tableHtml = `<div class="mt-3">${renderTable(item.Headers, item.TableData)}</div>`;
+                    }
+
+                    html += `
+                    <div class="relative pl-6 pb-6 border-l-2 border-slate-200 last:border-0" style="margin-left: ${marginLeft}rem">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-2 border-slate-300"></div>
+                        
+                        <div class="flex items-center flex-wrap gap-2 mb-1">
+                            <span class="font-bold text-slate-800 text-sm">${item.Phase}: ${item.Step}</span>
+                            ${outputBadge}
+                        </div>
+                        
+                        <div class="text-sm text-gray-600 mb-1">
+                            <span class="font-semibold text-emerald-600 text-xs uppercase tracking-wide">Purpose:</span> 
+                            ${colorizeTextHTML(item.Context, variableSet)}
+                        </div>
+                        
+                        ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${colorizeTextHTML(item.Description, variableSet)}</div>` : ''}
+                        
+                        ${detailsHtml}
+                        ${tableHtml}
+                    </div>
+                `;
+                });
+                html += `</div></details>`;
+
+                // --- Section: Schema ---
+                if (schema.length > 0) {
+                    const schemaBadges = schema.map(c => `<span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200 mr-2 mb-2 font-mono">${c}</span>`).join('');
+                    html += `
+                    <details class="group">
+                        <summary><span>Output Columns</span></summary>
+                        <div class="px-4 pb-2 pt-2 flex flex-wrap">
+                            ${schemaBadges}
+                        </div>
+                    </details>
+                `;
+                }
+
+                html += `</div>`; // Close doc-body
+                return html;
+            }
+
+            // --- 3. DOCX Generation (Keep existing logic) ---
+            async function downloadDocx(metadata, flowData, mode) {
+                const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, HeadingLevel, TextRun, BorderStyle, Header, Footer, AlignmentType, ShadingType, PageNumber } = docx;
+                const BRAND_COLOR = "2E4053";
+                const VAR_COLOR = "7C3AED";
+                const OUT_COLOR = "059669";
+
+                const createContent = (text, opts = {}) => {
+                    const baseSize = opts.size || 22;
+                    if (!text) return [new TextRun({ text: "", ...opts })];
+                    if (flowData.variableSet.size === 0) return [new TextRun({ text: text, font: "Segoe UI", ...opts })];
+                    const patterns = Array.from(flowData.variableSet).map(v => escapeRegExp(v));
+                    const regex = new RegExp(`(${patterns.join('|')})`, 'g');
+                    const parts = text.split(regex);
+                    return parts.map(part => {
+                        if (flowData.variableSet.has(part)) {
+                            return new TextRun({ text: part, font: "Segoe UI", ...opts, color: VAR_COLOR, bold: true });
+                        }
+                        return new TextRun({ text: part, font: "Segoe UI", ...opts });
+                    });
+                };
+
+                const createText = (text, opts = {}) => new TextRun({ text: text, font: "Segoe UI", size: 22, ...opts });
+                const sections = [];
+
+                // Title & Meta
+                sections.push(new Paragraph({ children: [createText(metadata.Name, { bold: true, size: 32, color: BRAND_COLOR })], heading: HeadingLevel.HEADING_1, spacing: { after: 300 } }));
+                const metaRows = mode === 'technical' ? [["Process ID", metadata.ID], ["Version", String(metadata.Version)], ["Owner", metadata.Owner], ["Description", metadata.Description]] : [["Owner", metadata.Owner], ["Version", String(metadata.Version)], ["Purpose", metadata.Description]];
+                const tableRows = metaRows.map(row => new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: [createText(row[0], { bold: true })] })], shading: { fill: "F5F5F5", type: ShadingType.CLEAR }, margins: { top: 100, bottom: 100, left: 100, right: 100 } }), new TableCell({ children: [new Paragraph({ children: [createText(row[1])] })], margins: { top: 100, bottom: 100, left: 100, right: 100 } })] }));
+                sections.push(new Paragraph({ children: [createText("Process Overview", { bold: true, size: 28, color: BRAND_COLOR })], heading: HeadingLevel.HEADING_2, spacing: { after: 150, before: 150 } }));
+                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: tableRows }));
+                sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+
+                // Variables
+                if (flowData.variables.length > 0) {
+                    sections.push(new Paragraph({ children: [createText("Variables & Parameters", { bold: true, size: 28, color: BRAND_COLOR })], heading: HeadingLevel.HEADING_2, spacing: { after: 150, before: 150 } }));
+                    const varHeader = new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: [createText("Name", { bold: true, color: "FFFFFF" })] })], shading: { fill: BRAND_COLOR } }), new TableCell({ children: [new Paragraph({ children: [createText("Value / Source", { bold: true, color: "FFFFFF" })] })], shading: { fill: BRAND_COLOR } })] });
+                    const varRows = flowData.variables.map(v => new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: [createText(v.Name, { color: VAR_COLOR, bold: true })] })] }), new TableCell({ children: [new Paragraph({ children: [createText(v.Value)] })] })] }));
+                    sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [varHeader, ...varRows] }));
+                    sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+                }
+
+                // Steps
+                sections.push(new Paragraph({ children: [createText("Process Logic", { bold: true, size: 28, color: BRAND_COLOR })], heading: HeadingLevel.HEADING_2, spacing: { after: 200 }, border: { bottom: { color: "CCCCCC", space: 1, value: "single", size: 6 } } }));
+                flowData.executionFlow.forEach(item => {
+                    if (mode === 'business') {
+                        const ignore = ['PurgeTable', 'CreateTable', 'DeleteWarehouseData', 'DeleteTable'];
+                        if (ignore.includes(item.RawType) || !item.IsActive) return;
+                    }
+                    const indentLevel = item.Depth * 720;
+                    sections.push(new Paragraph({ children: [createText(`${item.Phase}: ${item.Step}`, { bold: true })], indent: { left: indentLevel }, spacing: { before: 100 } }));
+
+                    // Update Context with explicit Output text for Docx
+                    if (item.Output && item.Output.name) {
+                        sections.push(new Paragraph({ children: [createText(`➜ ${item.Output.type}: `, { bold: true, size: 20, color: OUT_COLOR }), ...createContent(item.Output.name, { size: 20, color: OUT_COLOR })], indent: { left: indentLevel + 360 }, spacing: { after: 50 } }));
+                    }
+
+                    sections.push(new Paragraph({ children: [createText("Purpose: ", { bold: true, size: 20, color: BRAND_COLOR }), ...createContent(item.Context, { size: 20 })], indent: { left: indentLevel + 360 }, spacing: { after: 50 } }));
+
+                    const detailsToShow = mode === 'business' ? item.Details.filter(d => d.startsWith('Filter') || d.startsWith('Criteria')) : item.Details;
+                    detailsToShow.forEach(d => { sections.push(new Paragraph({ children: createContent(d, { size: 20 }), indent: { left: indentLevel + 360 }, bullet: { level: 0 } })); });
+
+                    if (item.TableData && (mode === 'technical' || item.RawType === 'ImportWarehouseData')) {
+                        const tfHeader = new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: [createText(item.Headers[0], { bold: true, size: 18 })] })], shading: { fill: "E0E0E0" } }), new TableCell({ children: [new Paragraph({ children: [createText(item.Headers[1], { bold: true, size: 18 })] })], shading: { fill: "E0E0E0" } })] });
+                        const tfRows = item.TableData.map(t => new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: createContent(t.Col1, { size: 18 }) })] }), new TableCell({ children: [new Paragraph({ children: createContent(t.Col2, { size: 18 }) })] })] }));
+                        sections.push(new Paragraph({ text: "", spacing: { after: 100 } }));
+                        sections.push(new Table({ width: { size: 85, type: WidthType.PERCENTAGE }, indent: { size: indentLevel + 360, type: WidthType.DXA }, rows: [tfHeader, ...tfRows] }));
+                    }
+                });
+
+                const doc = new Document({ sections: [{ headers: { default: new Header({ children: [new Paragraph({ children: [createText("AFRG ETL Spec", { size: 16, color: "888888" })], alignment: AlignmentType.RIGHT })] }) }, footers: { default: new Footer({ children: [new Paragraph({ children: [new TextRun({ children: ["Page ", PageNumber.CURRENT], font: "Segoe UI", size: 18 })], alignment: AlignmentType.CENTER })] }) }, children: sections }] });
+                const blob = await Packer.toBlob(doc);
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a"); document.body.appendChild(a); a.href = url; a.download = `${metadata.Name}_${mode}_Spec.docx`; a.click(); document.body.removeChild(a);
+            }
+
+            // --- 4. Markdown Generator (For Clipboard) ---
+            function generateMarkdown(metadata, flowData, mode) {
+                const { executionFlow, schema, variables, variableSet } = flowData;
+                const lines = [];
+                lines.push(`# ${metadata.Name}`);
+                lines.push(`> ${metadata.Description}`);
+                lines.push(``);
+                if (variables.length > 0) {
+                    lines.push(`## Variables`);
+                    variables.forEach(v => lines.push(`- **${v.Name}**: ${v.Value}`));
+                    lines.push(``);
+                }
+                lines.push(`## Steps`);
+                executionFlow.forEach(item => {
+                    if (mode === 'business') {
+                        const ignore = ['PurgeTable', 'CreateTable', 'DeleteWarehouseData', 'DeleteTable'];
+                        if (ignore.includes(item.RawType) || !item.IsActive) return;
+                    }
+                    const indent = "  ".repeat(item.Depth);
+                    lines.push(`${indent}- **${item.Phase}: ${item.Step}**`);
+                    lines.push(`${indent}  Context: ${item.Context}`);
+                });
+                return lines.join('\n');
+            }
+
+            // --- 5. UI Interaction ---
+            const fileInput = document.getElementById('fileInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const fileCountDisplay = document.getElementById('fileCount');
+
+            function setMode(mode) {
+                currentMode = mode;
+                document.getElementById('btnBusiness').classList.toggle('active', mode === 'business');
+                document.getElementById('btnTechnical').classList.toggle('active', mode === 'technical');
+                document.getElementById('btnBusiness').classList.toggle('text-white', mode === 'business');
+                document.getElementById('btnTechnical').classList.toggle('text-white', mode === 'technical');
+
+                resultsContainer.innerHTML = '';
+                parsedFilesData.forEach((data, filename) => {
+                    const html = renderHTML(data.metadata, data.flowData, currentMode);
+                    createResultCard(filename, data.metadata, html);
+                });
+            }
+
+            fileInput.addEventListener('change', async (e) => {
+                const files = Array.from(e.target.files);
+                if (files.length === 0) return;
+                fileCountDisplay.textContent = `Processing ${files.length} file(s)...`;
+                fileCountDisplay.classList.remove('hidden');
+                resultsContainer.innerHTML = '';
+                parsedFilesData.clear();
+
+                for (const file of files) {
+                    try {
+                        const text = await file.text();
+                        const json = JSON.parse(text);
+                        const metadata = extractMetadata(json);
+                        const flowData = parseSteps(json);
+                        parsedFilesData.set(file.name, { metadata, flowData });
+                    } catch (err) {
+                        console.error(err);
+                        createErrorCard(file.name, "Invalid JSON structure.");
+                    }
+                }
+                setMode(currentMode);
+                fileCountDisplay.textContent = `Processed ${files.length} file(s).`;
+            });
+
+            function createResultCard(filename, metadata, htmlContent) {
+                const div = document.createElement('div');
+                div.className = "doc-paper transition-all duration-300";
+                div.innerHTML = `
+                <div class="bg-gray-50 border-b border-gray-100 px-6 py-3 flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-mono text-gray-400">${filename}</span>
+                    </div>
+                    <div class="space-x-2">
+                        <button onclick="copyToClipboard(this)" data-filename="${filename}" class="text-xs bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 px-3 py-1.5 rounded-md font-medium transition shadow-sm">Copy MD</button>
+                        <button onclick="triggerDocxDownload('${filename}')" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md font-medium transition shadow-sm flex items-center inline-flex"><span class="mr-1">⬇</span> DOCX</button>
+                    </div>
+                </div>
+                <div>${htmlContent}</div>
+            `;
+                resultsContainer.appendChild(div);
+            }
+
+            function createErrorCard(filename, msg) {
+                const div = document.createElement('div');
+                div.className = "bg-red-50 rounded-lg shadow-sm border border-red-200 p-4";
+                div.innerHTML = `<h3 class="font-bold text-red-800">${filename}</h3><p class="text-sm text-red-600">${msg}</p>`;
+                resultsContainer.appendChild(div);
+            }
+
+            window.triggerDocxDownload = function (filename) {
+                const data = parsedFilesData.get(filename);
+                if (data) downloadDocx(data.metadata, data.flowData, currentMode);
+            };
+
+            window.copyToClipboard = function (btn) {
+                const filename = btn.getAttribute('data-filename');
+                let textToCopy = "";
+                if (filename && parsedFilesData.has(filename)) {
+                    const data = parsedFilesData.get(filename);
+                    textToCopy = generateMarkdown(data.metadata, data.flowData, currentMode);
+                }
+
+                // Safe copy fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                textarea.style.position = 'fixed';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    const originalText = btn.innerText;
+                    btn.innerText = "Copied!";
+                    setTimeout(() => { btn.innerText = originalText; }, 2000);
+                } catch (err) {
+                    console.error('Fallback failed', err);
+                } finally {
+                    document.body.removeChild(textarea);
+                }
+            }
+        </script>
+    </body>
+
+</html>

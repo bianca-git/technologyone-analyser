@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfC2GenericVariable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <C2GenericVariable>
+    <VariableId>bf948801-4519-4cfd-a601-8fe1670d1f51</VariableId>
+    <Version>1</Version>
+    <OwnerId>79c6f76f-5326-4d0e-a06b-29587914b3a0</OwnerId>
+    <Name>VAR_REPORTTIME</Name>
+    <Description>Report Time</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue />
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>1</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;cff673b2-fdcb-485b-bc9e-cfe7be40fe58&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+</ArrayOfC2GenericVariable>

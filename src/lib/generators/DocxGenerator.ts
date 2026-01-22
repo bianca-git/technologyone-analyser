@@ -730,4 +730,255 @@ export class DocxGenerator {
         if (!attachments) return [];
         return Array.isArray(attachments) ? attachments : [attachments];
     }
+
+    // --- Dashboard DOCX Export ---
+    static async downloadDashboardDocx(id: number, _mode: 'business' | 'technical' = 'business') {
+        const dashboard = await db.dashboards.get(id);
+        if (!dashboard) throw new Error('Dashboard not found');
+
+        const content = dashboard.content;
+        const metadata = dashboard.metadata;
+        const sections: any[] = [];
+
+        // Helper
+        const getList = (obj: any) => Array.isArray(obj) ? obj : (obj ? [obj] : []);
+
+        // 1. Header
+        sections.push(new Paragraph({
+            children: [this.createText(metadata.name, { bold: true, size: 32 })],
+            heading: HeadingLevel.HEADING_1,
+            spacing: { after: 300 }
+        }));
+
+        // 2. Metadata Table
+        const metaRows = [
+            ["Owner", metadata.owner || '-'],
+            ["Folder", metadata.parentPath || '-'],
+            ["Last Modified", metadata.dateModified || '-'],
+            ["System ID", metadata.id || '-']
+        ];
+
+        sections.push(new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            rows: metaRows.map(r => new TableRow({
+                children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)]
+            }))
+        }));
+        sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+
+        // 3. Extract data
+        const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
+        const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef || []);
+        const dashLayout = content.Dashboard?.EntityDef?.Definition?.Dashboard || {};
+        const layoutItems = getList(dashLayout.Layout?.LayoutItem || []);
+
+        // 4. Executive Summary
+        const slicerCount = visualizations.filter((v: any) => v.EntitySubType === 'SLICER').length;
+        const tableCount = visualizations.filter((v: any) => v.EntitySubType === 'TABLE').length;
+        const chartCount = visualizations.filter((v: any) => v.EntitySubType === 'CHART').length;
+        const dmCount = new Set(visualizations.map((v: any) => v.AttributeString1)).size;
+
+        sections.push(new Paragraph({ 
+            children: [this.createText("Executive Summary", { bold: true, size: 28 })], 
+            heading: HeadingLevel.HEADING_2, 
+            spacing: { after: 150 } 
+        }));
+        sections.push(new Paragraph({ 
+            children: [this.createText(
+                `This dashboard contains ${visualizations.length} widgets (${slicerCount} slicers, ${tableCount} tables, ${chartCount} charts) sourced from ${dmCount} data models.`, 
+                { italic: true }
+            )], 
+            spacing: { after: 300 } 
+        }));
+
+        // 5. Layout Diagram (ASCII)
+        sections.push(new Paragraph({ 
+            children: [this.createText("Layout Diagram", { bold: true, size: 28 })], 
+            heading: HeadingLevel.HEADING_2, 
+            spacing: { after: 150 } 
+        }));
+
+        if (layoutItems.length > 0) {
+            // Build simple ASCII grid
+            let maxX = 0, maxY = 0;
+            layoutItems.forEach((item: any) => {
+                maxX = Math.max(maxX, (item.X || 0) + (item.Width || 1));
+                maxY = Math.max(maxY, (item.Y || 0) + (item.Height || 1));
+            });
+
+            const normalizeRow = (y: number) => Math.floor((y || 0) / 100);
+            const maxRow = normalizeRow(maxY);
+            const widgetMap = new Map(visualizations.map((v: any) => [v.GenericEntityId, v]));
+
+            const grid: (string | null)[][] = Array(maxRow + 1).fill(null).map(() => Array(12).fill(null));
+
+            layoutItems.forEach((item: any) => {
+                const widget = widgetMap.get(item.Id);
+                const x = item.X || 0;
+                const row = normalizeRow(item.Y || 0);
+                const width = Math.min(item.Width || 1, 12 - x);
+
+                if (row <= maxRow && width > 0) {
+                    const label = `${widget?.Description || 'Widget'} [${widget?.EntitySubType || 'N/A'}]`.substring(0, 20);
+                    for (let col = x; col < Math.min(x + width, 12); col++) {
+                        grid[row][col] = label;
+                    }
+                }
+            });
+
+            let diagram = '┌' + Array(12).fill('────────┬').slice(0, -1).join('') + '────────┐\n';
+            for (let row = 0; row <= maxRow; row++) {
+                diagram += '│';
+                for (let col = 0; col < 12; col++) {
+                    const cell = grid[row][col] || '';
+                    diagram += ` ${cell.padEnd(6)} │`;
+                }
+                diagram += '\n';
+                if (row < maxRow) {
+                    diagram += '├' + Array(12).fill('────────┼').slice(0, -1).join('') + '────────┤\n';
+                }
+            }
+            diagram += '└' + Array(12).fill('────────┴').slice(0, -1).join('') + '────────┘';
+
+            sections.push(new Paragraph({
+                children: [this.createText(diagram, { font: "Courier New", size: 16 })],
+                spacing: { after: 300 }
+            }));
+        } else {
+            sections.push(new Paragraph({
+                children: [this.createText("No widgets defined", { italic: true })],
+                spacing: { after: 300 }
+            }));
+        }
+
+        // 6. Widget Inventory
+        if (visualizations.length > 0) {
+            sections.push(new Paragraph({ 
+                children: [this.createText("Widget Inventory", { bold: true, size: 28 })], 
+                heading: HeadingLevel.HEADING_2, 
+                spacing: { after: 150 } 
+            }));
+
+            const wHeader = new TableRow({
+                children: [
+                    this.createHeaderCell("Name"),
+                    this.createHeaderCell("Type"),
+                    this.createHeaderCell("Data Model"),
+                    this.createHeaderCell("Filters")
+                ]
+            });
+
+            const wRows = visualizations.map((v: any) => {
+                const filterCount = this.countWidgetFilters(v.AttributeText1);
+                const dmId = v.AttributeString1 ? v.AttributeString1.substring(0, 8) + '...' : '-';
+                return new TableRow({
+                    children: [
+                        this.createCell(v.Description || 'Unnamed', { bold: true }),
+                        this.createCell(v.EntitySubType || 'N/A'),
+                        this.createCell(dmId, { size: 18 }),
+                        this.createCell(filterCount > 0 ? filterCount.toString() : '-')
+                    ]
+                });
+            });
+
+            sections.push(new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [wHeader, ...wRows]
+            }));
+            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        }
+
+        // 7. Variables
+        if (variables.length > 0) {
+            sections.push(new Paragraph({ 
+                children: [this.createText("Variables", { bold: true, size: 28 })], 
+                heading: HeadingLevel.HEADING_2, 
+                spacing: { after: 150 } 
+            }));
+
+            const vHeader = new TableRow({
+                children: [
+                    this.createHeaderCell("Name"),
+                    this.createHeaderCell("Type"),
+                    this.createHeaderCell("Default Value"),
+                    this.createHeaderCell("List Source")
+                ]
+            });
+
+            const typeMap: Record<string, string> = {
+                'A': 'String', 'L': 'Boolean', 'N': 'Numeric', 'D': 'Date', 'I': 'Integer', 'F': 'Float'
+            };
+
+            const vRows = variables.map((v: any) => new TableRow({
+                children: [
+                    this.createCell(v.Name || '-', { bold: true }),
+                    this.createCell(typeMap[v.VariableType || ''] || v.VariableType || '-'),
+                    this.createCell(v.DefaultValue || '-'),
+                    this.createCell(v.SelectionTypeListType || v.ListType || '-')
+                ]
+            }));
+
+            sections.push(new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [vHeader, ...vRows]
+            }));
+            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        }
+
+        // 8. Data Model Dependencies
+        const dmIds = Array.from(new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean)));
+        if (dmIds.length > 0) {
+            sections.push(new Paragraph({ 
+                children: [this.createText("Data Model Dependencies", { bold: true, size: 28 })], 
+                heading: HeadingLevel.HEADING_2, 
+                spacing: { after: 150 } 
+            }));
+
+            const dHeader = new TableRow({
+                children: [
+                    this.createHeaderCell("Data Model"),
+                    this.createHeaderCell("ID"),
+                    this.createHeaderCell("Status")
+                ]
+            });
+
+            const dRows = dmIds.map((id: any) => {
+                const foundDM = visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription;
+                const dmName = foundDM || '-';
+                return new TableRow({
+                    children: [
+                        this.createCell(dmName, { bold: true }),
+                        this.createCell(id.substring(0, 12) + '...', { size: 18 }),
+                        this.createCell('Not in library')
+                    ]
+                });
+            });
+
+            sections.push(new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [dHeader, ...dRows]
+            }));
+        }
+
+        // Create and download document
+        const doc = new Document({ sections: [{ children: sections }] });
+        const blob = await Packer.toBlob(doc);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${metadata.name}-dashboard.docx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    private static countWidgetFilters(criteriaText: any): number {
+        if (!criteriaText) return 0;
+        const criteria = criteriaText.CriteriaSetItem;
+        if (!criteria) return 0;
+        const values = criteria.CriteriaValues?.CriteriaValue;
+        if (!values) return 0;
+        return Array.isArray(values) ? values.length : 1;
+    }
 }

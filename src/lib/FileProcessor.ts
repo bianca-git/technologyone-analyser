@@ -3,6 +3,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { db } from './db';
 
 import { DataModelParser } from './parsers/DataModelParser';
+import { DashboardParser } from './parsers/DashboardParser';
 
 const parser = new XMLParser({
     ignoreAttributes: false,
@@ -42,6 +43,10 @@ export class FileProcessor {
 
         if (file.name.toLowerCase().endsWith('.t1dm')) {
             return this.processDataModel(file);
+        }
+
+        if (file.name.toLowerCase().endsWith('.t1db')) {
+            return this.processDashboard(file);
         }
 
         // 1. Unzip
@@ -166,6 +171,35 @@ export class FileProcessor {
         });
 
         console.log(`Saved Data Model ${id} to DB`);
+        return id as number;
+    }
+
+    private static async processDashboard(file: File): Promise<number> {
+        const content = await DashboardParser.parse(file);
+
+        // Extract metadata from Dashboard.xml
+        const dashDef = content.Dashboard?.EntityDef || {};
+
+        // Name: Use Description as the primary name
+        const name = dashDef.Description || file.name.replace(/\.t1db$/i, '');
+
+        const metadata = {
+            name: name,
+            id: dashDef.GenericEntityId || 'N/A',
+            description: dashDef.Description || '',
+            owner: dashDef.Owner || 'Unknown',
+            parentPath: dashDef.ParentFileItemPath || '',
+            dateModified: new Date().toISOString()
+        };
+
+        const id = await db.dashboards.add({
+            filename: file.name,
+            metadata,
+            content, // Parsed JSON of all XMLs
+            dateAdded: new Date()
+        });
+
+        console.log(`Saved Dashboard ${id} to DB`);
         return id as number;
     }
 }

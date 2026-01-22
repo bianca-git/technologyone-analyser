@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProcess xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Process>
+    <ProcessId>a181cf82-fa18-4ea2-89cc-1f761092cc9e</ProcessId>
+    <Version>16</Version>
+    <Status>P</Status>
+    <ProcessType>$ETL</ProcessType>
+    <Name>AFRG_I&amp;E_CORE_DATA</Name>
+    <Description>AFRG Core Data</Description>
+    <LoggingMode>D</LoggingMode>
+    <ErrorHandling>N</ErrorHandling>
+    <Narration>Scheduled ETL Process to extract periodic GL balances by Natural Accounts from &lt;GLF_LDG_ACCT_PBAL&gt; table ARFG_Balances_Raw</Narration>
+    <VersionNarration>Published by BWILKINS on 24-Nov-2025 23:18:38</VersionNarration>
+    <BaseVersion>0</BaseVersion>
+    <Category />
+    <Owner>BWILKINS</Owner>
+    <ExecuteSuite>CES</ExecuteSuite>
+    <ParentFileItemPath>/Data/AFRG/ETLs</ParentFileItemPath>
+  </Process>
+</ArrayOfProcess>

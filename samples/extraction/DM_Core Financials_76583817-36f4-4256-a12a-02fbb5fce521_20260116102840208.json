@@ -1,0 +1,1820 @@
+{
+  "DataModel": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "DataModelDef": {
+      "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+      "Description": "Core Financials",
+      "Notes": "",
+      "Category": "",
+      "ParentEntityCode": "",
+      "EntityCode": "",
+      "Definition": {
+        "?xml": {
+          "@_version": "1.0",
+          "@_encoding": "utf-8"
+        },
+        "DataModelDefinition": {
+          "DefKey": "01746227-dc93-41cf-b181-8d5cef68f666",
+          "DetailViews": {
+            "DetailView": {
+              "DetailViewName": "VIEW1",
+              "Description": "Drilldown",
+              "IsDefault": false,
+              "Columns": {
+                "DetailViewColumnItem": [
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "LDG_NAME",
+                    "Sequence": 0,
+                    "Description": "Ledger Name",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "PERIOD",
+                    "Sequence": 1,
+                    "Description": "Period",
+                    "Width": 100,
+                    "Format": "#,##0;-#,##0",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "BAL_AMT1",
+                    "Sequence": 2,
+                    "Description": "Amount",
+                    "Width": 100,
+                    "Format": "#,##0.00;-#,##0.00",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "COSTCEN",
+                    "Sequence": 3,
+                    "Description": "Cost Centre",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "A1_SGRP",
+                    "Sequence": 4,
+                    "Description": "A1 Service Group",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "A1_STYPE",
+                    "Sequence": 5,
+                    "Description": "A1 Service Type",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "A1_SERV",
+                    "Sequence": 6,
+                    "Description": "A1 Service",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "ACTIVITY",
+                    "Sequence": 7,
+                    "Description": "Activity Code",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "NATACCT",
+                    "Sequence": 8,
+                    "Description": "Natural Account",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "RPT_SUM",
+                    "Sequence": 9,
+                    "Description": "Report Summary",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  },
+                  {
+                    "DetailViewName": "VIEW1",
+                    "ColumnName": "RPT_DET",
+                    "Sequence": 10,
+                    "Description": "Report Detail",
+                    "Width": 200,
+                    "Format": "",
+                    "ApplyColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "BackgroundColour": {
+                      "@_IsAssigned": "false"
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": "false"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Indexes": {
+            "Index": [
+              {
+                "ExplicitKey": {
+                  "#text": "IDX1",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "IndexName": "IDX1",
+                "Description": "Index 1",
+                "Columns": {
+                  "IndexColumnItem": {
+                    "ColumnName": {
+                      "#text": "LDG_NAME",
+                      "@_Description": "Ledger Name"
+                    }
+                  }
+                }
+              },
+              {
+                "ExplicitKey": {
+                  "#text": "IDX2",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "IndexName": "IDX2",
+                "Description": "Index 2",
+                "Columns": {
+                  "IndexColumnItem": {
+                    "ColumnName": {
+                      "#text": "PERIOD",
+                      "@_Description": "Period"
+                    }
+                  }
+                }
+              },
+              {
+                "ExplicitKey": {
+                  "#text": "IDX3",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "IndexName": "IDX3",
+                "Description": "Index 3",
+                "Columns": {
+                  "IndexColumnItem": {
+                    "ColumnName": {
+                      "#text": "COSTCEN",
+                      "@_Description": "Cost Centre"
+                    }
+                  }
+                }
+              },
+              {
+                "ExplicitKey": {
+                  "#text": "IDX4",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "IndexName": "IDX4",
+                "Description": "Index 4",
+                "Columns": {
+                  "IndexColumnItem": {
+                    "ColumnName": {
+                      "#text": "ACTIVITY",
+                      "@_Description": "Activity Code"
+                    }
+                  }
+                }
+              },
+              {
+                "ExplicitKey": {
+                  "#text": "IDX5",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "IndexName": "IDX5",
+                "Description": "Index 5",
+                "Columns": {
+                  "IndexColumnItem": {
+                    "ColumnName": {
+                      "#text": "NATACCT",
+                      "@_Description": "Natural Account"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "ProcessingPreferences": {
+            "DefKey": "c507102e-f3fb-4e6e-8ac8-b90da5c1e5f5",
+            "DeleteStorageMethod": "Auto"
+          },
+          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+        }
+      },
+      "ProcessMode": "Stored",
+      "Owner": "BWILKINS",
+      "OwnerType": "",
+      "ReportingSystem": "$DEFAULT",
+      "DataSourceStatus": "Available",
+      "ParentFileItemPath": "/Data/AFRG/Datamodels",
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Queries": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQuery": {
+      "Query": {
+        "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+        "QueryName": "QRY_COREFIN",
+        "QueryType": "Run",
+        "Sequence": 2,
+        "Description": "Core Financial Data for I&E Report",
+        "Notes": "",
+        "Criteria": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "CriteriaSetItem": {
+            "DefKey": "57d2f82e-76d2-419d-9be4-45c4f380d848",
+            "CriteriaValues": {
+              "CriteriaValue": [
+                {
+                  "DefKey": "5b97ab09-24b3-4e2d-b342-e5f52844b3a3",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "CFD_BAL_AMT1",
+                  "Operator": {
+                    "Value": "NotEquals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": 0,
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "OR"
+                },
+                {
+                  "DefKey": "3b154dc9-6554-4f26-9048-16c436bf8767",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "NA_RPT_SUM_DESCR",
+                  "Operator": {
+                    "Value": "NotEquals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "Not Applicable",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "OR"
+                }
+              ]
+            },
+            "SetName": {
+              "@_IsAssigned": "false"
+            },
+            "Link": "AND",
+            "NestedSets": "",
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "ExtendedSql": "",
+        "Definition": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "QueryDefinition": {
+            "DefKey": "b393e1e0-3600-4cd7-b1e4-99cc49875f5e",
+            "OptimiseJoins": false,
+            "ConsolidationList": "",
+            "SortList": "",
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "Suite": "CES",
+        "UseDefaultSuite": false,
+        "IsActive": true,
+        "PageResult": false,
+        "PageSize": 0,
+        "OutputLimit": 0,
+        "ReplaceNullsWithDefaults": false,
+        "ApplyDistinct": false
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryColumns": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryColumn": {
+      "QueryColumn": [
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "LDG_NAME",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Ledger Name",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "LDG_NAME",
+          "Sequence": 1,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "PERIOD",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Period",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "PERIOD",
+          "Sequence": 2,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 10,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "BAL_AMT1",
+          "ColumnType": "Sum",
+          "DataType": "Decimal",
+          "Description": "Amount",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "BAL_AMT1",
+          "Sequence": 3,
+          "Format": "#,##0.00;-#,##0.00",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "b43b039e-715a-45ec-898f-73cbf71222f6",
+              "CriteriaValues": "",
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "COSTCEN",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Cost Centre",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "COSTCEN",
+          "Sequence": 5,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "COSTCEN_DESC",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "COSTCEN_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Cost Centre Description",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "DESCR1",
+          "Sequence": 6,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_SGRP",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Group",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_SGRP",
+          "Sequence": 7,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "A1_SGRP_DESC",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_SGRP_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Group Description",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_SGRP_DESC",
+          "Sequence": 8,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_STYPE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Type",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_STYP",
+          "Sequence": 9,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "A1_STYPE_DESC",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_STYPE_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Type Description",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_STYPE_DESC",
+          "Sequence": 10,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_SERV",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_SERV",
+          "Sequence": 11,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "A1_SERV_DESC",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "A1_SERV_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "A1 Service Description",
+          "DataSourceName": "CC",
+          "Category": "General",
+          "FieldId": "A1_SERV_DESC",
+          "Sequence": 12,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "ACTIVITY",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Activity Code",
+          "DataSourceName": "AC",
+          "Category": "General",
+          "FieldId": "ACTIVITY",
+          "Sequence": 13,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "ACTIVITY_DESCR",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "ACTIVITY_DESCR",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Activity Code Description",
+          "DataSourceName": "AC",
+          "Category": "General",
+          "FieldId": "DESCR1",
+          "Sequence": 14,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "NATACCT",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Natural Account",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "NATACCT",
+          "Sequence": 15,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "NATACCT_DESCR",
+          "DescriptionColumnFormat": "CodeDescription",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "NATACCT_DESCR",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Natural Account Description",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "DESCR1",
+          "Sequence": 16,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_SUM",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Summary",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "REP_SUM",
+          "Sequence": 17,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "RPT_SUM_DESCR",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_SUM_DESCR",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Reporting Summary Description",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "RPT_SUM_DESCR",
+          "Sequence": 18,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_DET",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Detail",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "REP_DET",
+          "Sequence": 19,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "RPT_DET_DESCR",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_DET_DESCR",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Reporting Detail Description",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "RPT_DET_DESCR",
+          "Sequence": 20,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "PERIOD_LABEL",
+          "ColumnType": "Expression",
+          "DataType": "String",
+          "Description": "Period Label",
+          "DataSourceName": "",
+          "Category": "",
+          "FieldId": "",
+          "Sequence": 22,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "Case([PERIOD], 0,'Period 0 (Opening Balances)',1,'Period 1 (July)',2,'Period 2 (August)',3,'Period 3 (September)',4,'Period 4 (October)',5,'Period 5 (November)',6,'Period 6 (December)',7,'Period 7 (January)',8,'Period 8 (February)',9,'Period 9 (March)',10,'Period 10 (April)',11,'Period 11 (May)',12,'Period 12 (June)',13,'Period 13 (End of Year)','')",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "AMT_ACTUALS",
+          "ColumnType": "Sum",
+          "DataType": "Decimal",
+          "Description": "Actuals",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "BAL_AMT1",
+          "Sequence": 24,
+          "Format": "#,##0.00;(#,##0.00)",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "0154c678-a695-4139-a1a8-1e72febe4342",
+              "CriteriaValues": {
+                "CriteriaValue": {
+                  "DefKey": "d889351f-5f4c-4195-ad29-5f79db08fd08",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "CFD_LDG_TYPE",
+                  "Operator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "ACT",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "AND"
+                }
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "AMT_BUDGET",
+          "ColumnType": "Sum",
+          "DataType": "Decimal",
+          "Description": "Budget",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "BAL_AMT1",
+          "Sequence": 25,
+          "Format": "#,##0.00;(#,##0.00)",
+          "Alignment": "Right",
+          "ColumnIndex": 0,
+          "MaxLength": 18,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "CriteriaSetItem": {
+              "DefKey": "13bfe27d-c02b-4c3b-b973-1268e1a2ba9c",
+              "CriteriaValues": {
+                "CriteriaValue": {
+                  "DefKey": "cfe70539-05b4-408f-a589-7ceca9c9f31f",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "CFD_LDG_TYPE",
+                  "Operator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "BUD",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "AND"
+                }
+              },
+              "SetName": {
+                "@_IsAssigned": "false"
+              },
+              "Link": "AND",
+              "NestedSets": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_SECTION",
+          "ColumnType": "Display",
+          "DataType": "Long",
+          "Description": "Report Section",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "RPT_SECTION",
+          "Sequence": 26,
+          "Format": "#,##0;-#,##0",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 10,
+          "DecimalPlaces": 2,
+          "DescriptionColumnName": "RPT_SECTION_DESC",
+          "DescriptionColumnFormat": "Description",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 100,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": true,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "Sum",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "RPT_SECTION_DESC",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Report Section Description",
+          "DataSourceName": "NA",
+          "Category": "General",
+          "FieldId": "RPT_SECTION_DESC",
+          "Sequence": 27,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "LDG_TYPE",
+          "ColumnType": "Display",
+          "DataType": "String",
+          "Description": "Ledger Type",
+          "DataSourceName": "CFD",
+          "Category": "General",
+          "FieldId": "LDG_TYPE",
+          "Sequence": 28,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "",
+          "Criteria": {}
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "ColumnName": "FY",
+          "ColumnType": "Expression",
+          "DataType": "",
+          "Description": "Fiscal Year",
+          "DataSourceName": "",
+          "Category": "",
+          "FieldId": "",
+          "Sequence": 29,
+          "Format": "",
+          "Alignment": "",
+          "ColumnIndex": 0,
+          "MaxLength": 80,
+          "DecimalPlaces": 0,
+          "DescriptionColumnName": "",
+          "DescriptionColumnFormat": "",
+          "ColourSourceType": "",
+          "FillColour": "",
+          "TextColour": "",
+          "FillColourColumnName": "",
+          "TextColourColumnName": "",
+          "Definition": {},
+          "Width": 200,
+          "IsVisible": true,
+          "IsFrozen": false,
+          "IsDefault": false,
+          "IsCalculate": false,
+          "AggregateType": "",
+          "SummaryType": "",
+          "Expression": "'FY'+ToText(ToNumber(Left([LDG_NAME],2))-1)+'/'+Left([LDG_NAME],2)",
+          "Criteria": {}
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryJoins": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryJoin": {
+      "QueryJoin": [
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "Sequence": 1,
+          "DataSource1": "CFD",
+          "Field1": "COSTCEN",
+          "DataSource2": "CC",
+          "Field2": "COSTCEN",
+          "JoinType": "LeftOuterOptional",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "d7626ddc-e50c-49f0-b11e-bec85d1b44a0",
+                "ColumnId1": {
+                  "Value": "COSTCEN",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "COSTCEN",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "Sequence": 2,
+          "DataSource1": "CFD",
+          "Field1": "ACTIVITY",
+          "DataSource2": "AC",
+          "Field2": "ACTIVITY",
+          "JoinType": "LeftOuterOptional",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "882c58db-1064-4f46-8219-bb987e077026",
+                "ColumnId1": {
+                  "Value": "ACTIVITY",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "ACTIVITY",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "Sequence": 3,
+          "DataSource1": "CFD",
+          "Field1": "NATACCT",
+          "DataSource2": "NA",
+          "Field2": "NATACCT",
+          "JoinType": "LeftOuterOptional",
+          "JoinSql": "",
+          "Criteria": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "ArrayOfJoinCriterion": {
+              "JoinCriterion": {
+                "DefKey": "4a877e64-a4b2-4baf-9826-fd72272b8637",
+                "ColumnId1": {
+                  "Value": "NATACCT",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ColumnId2": {
+                  "Value": "NATACCT",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "LogicalOperator": {
+                  "Value": "AND",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperator": {
+                  "Value": "Equals",
+                  "IsAssigned": true,
+                  "IsNull": false
+                },
+                "ComparisonOperatorAndValue": {
+                  "Value": "",
+                  "IsAssigned": false,
+                  "IsNull": true
+                },
+                "InheritJoinType": {
+                  "Value": false,
+                  "IsAssigned": false,
+                  "IsNull": false
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "QueryDatasources": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfQueryDatasource": {
+      "QueryDatasource": [
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "AC",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_B_ACTCODES_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "CORE",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "CC",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_B_COSTCEN_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "CORE",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "CFD",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_B_BALANCES_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "CORE",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "COM",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_B_COMMENTS"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "CORE",
+          "IncludeFields": false
+        },
+        {
+          "DataModelId": "76583817-36f4-4256-a12a-02fbb5fce521",
+          "QueryName": "QRY_COREFIN",
+          "DataSourceId": "f2d14339-a766-475a-af99-6356f964054d",
+          "DataSourceName": "NA",
+          "DataSourceType": "Warehouse",
+          "AnalyserItemService": "T1.Warehouse.Compatibility.Table.TableDataAnalyserItemService,T1.Warehouse.Compatibility",
+          "AnalyserItemParameters": "T1.Warehouse.Compatibility.Table.TableAnalyserItemParameters,T1.Warehouse.Compatibility",
+          "ParameterValues": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "Parameters": {
+              "ParameterField": [
+                {
+                  "FieldName": "SuiteId",
+                  "Value": ""
+                },
+                {
+                  "FieldName": "Suite",
+                  "Value": "CES"
+                },
+                {
+                  "FieldName": "WarehouseName",
+                  "Value": "AFRG"
+                },
+                {
+                  "FieldName": "TableName",
+                  "Value": "AFRG_B_NATACCT_RAW"
+                }
+              ],
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "EntityCode": "",
+          "ProductCode": "CORE",
+          "IncludeFields": false
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Variables": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfVariableDef": {
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

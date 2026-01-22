@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfStep xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>2</StepId>
+    <StepType>ExportToExcel</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;6e211566-efad-4372-85b5-f89114fd5e40&lt;/DefKey&gt;
+  &lt;ExportMemoryTableName&gt;TEMP_TRANSACTIONS&lt;/ExportMemoryTableName&gt;
+  &lt;FileLocation Description="User Area"&gt;USER AREA&lt;/FileLocation&gt;
+  &lt;FileName Description="FPR_Transactions.xlsx"&gt;FPR_Transactions.xlsx&lt;/FileName&gt;
+  &lt;SheetName&gt;Sheet1&lt;/SheetName&gt;
+  &lt;DeleteExistingFile&gt;true&lt;/DeleteExistingFile&gt;
+  &lt;AppendToExistingFile&gt;false&lt;/AppendToExistingFile&gt;
+  &lt;UpdateExistingSheet&gt;false&lt;/UpdateExistingSheet&gt;
+  &lt;EnableFileHeader&gt;true&lt;/EnableFileHeader&gt;
+  &lt;ColumnHeaderType Description="Column names as column headers"&gt;Y&lt;/ColumnHeaderType&gt;
+  &lt;HeaderTextItems /&gt;
+  &lt;ColumnOverrideTitleItems /&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Export To Excel</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>3</StepId>
+    <StepType>SendEmail</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;ecf5c519-cfc0-459f-98d1-cc3cf721eea8&lt;/DefKey&gt;
+  &lt;SendTo&gt;financebi@salvationarmy.org.au&lt;/SendTo&gt;
+  &lt;CarbonCopyTo&gt;&lt;/CarbonCopyTo&gt;
+  &lt;SubjectLine&gt;FPR Transactions from {&amp;amp;VAR_REPORTDATE} {&amp;amp;VAR_REPORTTIME}&lt;/SubjectLine&gt;
+  &lt;EmailMessage&gt;&amp;lt;p&amp;gt;Transactions&amp;amp;nbsp;for {&amp;amp;amp;VAR_A1_STYPE}&amp;lt;/p&amp;gt;&lt;/EmailMessage&gt;
+  &lt;ShouldUseEmailConfiguration&gt;false&lt;/ShouldUseEmailConfiguration&gt;
+  &lt;ConfigurationName&gt;&lt;/ConfigurationName&gt;
+  &lt;ShouldOverrideFromAddress&gt;false&lt;/ShouldOverrideFromAddress&gt;
+  &lt;AlternateFromAddress&gt;&lt;/AlternateFromAddress&gt;
+  &lt;AlternateFromName&gt;&lt;/AlternateFromName&gt;
+  &lt;SendEmailAttachmentConfigItems&gt;
+    &lt;SendEmailAttachmentConfigItem&gt;
+      &lt;DefKey&gt;5015e953-2962-42c7-adf7-06c394731f3a&lt;/DefKey&gt;
+      &lt;FileLocation&gt;USER AREA&lt;/FileLocation&gt;
+      &lt;FileMask&gt;FPR_Transactions.xlsx&lt;/FileMask&gt;
+    &lt;/SendEmailAttachmentConfigItem&gt;
+  &lt;/SendEmailAttachmentConfigItems&gt;
+  &lt;EnableResources&gt;false&lt;/EnableResources&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Send Email</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>5</StepId>
+    <StepType>LoadTextFile</StepType>
+    <ParentStepId>9</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;6db3f322-9a65-4f88-9d8e-20f5ffca0f24&lt;/DefKey&gt;
+  &lt;FileLocation Description="User Area"&gt;USER AREA&lt;/FileLocation&gt;
+  &lt;FileName Description="DateTime.txt"&gt;DateTime.txt&lt;/FileName&gt;
+  &lt;StartAt Description="Start of file"&gt;S&lt;/StartAt&gt;
+  &lt;StartCondition&gt;&lt;/StartCondition&gt;
+  &lt;StopAt Description="End of file"&gt;E&lt;/StopAt&gt;
+  &lt;StopCondition&gt;&lt;/StopCondition&gt;
+  &lt;IncludeLineNumber&gt;false&lt;/IncludeLineNumber&gt;
+  &lt;FileEncoding&gt;PRC&lt;/FileEncoding&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>VAR_DATETIME</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;048063d2-1a9e-475c-b3e5-e168409b1257&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;3c7ff29a-3030-45a6-8e18-757d900c4719&lt;/DefKey&gt;
+      &lt;ColumnName&gt;DATA&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Load Text File</Name>
+    <Description>Load Existing DateTime</Description>
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>7</StepId>
+    <StepType>SetVariable</StepType>
+    <ParentStepId>9</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;1f67c429-35b5-4733-8256-3303351757b3&lt;/DefKey&gt;
+  &lt;VariableName Description="Time from"&gt;VAR_REPORTTIME&lt;/VariableName&gt;
+  &lt;UseMemoryTable&gt;true&lt;/UseMemoryTable&gt;
+  &lt;InputTableName&gt;VAR_DATETIME&lt;/InputTableName&gt;
+  &lt;Expression&gt;ToNumber(Right([DATA],6))&lt;/Expression&gt;
+  &lt;FilterCriteria&gt;
+    &lt;DefKey&gt;09565af9-2bc3-4545-b916-131fb1dc028f&lt;/DefKey&gt;
+    &lt;CriteriaValues /&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/FilterCriteria&gt;
+  &lt;DefaultsWhenNoRecords&gt;false&lt;/DefaultsWhenNoRecords&gt;
+  &lt;AlwaysLogFullValue&gt;true&lt;/AlwaysLogFullValue&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>VAR_REPORTTIME</OutputTableName>
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Set Time Variable</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>8</StepId>
+    <StepType>SaveText</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;0d8ac72d-1e0b-4166-af02-52bdfe8fffe4&lt;/DefKey&gt;
+  &lt;FileLocation Description="User Area"&gt;USER AREA&lt;/FileLocation&gt;
+  &lt;FileName Description="DateTime.txt"&gt;DateTime.txt&lt;/FileName&gt;
+  &lt;FileWriteOption Description="Delete existing file"&gt;REPLACE&lt;/FileWriteOption&gt;
+  &lt;Content&gt;{&amp;amp;TIMESTAMP}&lt;/Content&gt;
+  &lt;EnableDecoding&gt;false&lt;/EnableDecoding&gt;
+  &lt;DecodeType&gt;&lt;/DecodeType&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Save Text</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>9</StepId>
+    <StepType>Group</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;e1356fca-9975-4ebd-bd6f-7946b1531266&lt;/ExplicitKey&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Get and Set Variables</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>10</StepId>
+    <StepType>RunDatasourceQuery</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;
+    &lt;Field Name="CommonStepDetails_RQDSPChartName"&gt;
+      &lt;Value AssemblyQualifiedTypeName="System.String"&gt;
+        &lt;string xmlns=""&gt;GLCHART&lt;/string&gt;
+      &lt;/Value&gt;
+      &lt;FieldDef AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldDefinition`1[[System.String]]"&gt;
+        &lt;ValueObjectFieldDefinitionOfString xmlns=""&gt;
+          &lt;TranslateCrlf&gt;true&lt;/TranslateCrlf&gt;
+          &lt;AvailableInInstallation&gt;false&lt;/AvailableInInstallation&gt;
+          &lt;BaseFieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/BaseFieldType&gt;
+          &lt;Category AssemblyQualifiedTypeName="System.String"&gt;
+            &lt;string&gt;T1.CoreLib.Business.Common.Text.GenericCategories+General, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/string&gt;
+          &lt;/Category&gt;
+          &lt;EmptyValue /&gt;
+          &lt;FieldId AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.Fields.DynamicFieldId`1[[System.String]]"&gt;
+            &lt;DynamicFieldIdOfString&gt;
+              &lt;FieldName&gt;CommonStepDetails_RQDSPChartName&lt;/FieldName&gt;
+            &lt;/DynamicFieldIdOfString&gt;
+          &lt;/FieldId&gt;
+          &lt;FieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/FieldType&gt;
+          &lt;HasCharacterCasing&gt;true&lt;/HasCharacterCasing&gt;
+          &lt;MaxLength&gt;255&lt;/MaxLength&gt;
+        &lt;/ValueObjectFieldDefinitionOfString&gt;
+      &lt;/FieldDef&gt;
+      &lt;Description AssemblyQualifiedTypeName="System.String"&gt;
+        &lt;string xmlns=""&gt;General Ledger Chart&lt;/string&gt;
+      &lt;/Description&gt;
+    &lt;/Field&gt;
+  &lt;/DynamicFields&gt;
+  &lt;DefKey&gt;cf07bc4e-9970-4866-9735-c78e031e424d&lt;/DefKey&gt;
+  &lt;DataSource Description="Transactions (Financial System Administration)"&gt;7f09c258-8b0e-40a8-851d-9d49c0ba6215&lt;/DataSource&gt;
+  &lt;DataSourceSuite Description="Core Enterprise Suite"&gt;CES&lt;/DataSourceSuite&gt;
+  &lt;RecordFlaggingEnabled&gt;false&lt;/RecordFlaggingEnabled&gt;
+  &lt;StoreTimeFieldsAsStrings&gt;false&lt;/StoreTimeFieldsAsStrings&gt;
+  &lt;DataSourceParameters&gt;
+    &lt;DataSourceParameterItem&gt;
+      &lt;DefKey&gt;948868b2-378c-465f-b175-eb4bf0126d06&lt;/DefKey&gt;
+      &lt;DataSourceParameterName&gt;ChartName&lt;/DataSourceParameterName&gt;
+      &lt;DataSourceParameterValue&gt;GLCHART&lt;/DataSourceParameterValue&gt;
+    &lt;/DataSourceParameterItem&gt;
+  &lt;/DataSourceParameters&gt;
+  &lt;Columns&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;f7ece04d-769e-43e7-bbbd-cf46f3ed0dcc&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger_Name&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1La_LedgerName]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;f68ac36f-22ae-475a-84e8-19f76bc85d74&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;6725989f-bbf3-4fe4-be35-7b447942e4d9&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account_Number&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1La_AccountNumberInternal]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;c83f7d80-199d-4827-ac49-d7db612830f6&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;380f5284-700e-44e4-b194-f55efa7d90a4&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Entity&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lad1_AccountComponent1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;6e9cdb4d-4604-4da6-9430-9df15bee5f4c&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;53498f12-f5ec-4c04-ad0f-e8413a7c96f0&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Cost_Centre&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lad1_AccountComponent2]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;ba3c4527-fb62-485d-8a62-1279ca7e1391&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;83896dcc-6dd0-40d2-8c27-4537e138ca3c&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Activity&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lad1_AccountComponent3]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;a72605bf-4b63-4f5e-b87c-d1f287392d25&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;e01e577e-a0cd-4cba-87d6-0a14029279a9&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lad1_AccountComponent5]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;3a10a316-6c30-4101-89b8-fc4a542673da&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;fdb6da07-65fc-4c13-af0e-4f826b0bcd21&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Trans_Nbr&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_TransactionNumber]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DEC&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;c329c0d8-b97f-401a-85e6-601e879262f7&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;eef9bc6f-1223-4169-8dd3-5bd5351470d3&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_Period]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;INT&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;61a1dec0-15cd-4ec6-905f-1e7dfe56dcd2&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;e2b1cb15-698d-4fda-bd76-e068c4898e9c&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Document_Type&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_DocumentType]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;5f294dc7-2a4d-43db-8a14-4accb1bdfdac&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;a1f42b66-d3d7-4d4d-9ac4-126c6f0df59d&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Transaction_Type&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Mgt_TransactionType]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;313c3c11-234b-4991-9d88-59abbc7cb9cb&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;31fd472c-19c2-498b-acea-00f904b161ba&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Date_1&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_DocumentDate1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DTE&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;0973c55b-9d40-456c-9901-b4e1aea289d1&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;af7a0f01-7e59-40be-9c9c-04e313b74bd9&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Reference_1&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_DocumentReference1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;160882cd-24ff-4b50-9d38-673373bde54c&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;22648096-e0bc-47f9-82be-106f89645c94&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Amount1&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_Amount1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DEC&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;401fefb2-51d5-4f76-bbc3-54608e538759&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;f622ee8b-fbe0-415a-8d17-22ba0adee279&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr1&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_Narration1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;56379a24-236e-4492-a40b-2dbf8fd715d3&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;b3941735-f0ff-4757-9af3-029d10e95db6&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr2&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_Narration2]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;b35a34b6-de03-4860-8367-827fa162b68b&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;874c9a82-c736-403f-bf9b-5d6f205af0bc&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr3&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_Narration3]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;afcbfc48-504a-471d-ad56-f5edb44b2ca1&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;be4b4384-100d-4549-b605-9a5f52febac5&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Post_Date&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_PostingDate]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DTE&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;f1df1940-f764-4b50-ac90-1c482157fad2&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;86a4664f-2a58-4e69-8372-2102571260ff&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Post_Time&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[F1Lat1_PostingTime]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;INT&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;34e79331-89ba-4d20-8319-f5709c6e5e03&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+  &lt;/Columns&gt;
+  &lt;Criteria&gt;
+    &lt;DefKey&gt;b7e027fd-caeb-4876-9dcb-4cdcc1b715e6&lt;/DefKey&gt;
+    &lt;CriteriaValues&gt;
+      &lt;CriteriaValue&gt;
+        &lt;DefKey&gt;c6ba186d-52dd-47ea-9ac1-af0fdb81f477&lt;/DefKey&gt;
+        &lt;ColumnPrefix IsAssigned="false" /&gt;
+        &lt;ColumnId&gt;F1Lad1_SelectionCode27&lt;/ColumnId&gt;
+        &lt;Operator&gt;
+          &lt;Value&gt;OneOf&lt;/Value&gt;
+          &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+          &lt;IsNull&gt;false&lt;/IsNull&gt;
+        &lt;/Operator&gt;
+        &lt;MetaOperatorText IsAssigned="false" /&gt;
+        &lt;Value1&gt;{&amp;amp;VAR_A1_STYPE}&lt;/Value1&gt;
+        &lt;Value2&gt;&lt;/Value2&gt;
+        &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+        &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+      &lt;/CriteriaValue&gt;
+    &lt;/CriteriaValues&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets&gt;
+      &lt;CriteriaSetItem&gt;
+        &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;f2c0b923-61b6-4906-802c-9d46d2d82182&lt;/ExplicitKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName&gt;f2c0b923-61b6-4906-802c-9d46d2d82182&lt;/SetName&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets&gt;
+          &lt;CriteriaSetItem&gt;
+            &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;ee01f67b-a9ac-4de8-af5f-830db0c8e5e5&lt;/ExplicitKey&gt;
+            &lt;CriteriaValues&gt;
+              &lt;CriteriaValue&gt;
+                &lt;DefKey&gt;22751215-4d5a-49c1-b391-b7e21e45bd5b&lt;/DefKey&gt;
+                &lt;ColumnPrefix IsAssigned="false" /&gt;
+                &lt;ColumnId&gt;F1Lat1_PostingTime&lt;/ColumnId&gt;
+                &lt;Operator&gt;
+                  &lt;Value&gt;GreaterThan&lt;/Value&gt;
+                  &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+                  &lt;IsNull&gt;false&lt;/IsNull&gt;
+                &lt;/Operator&gt;
+                &lt;MetaOperatorText IsAssigned="false" /&gt;
+                &lt;Value1&gt;{&amp;amp;VAR_REPORTTIME}&lt;/Value1&gt;
+                &lt;Value2&gt;&lt;/Value2&gt;
+                &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+                &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+                &lt;Link&gt;AND&lt;/Link&gt;
+              &lt;/CriteriaValue&gt;
+              &lt;CriteriaValue&gt;
+                &lt;DefKey&gt;b705db12-c268-4c00-b7f0-28771671fb61&lt;/DefKey&gt;
+                &lt;ColumnPrefix IsAssigned="false" /&gt;
+                &lt;ColumnId&gt;F1Lat1_PostingDate&lt;/ColumnId&gt;
+                &lt;Operator&gt;
+                  &lt;Value&gt;Equals&lt;/Value&gt;
+                  &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+                  &lt;IsNull&gt;false&lt;/IsNull&gt;
+                &lt;/Operator&gt;
+                &lt;MetaOperatorText IsAssigned="false" /&gt;
+                &lt;Value1&gt;{&amp;amp;VAR_REPORTDATE}&lt;/Value1&gt;
+                &lt;Value2&gt;&lt;/Value2&gt;
+                &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+                &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+                &lt;Link&gt;AND&lt;/Link&gt;
+              &lt;/CriteriaValue&gt;
+            &lt;/CriteriaValues&gt;
+            &lt;SetName&gt;ee01f67b-a9ac-4de8-af5f-830db0c8e5e5&lt;/SetName&gt;
+            &lt;Link&gt;OR&lt;/Link&gt;
+            &lt;NestedSets /&gt;
+          &lt;/CriteriaSetItem&gt;
+          &lt;CriteriaSetItem&gt;
+            &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;4cd6961d-3de0-42ef-8a9a-316c7be14a93&lt;/ExplicitKey&gt;
+            &lt;CriteriaValues&gt;
+              &lt;CriteriaValue&gt;
+                &lt;DefKey&gt;3c5be1f6-052b-4387-9947-986c0cf61dda&lt;/DefKey&gt;
+                &lt;ColumnPrefix IsAssigned="false" /&gt;
+                &lt;ColumnId&gt;F1Lat1_PostingDate&lt;/ColumnId&gt;
+                &lt;Operator&gt;
+                  &lt;Value&gt;GreaterThan&lt;/Value&gt;
+                  &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+                  &lt;IsNull&gt;false&lt;/IsNull&gt;
+                &lt;/Operator&gt;
+                &lt;MetaOperatorText IsAssigned="false" /&gt;
+                &lt;Value1&gt;{&amp;amp;VAR_REPORTDATE}&lt;/Value1&gt;
+                &lt;Value2&gt;&lt;/Value2&gt;
+                &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+                &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+                &lt;Link&gt;AND&lt;/Link&gt;
+              &lt;/CriteriaValue&gt;
+            &lt;/CriteriaValues&gt;
+            &lt;SetName&gt;4cd6961d-3de0-42ef-8a9a-316c7be14a93&lt;/SetName&gt;
+            &lt;Link&gt;OR&lt;/Link&gt;
+            &lt;NestedSets /&gt;
+          &lt;/CriteriaSetItem&gt;
+        &lt;/NestedSets&gt;
+      &lt;/CriteriaSetItem&gt;
+    &lt;/NestedSets&gt;
+  &lt;/Criteria&gt;
+  &lt;ExistsFilters /&gt;
+  &lt;Grouping /&gt;
+  &lt;SortItems /&gt;
+  &lt;Filter&gt;
+    &lt;DefKey&gt;71cf6d32-6022-4a59-b108-feee49e28b71&lt;/DefKey&gt;
+    &lt;CriteriaValues /&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/Filter&gt;
+  &lt;ClassicNullHandling&gt;true&lt;/ClassicNullHandling&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TEMP_TRANSACTIONS</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;7731b9a5-713f-4a26-9d45-6f7ef7485466&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;3b104e58-e31f-4ba7-932d-7787e19097ad&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger_Name&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a3f80350-a55d-447b-a5a3-f032879d57d4&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account_Number&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;8c54e1ee-070e-4b6a-a5de-918ef7369682&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Entity&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;77104fac-968e-473e-b664-3923b311656b&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Cost_Centre&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;79cbd10f-afbf-412f-95d7-633c35791b56&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Activity&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;656858cc-4538-48b7-b9cf-6520fb132b59&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;b3787826-5099-4633-8ac8-689751e22bf0&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Trans_Nbr&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DEC&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;ede425a5-302e-4ef1-9d83-c5d5c8072e3d&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;d322927b-4e38-49ea-a47e-820552df0f03&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Document_Type&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;b47d45cb-de6c-4d71-bedb-198f50caeece&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Transaction_Type&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;f22f7ab5-7cb6-44d8-aa80-d56eb05145b1&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Date_1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DTE&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;0dec7c8b-672d-465b-a11b-539b2358d378&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Reference_1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;9b21be3d-0529-42ea-aa46-7348faba02a6&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Amount1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DEC&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;9d5cdc66-9f58-45b4-bcab-51e51d71bb1b&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;21d59a02-f1ed-481f-a455-19cd67b38795&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr2&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a86d429f-d542-4b1c-9bd8-0c7f23923933&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Narr3&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;70dc46ca-70fd-4dc1-aaf9-6002cd35dba4&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Post_Date&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DTE&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;608b92be-8bec-419e-ba45-480667b050e7&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Post_Time&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Run Simple Query 1</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>12</StepId>
+    <StepType>SetVariable</StepType>
+    <ParentStepId>9</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;1f85a108-a5fc-484f-857d-f9e2a2a9f5b4&lt;/ExplicitKey&gt;
+  &lt;VariableName Description="Report Date"&gt;VAR_REPORTDATE&lt;/VariableName&gt;
+  &lt;UseMemoryTable&gt;true&lt;/UseMemoryTable&gt;
+  &lt;InputTableName&gt;VAR_DATETIME&lt;/InputTableName&gt;
+  &lt;Expression&gt;ToDate([DATA])&lt;/Expression&gt;
+  &lt;FilterCriteria&gt;
+    &lt;DefKey&gt;45c19ee3-fc30-4548-a7bc-78db7e708fb2&lt;/DefKey&gt;
+    &lt;CriteriaValues /&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/FilterCriteria&gt;
+  &lt;DefaultsWhenNoRecords&gt;false&lt;/DefaultsWhenNoRecords&gt;
+  &lt;AlwaysLogFullValue&gt;true&lt;/AlwaysLogFullValue&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>VAR_REPORTDATE</OutputTableName>
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Set Date Variable</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>13</StepId>
+    <StepType>Decision</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;ExplicitKey xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;1d1f2f2f-4fac-4115-878b-e36791b4b96d&lt;/ExplicitKey&gt;
+  &lt;UseInputTable&gt;true&lt;/UseInputTable&gt;
+  &lt;InputTableName&gt;TEMP_TRANSACTIONS&lt;/InputTableName&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Decision</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>14</StepId>
+    <StepType>Branch</StepType>
+    <ParentStepId>13</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;b91c4fb5-4068-4f11-9d9d-a8434228e268&lt;/DefKey&gt;
+  &lt;Expression&gt;Count()&amp;gt;0&lt;/Expression&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>More than 0</Name>
+    <Description />
+    <Comments />
+    <IsActive>false</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>15</StepId>
+    <StepType>Branch</StepType>
+    <ParentStepId>13</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;83d553ea-abf7-4d70-a115-0d4183da7ef4&lt;/DefKey&gt;
+  &lt;Expression&gt;Count()=0&lt;/Expression&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Equals 0</Name>
+    <Description />
+    <Comments />
+    <IsActive>false</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>16</StepId>
+    <StepType>RunSimpleQuery</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>4</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;a270ba6e-92ad-47a0-bf48-cce71b4b7b9a&lt;/DefKey&gt;
+  &lt;DataSource Description="Period Balances (Financial System Administration)"&gt;7e5d697e-f5c0-4e46-9a75-fbf2d917a7bf&lt;/DataSource&gt;
+  &lt;DataSourceParameters&gt;
+    &lt;DataSourceParameterItem&gt;
+      &lt;DefKey&gt;fc80b624-3272-40f0-9bb8-723108d735aa&lt;/DefKey&gt;
+      &lt;DataSourceParameterName&gt;ChartName&lt;/DataSourceParameterName&gt;
+      &lt;DataSourceParameterValue&gt;GLCHART&lt;/DataSourceParameterValue&gt;
+    &lt;/DataSourceParameterItem&gt;
+    &lt;DataSourceParameterItem&gt;
+      &lt;DefKey&gt;dcc9bffa-7949-4596-b547-0fe78b691412&lt;/DefKey&gt;
+      &lt;DataSourceParameterName&gt;EnableCommitmentColumns&lt;/DataSourceParameterName&gt;
+      &lt;DataSourceParameterValue&gt;N&lt;/DataSourceParameterValue&gt;
+    &lt;/DataSourceParameterItem&gt;
+  &lt;/DataSourceParameters&gt;
+  &lt;DataSourceSuite Description="Core Enterprise Suite"&gt;CES&lt;/DataSourceSuite&gt;
+  &lt;PageSize Description="Extra Large"&gt;X&lt;/PageSize&gt;
+  &lt;Columns&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;96b8231e-2416-48c8-8a84-9b1c7e62579f&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger_Name&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Ledger Name"&gt;[F1La_LedgerName]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;27de62c0-fef3-461f-aede-0a705dce3ce3&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Cost_Centre&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Cost Centre"&gt;[F1Lad1_AccountComponent2]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;0ab89cb5-53bb-45cc-8ce1-a70707aa4e0f&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Activity&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Activity"&gt;[F1Lad1_AccountComponent3]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;cb396394-2ce6-4ec8-afc0-35576eb177aa&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Account"&gt;[F1Lad1_AccountComponent5]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;7eea5725-37c9-4e9d-b3af-b045ceb6264d&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Period"&gt;[F1Lpb_Period]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;INT&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;ae3da44f-4797-43d9-b1ba-69f272306f8e&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Amount&lt;/ColumnName&gt;
+      &lt;ColumnSource Description="Amount"&gt;[F1Lpb_BalanceAmount1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DEC&lt;/ColumnDataType&gt;
+    &lt;/ColumnItem&gt;
+  &lt;/Columns&gt;
+  &lt;Criteria&gt;
+    &lt;DefKey&gt;9951bfea-4535-42a4-b16c-066b1fe58471&lt;/DefKey&gt;
+    &lt;CriteriaValues&gt;
+      &lt;CriteriaValue&gt;
+        &lt;DefKey&gt;cb86c6f7-e19f-42bf-a952-37825a913c8a&lt;/DefKey&gt;
+        &lt;ColumnPrefix IsAssigned="false" /&gt;
+        &lt;ColumnId&gt;F1Lad1_SelectionCode27&lt;/ColumnId&gt;
+        &lt;Operator&gt;
+          &lt;Value&gt;OneOf&lt;/Value&gt;
+          &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+          &lt;IsNull&gt;false&lt;/IsNull&gt;
+        &lt;/Operator&gt;
+        &lt;MetaOperatorText IsAssigned="false" /&gt;
+        &lt;Value1&gt;{&amp;amp;VAR_A1_STYPE}&lt;/Value1&gt;
+        &lt;Value2&gt;&lt;/Value2&gt;
+        &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+        &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+      &lt;/CriteriaValue&gt;
+      &lt;CriteriaValue&gt;
+        &lt;DefKey&gt;08bcb847-59c3-439d-a2f7-6b334a09c864&lt;/DefKey&gt;
+        &lt;ColumnPrefix IsAssigned="false" /&gt;
+        &lt;ColumnId&gt;F1La_LedgerName&lt;/ColumnId&gt;
+        &lt;Operator&gt;
+          &lt;Value&gt;OneOf&lt;/Value&gt;
+          &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+          &lt;IsNull&gt;false&lt;/IsNull&gt;
+        &lt;/Operator&gt;
+        &lt;MetaOperatorText IsAssigned="false" /&gt;
+        &lt;Value1&gt;{&amp;amp;VAR_LEDGER}&lt;/Value1&gt;
+        &lt;Value2&gt;&lt;/Value2&gt;
+        &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+        &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+      &lt;/CriteriaValue&gt;
+      &lt;CriteriaValue&gt;
+        &lt;DefKey&gt;1ead1dcd-5d67-41f4-9c33-5bc0fa2adc51&lt;/DefKey&gt;
+        &lt;ColumnPrefix IsAssigned="false" /&gt;
+        &lt;ColumnId&gt;F1Lpb_BalanceAmount1&lt;/ColumnId&gt;
+        &lt;Operator&gt;
+          &lt;Value&gt;NotEquals&lt;/Value&gt;
+          &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+          &lt;IsNull&gt;false&lt;/IsNull&gt;
+        &lt;/Operator&gt;
+        &lt;MetaOperatorText IsAssigned="false" /&gt;
+        &lt;Value1&gt;0.00&lt;/Value1&gt;
+        &lt;Value2&gt;&lt;/Value2&gt;
+        &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+        &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+      &lt;/CriteriaValue&gt;
+    &lt;/CriteriaValues&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/Criteria&gt;
+  &lt;SortItems /&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TMP_PERIODBALANCES</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;d6ba5118-525c-41d0-b23e-3a8565e86618&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;b723fde3-e678-4734-a754-e5b194aff819&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Ledger_Name&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;9ae58784-36b1-44fe-933f-37a3289101d8&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Cost_Centre&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;64c98851-fda5-4049-8352-0ffb84b4c84c&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Activity&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;f3b6fe93-46d3-4cf8-9c7b-064cb31c713a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Account&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;f7ea0ee6-cf67-4b03-b7ed-d14e053c8cf6&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Period&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;732e9f2f-792d-4545-9173-ddddd7e2f02e&lt;/DefKey&gt;
+      &lt;ColumnName&gt;Amount&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DEC&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Run Simple Query</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>17</StepId>
+    <StepType>ExportToExcel</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>5</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;6e211566-efad-4372-85b5-f89114fd5e40&lt;/DefKey&gt;
+  &lt;ExportMemoryTableName&gt;TMP_PERIODBALANCES&lt;/ExportMemoryTableName&gt;
+  &lt;FileLocation Description="User Area"&gt;USER AREA&lt;/FileLocation&gt;
+  &lt;FileName&gt;FPR_PeriodBalances.xlsx&lt;/FileName&gt;
+  &lt;SheetName&gt;Sheet1&lt;/SheetName&gt;
+  &lt;DeleteExistingFile&gt;true&lt;/DeleteExistingFile&gt;
+  &lt;AppendToExistingFile&gt;false&lt;/AppendToExistingFile&gt;
+  &lt;UpdateExistingSheet&gt;false&lt;/UpdateExistingSheet&gt;
+  &lt;EnableFileHeader&gt;true&lt;/EnableFileHeader&gt;
+  &lt;ColumnHeaderType Description="Column names as column headers"&gt;Y&lt;/ColumnHeaderType&gt;
+  &lt;HeaderTextItems /&gt;
+  &lt;ColumnOverrideTitleItems /&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Export To Excel 1</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <StepId>18</StepId>
+    <StepType>SendEmail</StepType>
+    <ParentStepId>14</ParentStepId>
+    <Sequence>6</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;ecf5c519-cfc0-459f-98d1-cc3cf721eea8&lt;/DefKey&gt;
+  &lt;SendTo&gt;financebi@salvationarmy.org.au&lt;/SendTo&gt;
+  &lt;CarbonCopyTo&gt;&lt;/CarbonCopyTo&gt;
+  &lt;SubjectLine&gt;FPR Period Balances as at {&amp;amp;TIMESTAMP}&lt;/SubjectLine&gt;
+  &lt;EmailMessage&gt;&amp;lt;p&amp;gt;Transactions&amp;amp;nbsp;for {&amp;amp;amp;VAR_A1_STYPE}&amp;lt;/p&amp;gt;&lt;/EmailMessage&gt;
+  &lt;ShouldUseEmailConfiguration&gt;false&lt;/ShouldUseEmailConfiguration&gt;
+  &lt;ConfigurationName&gt;&lt;/ConfigurationName&gt;
+  &lt;ShouldOverrideFromAddress&gt;false&lt;/ShouldOverrideFromAddress&gt;
+  &lt;AlternateFromAddress&gt;&lt;/AlternateFromAddress&gt;
+  &lt;AlternateFromName&gt;&lt;/AlternateFromName&gt;
+  &lt;SendEmailAttachmentConfigItems&gt;
+    &lt;SendEmailAttachmentConfigItem&gt;
+      &lt;DefKey&gt;86166113-7055-41fa-b6b7-8fce87696d59&lt;/DefKey&gt;
+      &lt;FileLocation&gt;USER AREA&lt;/FileLocation&gt;
+      &lt;FileMask&gt;FPR_PeriodBalances.xlsx&lt;/FileMask&gt;
+    &lt;/SendEmailAttachmentConfigItem&gt;
+  &lt;/SendEmailAttachmentConfigItems&gt;
+  &lt;EnableResources&gt;false&lt;/EnableResources&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Send Email 1</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+</ArrayOfStep>

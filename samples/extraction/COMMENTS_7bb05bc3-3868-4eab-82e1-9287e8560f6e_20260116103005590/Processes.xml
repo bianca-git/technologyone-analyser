@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProcess xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Process>
+    <ProcessId>7bb05bc3-3868-4eab-82e1-9287e8560f6e</ProcessId>
+    <Version>1</Version>
+    <Status>D</Status>
+    <ProcessType>$ETL</ProcessType>
+    <Name>COMMENTS</Name>
+    <Description>Incoming Period Variance Comments</Description>
+    <LoggingMode />
+    <ErrorHandling />
+    <Narration />
+    <VersionNarration />
+    <BaseVersion>0</BaseVersion>
+    <Category />
+    <Owner>BWILKINS</Owner>
+    <ExecuteSuite />
+    <ParentFileItemPath>/Data/AFRG/ETLs</ParentFileItemPath>
+  </Process>
+</ArrayOfProcess>

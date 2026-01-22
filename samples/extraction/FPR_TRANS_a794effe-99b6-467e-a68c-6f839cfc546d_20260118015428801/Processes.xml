@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProcess xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Process>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <Status>P</Status>
+    <ProcessType>$ETL</ProcessType>
+    <Name>FPR_TRANS</Name>
+    <Description>FPR Transactions</Description>
+    <LoggingMode />
+    <ErrorHandling>N</ErrorHandling>
+    <Narration />
+    <VersionNarration>Published by BWILKINS on 15-Dec-2025 06:19:34</VersionNarration>
+    <BaseVersion>0</BaseVersion>
+    <Category />
+    <Owner>BWILKINS</Owner>
+    <ExecuteSuite>CES</ExecuteSuite>
+    <ParentFileItemPath>/Home/BWILKINS</ParentFileItemPath>
+  </Process>
+</ArrayOfProcess>

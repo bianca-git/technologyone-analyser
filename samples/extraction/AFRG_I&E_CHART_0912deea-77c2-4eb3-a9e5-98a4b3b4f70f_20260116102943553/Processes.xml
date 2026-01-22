@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProcess xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Process>
+    <ProcessId>0912deea-77c2-4eb3-a9e5-98a4b3b4f70f</ProcessId>
+    <Version>9</Version>
+    <Status>P</Status>
+    <ProcessType>$ETL</ProcessType>
+    <Name>AFRG_I&amp;E_CHART</Name>
+    <Description>Chart of Accounts Data</Description>
+    <LoggingMode>D</LoggingMode>
+    <ErrorHandling>N</ErrorHandling>
+    <Narration />
+    <VersionNarration>Published by BWILKINS on 25-Nov-2025 11:32:47</VersionNarration>
+    <BaseVersion>0</BaseVersion>
+    <Category />
+    <Owner>BWILKINS</Owner>
+    <ExecuteSuite>CES</ExecuteSuite>
+    <ParentFileItemPath>/Data/AFRG/ETLs</ParentFileItemPath>
+  </Process>
+</ArrayOfProcess>

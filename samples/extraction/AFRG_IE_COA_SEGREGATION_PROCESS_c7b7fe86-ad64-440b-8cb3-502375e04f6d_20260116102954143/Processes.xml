@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProcess xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Process>
+    <ProcessId>c7b7fe86-ad64-440b-8cb3-502375e04f6d</ProcessId>
+    <Version>2</Version>
+    <Status>P</Status>
+    <ProcessType>$ETL</ProcessType>
+    <Name>AFRG_IE_COA_SEGREGATION_PROCESS</Name>
+    <Description>COA Code Split &amp; Classification Process</Description>
+    <LoggingMode>D</LoggingMode>
+    <ErrorHandling>N</ErrorHandling>
+    <Narration>ETL process that splits the COA account code into its component fields: cost centre, activity code, and natural account.</Narration>
+    <VersionNarration>Published by MGUPTA on 28-Nov-2025 17:55:48</VersionNarration>
+    <BaseVersion>0</BaseVersion>
+    <Category />
+    <Owner>BWILKINS</Owner>
+    <ExecuteSuite>CES</ExecuteSuite>
+    <ParentFileItemPath>/Data/AFRG/ETLs</ParentFileItemPath>
+  </Process>
+</ArrayOfProcess>

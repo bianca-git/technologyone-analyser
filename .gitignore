@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 /dist
 /node_modules
-/samples
 /temp
 /scripts/analysis
 /scripts/extraction

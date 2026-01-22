@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfStep xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>8</StepId>
+    <StepType>CreateTable</StepType>
+    <ParentStepId>12</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;73df287a-34e4-40d5-896f-df3433d6bfb9&lt;/DefKey&gt;
+  &lt;OutputTableData&gt;[["{&amp;amp;VAR_LOOPINDEX}{&amp;amp;VAR_ACTLDG}"],["{&amp;amp;VAR_LOOPINDEX}{&amp;amp;VAR_BUDLDG}"]]&lt;/OutputTableData&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TEMP_LEDGER_VARS</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;0272b281-a940-4cbf-ab9e-1990d3d51dcc&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;3ffe56b8-d6fe-43f1-b0e4-60a6e0f9918e&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LedgerName&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Create Table</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>12</StepId>
+    <StepType>Loop</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;7537ee2e-d2f8-4688-8491-79535cad226a&lt;/DefKey&gt;
+  &lt;LoopCondition&gt;{&amp;amp;VAR_LOOPINDEX}&amp;lt;={&amp;amp;VAR_LOOPEND}&lt;/LoopCondition&gt;
+  &lt;InputVariable Description="Loop Index"&gt;VAR_LOOPINDEX&lt;/InputVariable&gt;
+  &lt;MaxIterations&gt;10&lt;/MaxIterations&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour&gt;green&lt;/customColour&gt;&lt;/values&gt;</Attributes>
+    <Name>Loop</Name>
+    <Description>{&amp;VAR_LOOPINDEX}&lt;={&amp;VAR_LOOPEND}</Description>
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>14</StepId>
+    <StepType>CreateTable</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>1</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;45a154d1-29c0-4d72-a611-e55d5932a4e5&lt;/DefKey&gt;
+  &lt;OutputTableData&gt;[]&lt;/OutputTableData&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TEMP_VAR_PARENT</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;3b3fe182-5b46-49aa-9c0e-5f4a3c37344f&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;02a94183-4961-4b67-81f8-78cf319c3e9b&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LedgerName&lt;/ColumnName&gt;
+      &lt;ColumnType Description="String"&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns IsAssigned="false" /&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Create Variables Hold Table</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>15</StepId>
+    <StepType>AppendTable</StepType>
+    <ParentStepId>12</ParentStepId>
+    <Sequence>2</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;b0a224d5-a18a-4b43-87ed-901897cf25aa&lt;/DefKey&gt;
+  &lt;AppendToTableName&gt;TEMP_VAR_PARENT&lt;/AppendToTableName&gt;
+  &lt;InputTableName&gt;TEMP_LEDGER_VARS&lt;/InputTableName&gt;
+  &lt;UseExpressions Description="Use columns, variables and static values"&gt;false&lt;/UseExpressions&gt;
+  &lt;ColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;LedgerName&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[LedgerName]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+  &lt;/ColumnMapping&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>TEMP_VAR_PARENT</OutputTableName>
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Append Table</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>16</StepId>
+    <StepType>PurgeTable</StepType>
+    <ParentStepId>12</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;ba9cec46-5f17-47f7-9e12-75e797df21ec&lt;/DefKey&gt;
+  &lt;PurgeTableType Description="Purge selected tables"&gt;SELECTED&lt;/PurgeTableType&gt;
+  &lt;SelectedTables&gt;TEMP_LEDGER_VARS&lt;/SelectedTables&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Purge Table</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>18</StepId>
+    <StepType>RunDirectQuery</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>3</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;4393f2ea-d458-4a19-854d-a336de7f867f&lt;/DefKey&gt;
+  &lt;Suite&gt;CES&lt;/Suite&gt;
+  &lt;SystemId Description="Core"&gt;TB&lt;/SystemId&gt;
+  &lt;TableName&gt;GLF_LDG_ACCT_PBAL&lt;/TableName&gt;
+  &lt;Columns&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;a0e97c53-4bb3-4aa5-b608-9d6d0bcb7636&lt;/DefKey&gt;
+      &lt;ColumnName&gt;VERSION&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[VERS]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;INT&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;b846e339-5ff6-40e0-9ad2-ba6a378c3a2e&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;0cacf7c1-4fda-435e-bdff-929bcba8a637&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LDG_NAME&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[LDG_NAME]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;15a38061-e233-41c0-9bfc-b0f153409c85&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;58496c54-8287-438c-b6c7-bc9fe938f87d&lt;/DefKey&gt;
+      &lt;ColumnName&gt;ACCNBRI&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[ACCNBRI]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;STR&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;d0445ee0-f108-417a-8c05-3a37fe683ce7&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;a2e316e7-156b-450c-a7aa-59e0ef4207db&lt;/DefKey&gt;
+      &lt;ColumnName&gt;PERIOD&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[PERIOD]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;INT&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;acf146f1-0207-4458-84c2-c96fbd0d2792&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+    &lt;ColumnItem&gt;
+      &lt;DefKey&gt;d65e8ae7-830b-48f2-bac1-f0bc946387d4&lt;/DefKey&gt;
+      &lt;ColumnName&gt;BAL_AMT1&lt;/ColumnName&gt;
+      &lt;ColumnActionType Description="Display"&gt;DSP&lt;/ColumnActionType&gt;
+      &lt;ColumnSource&gt;[BAL_AMT1]&lt;/ColumnSource&gt;
+      &lt;ColumnDataType&gt;DEC&lt;/ColumnDataType&gt;
+      &lt;Criteria&gt;
+        &lt;DefKey&gt;6d365bfc-e7e6-41a0-ac20-0a22e9c2b043&lt;/DefKey&gt;
+        &lt;CriteriaValues /&gt;
+        &lt;SetName IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+        &lt;NestedSets /&gt;
+      &lt;/Criteria&gt;
+    &lt;/ColumnItem&gt;
+  &lt;/Columns&gt;
+  &lt;Criteria&gt;
+    &lt;DefKey&gt;6739332f-eddf-4b73-b56b-8df62e30a57c&lt;/DefKey&gt;
+    &lt;CriteriaValues&gt;
+      &lt;CriteriaValue&gt;
+        &lt;DefKey&gt;a14b785c-9db2-45be-b150-57c86d5a9ab1&lt;/DefKey&gt;
+        &lt;ColumnPrefix IsAssigned="false" /&gt;
+        &lt;ColumnId&gt;BAL_AMT1&lt;/ColumnId&gt;
+        &lt;Operator&gt;
+          &lt;Value&gt;NotEquals&lt;/Value&gt;
+          &lt;IsAssigned&gt;true&lt;/IsAssigned&gt;
+          &lt;IsNull&gt;false&lt;/IsNull&gt;
+        &lt;/Operator&gt;
+        &lt;MetaOperatorText IsAssigned="false" /&gt;
+        &lt;Value1&gt;0&lt;/Value1&gt;
+        &lt;Value2&gt;&lt;/Value2&gt;
+        &lt;CriteriaValue1ColumnId IsAssigned="false" /&gt;
+        &lt;CriteriaValue2ColumnId IsAssigned="false" /&gt;
+        &lt;Link&gt;AND&lt;/Link&gt;
+      &lt;/CriteriaValue&gt;
+    &lt;/CriteriaValues&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/Criteria&gt;
+  &lt;ExistsFilters&gt;
+    &lt;ExistsFilterItem&gt;
+      &lt;DefKey&gt;d998a074-6924-4a82-8bde-f49873cb7711&lt;/DefKey&gt;
+      &lt;FilterTableName&gt;TEMP_VAR_PARENT&lt;/FilterTableName&gt;
+      &lt;NotExistsFlag&gt;false&lt;/NotExistsFlag&gt;
+      &lt;Links&gt;
+        &lt;ExistsFilterItemLink&gt;
+          &lt;DefKey&gt;51979969-4ccb-4eab-9746-e4845d38a31c&lt;/DefKey&gt;
+          &lt;ColumnName&gt;LedgerName&lt;/ColumnName&gt;
+          &lt;FieldName&gt;LDG_NAME&lt;/FieldName&gt;
+        &lt;/ExistsFilterItemLink&gt;
+      &lt;/Links&gt;
+    &lt;/ExistsFilterItem&gt;
+  &lt;/ExistsFilters&gt;
+  &lt;Grouping /&gt;
+  &lt;SortItems /&gt;
+  &lt;Filter&gt;
+    &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;
+      &lt;Field Name="EditorValue1"&gt;
+        &lt;Value AssemblyQualifiedTypeName="System.String"&gt;
+          &lt;string xmlns="" /&gt;
+        &lt;/Value&gt;
+        &lt;FieldDef AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldDefinition`1[[System.String]]"&gt;
+          &lt;ValueObjectFieldDefinitionOfString xmlns=""&gt;
+            &lt;TranslateCrlf&gt;true&lt;/TranslateCrlf&gt;
+            &lt;AvailableInInstallation&gt;false&lt;/AvailableInInstallation&gt;
+            &lt;BaseFieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/BaseFieldType&gt;
+            &lt;Category AssemblyQualifiedTypeName="System.String"&gt;
+              &lt;string&gt;T1.CoreLib.Business.Common.Text.GenericCategories+General, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/string&gt;
+            &lt;/Category&gt;
+            &lt;EmptyValue /&gt;
+            &lt;FieldId AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.Fields.DynamicFieldId`1[[System.String]]"&gt;
+              &lt;DynamicFieldIdOfString&gt;
+                &lt;FieldName&gt;EditorValue1&lt;/FieldName&gt;
+              &lt;/DynamicFieldIdOfString&gt;
+            &lt;/FieldId&gt;
+            &lt;FieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/FieldType&gt;
+            &lt;HasCharacterCasing&gt;true&lt;/HasCharacterCasing&gt;
+            &lt;MaxLength&gt;255&lt;/MaxLength&gt;
+          &lt;/ValueObjectFieldDefinitionOfString&gt;
+        &lt;/FieldDef&gt;
+      &lt;/Field&gt;
+    &lt;/DynamicFields&gt;
+    &lt;DefKey&gt;3f6cd512-0401-4fe0-880a-b76473692392&lt;/DefKey&gt;
+    &lt;CriteriaValues /&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/Filter&gt;
+  &lt;DynamicDisplayColumns&gt;&lt;/DynamicDisplayColumns&gt;
+  &lt;ExtendedWhere&gt;&lt;/ExtendedWhere&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>AFRG_B_BALANCES_RAW</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;b4a539de-f746-4723-b6ac-7c0b04f69aef&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;9e4f6272-51a5-4233-b4d2-07790d45b96c&lt;/DefKey&gt;
+      &lt;ColumnName&gt;VERSION&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;8ad2fb14-c03b-4f0c-a5c8-1b717ff574a3&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LDG_NAME&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;caa2bce2-acbb-4e5d-ba82-e2d9bed1908a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;ACCNBRI&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a501a3dd-b760-4907-8317-d98b80bf6011&lt;/DefKey&gt;
+      &lt;ColumnName&gt;PERIOD&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;6ec54256-fd7a-4304-a50d-57af7c763dba&lt;/DefKey&gt;
+      &lt;ColumnName&gt;BAL_AMT1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DEC&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns&gt;false&lt;/HasDynamicColumns&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour&gt;yellow&lt;/customColour&gt;&lt;/values&gt;</Attributes>
+    <Name>Run Direct Query to GLF_LDG_ACCT_PBAL</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>19</StepId>
+    <StepType>PurgeTable</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>7</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;579724ac-3635-4468-92aa-23d6dd301c9a&lt;/DefKey&gt;
+  &lt;PurgeTableType Description="Purge all tables"&gt;ALL&lt;/PurgeTableType&gt;
+  &lt;SelectedTables&gt;TEMP_VAR_PARENT&lt;/SelectedTables&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Purge All Tables No Longer Required</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>20</StepId>
+    <StepType>ImportWarehouseData</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>6</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;65a63557-1b31-4069-abcd-27eb488877b4&lt;/DefKey&gt;
+  &lt;InputTableName&gt;AFRG_B_BALANCES_RAW&lt;/InputTableName&gt;
+  &lt;SuiteId Description="Core Enterprise Suite"&gt;CES&lt;/SuiteId&gt;
+  &lt;WarehouseName Description="Aligned Financial Reporting Governance Data"&gt;AFRG&lt;/WarehouseName&gt;
+  &lt;TableName Description="Core Financial Data"&gt;AFRG_IE_BALANCES&lt;/TableName&gt;
+  &lt;ImportOption Description="Insert and Update"&gt;IU&lt;/ImportOption&gt;
+  &lt;ColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;VERSION&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[VERSION]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;LDG_NAME&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[LDG_NAME]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;PERIOD&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[PERIOD]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;BAL_AMT1&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[BAL_AMT1]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;COSTCEN&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[COSTCEN]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;ACTIVITY&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[ACTIVITY]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;NATACCT&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[NATACCT]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;LDG_TYPE&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[LDG_TYPE]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+    &lt;TableColumnMapping&gt;
+      &lt;ColumnName&gt;ACCOUNT_CODE&lt;/ColumnName&gt;
+      &lt;MappedValue&gt;[ACCNBRI]&lt;/MappedValue&gt;
+    &lt;/TableColumnMapping&gt;
+  &lt;/ColumnMapping&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour&gt;red&lt;/customColour&gt;&lt;/values&gt;</Attributes>
+    <Name>Warehouse Table - Import Data</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>21</StepId>
+    <StepType>AddColumn</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>4</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;bc2b7bf8-a557-499a-ba45-9be5a586bd3e&lt;/DefKey&gt;
+  &lt;InputTableName&gt;AFRG_B_BALANCES_RAW&lt;/InputTableName&gt;
+  &lt;Columns&gt;
+    &lt;ColumnItemDef&gt;
+      &lt;DefKey&gt;e4fbda7d-82a3-42e6-9625-190cdb1062be&lt;/DefKey&gt;
+      &lt;ColumnName&gt;COSTCEN&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+      &lt;ColumnAction Description="Calculate"&gt;CAL&lt;/ColumnAction&gt;
+      &lt;Expression&gt;Left([ACCNBRI], 6)&lt;/Expression&gt;
+      &lt;ColumnToTotal&gt;&lt;/ColumnToTotal&gt;
+      &lt;ColumnToRestartOnChange&gt;&lt;/ColumnToRestartOnChange&gt;
+      &lt;DefaultValue&gt;&lt;/DefaultValue&gt;
+      &lt;LookupName&gt;&lt;/LookupName&gt;
+      &lt;LookupColumnName&gt;&lt;/LookupColumnName&gt;
+    &lt;/ColumnItemDef&gt;
+    &lt;ColumnItemDef&gt;
+      &lt;DefKey&gt;260b550b-0a5e-4831-8e4d-6497f14acd74&lt;/DefKey&gt;
+      &lt;ColumnName&gt;ACTIVITY&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+      &lt;ColumnAction Description="Calculate"&gt;CAL&lt;/ColumnAction&gt;
+      &lt;Expression&gt;Right(Left([ACCNBRI],9),3)&lt;/Expression&gt;
+      &lt;ColumnToTotal&gt;&lt;/ColumnToTotal&gt;
+      &lt;ColumnToRestartOnChange&gt;&lt;/ColumnToRestartOnChange&gt;
+      &lt;DefaultValue&gt;&lt;/DefaultValue&gt;
+      &lt;LookupName&gt;&lt;/LookupName&gt;
+      &lt;LookupColumnName&gt;&lt;/LookupColumnName&gt;
+    &lt;/ColumnItemDef&gt;
+    &lt;ColumnItemDef&gt;
+      &lt;DefKey&gt;46869818-5b94-499e-9cda-102ed627ddc5&lt;/DefKey&gt;
+      &lt;ColumnName&gt;NATACCT&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+      &lt;ColumnAction Description="Calculate"&gt;CAL&lt;/ColumnAction&gt;
+      &lt;Expression&gt;Right([ACCNBRI],4)&lt;/Expression&gt;
+      &lt;ColumnToTotal&gt;&lt;/ColumnToTotal&gt;
+      &lt;ColumnToRestartOnChange&gt;&lt;/ColumnToRestartOnChange&gt;
+      &lt;DefaultValue&gt;&lt;/DefaultValue&gt;
+      &lt;LookupName&gt;&lt;/LookupName&gt;
+      &lt;LookupColumnName&gt;&lt;/LookupColumnName&gt;
+    &lt;/ColumnItemDef&gt;
+    &lt;ColumnItemDef&gt;
+      &lt;DefKey&gt;d771f0fd-af7a-465e-91be-24cbe4c5dd4e&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LDG_TYPE&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+      &lt;ColumnAction Description="Calculate"&gt;CAL&lt;/ColumnAction&gt;
+      &lt;Expression&gt;Right(Left([LDG_NAME],5),3)&lt;/Expression&gt;
+      &lt;ColumnToTotal&gt;&lt;/ColumnToTotal&gt;
+      &lt;ColumnToRestartOnChange&gt;&lt;/ColumnToRestartOnChange&gt;
+      &lt;DefaultValue&gt;&lt;/DefaultValue&gt;
+      &lt;LookupName&gt;&lt;/LookupName&gt;
+      &lt;LookupColumnName&gt;&lt;/LookupColumnName&gt;
+    &lt;/ColumnItemDef&gt;
+  &lt;/Columns&gt;
+  &lt;Lookups /&gt;
+  &lt;AddKeyColumn&gt;false&lt;/AddKeyColumn&gt;
+  &lt;KeyColumnName&gt;&lt;/KeyColumnName&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName>AFRG_B_BALANCES_RAW</OutputTableName>
+    <OutputTableDefinition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;TableDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;b4a539de-f746-4723-b6ac-7c0b04f69aef&lt;/DefKey&gt;
+  &lt;Columns&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;9e4f6272-51a5-4233-b4d2-07790d45b96c&lt;/DefKey&gt;
+      &lt;ColumnName&gt;VERSION&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;8ad2fb14-c03b-4f0c-a5c8-1b717ff574a3&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LDG_NAME&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;caa2bce2-acbb-4e5d-ba82-e2d9bed1908a&lt;/DefKey&gt;
+      &lt;ColumnName&gt;ACCNBRI&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a501a3dd-b760-4907-8317-d98b80bf6011&lt;/DefKey&gt;
+      &lt;ColumnName&gt;PERIOD&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;INT&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;6ec54256-fd7a-4304-a50d-57af7c763dba&lt;/DefKey&gt;
+      &lt;ColumnName&gt;BAL_AMT1&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;DEC&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a3803b76-081b-4d56-b03c-0ad4da1b4d13&lt;/DefKey&gt;
+      &lt;ColumnName&gt;COSTCEN&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;a9dbd15f-b5f6-411c-91ee-4fc7ba0aead4&lt;/DefKey&gt;
+      &lt;ColumnName&gt;ACTIVITY&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;1b5b5a97-4f41-498f-8724-d6fdf9f54240&lt;/DefKey&gt;
+      &lt;ColumnName&gt;NATACCT&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+    &lt;TableColumnDefinition&gt;
+      &lt;DefKey&gt;2c4269cf-be18-4df4-8b62-28fca9a28da1&lt;/DefKey&gt;
+      &lt;ColumnName&gt;LDG_TYPE&lt;/ColumnName&gt;
+      &lt;ColumnType&gt;STR&lt;/ColumnType&gt;
+    &lt;/TableColumnDefinition&gt;
+  &lt;/Columns&gt;
+  &lt;SortColumns /&gt;
+  &lt;HasDynamicColumns&gt;false&lt;/HasDynamicColumns&gt;
+&lt;/TableDefinition&gt;</OutputTableDefinition>
+    <Attributes>&lt;values&gt;&lt;customColour /&gt;&lt;/values&gt;</Attributes>
+    <Name>Add Columns</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+  <Step>
+    <ProcessId>a9463781-21f6-4ccb-a359-2d6ed336419e</ProcessId>
+    <Version>1</Version>
+    <StepId>22</StepId>
+    <StepType>DeleteWarehouseData</StepType>
+    <ParentStepId>0</ParentStepId>
+    <Sequence>5</Sequence>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects" /&gt;
+  &lt;DefKey&gt;85c0acde-09d4-44a3-8f5d-d521f7c20e67&lt;/DefKey&gt;
+  &lt;SuiteId&gt;&lt;/SuiteId&gt;
+  &lt;WarehouseName Description="Aligned Financial Reporting Governance Data"&gt;AFRG&lt;/WarehouseName&gt;
+  &lt;TableName Description="Core Financial Data"&gt;AFRG_IE_BALANCES&lt;/TableName&gt;
+  &lt;WarehouseCriteria&gt;
+    &lt;DefKey&gt;94d61902-2f52-41e1-b8eb-c4bb99b2e2ee&lt;/DefKey&gt;
+    &lt;CriteriaValues /&gt;
+    &lt;SetName IsAssigned="false" /&gt;
+    &lt;Link&gt;AND&lt;/Link&gt;
+    &lt;NestedSets /&gt;
+  &lt;/WarehouseCriteria&gt;
+&lt;/StorageObject&gt;</Definition>
+    <OutputTableName />
+    <OutputTableDefinition />
+    <Attributes>&lt;values&gt;&lt;customColour&gt;grey&lt;/customColour&gt;&lt;/values&gt;</Attributes>
+    <Name>Warehouse Table - Delete Data</Name>
+    <Description />
+    <Comments />
+    <IsActive>true</IsActive>
+  </Step>
+</ArrayOfStep>

@@ -1,0 +1,839 @@
+{
+  "process": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfProcess": {
+      "Process": {
+        "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+        "Version": 16,
+        "Status": "P",
+        "ProcessType": "$ETL",
+        "Name": "AFRG_I&E_CORE_DATA",
+        "Description": "AFRG Core Data",
+        "LoggingMode": "D",
+        "ErrorHandling": "N",
+        "Narration": "Scheduled ETL Process to extract periodic GL balances by Natural Accounts from <GLF_LDG_ACCT_PBAL> table ARFG_Balances_Raw",
+        "VersionNarration": "Published by BWILKINS on 24-Nov-2025 23:18:38",
+        "BaseVersion": 0,
+        "Category": "",
+        "Owner": "BWILKINS",
+        "ExecuteSuite": "CES",
+        "ParentFileItemPath": "/Data/AFRG/ETLs"
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "steps": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfStep": {
+      "Step": [
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 8,
+          "StepType": "CreateTable",
+          "ParentStepId": 12,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "73df287a-34e4-40d5-896f-df3433d6bfb9",
+              "OutputTableData": "[[\"{&VAR_LOOPINDEX}{&VAR_ACTLDG}\"],[\"{&VAR_LOOPINDEX}{&VAR_BUDLDG}\"]]",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_LEDGER_VARS",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "0272b281-a940-4cbf-ab9e-1990d3d51dcc",
+              "Columns": {
+                "TableColumnDefinition": {
+                  "DefKey": "3ffe56b8-d6fe-43f1-b0e4-60a6e0f9918e",
+                  "ColumnName": "LedgerName",
+                  "ColumnType": {
+                    "#text": "STR",
+                    "@_Description": "String"
+                  }
+                }
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Create Table",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 12,
+          "StepType": "Loop",
+          "ParentStepId": 0,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "7537ee2e-d2f8-4688-8491-79535cad226a",
+              "LoopCondition": "{&VAR_LOOPINDEX}<={&VAR_LOOPEND}",
+              "InputVariable": {
+                "#text": "VAR_LOOPINDEX",
+                "@_Description": "Loop Index"
+              },
+              "MaxIterations": 10,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Loop",
+          "Description": "{&VAR_LOOPINDEX}<={&VAR_LOOPEND}",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 14,
+          "StepType": "CreateTable",
+          "ParentStepId": 0,
+          "Sequence": 1,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "45a154d1-29c0-4d72-a611-e55d5932a4e5",
+              "OutputTableData": "[]",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_VAR_PARENT",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "3b3fe182-5b46-49aa-9c0e-5f4a3c37344f",
+              "Columns": {
+                "TableColumnDefinition": {
+                  "DefKey": "0ec4e221-2afa-4e54-b50d-9fed5dcbc876",
+                  "ColumnName": "LedgerName",
+                  "ColumnType": {
+                    "#text": "STR",
+                    "@_Description": "String"
+                  }
+                }
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": {
+                "@_IsAssigned": "false"
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Create Variables Hold Table",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 15,
+          "StepType": "AppendTable",
+          "ParentStepId": 12,
+          "Sequence": 2,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "b0a224d5-a18a-4b43-87ed-901897cf25aa",
+              "AppendToTableName": "TEMP_VAR_PARENT",
+              "InputTableName": "TEMP_LEDGER_VARS",
+              "UseExpressions": {
+                "#text": false,
+                "@_Description": "Use columns, variables and static values"
+              },
+              "ColumnMapping": {
+                "TableColumnMapping": {
+                  "ColumnName": "LedgerName",
+                  "MappedValue": "[LedgerName]"
+                }
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "TEMP_VAR_PARENT",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Append Table",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 16,
+          "StepType": "PurgeTable",
+          "ParentStepId": 12,
+          "Sequence": 3,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "ba9cec46-5f17-47f7-9e12-75e797df21ec",
+              "PurgeTableType": {
+                "#text": "SELECTED",
+                "@_Description": "Purge selected tables"
+              },
+              "SelectedTables": "TEMP_LEDGER_VARS",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Purge Table",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 18,
+          "StepType": "RunDirectQuery",
+          "ParentStepId": 0,
+          "Sequence": 3,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "4393f2ea-d458-4a19-854d-a336de7f867f",
+              "Suite": "CES",
+              "SystemId": {
+                "#text": "TB",
+                "@_Description": "Core"
+              },
+              "TableName": "GLF_LDG_ACCT_PBAL",
+              "Columns": {
+                "ColumnItem": [
+                  {
+                    "DefKey": "da9f4100-f515-4782-8195-3aa846771014",
+                    "ColumnName": "VERSION",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[VERS]",
+                    "ColumnDataType": "INT",
+                    "Criteria": {
+                      "DefKey": "9c8db632-7746-42be-a739-935a2eb2d61a",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "5ad4731b-e803-4216-b9a0-6037d3baf9a6",
+                    "ColumnName": "LDG_NAME",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[LDG_NAME]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "2e5efa1c-12ff-4c30-a267-75df7e687178",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "bfe3de2c-7bf0-42e8-9176-d5a0a47b5692",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[ACCNBRI]",
+                    "ColumnDataType": "STR",
+                    "Criteria": {
+                      "DefKey": "10038d05-6c51-4413-8316-01d4c2eb65fe",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "2729a54d-268b-4611-81c1-5a7d5b9c8561",
+                    "ColumnName": "PERIOD",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[PERIOD]",
+                    "ColumnDataType": "INT",
+                    "Criteria": {
+                      "DefKey": "f07cde55-7bea-4042-977a-f53c3e022875",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  },
+                  {
+                    "DefKey": "f6e36925-1dd7-4a5c-ae19-ed66a678c399",
+                    "ColumnName": "BAL_AMT1",
+                    "ColumnActionType": {
+                      "#text": "DSP",
+                      "@_Description": "Display"
+                    },
+                    "ColumnSource": "[BAL_AMT1]",
+                    "ColumnDataType": "DEC",
+                    "Criteria": {
+                      "DefKey": "1609cacb-f0a3-4e7f-ae1e-8cf25b933351",
+                      "CriteriaValues": "",
+                      "SetName": {
+                        "@_IsAssigned": "false"
+                      },
+                      "Link": "AND",
+                      "NestedSets": ""
+                    }
+                  }
+                ]
+              },
+              "Criteria": {
+                "DefKey": "6739332f-eddf-4b73-b56b-8df62e30a57c",
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "0dcf2da8-8583-412d-ab9f-e9ff343f68eb",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "BAL_AMT1",
+                    "Operator": {
+                      "Value": "NotEquals",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": 0,
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "AND"
+                  }
+                },
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "ExistsFilters": {
+                "ExistsFilterItem": {
+                  "DefKey": "b8409ad2-5ccc-4357-b51f-8e34a0f995af",
+                  "FilterTableName": "TEMP_VAR_PARENT",
+                  "NotExistsFlag": false,
+                  "Links": {
+                    "ExistsFilterItemLink": {
+                      "DefKey": "b6e567c1-27e9-4bc6-a680-564c847769d6",
+                      "ColumnName": "LedgerName",
+                      "FieldName": "LDG_NAME"
+                    }
+                  }
+                }
+              },
+              "Grouping": "",
+              "SortItems": "",
+              "Filter": {
+                "DynamicFields": {
+                  "Field": {
+                    "Value": {
+                      "string": {
+                        "@_xmlns": ""
+                      },
+                      "@_AssemblyQualifiedTypeName": "System.String"
+                    },
+                    "FieldDef": {
+                      "ValueObjectFieldDefinitionOfString": {
+                        "TranslateCrlf": true,
+                        "AvailableInInstallation": false,
+                        "BaseFieldType": "T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                        "Category": {
+                          "string": "T1.CoreLib.Business.Common.Text.GenericCategories+General, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                          "@_AssemblyQualifiedTypeName": "System.String"
+                        },
+                        "EmptyValue": "",
+                        "FieldId": {
+                          "DynamicFieldIdOfString": {
+                            "FieldName": "EditorValue1"
+                          },
+                          "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.Fields.DynamicFieldId`1[[System.String]]"
+                        },
+                        "FieldType": "T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                        "HasCharacterCasing": true,
+                        "MaxLength": 255,
+                        "@_xmlns": ""
+                      },
+                      "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldDefinition`1[[System.String]]"
+                    },
+                    "@_Name": "EditorValue1"
+                  },
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "3f6cd512-0401-4fe0-880a-b76473692392",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "DynamicDisplayColumns": "",
+              "ExtendedWhere": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_BALANCES_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "b4a539de-f746-4723-b6ac-7c0b04f69aef",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "4c7b5436-99cf-4b6a-81f7-2b90cc50297c",
+                    "ColumnName": "VERSION",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "4f685a3c-94a8-4ba6-a548-8e128ac62a5a",
+                    "ColumnName": "LDG_NAME",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4e76a9ae-b9c5-40c0-a6a3-7dc95a1a9f61",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "5190c435-f5f9-49b3-a310-d6e465e2a6b8",
+                    "ColumnName": "PERIOD",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "14dc7144-3358-49ca-b7f1-d29e976d9c60",
+                    "ColumnName": "BAL_AMT1",
+                    "ColumnType": "DEC"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Run Direct Query to GLF_LDG_ACCT_PBAL",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 19,
+          "StepType": "PurgeTable",
+          "ParentStepId": 0,
+          "Sequence": 7,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DefKey": "579724ac-3635-4468-92aa-23d6dd301c9a",
+              "PurgeTableType": {
+                "#text": "ALL",
+                "@_Description": "Purge all tables"
+              },
+              "SelectedTables": "TEMP_VAR_PARENT",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Purge All Tables No Longer Required",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 20,
+          "StepType": "ImportWarehouseData",
+          "ParentStepId": 0,
+          "Sequence": 6,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "65a63557-1b31-4069-abcd-27eb488877b4",
+              "InputTableName": "AFRG_B_BALANCES_RAW",
+              "SuiteId": {
+                "#text": "CES",
+                "@_Description": "Core Enterprise Suite"
+              },
+              "WarehouseName": {
+                "#text": "AFRG",
+                "@_Description": "Aligned Financial Reporting Governance Data"
+              },
+              "TableName": {
+                "#text": "AFRG_B_BALANCES_RAW",
+                "@_Description": "Core Financial Data"
+              },
+              "ImportOption": {
+                "#text": "IU",
+                "@_Description": "Insert and Update"
+              },
+              "ColumnMapping": {
+                "TableColumnMapping": [
+                  {
+                    "ColumnName": "VERSION",
+                    "MappedValue": "[VERSION]"
+                  },
+                  {
+                    "ColumnName": "LDG_NAME",
+                    "MappedValue": "[LDG_NAME]"
+                  },
+                  {
+                    "ColumnName": "PERIOD",
+                    "MappedValue": "[PERIOD]"
+                  },
+                  {
+                    "ColumnName": "BAL_AMT1",
+                    "MappedValue": "[BAL_AMT1]"
+                  },
+                  {
+                    "ColumnName": "COSTCEN",
+                    "MappedValue": "[COSTCEN]"
+                  },
+                  {
+                    "ColumnName": "ACTIVITY",
+                    "MappedValue": "[ACTIVITY]"
+                  },
+                  {
+                    "ColumnName": "NATACCT",
+                    "MappedValue": "[NATACCT]"
+                  },
+                  {
+                    "ColumnName": "LDG_TYPE",
+                    "MappedValue": "[LDG_TYPE]"
+                  }
+                ]
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Warehouse Table - Import Data",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 21,
+          "StepType": "AddColumn",
+          "ParentStepId": 0,
+          "Sequence": 4,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "bc2b7bf8-a557-499a-ba45-9be5a586bd3e",
+              "InputTableName": "AFRG_B_BALANCES_RAW",
+              "Columns": {
+                "ColumnItemDef": [
+                  {
+                    "DefKey": "e4fbda7d-82a3-42e6-9625-190cdb1062be",
+                    "ColumnName": "COSTCEN",
+                    "ColumnType": "STR",
+                    "ColumnAction": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "Expression": "Left([ACCNBRI], 6)",
+                    "ColumnToTotal": "",
+                    "ColumnToRestartOnChange": "",
+                    "DefaultValue": "",
+                    "LookupName": "",
+                    "LookupColumnName": ""
+                  },
+                  {
+                    "DefKey": "260b550b-0a5e-4831-8e4d-6497f14acd74",
+                    "ColumnName": "ACTIVITY",
+                    "ColumnType": "STR",
+                    "ColumnAction": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "Expression": "Right(Left([ACCNBRI],9),3)",
+                    "ColumnToTotal": "",
+                    "ColumnToRestartOnChange": "",
+                    "DefaultValue": "",
+                    "LookupName": "",
+                    "LookupColumnName": ""
+                  },
+                  {
+                    "DefKey": "46869818-5b94-499e-9cda-102ed627ddc5",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR",
+                    "ColumnAction": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "Expression": "Right([ACCNBRI],4)",
+                    "ColumnToTotal": "",
+                    "ColumnToRestartOnChange": "",
+                    "DefaultValue": "",
+                    "LookupName": "",
+                    "LookupColumnName": ""
+                  },
+                  {
+                    "DefKey": "d771f0fd-af7a-465e-91be-24cbe4c5dd4e",
+                    "ColumnName": "LDG_TYPE",
+                    "ColumnType": "STR",
+                    "ColumnAction": {
+                      "#text": "CAL",
+                      "@_Description": "Calculate"
+                    },
+                    "Expression": "Right(Left([LDG_NAME],5),3)",
+                    "ColumnToTotal": "",
+                    "ColumnToRestartOnChange": "",
+                    "DefaultValue": "",
+                    "LookupName": "",
+                    "LookupColumnName": ""
+                  }
+                ]
+              },
+              "Lookups": "",
+              "AddKeyColumn": false,
+              "KeyColumnName": "",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "AFRG_B_BALANCES_RAW",
+          "OutputTableDefinition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "TableDefinition": {
+              "DefKey": "b4a539de-f746-4723-b6ac-7c0b04f69aef",
+              "Columns": {
+                "TableColumnDefinition": [
+                  {
+                    "DefKey": "4c7b5436-99cf-4b6a-81f7-2b90cc50297c",
+                    "ColumnName": "VERSION",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "4f685a3c-94a8-4ba6-a548-8e128ac62a5a",
+                    "ColumnName": "LDG_NAME",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "4e76a9ae-b9c5-40c0-a6a3-7dc95a1a9f61",
+                    "ColumnName": "ACCNBRI",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "5190c435-f5f9-49b3-a310-d6e465e2a6b8",
+                    "ColumnName": "PERIOD",
+                    "ColumnType": "INT"
+                  },
+                  {
+                    "DefKey": "14dc7144-3358-49ca-b7f1-d29e976d9c60",
+                    "ColumnName": "BAL_AMT1",
+                    "ColumnType": "DEC"
+                  },
+                  {
+                    "DefKey": "f94c9082-8673-4c97-bf30-42e2b3647cba",
+                    "ColumnName": "COSTCEN",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "d7716186-cfe2-4ad6-8343-cf38a1bbb37b",
+                    "ColumnName": "ACTIVITY",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "27907869-9f61-4fa1-bd91-4f825e25e577",
+                    "ColumnName": "NATACCT",
+                    "ColumnType": "STR"
+                  },
+                  {
+                    "DefKey": "5ce1932d-3c4c-450d-846b-cbf7f7b48100",
+                    "ColumnName": "LDG_TYPE",
+                    "ColumnType": "STR"
+                  }
+                ]
+              },
+              "SortColumns": "",
+              "HasDynamicColumns": false,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Add Columns",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        },
+        {
+          "ProcessId": "a181cf82-fa18-4ea2-89cc-1f761092cc9e",
+          "Version": 16,
+          "StepId": 22,
+          "StepType": "DeleteWarehouseData",
+          "ParentStepId": 0,
+          "Sequence": 5,
+          "Definition": {
+            "?xml": {
+              "@_version": "1.0",
+              "@_encoding": "utf-8"
+            },
+            "StorageObject": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "85c0acde-09d4-44a3-8f5d-d521f7c20e67",
+              "SuiteId": "",
+              "WarehouseName": {
+                "#text": "AFRG",
+                "@_Description": "Aligned Financial Reporting Governance Data"
+              },
+              "TableName": {
+                "#text": "AFRG_B_BALANCES_RAW",
+                "@_Description": "Core Financial Data"
+              },
+              "WarehouseCriteria": {
+                "DefKey": "85574b85-0c2f-47a6-9861-197a9c448ab4",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": "false"
+                },
+                "Link": "AND",
+                "NestedSets": ""
+              },
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "OutputTableName": "",
+          "OutputTableDefinition": {},
+          "Attributes": "<values><customColour /></values>",
+          "Name": "Warehouse Table - Delete Data",
+          "Description": "",
+          "Comments": "",
+          "IsActive": true
+        }
+      ],
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}

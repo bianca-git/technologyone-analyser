@@ -4,6 +4,7 @@ import { FileProcessor } from './lib/FileProcessor';
 import { EtlParser } from './lib/parsers/EtlParser';
 import { EtlGenerator } from './lib/generators/EtlGenerator';
 import { DataModelGenerator } from './lib/generators/DataModelGenerator';
+import { DashboardGenerator } from './lib/generators/DashboardGenerator';
 import { DocxGenerator } from './lib/generators/DocxGenerator';
 import { OfflineVerifier } from './lib/ux/OfflineVerifier';
 
@@ -29,7 +30,7 @@ registerServiceWorker();
 // --- Routing State ---
 let currentView: 'dashboard' | 'detail' = 'dashboard';
 let currentReportId: number | null = null;
-let currentType: 'report' | 'datamodel' = 'report';
+let currentType: 'report' | 'datamodel' | 'dashboard' = 'report';
 let currentMode: 'business' | 'technical' = 'business';
 
 // --- HTML Template Helpers ---
@@ -86,18 +87,34 @@ function dashboardLayout(items: any[]) {
       } catch (e) {
         console.error('Failed dashboard summary', e);
       }
+    } else if (r.type === 'dashboard') {
+      try {
+        const visualizations = r.content.Visualisations?.ArrayOfEntityDef?.EntityDef || [];
+        const vizList = Array.isArray(visualizations) ? visualizations : [visualizations];
+        const slicers = vizList.filter((v: any) => v.EntitySubType === 'SLICER').length;
+        const tables = vizList.filter((v: any) => v.EntitySubType === 'TABLE').length;
+        const charts = vizList.filter((v: any) => v.EntitySubType === 'CHART').length;
+        summaryText = `${vizList.length} widgets: ${slicers} slicers, ${tables} tables, ${charts} charts`;
+      } catch (e) {
+        console.error('Failed to compute widget summary', e);
+      }
     }
+
+    const badgeBg = r.type === 'report' ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                  : r.type === 'datamodel' ? 'bg-purple-50 text-purple-700 border-purple-200'
+                  : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    const badgeText = r.type === 'report' ? 'ETL' : r.type === 'datamodel' ? 'Data Model' : 'DASHBOARD';
 
     return `
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition flex justify-between items-center group relative">
             <div class="cursor-pointer grow" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
                 <div class="flex items-center space-x-2 mb-1">
-                    <span class="text-[0.65rem] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded border ${r.type === 'report' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-purple-50 text-purple-700 border-purple-200'}">
-                        ${r.type === 'report' ? 'ETL' : 'Data Model'}
+                    <span class="text-[0.65rem] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded border ${badgeBg}">
+                        ${badgeText}
                     </span>
                     <h3 class="font-bold text-gray-800 group-hover:text-blue-600">${r.metadata.name}</h3>
                 </div>
-                <p class="text-xs text-gray-500">Publisher: ${r.metadata.owner} • Ver: ${r.metadata.version}</p>
+                <p class="text-xs text-gray-500">Publisher: ${r.metadata.owner} • Ver: ${r.metadata.version || '-'}</p>
                  <p class="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">${summaryText}</p>
             </div>
              <div class="flex items-center space-x-4 ml-4">
@@ -123,9 +140,9 @@ function dashboardLayout(items: any[]) {
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                     </div>
                     <h2 class="text-xl font-bold text-gray-900">Upload Definitions</h2>
-                    <p class="text-sm text-gray-500">Drag & drop <code>.t1etlp</code> or <code>.t1dm</code> files here</p>
+                    <p class="text-sm text-gray-500">Drag & drop <code>.t1etlp</code>, <code>.t1dm</code>, or <code>.t1db</code> files here</p>
                 </div>
-                 <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm" class="hidden">
+                  <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm,.t1db" class="hidden">
             </div>
 
             <!-- List -->
@@ -146,9 +163,11 @@ async function render() {
   if (currentView === 'dashboard') {
     const reports = await db.reports.toArray();
     const dms = await db.dataModels.toArray();
+    const dashboards = await db.dashboards.toArray();
     const allItems = [
       ...reports.map(r => ({ ...r, type: 'report' })),
-      ...dms.map(d => ({ ...d, type: 'datamodel' }))
+      ...dms.map(d => ({ ...d, type: 'datamodel' })),
+      ...dashboards.map(d => ({ ...d, type: 'dashboard' }))
     ];
     allItems.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
     content += dashboardLayout(allItems);
@@ -192,8 +211,10 @@ async function render() {
       let html = '';
       if (currentType === 'report') {
         html = await EtlGenerator.generateHtmlView(currentReportId, currentMode);
-      } else {
+      } else if (currentType === 'datamodel') {
         html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
+      } else if (currentType === 'dashboard') {
+        html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
       }
       const container = document.getElementById('detailContainer');
       if (container) {
@@ -285,10 +306,10 @@ function setupDragAndDrop() {
 // --- Global Actions ---
 declare global {
   interface Window {
-    navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel') => void;
+    navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel' | 'dashboard') => void;
     setMode: (mode: 'business' | 'technical') => void;
     exportDocx: () => void;
-    deleteEntity: (id: number, type: 'report' | 'datamodel') => void;
+    deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard') => void;
     editStepNote: (reportId: string, stepId: string) => void;
     saveStepNote: (reportId: string, stepId: string) => void;
     cancelNote: (stepId: string) => void;
@@ -315,8 +336,10 @@ window.exportDocx = async () => {
     try {
       if (currentType === 'report') {
         await DocxGenerator.downloadDocx(currentReportId, currentMode);
-      } else {
+      } else if (currentType === 'datamodel') {
         await DocxGenerator.downloadDataModelDocx(currentReportId, currentMode);
+      } else if (currentType === 'dashboard') {
+        await DocxGenerator.downloadDashboardDocx(currentReportId, currentMode);
       }
     } catch (e) {
       console.error(e);
@@ -329,11 +352,12 @@ window.exportJson = async () => {
   try {
     const reports = await db.reports.toArray();
     const dataModels = await db.dataModels.toArray();
+    const dashboards = await db.dashboards.toArray();
     const exportData = {
       generated: new Date().toISOString(),
       version: '1.0',
       appVersion: '3.1',
-      library: { reports, dataModels }
+      library: { reports, dataModels, dashboards }
     };
     const filename = `library-backup-${new Date().toISOString().slice(0, 10)}.json`;
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
@@ -355,10 +379,12 @@ window.verifyOffline = () => {
   new OfflineVerifier();
 };
 
-window.deleteEntity = async (id: number, type: 'report' | 'datamodel') => {
-  if (confirm(`Are you sure you want to delete this ${type === 'report' ? 'Report' : 'Data Model'}?`)) {
+window.deleteEntity = async (id: number, type: 'report' | 'datamodel' | 'dashboard') => {
+  const typeLabel = type === 'report' ? 'Report' : type === 'datamodel' ? 'Data Model' : 'Dashboard';
+  if (confirm(`Are you sure you want to delete this ${typeLabel}?`)) {
     if (type === 'report') await db.reports.delete(id);
-    else await db.dataModels.delete(id);
+    else if (type === 'datamodel') await db.dataModels.delete(id);
+    else if (type === 'dashboard') await db.dashboards.delete(id);
     render();
   }
 };

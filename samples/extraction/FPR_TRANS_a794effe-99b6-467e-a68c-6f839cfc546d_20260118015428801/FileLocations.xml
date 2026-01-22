@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFileLocation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FileLocation>
+    <ProcessId>a794effe-99b6-467e-a68c-6f839cfc546d</ProcessId>
+    <Version>13</Version>
+    <Name>USER AREA</Name>
+    <LocationType>ServerFolder</LocationType>
+    <Description>User Area</Description>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;StorageObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DynamicFields xmlns="T1.CoreLib.Compatibility.ValueObjects"&gt;
+    &lt;Field Name="EditableName"&gt;
+      &lt;Value AssemblyQualifiedTypeName="System.String"&gt;
+        &lt;string xmlns=""&gt;USER AREA&lt;/string&gt;
+      &lt;/Value&gt;
+      &lt;FieldDef AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldDefinition`1[[System.String]]"&gt;
+        &lt;ValueObjectFieldDefinitionOfString xmlns=""&gt;
+          &lt;TranslateCrlf&gt;true&lt;/TranslateCrlf&gt;
+          &lt;AvailableInInstallation&gt;false&lt;/AvailableInInstallation&gt;
+          &lt;BaseFieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/BaseFieldType&gt;
+          &lt;Category AssemblyQualifiedTypeName="System.String"&gt;
+            &lt;string&gt;T1.CoreLib.Business.Common.Text.GenericCategories+General, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/string&gt;
+          &lt;/Category&gt;
+          &lt;EmptyValue /&gt;
+          &lt;FieldId AssemblyQualifiedTypeName="T1.CoreLib.Compatibility.Fields.DynamicFieldId`1[[System.String]]"&gt;
+            &lt;DynamicFieldIdOfString&gt;
+              &lt;FieldName&gt;EditableName&lt;/FieldName&gt;
+            &lt;/DynamicFieldIdOfString&gt;
+          &lt;/FieldId&gt;
+          &lt;FieldType&gt;T1.CoreLib.Business.Internal.FieldDefinition.DynamicFields+DynamicStringField, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null&lt;/FieldType&gt;
+          &lt;HasCharacterCasing&gt;true&lt;/HasCharacterCasing&gt;
+          &lt;MaxLength&gt;255&lt;/MaxLength&gt;
+        &lt;/ValueObjectFieldDefinitionOfString&gt;
+      &lt;/FieldDef&gt;
+    &lt;/Field&gt;
+  &lt;/DynamicFields&gt;
+  &lt;DefKey&gt;f6c546e7-8008-4529-9bc1-62391cace03d&lt;/DefKey&gt;
+  &lt;ServerFolder Description="User Area"&gt;$USRAREA&lt;/ServerFolder&gt;
+  &lt;SubPath&gt;&lt;/SubPath&gt;
+  &lt;OverrideSuite Description="Core Enterprise Suite"&gt;CES&lt;/OverrideSuite&gt;
+  &lt;AllowUpload&gt;true&lt;/AllowUpload&gt;
+&lt;/StorageObject&gt;</Definition>
+    <SourceFileLocation />
+  </FileLocation>
+</ArrayOfFileLocation>

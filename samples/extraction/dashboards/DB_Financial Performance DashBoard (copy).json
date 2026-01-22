@@ -1,0 +1,3668 @@
+{
+  "fileName": "Financial Performance DashBoard (copy).t1db",
+  "filePath": "samples\\Dashboards\\Financial Performance DashBoard (copy).t1db",
+  "extractedAt": "2026-01-22T08:38:48.771Z",
+  "zipContents": [
+    "Dashboard.xml",
+    "Visualisations.xml",
+    "Links.xml",
+    "Variables.xml",
+    "Resources.xml",
+    "Theme.xml"
+  ],
+  "data": {
+    "Dashboard": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "EntityDef": {
+        "GenericEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+        "EntityType": "DASHBOARD",
+        "EntitySubType": "",
+        "Name": "",
+        "Description": "Financial Performance DashBoard (copy)",
+        "Category": "AFRG",
+        "Definition": {
+          "?xml": {
+            "@_version": 1,
+            "@_encoding": "utf-8"
+          },
+          "Dashboard": {
+            "DefKey": "ae03df44-6652-4d30-bd15-311cbe381970",
+            "Layout": {
+              "LayoutItem": [
+                {
+                  "DefKey": "92baa9d9-3647-487d-9775-b51d08b29a80",
+                  "Id": "faab83b2-05fb-484d-b614-766a81829f33",
+                  "X": 0,
+                  "Y": 300,
+                  "Width": 5,
+                  "Height": 359,
+                  "AutoPosition": false,
+                  "Visible": true,
+                  "Type": "E"
+                },
+                {
+                  "DefKey": "d23f1b3c-d499-4f3e-9e42-970b7358abf9",
+                  "Id": "d1acad9e-af33-43bd-b78f-7d38a8e57642",
+                  "X": 0,
+                  "Y": 0,
+                  "Width": 4,
+                  "Height": 64,
+                  "AutoPosition": false,
+                  "Visible": true,
+                  "Type": "E"
+                },
+                {
+                  "DefKey": "28c99edd-157d-4100-a99c-b3e62be0f394",
+                  "Id": "d86c0721-9ba2-4180-87ca-345df90f2c2d",
+                  "X": 6,
+                  "Y": 315,
+                  "Width": 5,
+                  "Height": 421,
+                  "AutoPosition": false,
+                  "Visible": true,
+                  "Type": "E"
+                },
+                {
+                  "DefKey": "e507664d-0113-4ce1-bfbc-ce7938d52299",
+                  "Id": "abc7f50d-ed85-4e62-abf5-9e977237df88",
+                  "X": 4,
+                  "Y": 0,
+                  "Width": 2,
+                  "Height": 300,
+                  "AutoPosition": false,
+                  "Visible": true,
+                  "Type": "E"
+                },
+                {
+                  "DefKey": "f4801560-b1f0-4f03-aea2-be0cd5593b11",
+                  "Id": "7f567462-193d-4354-a4e1-fce0314d378b",
+                  "X": 6,
+                  "Y": 0,
+                  "Width": 4,
+                  "Height": 315,
+                  "AutoPosition": false,
+                  "Visible": true,
+                  "Type": "E"
+                }
+              ]
+            },
+            "Layouts": {
+              "Layout": {
+                "DefKey": "ddf59a38-cae7-4aaf-ba03-657b50deaecc",
+                "LayoutName": "Desktop",
+                "DeviceType": "Desktop",
+                "LayoutItems": {
+                  "LayoutItem": [
+                    {
+                      "DefKey": "92baa9d9-3647-487d-9775-b51d08b29a80",
+                      "Id": "faab83b2-05fb-484d-b614-766a81829f33",
+                      "X": 0,
+                      "Y": 300,
+                      "Width": 5,
+                      "Height": 359,
+                      "AutoPosition": false,
+                      "Visible": true,
+                      "Type": "E"
+                    },
+                    {
+                      "DefKey": "d23f1b3c-d499-4f3e-9e42-970b7358abf9",
+                      "Id": "d1acad9e-af33-43bd-b78f-7d38a8e57642",
+                      "X": 0,
+                      "Y": 0,
+                      "Width": 4,
+                      "Height": 64,
+                      "AutoPosition": false,
+                      "Visible": true,
+                      "Type": "E"
+                    },
+                    {
+                      "DefKey": "28c99edd-157d-4100-a99c-b3e62be0f394",
+                      "Id": "d86c0721-9ba2-4180-87ca-345df90f2c2d",
+                      "X": 6,
+                      "Y": 315,
+                      "Width": 5,
+                      "Height": 421,
+                      "AutoPosition": false,
+                      "Visible": true,
+                      "Type": "E"
+                    },
+                    {
+                      "DefKey": "e507664d-0113-4ce1-bfbc-ce7938d52299",
+                      "Id": "abc7f50d-ed85-4e62-abf5-9e977237df88",
+                      "X": 4,
+                      "Y": 0,
+                      "Width": 2,
+                      "Height": 300,
+                      "AutoPosition": false,
+                      "Visible": true,
+                      "Type": "E"
+                    },
+                    {
+                      "DefKey": "f4801560-b1f0-4f03-aea2-be0cd5593b11",
+                      "Id": "7f567462-193d-4354-a4e1-fce0314d378b",
+                      "X": 6,
+                      "Y": 0,
+                      "Width": 4,
+                      "Height": 315,
+                      "AutoPosition": false,
+                      "Visible": true,
+                      "Type": "E"
+                    }
+                  ]
+                }
+              }
+            },
+            "LayoutPreferences": {
+              "DefKey": "70536560-ff7e-4541-9ee7-cc1141fa5c23",
+              "Heading": "Financial Performance Report (YTD)",
+              "SubHeading": "{&CUR_MONTH_YY}",
+              "MarginType": {
+                "#text": "All",
+                "@_Description": "All margins between visualisations are set to this value"
+              },
+              "Margin": 0,
+              "CellHeightType": {
+                "#text": "Custom",
+                "@_Description": "Customise cell height where it is a fixed value for any screen"
+              },
+              "CellHeight": 1,
+              "BorderRadiusType": {
+                "#text": "All",
+                "@_Description": "All border radius of visualisations are set to this value"
+              },
+              "BorderRadius": 5,
+              "EnableFloat": true,
+              "EnableParameters": true,
+              "EnableClearAll": true,
+              "EnableCopyLink": true,
+              "ThemeSourceType": {
+                "#text": "Selected",
+                "@_Description": "Use Selected Theme"
+              },
+              "ThemeId": "00000000-0000-0000-0000-000000000000"
+            },
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "Owner": "BWILKINS",
+        "OwnerType": "",
+        "AttributeString1": "",
+        "AttributeString2": "Dashboard",
+        "AttributeText1": "",
+        "AttributeText2": "",
+        "OwnerEntityId": "00000000-0000-0000-0000-000000000000",
+        "ThemeId": "e6afc98a-7ab9-479a-b5b1-f59b1e8e66e9",
+        "ReportingSystem": "$DEFAULT",
+        "ParentFileItemPath": "/Home/BWILKINS",
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    },
+    "Visualisations": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "ArrayOfEntityDef": {
+        "EntityDef": [
+          {
+            "GenericEntityId": "faab83b2-05fb-484d-b614-766a81829f33",
+            "EntityType": "VISUALISATION",
+            "EntitySubType": "TABLE",
+            "Name": "",
+            "Description": "Finance Performance (YTD)",
+            "Category": "",
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Table": {
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "65462497-f922-4196-8131-8765e80f9e76",
+                "ShowTitle": true,
+                "Consolidation": "",
+                "Columns": {
+                  "Column": [
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "3db3d972-1588-4386-8009-96af15dcb821",
+                      "ColumnId": "C_ACTUAL",
+                      "Description": "$Actual",
+                      "ColumnType": "Sum",
+                      "FieldId": "ACTUAL",
+                      "DataType": "Decimal",
+                      "Category": "General",
+                      "Width": 100,
+                      "Format": "#,##0;(#,##0)",
+                      "Alignment": "Auto",
+                      "AggregateType": "",
+                      "SummaryType": "Sum",
+                      "Definition": "",
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "ffa85143-3e17-4b27-a760-1cbd6accb751",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Expression": "",
+                      "DescriptionColumnName": "",
+                      "DescriptionColumnFormat": "",
+                      "IsVisible": true,
+                      "IsFrozen": false,
+                      "IsCalculate": false,
+                      "TextColour": "",
+                      "FillColour": "",
+                      "ColourSourceType": "",
+                      "FillColourColumnName": "",
+                      "TextColourColumnName": "",
+                      "AutomaticMinMax": false,
+                      "MinValue": 0,
+                      "MaxValue": 0,
+                      "HighColour": "",
+                      "LowColour": "",
+                      "RedLightColour": "",
+                      "RedLightOperator": "",
+                      "RedLightValue": "",
+                      "GreenLightColour": "",
+                      "GreenLightOperator": "",
+                      "GreenLightValue": "",
+                      "OtherLightColour": "",
+                      "ApplyColour": false,
+                      "Colour": ""
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "d1641595-17b9-49e6-8018-9cdf43cd7230",
+                      "ColumnId": "C_BUDGET",
+                      "Description": "$Budget",
+                      "ColumnType": "Sum",
+                      "FieldId": "BUDGET",
+                      "DataType": "Decimal",
+                      "Category": "General",
+                      "Width": 100,
+                      "Format": "#,##0;(#,##0)",
+                      "Alignment": "Right",
+                      "AggregateType": "",
+                      "SummaryType": "Sum",
+                      "Definition": "",
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "90b724d8-5b7c-4dda-a246-dbead8ac8eff",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Expression": "",
+                      "DescriptionColumnName": "",
+                      "DescriptionColumnFormat": "",
+                      "IsVisible": true,
+                      "IsFrozen": false,
+                      "IsCalculate": false,
+                      "TextColour": "",
+                      "FillColour": "",
+                      "ColourSourceType": "",
+                      "FillColourColumnName": "",
+                      "TextColourColumnName": "",
+                      "AutomaticMinMax": false,
+                      "MinValue": 0,
+                      "MaxValue": 0,
+                      "HighColour": "",
+                      "LowColour": "",
+                      "RedLightColour": "",
+                      "RedLightOperator": "",
+                      "RedLightValue": "",
+                      "GreenLightColour": "",
+                      "GreenLightOperator": "",
+                      "GreenLightValue": "",
+                      "OtherLightColour": "",
+                      "ApplyColour": false,
+                      "Colour": ""
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "3951ea77-ee04-4855-966a-ff4fcce1498f",
+                      "ColumnId": "VARIANCEACTUALVSBUDGET",
+                      "Description": "Var vs Bud",
+                      "ColumnType": "Sum",
+                      "FieldId": "VARIANCE",
+                      "DataType": "Decimal",
+                      "Category": "General",
+                      "Width": 100,
+                      "Format": "#,##0;(#,##0)",
+                      "Alignment": "Right",
+                      "AggregateType": "",
+                      "SummaryType": "Sum",
+                      "Definition": "",
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "5adbb618-fe17-476d-9f15-9c85ff8fbbda",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Expression": "",
+                      "DescriptionColumnName": "",
+                      "DescriptionColumnFormat": "",
+                      "IsVisible": true,
+                      "IsFrozen": false,
+                      "IsCalculate": false,
+                      "TextColour": "",
+                      "FillColour": "",
+                      "ColourSourceType": "",
+                      "FillColourColumnName": "",
+                      "TextColourColumnName": "",
+                      "AutomaticMinMax": false,
+                      "MinValue": 0,
+                      "MaxValue": 0,
+                      "HighColour": "",
+                      "LowColour": "",
+                      "RedLightColour": "",
+                      "RedLightOperator": "",
+                      "RedLightValue": "",
+                      "GreenLightColour": "",
+                      "GreenLightOperator": "",
+                      "GreenLightValue": "",
+                      "OtherLightColour": "",
+                      "ApplyColour": false,
+                      "Colour": ""
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "c567357c-6ba4-4373-b6e2-478449b30247",
+                      "ColumnId": "GLNATURALACCOUNTCODE",
+                      "Description": "GL Natural Account Code",
+                      "ColumnType": {
+                        "#text": "Display",
+                        "@_Description": "Display"
+                      },
+                      "FieldId": {
+                        "#text": "GLNATURALACCOUNTCODE",
+                        "@_Description": "GL Natural Account Code"
+                      },
+                      "DataType": {
+                        "#text": "String",
+                        "@_Description": "String"
+                      },
+                      "Category": "General",
+                      "Width": 200,
+                      "Format": "General",
+                      "Alignment": "Left",
+                      "AggregateType": "",
+                      "SummaryType": {
+                        "#text": "Automatic",
+                        "@_Description": "Automatic"
+                      },
+                      "Definition": "",
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "7d388132-78a1-4cc7-9ce7-b71c5c5367c8",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Expression": "",
+                      "DescriptionColumnName": "",
+                      "DescriptionColumnFormat": {
+                        "#text": "CodeDescription",
+                        "@_Description": "Code - Description"
+                      },
+                      "IsVisible": true,
+                      "IsFrozen": false,
+                      "IsCalculate": false,
+                      "TextColour": "",
+                      "FillColour": "",
+                      "ColourSourceType": "",
+                      "FillColourColumnName": "",
+                      "TextColourColumnName": "",
+                      "AutomaticMinMax": false,
+                      "MinValue": 0,
+                      "MaxValue": 0,
+                      "HighColour": "",
+                      "LowColour": "",
+                      "RedLightColour": "",
+                      "RedLightOperator": "",
+                      "RedLightValue": "",
+                      "GreenLightColour": "",
+                      "GreenLightOperator": "",
+                      "GreenLightValue": "",
+                      "OtherLightColour": "",
+                      "ApplyColour": false,
+                      "Colour": ""
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "b15d605d-cac7-4a8d-a8dc-458621b98046",
+                      "ColumnId": "REPORTSUMMARY",
+                      "Description": "Report Summary",
+                      "ColumnType": "Display",
+                      "FieldId": "SELECTIONTYPE29CODE",
+                      "DataType": "String",
+                      "Category": "General",
+                      "Width": 200,
+                      "Format": "General",
+                      "Alignment": "Left",
+                      "AggregateType": {
+                        "@_IsAssigned": false
+                      },
+                      "SummaryType": "None",
+                      "Definition": {
+                        "@_IsAssigned": false
+                      },
+                      "Criteria": {
+                        "@_IsAssigned": false
+                      },
+                      "Expression": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnFormat": {
+                        "@_IsAssigned": false
+                      },
+                      "IsVisible": false,
+                      "IsFrozen": false,
+                      "IsCalculate": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColour": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ColourSourceType": "",
+                      "FillColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "AutomaticMinMax": true,
+                      "MinValue": {
+                        "@_IsAssigned": false
+                      },
+                      "MaxValue": {
+                        "@_IsAssigned": false
+                      },
+                      "HighColour": {
+                        "@_IsAssigned": false
+                      },
+                      "LowColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "OtherLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ApplyColour": {
+                        "@_IsAssigned": false
+                      },
+                      "Colour": {
+                        "@_IsAssigned": false
+                      }
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "f27408ff-eb5c-40a5-879b-4dd27b4d5b74",
+                      "ColumnId": "REPORTDETAILS",
+                      "Description": "Report Details",
+                      "ColumnType": "Display",
+                      "FieldId": "SELECTIONTYPE28CODE",
+                      "DataType": "String",
+                      "Category": "General",
+                      "Width": 200,
+                      "Format": "General",
+                      "Alignment": "Left",
+                      "AggregateType": {
+                        "@_IsAssigned": false
+                      },
+                      "SummaryType": "None",
+                      "Definition": {
+                        "@_IsAssigned": false
+                      },
+                      "Criteria": {
+                        "@_IsAssigned": false
+                      },
+                      "Expression": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnFormat": {
+                        "@_IsAssigned": false
+                      },
+                      "IsVisible": false,
+                      "IsFrozen": false,
+                      "IsCalculate": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColour": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ColourSourceType": "",
+                      "FillColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "AutomaticMinMax": true,
+                      "MinValue": {
+                        "@_IsAssigned": false
+                      },
+                      "MaxValue": {
+                        "@_IsAssigned": false
+                      },
+                      "HighColour": {
+                        "@_IsAssigned": false
+                      },
+                      "LowColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "OtherLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ApplyColour": {
+                        "@_IsAssigned": false
+                      },
+                      "Colour": {
+                        "@_IsAssigned": false
+                      }
+                    }
+                  ]
+                },
+                "Grouping": {
+                  "Column": [
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "b2da3fec-ba9f-4544-9d71-023280d287b5",
+                      "ColumnId": "REPORTINGSUMMARYDESCRIPTION",
+                      "Description": "Reporting Summary Description",
+                      "ColumnType": "Display",
+                      "FieldId": "REPORTINGSUMMARYDESCRIPTION",
+                      "DataType": "String",
+                      "Category": "General",
+                      "Width": 200,
+                      "Format": "General",
+                      "Alignment": "Left",
+                      "AggregateType": {
+                        "@_IsAssigned": false
+                      },
+                      "SummaryType": "None",
+                      "Definition": {
+                        "@_IsAssigned": false
+                      },
+                      "Criteria": {
+                        "@_IsAssigned": false
+                      },
+                      "Expression": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnFormat": {
+                        "@_IsAssigned": false
+                      },
+                      "IsVisible": true,
+                      "IsFrozen": {
+                        "@_IsAssigned": false
+                      },
+                      "IsCalculate": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColour": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ColourSourceType": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "AutomaticMinMax": true,
+                      "MinValue": {
+                        "@_IsAssigned": false
+                      },
+                      "MaxValue": {
+                        "@_IsAssigned": false
+                      },
+                      "HighColour": {
+                        "@_IsAssigned": false
+                      },
+                      "LowColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "OtherLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ApplyColour": {
+                        "@_IsAssigned": false
+                      },
+                      "Colour": {
+                        "@_IsAssigned": false
+                      }
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "Upper",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 3,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "56c28017-6a1d-4fa9-a2d3-c4f7d11318b4",
+                      "ColumnId": "REPORTINGDETAILDESCRIPTION",
+                      "Description": "Reporting Detail Description",
+                      "ColumnType": "Display",
+                      "FieldId": "REP_DET_DESC",
+                      "DataType": "String",
+                      "Category": "General",
+                      "Width": 200,
+                      "Format": "",
+                      "Alignment": "Left",
+                      "AggregateType": {
+                        "@_IsAssigned": false
+                      },
+                      "SummaryType": "None",
+                      "Definition": {
+                        "@_IsAssigned": false
+                      },
+                      "Criteria": {
+                        "@_IsAssigned": false
+                      },
+                      "Expression": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "DescriptionColumnFormat": {
+                        "@_IsAssigned": false
+                      },
+                      "IsVisible": true,
+                      "IsFrozen": {
+                        "@_IsAssigned": false
+                      },
+                      "IsCalculate": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColour": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ColourSourceType": {
+                        "@_IsAssigned": false
+                      },
+                      "FillColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "TextColourColumnName": {
+                        "@_IsAssigned": false
+                      },
+                      "AutomaticMinMax": true,
+                      "MinValue": {
+                        "@_IsAssigned": false
+                      },
+                      "MaxValue": {
+                        "@_IsAssigned": false
+                      },
+                      "HighColour": {
+                        "@_IsAssigned": false
+                      },
+                      "LowColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "RedLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightOperator": {
+                        "@_IsAssigned": false
+                      },
+                      "GreenLightValue": {
+                        "@_IsAssigned": false
+                      },
+                      "OtherLightColour": {
+                        "@_IsAssigned": false
+                      },
+                      "ApplyColour": {
+                        "@_IsAssigned": false
+                      },
+                      "Colour": {
+                        "@_IsAssigned": false
+                      }
+                    }
+                  ]
+                },
+                "Criteria": "",
+                "AcceptEvents": true,
+                "AcceptEventsType": {
+                  "#text": "IncludeSelected",
+                  "@_Description": "Include Selected"
+                },
+                "AcceptEventsSelected": "COST_CENTRE",
+                "ShowOptions": false,
+                "ShowOptionsType": "Selected",
+                "ShowOptionsSelected": "Expand,Capture,Pin",
+                "EnableExport": false,
+                "Filter": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "d65058ee-77e3-4001-a215-34d476e4d2dc",
+                  "FilterColumn": "",
+                  "Direction": "",
+                  "NumberOfRecords": 10
+                },
+                "Factor": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "3d8aef89-84cc-4a4d-84ba-146579be9af9",
+                  "ApplyFactor": false,
+                  "FactorBy": 0.001,
+                  "ApplyFactorToSelectedColumns": false,
+                  "FactorItems": ""
+                },
+                "Sign": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "1848b014-9444-4f40-9bd6-8a52767eb56a",
+                  "ApplySign": true,
+                  "SignType": "Credit",
+                  "ApplySignToSelectedColumns": false,
+                  "SignColumns": "",
+                  "SignItems": ""
+                },
+                "SuppressZero": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "04d3f048-1fba-4a26-baba-7bb8fb09b0d5",
+                  "ApplySuppressZero": true,
+                  "ApplySuppressToSelectedColumns": false,
+                  "SuppressColumns": ""
+                },
+                "Drilldown": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "7c7797f0-860d-43de-8765-f78f34d4e17e",
+                  "IsDetailEnabled": true,
+                  "HasDefaultPath": true,
+                  "IsRuntimeEditable": true,
+                  "DrilldownColumns": ""
+                },
+                "Sorting": {
+                  "SortItem": [
+                    {
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "ExplicitKey": {
+                        "#text": "38771f84-6274-4397-b7e1-18d054792a2c",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "Column": {
+                        "#text": "REPORTSUMMARY",
+                        "@_Description": "Report Summary"
+                      },
+                      "SortOrder": "Ascending"
+                    },
+                    {
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "ExplicitKey": {
+                        "#text": "458e28b2-64ca-4a47-9609-81f3cbaadf13",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "Column": {
+                        "#text": "REPORTDETAILS",
+                        "@_Description": "Report Details"
+                      },
+                      "SortOrder": "Ascending"
+                    },
+                    {
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "ExplicitKey": {
+                        "#text": "f44c3356-f69c-42ac-bea7-8b5670794252",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "Column": {
+                        "#text": "GLNATURALACCOUNTCODE",
+                        "@_Description": "GL Natural Account Code"
+                      },
+                      "SortOrder": "Ascending"
+                    }
+                  ]
+                },
+                "ContentActions": "",
+                "ControlActions": "",
+                "HeaderLines": 2,
+                "ShowSearch": false,
+                "ShowTotalRow": true,
+                "ShowGroupCount": false,
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "Owner": "BWILKINS",
+            "OwnerType": "E",
+            "AttributeString1": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "AttributeString2": "",
+            "AttributeText1": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "328b1060-96f3-4360-b376-0acc3a5ecf16",
+                "CriteriaValues": {
+                  "CriteriaValue": [
+                    {
+                      "DefKey": "c4d08d6e-344f-40f5-ab27-12eaee39b974",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "PERIOD",
+                      "Operator": {
+                        "Value": "LessThanEquals",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "{&C_PERIOD}",
+                      "Value2": "",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    },
+                    {
+                      "DefKey": "52a80640-872f-4ef2-9723-0b93b1d68cce",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "FINANCIALYEAR",
+                      "Operator": {
+                        "Value": "Equals",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "{&C_FY}",
+                      "Value2": "",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    },
+                    {
+                      "DefKey": "63873c7b-d253-4a3e-a9c2-c84f815e2be3",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "SELECTIONTYPE29CODE",
+                      "Operator": {
+                        "Value": "Between",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "10RS01",
+                      "Value2": "10RS09",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    }
+                  ]
+                },
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": {
+                  "CriteriaSetItem": {
+                    "ExplicitKey": {
+                      "#text": "c1266d0a-89a8-49cf-b88a-70dab8f6794e",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "CriteriaValues": {
+                      "CriteriaValue": {
+                        "DefKey": "ad80cfd1-21bc-440c-8433-c712cb9f2b15",
+                        "ColumnPrefix": {
+                          "@_IsAssigned": false
+                        },
+                        "ColumnId": "SELECTIONTYPE38CODE",
+                        "Operator": {
+                          "Value": "OneOf",
+                          "IsAssigned": true,
+                          "IsNull": false
+                        },
+                        "MetaOperatorText": {
+                          "@_IsAssigned": false
+                        },
+                        "Value1": "{&A1SVCGR}",
+                        "Value2": "",
+                        "CriteriaValue1ColumnId": {
+                          "@_IsAssigned": false
+                        },
+                        "CriteriaValue2ColumnId": {
+                          "@_IsAssigned": false
+                        },
+                        "Link": "OR"
+                      }
+                    },
+                    "SetName": "c1266d0a-89a8-49cf-b88a-70dab8f6794e",
+                    "Link": "AND",
+                    "NestedSets": ""
+                  }
+                },
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "AttributeText2": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Parameters": {
+                "ParameterField": [
+                  {
+                    "FieldName": "ACT_LDG",
+                    "Value": "{&CES:F1_ACTUAL_LDG}"
+                  },
+                  {
+                    "FieldName": "BUD_LDG",
+                    "Value": "{&CES:F1_BUDGET_LDG}"
+                  },
+                  {
+                    "FieldName": "CUR_PER",
+                    "Value": "{&CES:F1_CUR_PERIOD}"
+                  }
+                ],
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "OwnerEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "ThemeId": "00000000-0000-0000-0000-000000000000",
+            "ReportingSystem": "$DEFAULT",
+            "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL"
+          },
+          {
+            "GenericEntityId": "d1acad9e-af33-43bd-b78f-7d38a8e57642",
+            "EntityType": "VISUALISATION",
+            "EntitySubType": "SLICER",
+            "Name": "COST_CENTRE",
+            "Description": "Select By Cost Centre",
+            "Category": "",
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Slicer": {
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "4c4aacab-f978-45ec-9e76-f4bdff76d140",
+                "ShowTitle": true,
+                "ValueField": {
+                  "#text": "GLCOSTCENTRECODE",
+                  "@_Description": "GL Cost Centre Code"
+                },
+                "ValueFormat": "General",
+                "DefaultMinValue": "",
+                "DefaultMaxValue": "",
+                "DefaultItems": "",
+                "SlicerType": {
+                  "#text": "DropDown",
+                  "@_Description": "DropDown"
+                },
+                "RangeOperator": "Between",
+                "Multiselect": false,
+                "ShowApply": false,
+                "ShowClearItem": true,
+                "ShowClearAll": false,
+                "ShowSelectAll": true,
+                "ShowSearch": true,
+                "ShowSlider": true,
+                "Criteria": "",
+                "AcceptEvents": false,
+                "AcceptEventsType": "All",
+                "AcceptEventsSelected": "",
+                "ShowOptions": false,
+                "ShowOptionsType": "Selected",
+                "ShowOptionsSelected": "Expand,Capture,Pin",
+                "Filter": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "f357cdfb-d6be-4376-8e1e-4a696d0c5750",
+                  "NumberOfRecords": 10
+                },
+                "UseColumnAsSource": false,
+                "Columns": {
+                  "Column": {
+                    "Overrides": {
+                      "ValueObjectContext": {
+                        "Key": [
+                          {
+                            "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          },
+                          {
+                            "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          },
+                          {
+                            "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          }
+                        ],
+                        "FieldItem": [
+                          {
+                            "ValueObjectFieldContextItem": {
+                              "FieldDetails": {
+                                "string": "T1.Analytics.Compatibility.DataSource.DataSourceFieldIds+ColumnId, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                "@_AssemblyQualifiedTypeName": "System.String"
+                              },
+                              "@_CharacterCasing": "Upper",
+                              "@_FormattedTextType": "",
+                              "@_ExpressionType": "",
+                              "@_AssociatedAnalyserItem": ""
+                            },
+                            "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                          },
+                          {
+                            "ValueObjectFieldContextItem": {
+                              "FieldDetails": {
+                                "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                "@_AssemblyQualifiedTypeName": "System.String"
+                              },
+                              "@_Hidden": "True",
+                              "@_CharacterCasing": "",
+                              "@_FormattedTextType": "",
+                              "@_ExpressionType": "",
+                              "@_AssociatedAnalyserItem": ""
+                            },
+                            "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                          },
+                          {
+                            "ValueObjectFieldContextItem": {
+                              "FieldDetails": {
+                                "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Colour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                "@_AssemblyQualifiedTypeName": "System.String"
+                              },
+                              "@_Hidden": "True",
+                              "@_CharacterCasing": "",
+                              "@_FormattedTextType": "",
+                              "@_ExpressionType": "",
+                              "@_AssociatedAnalyserItem": ""
+                            },
+                            "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                          }
+                        ],
+                        "@_NumFields": 3,
+                        "@_NumCategories": 0,
+                        "@_xmlns": ""
+                      },
+                      "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DynamicFields": {
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DefKey": "8a68102b-0381-49ba-a537-d2dbe8d7e016",
+                    "ColumnId": "COSTCENTRECODEDESCRIPTION",
+                    "Description": "Cost Centre Code - Description",
+                    "ColumnType": "Max",
+                    "FieldId": "CC_CODE_DESC",
+                    "DataType": "String",
+                    "Category": "General",
+                    "Width": 200,
+                    "Format": "General",
+                    "Alignment": "Left",
+                    "AggregateType": {
+                      "@_IsAssigned": false
+                    },
+                    "SummaryType": "None",
+                    "Definition": {
+                      "@_IsAssigned": false
+                    },
+                    "Criteria": {
+                      "@_IsAssigned": false
+                    },
+                    "Expression": {
+                      "@_IsAssigned": false
+                    },
+                    "DescriptionColumnName": {
+                      "@_IsAssigned": false
+                    },
+                    "DescriptionColumnFormat": {
+                      "@_IsAssigned": false
+                    },
+                    "IsVisible": true,
+                    "IsFrozen": false,
+                    "IsCalculate": {
+                      "@_IsAssigned": false
+                    },
+                    "TextColour": {
+                      "@_IsAssigned": false
+                    },
+                    "FillColour": {
+                      "@_IsAssigned": false
+                    },
+                    "ColourSourceType": {
+                      "@_IsAssigned": false
+                    },
+                    "FillColourColumnName": {
+                      "@_IsAssigned": false
+                    },
+                    "TextColourColumnName": {
+                      "@_IsAssigned": false
+                    },
+                    "AutomaticMinMax": true,
+                    "MinValue": {
+                      "@_IsAssigned": false
+                    },
+                    "MaxValue": {
+                      "@_IsAssigned": false
+                    },
+                    "HighColour": {
+                      "@_IsAssigned": false
+                    },
+                    "LowColour": {
+                      "@_IsAssigned": false
+                    },
+                    "RedLightColour": {
+                      "@_IsAssigned": false
+                    },
+                    "RedLightOperator": {
+                      "@_IsAssigned": false
+                    },
+                    "RedLightValue": {
+                      "@_IsAssigned": false
+                    },
+                    "GreenLightColour": {
+                      "@_IsAssigned": false
+                    },
+                    "GreenLightOperator": {
+                      "@_IsAssigned": false
+                    },
+                    "GreenLightValue": {
+                      "@_IsAssigned": false
+                    },
+                    "OtherLightColour": {
+                      "@_IsAssigned": false
+                    },
+                    "ApplyColour": {
+                      "@_IsAssigned": false
+                    },
+                    "Colour": {
+                      "@_IsAssigned": false
+                    }
+                  }
+                },
+                "Sorting": "",
+                "ModelMapping": {
+                  "ModelMappingItem": {
+                    "DynamicFields": {
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "ExplicitKey": {
+                      "#text": "3a92a29e-69c8-46fa-9c2f-d107ab719c9e",
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DataModelId": {
+                      "#text": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+                      "@_Description": "AFRG_IE_PRIMARY_MODEL"
+                    },
+                    "FieldId": "CC_CODE_DESC"
+                  }
+                },
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "Owner": "BWILKINS",
+            "OwnerType": "E",
+            "AttributeString1": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "AttributeString2": "",
+            "AttributeText1": "",
+            "AttributeText2": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Parameters": {
+                "ParameterField": [
+                  {
+                    "FieldName": "ACT_LDG",
+                    "Value": "{&CES:F1_ACTUAL_LDG}"
+                  },
+                  {
+                    "FieldName": "BUD_LDG",
+                    "Value": "{&CES:F1_BUDGET_LDG}"
+                  },
+                  {
+                    "FieldName": "CUR_PER",
+                    "Value": "{&CES:F1_CUR_PERIOD}"
+                  }
+                ],
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "OwnerEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "ThemeId": "00000000-0000-0000-0000-000000000000",
+            "ReportingSystem": "$DEFAULT",
+            "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL"
+          },
+          {
+            "GenericEntityId": "d86c0721-9ba2-4180-87ca-345df90f2c2d",
+            "EntityType": "VISUALISATION",
+            "EntitySubType": "SERIESCHART",
+            "Name": "EXPENSES_ACTUALVSBUDGET",
+            "Description": "Expenses YTD (Actual vs Budget)",
+            "Category": "",
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "SeriesChart": {
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "42ff26d8-028f-450a-a2fa-ba02f021294b",
+                "ShowTitle": true,
+                "CategoryField": {
+                  "#text": "SELECTIONTYPE29CODE",
+                  "@_Description": "Selection Type 29 Code"
+                },
+                "Rotate": false,
+                "Legend": true,
+                "ChartCursor": true,
+                "ChartCursorFormat": "0;-0",
+                "ChartScrollbar": false,
+                "Animation": false,
+                "Duration": 1,
+                "Effect": "elastic",
+                "ControlActions": "",
+                "ContentActions": "",
+                "Filter": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "fb936c36-be2f-4fb5-b4c5-7cb7d8220d0e",
+                  "FilterColumn": "SELECTIONTYPE29CODE",
+                  "Direction": "Top",
+                  "NumberOfRecords": 10
+                },
+                "Factor": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "ac10a0b3-1919-42bf-9af3-e7939f4e376d",
+                  "ApplyFactor": false,
+                  "FactorBy": 0.001,
+                  "ApplyFactorToSelectedColumns": false,
+                  "FactorItems": ""
+                },
+                "Sign": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "047ba1aa-ba08-485a-ba13-d3df6b3d3f35",
+                  "ApplySign": false,
+                  "SignType": "Credit",
+                  "ApplySignToSelectedColumns": false,
+                  "SignColumns": "",
+                  "SignItems": ""
+                },
+                "SuppressZero": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "51c0b894-df96-401d-bd1e-f2ebb5da3b9a",
+                  "ApplySuppressZero": true,
+                  "ApplySuppressToSelectedColumns": false,
+                  "SuppressColumns": ""
+                },
+                "Sorting": {
+                  "SortItem": {
+                    "DynamicFields": {
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DefKey": "28cab0ab-989e-4d63-9ad3-cad87f4bfaff",
+                    "Column": "SELECTIONTYPE29CODE",
+                    "SortOrder": "Ascending"
+                  }
+                },
+                "Series": {
+                  "SeriesItem": [
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyNegativeColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ColourSourceType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueFormat",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+IsCumulative",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+IsVisible",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+DataType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+Expression",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyNegativeColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ColourSourceType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.Analytics.Business.Text.Categories+VisualAttributes, T1.Analytics.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Sequence": 0,
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueFormat, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+IsCumulative, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+IsVisible, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+DataType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+Expression, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 10,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "7df44a4a-0230-4491-a404-18dd91cc2511",
+                      "SeriesName": "C_ACTUAL",
+                      "SeriesDescription": "$Actual",
+                      "GraphType": {
+                        "#text": "Column",
+                        "@_Description": "Column"
+                      },
+                      "SeriesValueAxisName": "VALUEAXIS1",
+                      "ValueField": {
+                        "#text": "ACTUAL",
+                        "@_Description": "$Actual"
+                      },
+                      "AggregateType": {
+                        "#text": "Sum",
+                        "@_Description": "Sum"
+                      },
+                      "ValueFormat": "Number",
+                      "ShowLabels": true,
+                      "LabelFormat": "Number",
+                      "LabelPosition": {
+                        "#text": "Bottom",
+                        "@_Description": "Bottom"
+                      },
+                      "Expression": "",
+                      "DataType": {
+                        "#text": "Decimal",
+                        "@_Description": "Decimal"
+                      },
+                      "IsVisible": true,
+                      "ColourSourceType": {
+                        "#text": "Specific",
+                        "@_Description": "Use Specific Colour"
+                      },
+                      "ApplyColour": true,
+                      "FillColour": "#2160bf",
+                      "FillOpacity": 1,
+                      "LineColour": "#ffffff",
+                      "LineOpacity": 1,
+                      "ApplyNegativeColour": false,
+                      "NegativeFillColour": "",
+                      "NegativeFillOpacity": 0.8,
+                      "NegativeLineColour": "",
+                      "NegativeLineOpacity": 0.8,
+                      "NegativeBase": 0,
+                      "Bullet": "None",
+                      "BulletSize": 8,
+                      "HideBulletsCount": 50,
+                      "ApplyBulletColour": false,
+                      "LineThickness": 0.8,
+                      "LineDashLength": 0,
+                      "ColumnWidth": 0.4,
+                      "Clustered": true,
+                      "Stackable": false,
+                      "NewStack": false,
+                      "IsCumulative": false,
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "82ae33fc-564f-4561-8a34-44dd4c7c3cdd",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Description": {
+                        "Value": "$Actual",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      }
+                    },
+                    {
+                      "Overrides": {
+                        "ValueObjectContext": {
+                          "Key": [
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyNegativeColour",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ColourSourceType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueFormat",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+IsCumulative",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+IsVisible",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+DataType",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            },
+                            {
+                              "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+Expression",
+                              "@_AssemblyQualifiedTypeName": "System.String"
+                            }
+                          ],
+                          "FieldItem": [
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ApplyNegativeColour, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Hidden": "True",
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ColourSourceType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.Analytics.Business.Text.Categories+VisualAttributes, T1.Analytics.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_Sequence": 0,
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueFormat, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+IsCumulative, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+IsVisible, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+DataType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            },
+                            {
+                              "ValueObjectFieldContextItem": {
+                                "FieldDetails": {
+                                  "string": "T1.Analytics.Compatibility.Query.QueryColumnFieldIds+Expression, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "FieldCategory": {
+                                  "string": "T1.CoreLib.Business.Common.Text.GenericCategories+Details, T1.CoreLib.2411.Business, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                                  "@_AssemblyQualifiedTypeName": "System.String"
+                                },
+                                "@_CharacterCasing": "",
+                                "@_FormattedTextType": "",
+                                "@_ExpressionType": "",
+                                "@_AssociatedAnalyserItem": ""
+                              },
+                              "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                            }
+                          ],
+                          "@_NumFields": 10,
+                          "@_NumCategories": 0,
+                          "@_xmlns": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DynamicFields": {
+                        "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                      },
+                      "DefKey": "43a6e090-6d42-4ddb-8348-a7b8bf38a894",
+                      "SeriesName": "C_BUDGET",
+                      "SeriesDescription": "$Budget",
+                      "GraphType": {
+                        "#text": "Column",
+                        "@_Description": "Column"
+                      },
+                      "SeriesValueAxisName": "VALUEAXIS1",
+                      "ValueField": {
+                        "#text": "BUDGET",
+                        "@_Description": "$Budget"
+                      },
+                      "AggregateType": {
+                        "#text": "Sum",
+                        "@_Description": "Sum"
+                      },
+                      "ValueFormat": "Number",
+                      "ShowLabels": true,
+                      "LabelFormat": "Number",
+                      "LabelPosition": {
+                        "#text": "Top",
+                        "@_Description": "Top"
+                      },
+                      "Expression": "",
+                      "DataType": {
+                        "#text": "Decimal",
+                        "@_Description": "Decimal"
+                      },
+                      "IsVisible": true,
+                      "ColourSourceType": {
+                        "#text": "Specific",
+                        "@_Description": "Use Specific Colour"
+                      },
+                      "ApplyColour": true,
+                      "FillColour": "#919191",
+                      "FillOpacity": 0.5,
+                      "LineColour": "#14499a",
+                      "LineOpacity": 1,
+                      "ApplyNegativeColour": true,
+                      "NegativeFillColour": "",
+                      "NegativeFillOpacity": 0.8,
+                      "NegativeLineColour": "",
+                      "NegativeLineOpacity": 0.8,
+                      "NegativeBase": 0,
+                      "Bullet": "None",
+                      "BulletSize": 8,
+                      "HideBulletsCount": 50,
+                      "ApplyBulletColour": false,
+                      "LineThickness": 0.8,
+                      "LineDashLength": 0,
+                      "ColumnWidth": 0.6,
+                      "Clustered": false,
+                      "Stackable": true,
+                      "NewStack": false,
+                      "IsCumulative": false,
+                      "Criteria": {
+                        "?xml": {
+                          "@_version": 1,
+                          "@_encoding": "utf-8"
+                        },
+                        "CriteriaSetItem": {
+                          "DefKey": "b2ab4924-4698-48e2-8b95-075899c66419",
+                          "CriteriaValues": "",
+                          "SetName": {
+                            "@_IsAssigned": false
+                          },
+                          "Link": "AND",
+                          "NestedSets": "",
+                          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+                        }
+                      },
+                      "Description": {
+                        "Value": "$Budget",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      }
+                    }
+                  ]
+                },
+                "CategoryAxisApplyGrid": false,
+                "CategoryAxisGridAlpha": 0.3,
+                "CategoryAxisGridThickness": 1,
+                "CategoryAxisGridColour": "#d5d0d0",
+                "CategoryAxisGridDashLength": 3,
+                "CategoryAxisDescription": "By Reporting Summary",
+                "CategoryAxisFormat": "General",
+                "CategoryAxisPosition": {
+                  "#text": "top",
+                  "@_Description": "Top"
+                },
+                "CategoryLabelRotation": 0,
+                "CategoryAxisDataType": {
+                  "#text": "String",
+                  "@_Description": "String"
+                },
+                "ValueAxes": {
+                  "ValueAxisItem": {
+                    "DynamicFields": {
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DefKey": "410c68bf-a123-46cd-8c3f-c493f18e133d",
+                    "ValueAxisName": "VALUEAXIS1",
+                    "ValueAxisDescription": "$ Expenses",
+                    "ValueAxisStackType": {
+                      "#text": "none",
+                      "@_Description": "None"
+                    },
+                    "ValueAxisFormat": "",
+                    "ValueAxisDataType": "",
+                    "ValueAxisPosition": {
+                      "#text": "left",
+                      "@_Description": "Left"
+                    },
+                    "ValueAxisOffset": 0,
+                    "ApplyScale": false,
+                    "ApplyMinimumScaleValue": true,
+                    "MinValue": 0,
+                    "ApplyMaximumScaleValue": true,
+                    "MaxValue": 0,
+                    "ValueAxisApplyGrid": true,
+                    "ValueAxisGridAlpha": 0.3,
+                    "ValueAxisGridThickness": 1,
+                    "ValueAxisGridColour": "#d5d0d0",
+                    "ValueAxisGridDashLength": 3
+                  }
+                },
+                "Criteria": "",
+                "AcceptEvents": true,
+                "AcceptEventsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "AcceptEventsSelected": "",
+                "AcceptHighlights": true,
+                "AcceptHighlightsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "AcceptHighlightsSelected": "",
+                "ShowOptions": true,
+                "ShowOptionsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "ShowOptionsSelected": "",
+                "DetailView": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "Owner": "BWILKINS",
+            "OwnerType": "E",
+            "AttributeString1": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "AttributeString2": "",
+            "AttributeText1": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "8e66e82a-9ed3-4ccd-a4de-427b616fac6b",
+                "CriteriaValues": {
+                  "CriteriaValue": [
+                    {
+                      "DefKey": "040a4b9a-f9ec-484a-aeb8-e57faf28dd99",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "SELECTIONTYPE29CODE",
+                      "Operator": {
+                        "Value": "Between",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "20RS01",
+                      "Value2": "20RS10",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    },
+                    {
+                      "DefKey": "ae253474-2a14-43e1-a285-9606a29e16d7",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "PERIOD",
+                      "Operator": {
+                        "Value": "LessThanEquals",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "{&C_PERIOD}",
+                      "Value2": "",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    },
+                    {
+                      "DefKey": "ade7b345-9f2c-4141-a6a6-26922d9dc0bc",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "FINANCIALYEAR",
+                      "Operator": {
+                        "Value": "Equals",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "{&C_FY}",
+                      "Value2": "",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    },
+                    {
+                      "DefKey": "b177487a-44cb-4c5e-8c5f-f361d5035373",
+                      "ColumnPrefix": {
+                        "@_IsAssigned": false
+                      },
+                      "ColumnId": "SELECTIONTYPE38CODE",
+                      "Operator": {
+                        "Value": "OneOf",
+                        "IsAssigned": true,
+                        "IsNull": false
+                      },
+                      "MetaOperatorText": {
+                        "@_IsAssigned": false
+                      },
+                      "Value1": "{&A1SVCGR}",
+                      "Value2": "",
+                      "CriteriaValue1ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "CriteriaValue2ColumnId": {
+                        "@_IsAssigned": false
+                      },
+                      "Link": "AND"
+                    }
+                  ]
+                },
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "AttributeText2": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Parameters": {
+                "ParameterField": [
+                  {
+                    "FieldName": "ACT_LDG",
+                    "Value": "{&CES:F1_ACTUAL_LDG}"
+                  },
+                  {
+                    "FieldName": "BUD_LDG",
+                    "Value": "{&CES:F1_BUDGET_LDG}"
+                  },
+                  {
+                    "FieldName": "CUR_PER",
+                    "Value": "{&CES:F1_CUR_PERIOD}"
+                  }
+                ],
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "OwnerEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "ThemeId": "00000000-0000-0000-0000-000000000000",
+            "ReportingSystem": "$DEFAULT",
+            "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL"
+          },
+          {
+            "GenericEntityId": "abc7f50d-ed85-4e62-abf5-9e977237df88",
+            "EntityType": "VISUALISATION",
+            "EntitySubType": "COMPARISON",
+            "Name": "",
+            "Description": "Comparison",
+            "Category": "",
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Comparison": {
+                "Overrides": {
+                  "ValueObjectContext": {
+                    "Key": [
+                      {
+                        "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Value2Field",
+                        "@_AssemblyQualifiedTypeName": "System.String"
+                      },
+                      {
+                        "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType",
+                        "@_AssemblyQualifiedTypeName": "System.String"
+                      },
+                      {
+                        "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField",
+                        "@_AssemblyQualifiedTypeName": "System.String"
+                      }
+                    ],
+                    "FieldItem": [
+                      {
+                        "ValueObjectFieldContextItem": {
+                          "FieldDetails": {
+                            "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+Value2Field, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          },
+                          "@_Sequence": 6,
+                          "@_CharacterCasing": "",
+                          "@_FormattedTextType": "",
+                          "@_ExpressionType": "",
+                          "@_AssociatedAnalyserItem": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                      },
+                      {
+                        "ValueObjectFieldContextItem": {
+                          "FieldDetails": {
+                            "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+AggregateType, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          },
+                          "@_Hidden": "True",
+                          "@_CharacterCasing": "",
+                          "@_FormattedTextType": "",
+                          "@_ExpressionType": "",
+                          "@_AssociatedAnalyserItem": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                      },
+                      {
+                        "ValueObjectFieldContextItem": {
+                          "FieldDetails": {
+                            "string": "T1.Analytics.Compatibility.Visualisation.VisualisationFieldIds+ValueField, T1.Analytics.Compatibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=null",
+                            "@_AssemblyQualifiedTypeName": "System.String"
+                          },
+                          "@_Label": "Value 1",
+                          "@_CharacterCasing": "",
+                          "@_FormattedTextType": "",
+                          "@_ExpressionType": "",
+                          "@_AssociatedAnalyserItem": ""
+                        },
+                        "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectFieldContextItem"
+                      }
+                    ],
+                    "@_NumFields": 3,
+                    "@_NumCategories": 0,
+                    "@_xmlns": ""
+                  },
+                  "@_AssemblyQualifiedTypeName": "T1.CoreLib.Compatibility.ValueObjects.Definition.Internal.ValueObjectContext",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "6d5a4ee6-5484-4983-b85c-d1c9b86e667d",
+                "ShowTitle": true,
+                "ValueField": {
+                  "#text": "ACTUAL",
+                  "@_Description": "$Actual"
+                },
+                "Value2Field": {
+                  "#text": "BUDGET",
+                  "@_Description": "$Budget"
+                },
+                "ValueFormat": "$#,##0;($#,##0)",
+                "ComparisonDisplayType": {
+                  "#text": "ValueVariancePercentageVariance",
+                  "@_Description": "Value, Variance (%Variance)"
+                },
+                "ColourOption": {
+                  "#text": "MoreIsBetter",
+                  "@_Description": "More is better"
+                },
+                "Colour": "",
+                "Expressions": "",
+                "AggregateType": {
+                  "@_IsAssigned": false
+                },
+                "DetailView": {
+                  "#text": "VIEW1",
+                  "@_Description": "View 1"
+                },
+                "ControlActions": {
+                  "ActionItem": {
+                    "DynamicFields": {
+                      "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                    },
+                    "DefKey": "b5740f24-db23-4818-8936-f9662fc55ced",
+                    "ActionLabel": "Launch Dashboard",
+                    "ActionType": {
+                      "#text": "Enquiry",
+                      "@_Description": "Launch Enquiry"
+                    },
+                    "ActionDefinition": "",
+                    "Image": "",
+                    "ItemType": "Content",
+                    "FunctionEntity": "",
+                    "FunctionName": "$E1.AN.CROSSTAB.VW",
+                    "SuiteId": "CES",
+                    "EnquiryId": {
+                      "#text": "4ed295b9-7ed1-4ae1-a7f0-07f97c06705b",
+                      "@_Description": "I&E Cross Tab Enquiry"
+                    },
+                    "Dashboard": "",
+                    "Url": "",
+                    "ServerFile": "",
+                    "ServerFolder": "",
+                    "OpenInNewTab": true,
+                    "EtlProcess": "",
+                    "CiAEtlProcess": "00000000-0000-0000-0000-000000000000",
+                    "EtlMode": "",
+                    "ScheduleId": "00000000-0000-0000-0000-000000000000",
+                    "DataModelId": "00000000-0000-0000-0000-000000000000",
+                    "ParameterItems": "",
+                    "Criteria": {
+                      "@_IsAssigned": false
+                    },
+                    "CriteriaFormatted": {
+                      "Value": "",
+                      "IsAssigned": false,
+                      "IsNull": true
+                    },
+                    "ApplyActionType": "",
+                    "ApplyActionColumns": "",
+                    "ShowHintText": true,
+                    "Caption": "",
+                    "Message": "",
+                    "XLOneDefinition": {
+                      "Value": "",
+                      "IsAssigned": false,
+                      "IsNull": true
+                    },
+                    "UiDescription1": {
+                      "Value": "",
+                      "IsAssigned": false,
+                      "IsNull": true
+                    }
+                  }
+                },
+                "Criteria": "",
+                "AcceptEvents": true,
+                "AcceptEventsType": {
+                  "#text": "IncludeSelected",
+                  "@_Description": "Include Selected"
+                },
+                "AcceptEventsSelected": "COST_CENTRE,EXPENSES_ACTUALVSBUDGET",
+                "ShowOptions": true,
+                "ShowOptionsType": {
+                  "#text": "Selected",
+                  "@_Description": "Selected"
+                },
+                "ShowOptionsSelected": "Expand",
+                "Factor": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "59afd676-6f9e-4aac-a443-cc179033d6f3",
+                  "ApplyFactor": {
+                    "@_IsAssigned": false
+                  },
+                  "FactorBy": 1,
+                  "ApplyFactorToSelectedColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "FactorItems": ""
+                },
+                "Sign": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "c20e0ca5-4815-421d-a316-821fa1aed43d",
+                  "ApplySign": {
+                    "@_IsAssigned": false
+                  },
+                  "SignType": {
+                    "@_IsAssigned": false
+                  },
+                  "ApplySignToSelectedColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "SignColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "SignItems": ""
+                },
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "Owner": "BWILKINS",
+            "OwnerType": "E",
+            "AttributeString1": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "AttributeString2": "",
+            "AttributeText1": "",
+            "AttributeText2": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Parameters": {
+                "ParameterField": [
+                  {
+                    "FieldName": "ACT_LDG",
+                    "Value": "{&CES:F1_ACTUAL_LDG}"
+                  },
+                  {
+                    "FieldName": "BUD_LDG",
+                    "Value": "{&CES:F1_BUDGET_LDG}"
+                  },
+                  {
+                    "FieldName": "CUR_PER",
+                    "Value": "{&CES:F1_CUR_PERIOD}"
+                  }
+                ],
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "OwnerEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "ThemeId": "00000000-0000-0000-0000-000000000000",
+            "ReportingSystem": "$DEFAULT",
+            "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL"
+          },
+          {
+            "GenericEntityId": "7f567462-193d-4354-a4e1-fce0314d378b",
+            "EntityType": "VISUALISATION",
+            "EntitySubType": "WATERFALLCHART",
+            "Name": "",
+            "Description": "WaterfallChart",
+            "Category": "",
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "SerialChart": {
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "5356d229-1656-4896-84f2-119659ed5911",
+                "ShowTitle": true,
+                "CategoryField": {
+                  "#text": "GLNATURALACCOUNTCODE",
+                  "@_Description": "GL Natural Account Code"
+                },
+                "GroupByField": "",
+                "ValueAxisDescription": "",
+                "ValueAxisFormat": "",
+                "Legend": true,
+                "ChartCursor": true,
+                "ChartCursorFormat": "h:mm:ss tt",
+                "Animation": true,
+                "Duration": 1,
+                "Effect": {
+                  "#text": "bounce",
+                  "@_Description": "Bounce"
+                },
+                "LabelText": "",
+                "CategorySortOrder": {
+                  "@_IsAssigned": false
+                },
+                "CategoryAxisApplyGrid": true,
+                "ValueAxisApplyGrid": true,
+                "ValueAxisGridAlpha": 0.3,
+                "ValueAxisGridThickness": 1,
+                "ValueAxisGridColour": "#d5d0d0",
+                "ValueAxisGridDashLength": 3,
+                "CategoryAxisGridAlpha": 0.3,
+                "CategoryAxisGridThickness": 1,
+                "CategoryAxisGridColour": "#d5d0d0",
+                "CategoryAxisGridDashLength": 3,
+                "CategoryAxisDescription": "",
+                "CategoryAxisFormat": "",
+                "CategoryAxisDataType": {
+                  "#text": "String",
+                  "@_Description": "String"
+                },
+                "Criteria": "",
+                "AcceptEvents": true,
+                "AcceptEventsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "AcceptEventsSelected": "",
+                "AcceptHighlights": true,
+                "AcceptHighlightsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "AcceptHighlightsSelected": "",
+                "ShowOptions": true,
+                "ShowOptionsType": {
+                  "#text": "All",
+                  "@_Description": "All"
+                },
+                "ShowOptionsSelected": "",
+                "DetailView": {
+                  "#text": "VIEW1",
+                  "@_Description": "View 1"
+                },
+                "ShowClosing": true,
+                "CloseTitle": "Close",
+                "Graph": {
+                  "DefKey": "f25187f6-f608-47cb-ae2e-bb540fdeb581",
+                  "Type": "",
+                  "ValueField": {
+                    "#text": "ACTUAL",
+                    "@_Description": "$Actual"
+                  },
+                  "ValueFormat": "$#,##0;($#,##0)",
+                  "AggregateType": {
+                    "#text": "Sum",
+                    "@_Description": "Sum"
+                  },
+                  "ShowLabels": false,
+                  "LabelFormat": "Number",
+                  "LabelPosition": "Inside",
+                  "ApplyColour": true,
+                  "FillColour": "#2b7938",
+                  "LineColour": "",
+                  "ApplyNegativeColour": true,
+                  "NegativeFillColour": "#d5004b",
+                  "NegativeLineColour": "",
+                  "NegativeBase": 0,
+                  "IsCumulative": true
+                },
+                "ColourSourceType": {
+                  "#text": "Specific",
+                  "@_Description": "Use Specific Colour"
+                },
+                "UseColumnAsSource": false,
+                "Columns": "",
+                "ControlActions": "",
+                "ContentActions": "",
+                "Filter": {
+                  "DefKey": "154125cc-2db5-4af2-80a9-d3896421ac09",
+                  "NumberOfRecords": 10
+                },
+                "Factor": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "56ff1413-9ddc-4fb4-960a-7750703bb9fd",
+                  "ApplyFactor": {
+                    "@_IsAssigned": false
+                  },
+                  "FactorBy": 1,
+                  "ApplyFactorToSelectedColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "FactorItems": ""
+                },
+                "Sign": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "65f608fe-8ba3-4c17-aa37-92016b240562",
+                  "ApplySign": {
+                    "@_IsAssigned": false
+                  },
+                  "SignType": {
+                    "@_IsAssigned": false
+                  },
+                  "ApplySignToSelectedColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "SignColumns": {
+                    "@_IsAssigned": false
+                  },
+                  "SignItems": ""
+                },
+                "Sorting": "",
+                "Drilldown": {
+                  "DynamicFields": {
+                    "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                  },
+                  "DefKey": "06751dbb-df4b-414b-a179-ba7a8537dae5",
+                  "IsDetailEnabled": true,
+                  "HasDefaultPath": true,
+                  "IsRuntimeEditable": true,
+                  "DrilldownColumns": ""
+                },
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "Owner": "BWILKINS",
+            "OwnerType": "E",
+            "AttributeString1": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "AttributeString2": "",
+            "AttributeText1": "",
+            "AttributeText2": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "Parameters": {
+                "ParameterField": [
+                  {
+                    "FieldName": "ACT_LDG",
+                    "Value": "{&CES:F1_ACTUAL_LDG}"
+                  },
+                  {
+                    "FieldName": "BUD_LDG",
+                    "Value": "{&CES:F1_BUDGET_LDG}"
+                  },
+                  {
+                    "FieldName": "CUR_PER",
+                    "Value": "{&CES:F1_CUR_PERIOD}"
+                  }
+                ],
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "OwnerEntityId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "ThemeId": "00000000-0000-0000-0000-000000000000",
+            "ReportingSystem": "$DEFAULT",
+            "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL"
+          }
+        ],
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    },
+    "Links": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "ArrayOfLinkDef": {
+        "LinkDef": [
+          {
+            "Key1": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Sequence": 1,
+            "Key2": "faab83b2-05fb-484d-b614-766a81829f33",
+            "Type": "E"
+          },
+          {
+            "Key1": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Sequence": 2,
+            "Key2": "d1acad9e-af33-43bd-b78f-7d38a8e57642",
+            "Type": "E"
+          },
+          {
+            "Key1": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Sequence": 3,
+            "Key2": "d86c0721-9ba2-4180-87ca-345df90f2c2d",
+            "Type": "E"
+          },
+          {
+            "Key1": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Sequence": 4,
+            "Key2": "abc7f50d-ed85-4e62-abf5-9e977237df88",
+            "Type": "E"
+          },
+          {
+            "Key1": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Sequence": 5,
+            "Key2": "7f567462-193d-4354-a4e1-fce0314d378b",
+            "Type": "E"
+          }
+        ],
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    },
+    "Variables": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "ArrayOfVariableDef": {
+        "VariableDef": [
+          {
+            "VariableId": "eca6a9dd-91d1-478a-a5c7-a1e8c61a3d04",
+            "Version": 1,
+            "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Name": "CUR_MONTH_YY",
+            "Description": "Dashboard Access Date",
+            "VariableType": "A",
+            "DefaultIsExpression": true,
+            "DefaultValue": "ToText(Today(),'dd-MMMM-yy')",
+            "IsDisplayable": true,
+            "IsEditable": false,
+            "IsMandatory": false,
+            "IsUpper": false,
+            "DecimalPlaces": 0,
+            "Sequence": 1,
+            "ListType": "",
+            "StandardCodeListSystemId": "",
+            "StandardCodeListType": "",
+            "SelectionTypeListType": "",
+            "ChartListChartName": "",
+            "ChartListChartComponent": "",
+            "QueryListDatasource": "",
+            "QueryListSuite": "",
+            "QueryListSuiteIsImplicit": false,
+            "QueryListValue": "",
+            "QueryListDescription": "",
+            "QueryListCriteria": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "56d9ebaa-c920-4e6a-8584-2e3be98b1403",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "QueryListParameters": "",
+            "IsMultiPickPicklist": false,
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "ArrayOfCustomListItem": {
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            }
+          },
+          {
+            "VariableId": "5a31ef5c-cde7-4b44-ab77-038be96a9061",
+            "Version": 1,
+            "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Name": "C_PERIOD",
+            "Description": "Reporting Period",
+            "VariableType": "N",
+            "DefaultIsExpression": false,
+            "DefaultValue": "{&CES:F1_CUR_PERIOD}",
+            "IsDisplayable": true,
+            "IsEditable": true,
+            "IsMandatory": false,
+            "IsUpper": false,
+            "DecimalPlaces": 0,
+            "Sequence": 2,
+            "ListType": "",
+            "StandardCodeListSystemId": "",
+            "StandardCodeListType": "",
+            "SelectionTypeListType": "",
+            "ChartListChartName": "",
+            "ChartListChartComponent": "",
+            "QueryListDatasource": "",
+            "QueryListSuite": "",
+            "QueryListSuiteIsImplicit": false,
+            "QueryListValue": "",
+            "QueryListDescription": "",
+            "QueryListCriteria": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "dccb80e4-cb1f-41e3-a385-958aae655947",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "QueryListParameters": "",
+            "IsMultiPickPicklist": false,
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "ArrayOfCustomListItem": {
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            }
+          },
+          {
+            "VariableId": "2ec0ba61-17f7-4dbe-945b-af2a8ac6419e",
+            "Version": 1,
+            "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Name": "C_FY",
+            "Description": "Reporting Financial Year",
+            "VariableType": "N",
+            "DefaultIsExpression": false,
+            "DefaultValue": "{&CES:F1_CURR_YEAR}",
+            "IsDisplayable": true,
+            "IsEditable": true,
+            "IsMandatory": false,
+            "IsUpper": false,
+            "DecimalPlaces": 0,
+            "Sequence": 3,
+            "ListType": "",
+            "StandardCodeListSystemId": "",
+            "StandardCodeListType": "",
+            "SelectionTypeListType": "",
+            "ChartListChartName": "",
+            "ChartListChartComponent": "",
+            "QueryListDatasource": "",
+            "QueryListSuite": "",
+            "QueryListSuiteIsImplicit": false,
+            "QueryListValue": "",
+            "QueryListDescription": "",
+            "QueryListCriteria": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "c5fafa5b-10a3-4457-a69e-dfa773bf9554",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "QueryListParameters": "",
+            "IsMultiPickPicklist": false,
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "ArrayOfCustomListItem": {
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            }
+          },
+          {
+            "VariableId": "3806a442-1508-4db3-83d2-2a70aea70e46",
+            "Version": 1,
+            "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+            "Name": "A1SVCGR",
+            "Description": "A1 Service Group",
+            "VariableType": "L",
+            "DefaultIsExpression": false,
+            "DefaultValue": "",
+            "IsDisplayable": true,
+            "IsEditable": true,
+            "IsMandatory": false,
+            "IsUpper": false,
+            "DecimalPlaces": 6,
+            "Sequence": 4,
+            "ListType": "QRY",
+            "StandardCodeListSystemId": "",
+            "StandardCodeListType": "",
+            "SelectionTypeListType": "A1_SGRP",
+            "ChartListChartName": "",
+            "ChartListChartComponent": "",
+            "QueryListDatasource": "3ba7fae0-f883-4f1f-b005-d9d59121ca10",
+            "QueryListSuite": "CES",
+            "QueryListSuiteIsImplicit": false,
+            "QueryListValue": "SELECTIONTYPE38CODE",
+            "QueryListDescription": "SELECTIONTYPE38CODE",
+            "QueryListCriteria": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "CriteriaSetItem": {
+                "DefKey": "9f630bae-a83a-44f1-b04b-aa075479b7a2",
+                "CriteriaValues": "",
+                "SetName": {
+                  "@_IsAssigned": false
+                },
+                "Link": "AND",
+                "NestedSets": "",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "QueryListParameters": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "EmptyValueObject": {
+                "DynamicFields": {
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "DefKey": "faa1f79b-252d-4f3a-a64a-fd7a87625d99",
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            },
+            "IsMultiPickPicklist": true,
+            "Definition": {
+              "?xml": {
+                "@_version": 1,
+                "@_encoding": "utf-8"
+              },
+              "ArrayOfCustomListItem": {
+                "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+              }
+            }
+          }
+        ],
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    },
+    "Resources": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "ArrayOfResourceDef": {
+        "ResourceDef": {
+          "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+          "ResourceName": "AFRG I&E DM",
+          "ResourceType": "SERVERFOLDER",
+          "ResourceSubType": "SERVERFOLDER",
+          "Description": "AFRG_IE_PRIMARY_MODEL",
+          "Definition": {
+            "?xml": {
+              "@_version": 1,
+              "@_encoding": "utf-8"
+            },
+            "ServerFolderResource": {
+              "DefKey": "665e2974-9960-41cd-a3f8-d236ea526125",
+              "Suite": "CES",
+              "ServerFolder": "USERAREA",
+              "SubPath": "SPATTERS",
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          },
+          "SubDefinition": {
+            "?xml": {
+              "@_version": 1,
+              "@_encoding": "utf-8"
+            },
+            "TextResource": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "c9c3f01a-caf7-4c00-8919-b4a225691f6b",
+              "Delimiter": "Comma",
+              "Quote": "DoubleQuote",
+              "Escape": "DoubleQuote",
+              "Comment": "Comment",
+              "HasHeader": true,
+              "HeaderRowCount": 1,
+              "HeaderRowNumber": 1,
+              "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+              "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+            }
+          }
+        },
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    },
+    "Theme": {
+      "?xml": {
+        "@_version": 1,
+        "@_encoding": "utf-8"
+      },
+      "ThemeDef": {
+        "ThemeId": "00000000-0000-0000-0000-000000000000",
+        "OwnerId": "8397f348-f281-45ef-b311-ef4ebcbc38d3",
+        "IsActive": false,
+        "IsDefault": false,
+        "IsShipped": false,
+        "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+        "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+      }
+    }
+  },
+  "metadata": {
+    "totalXmlFiles": 6,
+    "parsedXmlFields": 2551,
+    "errors": []
+  }
+}

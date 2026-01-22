@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfC2GenericVariable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <C2GenericVariable>
+    <VariableId>01a02bb1-d1ff-41d4-b854-170765a6f888</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_FINYY</Name>
+    <Description>Financial Year</Description>
+    <VariableType>N</VariableType>
+    <DefaultIsExpression>true</DefaultIsExpression>
+    <DefaultValue>{&amp;CES:F1_CURR_YEAR}-2000</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>false</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>0</DecimalPlaces>
+    <Sequence>1</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;b384baa6-1d3c-4c92-85ba-4bb165ed5f11&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>463f78a3-2744-4e78-9a9f-8c28fa960911</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_BUDLDG</Name>
+    <Description>Budget Ledger - Financial Year</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>BUDLDG</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>true</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>2</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;f4c2ddee-20b8-42b5-b8ef-62cb2dd577a6&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>c67af225-1d1f-4b36-a238-5ef27291292d</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_ACTLDG</Name>
+    <Description>Actual Ledger - Financial Year</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>ACTLDG</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>true</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>3</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;500c6845-9fbb-4f57-88e6-1685a1e0b726&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>f7cc8c0c-aadc-47e4-8bd8-4d9dfec77e84</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_HISTORICAL</Name>
+    <Description>How many years historical data</Description>
+    <VariableType>N</VariableType>
+    <DefaultIsExpression>false</DefaultIsExpression>
+    <DefaultValue>3</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>true</IsEditable>
+    <IsMandatory>true</IsMandatory>
+    <IsUpper>false</IsUpper>
+    <DecimalPlaces>0</DecimalPlaces>
+    <Sequence>4</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;1dff77f3-e031-496e-abcb-33d5af6ca216&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>05d72b68-3052-498b-8d41-742a46e42f00</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_1STYEAR</Name>
+    <Description>Earliest FY as per current setup</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>true</DefaultIsExpression>
+    <DefaultValue>{&amp;VAR_FINYY}-{&amp;VAR_HISTORICAL}</DefaultValue>
+    <IsDisplayable>true</IsDisplayable>
+    <IsEditable>false</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>true</IsUpper>
+    <DecimalPlaces>0</DecimalPlaces>
+    <Sequence>5</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;66998478-5d8c-43cd-88e7-faf7a7a2f9ca&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>7f46ceaa-75d1-4953-b5a0-4b8d7c99fd59</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_LOOPINDEX</Name>
+    <Description>Loop Index</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>true</DefaultIsExpression>
+    <DefaultValue>{&amp;VAR_1STYEAR}-1</DefaultValue>
+    <IsDisplayable>false</IsDisplayable>
+    <IsEditable>false</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>true</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>6</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;0aaef816-6eaf-463d-8320-274baa75aff7&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+  <C2GenericVariable>
+    <VariableId>277e0d61-f95c-4f9c-b0cf-1c355742bbf5</VariableId>
+    <Version>1</Version>
+    <OwnerId>a9463781-21f6-4ccb-a359-2d6ed336419e</OwnerId>
+    <Name>VAR_LOOPEND</Name>
+    <Description>Loop End</Description>
+    <VariableType>A</VariableType>
+    <DefaultIsExpression>true</DefaultIsExpression>
+    <DefaultValue>{&amp;VAR_LOOPINDEX}+{&amp;VAR_HISTORICAL}</DefaultValue>
+    <IsDisplayable>false</IsDisplayable>
+    <IsEditable>false</IsEditable>
+    <IsMandatory>false</IsMandatory>
+    <IsUpper>true</IsUpper>
+    <DecimalPlaces>6</DecimalPlaces>
+    <Sequence>7</Sequence>
+    <ListType />
+    <ListDisplayType>CD</ListDisplayType>
+    <StandardCodeListSystemId />
+    <StandardCodeListType />
+    <SelectionTypeListType />
+    <ChartListChartName />
+    <ChartListChartComponent />
+    <QueryListDatasource />
+    <QueryListSuite />
+    <QueryListSuiteIsImplicit>false</QueryListSuiteIsImplicit>
+    <QueryListValue />
+    <QueryListDescription />
+    <QueryListCriteria>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;CriteriaSetItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;DefKey&gt;ed0e90aa-0d03-4c42-869a-b8c58d9191d6&lt;/DefKey&gt;
+  &lt;CriteriaValues /&gt;
+  &lt;SetName IsAssigned="false" /&gt;
+  &lt;Link&gt;AND&lt;/Link&gt;
+  &lt;NestedSets /&gt;
+&lt;/CriteriaSetItem&gt;</QueryListCriteria>
+    <QueryListParameters />
+    <IsMultiPickPicklist>false</IsMultiPickPicklist>
+    <Definition>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfCustomListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Definition>
+  </C2GenericVariable>
+</ArrayOfC2GenericVariable>

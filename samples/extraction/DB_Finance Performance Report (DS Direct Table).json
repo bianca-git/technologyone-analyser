@@ -1,0 +1,346 @@
+{
+  "Dashboard": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "EntityDef": {
+      "GenericEntityId": "e8f6d6a5-4c44-46d1-844d-49d5059bcc83",
+      "EntityType": "DASHBOARD",
+      "EntitySubType": "",
+      "Name": "",
+      "Description": "Finance Performance Report (DS Direct Table)",
+      "Category": "",
+      "Definition": {
+        "?xml": {
+          "@_version": "1.0",
+          "@_encoding": "utf-8"
+        },
+        "Dashboard": {
+          "DefKey": "25a26997-ee00-4a2b-bf0e-2717e759ebda",
+          "Layout": {
+            "LayoutItem": {
+              "DefKey": "481a570d-2fc5-4f11-9945-5cae0855d862",
+              "Id": "829b5a90-9b00-4309-bdae-c2b0b2b669cb",
+              "X": 0,
+              "Y": 100,
+              "Width": 4,
+              "Height": 2,
+              "AutoPosition": true,
+              "Visible": true,
+              "Type": "E"
+            }
+          },
+          "Layouts": "",
+          "LayoutPreferences": {
+            "DefKey": "b4ae110f-9d51-4051-8a87-b972727f9f8e",
+            "Heading": {
+              "@_IsAssigned": "false"
+            },
+            "SubHeading": {
+              "@_IsAssigned": "false"
+            },
+            "MarginType": {
+              "@_IsAssigned": "false"
+            },
+            "Margin": {
+              "@_IsAssigned": "false"
+            },
+            "CellHeightType": {
+              "@_IsAssigned": "false"
+            },
+            "CellHeight": {
+              "@_IsAssigned": "false"
+            },
+            "BorderRadiusType": {
+              "@_IsAssigned": "false"
+            },
+            "BorderRadius": {
+              "@_IsAssigned": "false"
+            },
+            "EnableFloat": {
+              "@_IsAssigned": "false"
+            },
+            "EnableParameters": {
+              "@_IsAssigned": "false"
+            },
+            "EnableClearAll": {
+              "@_IsAssigned": "false"
+            },
+            "EnableCopyLink": {
+              "@_IsAssigned": "false"
+            },
+            "ThemeSourceType": {
+              "@_IsAssigned": "false"
+            },
+            "ThemeId": {
+              "@_IsAssigned": "false"
+            }
+          },
+          "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+          "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+        }
+      },
+      "Owner": "MGUPTA",
+      "OwnerType": "",
+      "AttributeString1": "",
+      "AttributeString2": "",
+      "AttributeText1": {},
+      "AttributeText2": {},
+      "OwnerEntityId": "00000000-0000-0000-0000-000000000000",
+      "ThemeId": "00000000-0000-0000-0000-000000000000",
+      "ReportingSystem": "$DEFAULT",
+      "ParentFileItemPath": "/Data/Aligned Financial Reporting & Governance/AFRG Dashboards",
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Visualisations": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfEntityDef": {
+      "EntityDef": {
+        "GenericEntityId": "829b5a90-9b00-4309-bdae-c2b0b2b669cb",
+        "EntityType": "VISUALISATION",
+        "EntitySubType": "TABLE",
+        "Name": "",
+        "Description": "Finance Performance (YTD)",
+        "Category": "",
+        "Definition": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "Table": {
+            "DynamicFields": {
+              "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+            },
+            "DefKey": "e793bcd2-e994-4eb6-b96d-234f9eeb61a5",
+            "ShowTitle": false,
+            "Consolidation": "",
+            "Columns": "",
+            "Grouping": "",
+            "Criteria": {},
+            "AcceptEvents": true,
+            "AcceptEventsType": "",
+            "AcceptEventsSelected": "COST_CENTRE",
+            "ShowOptions": true,
+            "ShowOptionsType": {
+              "#text": "All",
+              "@_Description": "All"
+            },
+            "ShowOptionsSelected": "",
+            "EnableExport": true,
+            "Filter": {
+              "DefKey": "cbe7b94a-a43e-462e-af4d-a7df3663f715",
+              "NumberOfRecords": 10
+            },
+            "Factor": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "3d8aef89-84cc-4a4d-84ba-146579be9af9",
+              "ApplyFactor": false,
+              "FactorBy": 0.001,
+              "ApplyFactorToSelectedColumns": false,
+              "FactorItems": ""
+            },
+            "Sign": {
+              "DynamicFields": {
+                "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+              },
+              "DefKey": "1848b014-9444-4f40-9bd6-8a52767eb56a",
+              "ApplySign": false,
+              "SignType": "Credit",
+              "ApplySignToSelectedColumns": false,
+              "SignColumns": "",
+              "SignItems": ""
+            },
+            "SuppressZero": {
+              "DefKey": "facc2467-b962-49c2-8586-95bd36ecd7a9",
+              "ApplySuppressZero": {
+                "@_IsAssigned": "false"
+              },
+              "ApplySuppressToSelectedColumns": {
+                "@_IsAssigned": "false"
+              },
+              "SuppressColumns": {
+                "@_IsAssigned": "false"
+              }
+            },
+            "Drilldown": {
+              "DefKey": "9ba94951-ea45-4ac4-acb6-a644853a9661",
+              "IsDetailEnabled": true,
+              "HasDefaultPath": true,
+              "IsRuntimeEditable": true,
+              "DrilldownColumns": ""
+            },
+            "Sorting": "",
+            "ContentActions": "",
+            "ControlActions": "",
+            "HeaderLines": 1,
+            "ShowSearch": true,
+            "ShowTotalRow": true,
+            "ShowGroupCount": false,
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "Owner": "MGUPTA",
+        "OwnerType": "E",
+        "AttributeString1": "81a18902-2a36-41ae-9d86-b0191bc5717e",
+        "AttributeString2": "",
+        "AttributeText1": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "CriteriaSetItem": {
+            "DefKey": "6eaefa61-eab4-400f-b96a-7ca6cdfee8da",
+            "CriteriaValues": {
+              "CriteriaValue": [
+                {
+                  "DefKey": "f23282ff-3749-4ff4-9506-2cf1ed572737",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "PERIOD",
+                  "Operator": {
+                    "Value": "LessThanEquals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "{&C_PERIOD}",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "AND"
+                },
+                {
+                  "DefKey": "2a30d3b8-963d-48c5-80da-6ba196407619",
+                  "ColumnPrefix": {
+                    "@_IsAssigned": "false"
+                  },
+                  "ColumnId": "FINANCIALYEAR",
+                  "Operator": {
+                    "Value": "Equals",
+                    "IsAssigned": true,
+                    "IsNull": false
+                  },
+                  "MetaOperatorText": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Value1": "{&C_FY}",
+                  "Value2": "",
+                  "CriteriaValue1ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "CriteriaValue2ColumnId": {
+                    "@_IsAssigned": "false"
+                  },
+                  "Link": "AND"
+                }
+              ]
+            },
+            "SetName": {
+              "@_IsAssigned": "false"
+            },
+            "Link": "AND",
+            "NestedSets": {
+              "CriteriaSetItem": {
+                "ExplicitKey": {
+                  "#text": "6b272ba1-c4be-4ca2-9e2f-9773aaaaabbb",
+                  "@_xmlns": "T1.CoreLib.Compatibility.ValueObjects"
+                },
+                "CriteriaValues": {
+                  "CriteriaValue": {
+                    "DefKey": "906c9895-34f5-4710-800e-b48a756d9c74",
+                    "ColumnPrefix": {
+                      "@_IsAssigned": "false"
+                    },
+                    "ColumnId": "SELECTIONTYPE38CODE",
+                    "Operator": {
+                      "Value": "OneOf",
+                      "IsAssigned": true,
+                      "IsNull": false
+                    },
+                    "MetaOperatorText": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Value1": "{&A1SVCGR}",
+                    "Value2": "",
+                    "CriteriaValue1ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "CriteriaValue2ColumnId": {
+                      "@_IsAssigned": "false"
+                    },
+                    "Link": "OR"
+                  }
+                },
+                "SetName": "6b272ba1-c4be-4ca2-9e2f-9773aaaaabbb",
+                "Link": "AND",
+                "NestedSets": ""
+              }
+            },
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "AttributeText2": {
+          "?xml": {
+            "@_version": "1.0",
+            "@_encoding": "utf-8"
+          },
+          "Parameters": {
+            "ParameterField": [
+              {
+                "FieldName": "ACT_LDG",
+                "Value": "{&CES:F1_ACTUAL_LDG}"
+              },
+              {
+                "FieldName": "BUD_LDG",
+                "Value": "{&CES:F1_BUDGET_LDG}"
+              },
+              {
+                "FieldName": "CUR_PER",
+                "Value": "{&CES:F1_CUR_PERIOD}"
+              },
+              {
+                "FieldName": "HISTORICALFY",
+                "Value": "ToNumber({&CES:F1_CURR_YEAR})-2"
+              }
+            ],
+            "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+            "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+          }
+        },
+        "OwnerEntityId": "e8f6d6a5-4c44-46d1-844d-49d5059bcc83",
+        "ThemeId": "00000000-0000-0000-0000-000000000000",
+        "ReportingSystem": "$DEFAULT",
+        "DatamodelDescription": "AFRG_IE_PRIMARY_MODEL Using Analyser"
+      },
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  },
+  "Variables": {
+    "?xml": {
+      "@_version": "1.0",
+      "@_encoding": "utf-8"
+    },
+    "ArrayOfVariableDef": {
+      "@_xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+      "@_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    }
+  }
+}
