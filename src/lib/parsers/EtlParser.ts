@@ -86,19 +86,83 @@ export class EtlParser {
     }
 
     static extractCriteria(storage: any): string[] {
-        const locations = [storage.Criteria, storage.WarehouseCriteria, storage.SourceCriteria];
+        const locations = [
+            storage.Criteria, 
+            storage.WarehouseCriteria, 
+            storage.SourceCriteria,
+            storage.FilterCriteria,
+            storage.WhereCriteria
+        ];
         const results: string[] = [];
+        
         locations.forEach(loc => {
             if (!loc) return;
-            if (loc.CriteriaValues?.CriteriaValue) {
+            
+            // Handle CriteriaSetItem structure (nested criteria)
+            if (loc.CriteriaSetItem) {
+                this.processCriteriaSet(loc.CriteriaSetItem, results);
+            }
+            // Handle direct CriteriaValues
+            else if (loc.CriteriaValues?.CriteriaValue) {
                 const cv = loc.CriteriaValues.CriteriaValue;
                 const list = Array.isArray(cv) ? cv : [cv];
-                list.forEach((c: any) => results.push(`${this.getTextSafe(c.ColumnId)} ${this.getTextSafe(c.Operator?.Value) || '='} ${this.getTextSafe(c.Value1)}`));
-            } else if (typeof loc.CriteriaValues === 'string' && loc.CriteriaValues.trim() !== "") {
+                list.forEach((c: any) => {
+                    const col = this.getTextSafe(c.ColumnId);
+                    const op = this.getTextSafe(c.Operator?.Value || c.Operator) || '=';
+                    const val1 = this.getTextSafe(c.Value1);
+                    const val2 = this.getTextSafe(c.Value2);
+                    if (col) {
+                        let filterStr = `${col} ${op} ${val1}`;
+                        if (val2 && (op.toLowerCase().includes('between'))) {
+                            filterStr += ` AND ${val2}`;
+                        }
+                        results.push(filterStr);
+                    }
+                });
+            } 
+            // Handle string criteria
+            else if (typeof loc.CriteriaValues === 'string' && loc.CriteriaValues.trim() !== "") {
                 results.push(loc.CriteriaValues);
             }
+            // Handle direct string value
+            else if (typeof loc === 'string' && loc.trim() !== "") {
+                results.push(loc);
+            }
         });
+        
         return results;
+    }
+
+    // Helper to recursively process nested criteria sets
+    private static processCriteriaSet(criteriaSet: any, results: string[]): void {
+        if (!criteriaSet) return;
+        
+        const sets = Array.isArray(criteriaSet) ? criteriaSet : [criteriaSet];
+        sets.forEach((set: any) => {
+            // Process CriteriaValues in this set
+            if (set.CriteriaValues?.CriteriaValue) {
+                const cv = set.CriteriaValues.CriteriaValue;
+                const list = Array.isArray(cv) ? cv : [cv];
+                list.forEach((c: any) => {
+                    const col = this.getTextSafe(c.ColumnId);
+                    const op = this.getTextSafe(c.Operator?.Value || c.Operator) || '=';
+                    const val1 = this.getTextSafe(c.Value1);
+                    const val2 = this.getTextSafe(c.Value2);
+                    if (col) {
+                        let filterStr = `${col} ${op} ${val1}`;
+                        if (val2 && (op.toLowerCase().includes('between'))) {
+                            filterStr += ` AND ${val2}`;
+                        }
+                        results.push(filterStr);
+                    }
+                });
+            }
+            
+            // Recurse into nested sets
+            if (set.NestedSets?.CriteriaSetItem) {
+                this.processCriteriaSet(set.NestedSets.CriteriaSetItem, results);
+            }
+        });
     }
 
     static getExplicitOutput(stepType: string, storage: any, _step: any) {
@@ -136,10 +200,22 @@ export class EtlParser {
         };
         sortSteps(rootSteps);
 
-        const variables = new Map();
+        const variables = new Map<string, { Name: string, Value: string, Type: string, OriginStep: string, OriginType: string, InitialValue: string, SetValueStep?: string, UsedIn: string[] }>();
         const variableNames = new Set<string>();
         const tableNames = new Set<string>();
         const stepOutputs = new Set<string>();
+
+        const setVariableValue = (name: string, value: string, step?: string) => {
+            if (!variables.has(name)) {
+                variables.set(name, { Name: name, Value: value, Type: '', OriginStep: step || '', OriginType: '', InitialValue: value, UsedIn: [] });
+            } else if (step) {
+                const existing = variables.get(name);
+                if (existing) {
+                    existing.SetValueStep = step;
+                    existing.Value = value;
+                }
+            }
+        };
 
         // 1. Collect Variables & Initial Table Names
         stepsRaw.forEach((step: any) => {
@@ -160,7 +236,8 @@ export class EtlParser {
 
             if (type === 'SetVariable' || type === 'CalculateVariable') {
                 const vName = this.getTextSafe(storage.VariableName);
-                variables.set(vName, { Name: vName, Type: 'Var', Value: this.getTextSafe(storage.VariableValue || storage.Expression) || 'N/A' });
+                const vValue = this.getTextSafe(storage.VariableValue || storage.Expression) || '';
+                setVariableValue(vName, vValue, step.Name);
                 variableNames.add(vName);
             }
 
@@ -181,7 +258,7 @@ export class EtlParser {
 
             if (type === 'Loop' && storage.InputVariable) {
                 const vName = this.getTextSafe(storage.InputVariable);
-                variables.set(vName, { Name: vName, Type: 'Iterator', Value: `Loop Condition` });
+                setVariableValue(vName, 'Loop Condition', step.Name);
                 variableNames.add(vName);
             }
         });
@@ -197,6 +274,7 @@ export class EtlParser {
                 }
             });
         };
+
         stepsRaw.forEach((step: any) => {
             const storage = step.Definition?.StorageObject || {};
             registerUsage(JSON.stringify(storage), this.getTextSafe(step.Name));
@@ -241,7 +319,7 @@ export class EtlParser {
                 const vName = this.getTextSafe(step.Definition?.StorageObject?.VariableName);
                 const usedIn = variableUsage.get(vName);
                 if (usedIn && usedIn.length > 0) {
-                    smartDesc = `Used in: ${usedIn.slice(0, 3).join(', ')}${usedIn.length > 3 ? '...' : ''}`;
+                    smartDesc = `Used in: ${usedIn.join(', ')}`;
                 }
             }
 
@@ -256,7 +334,8 @@ export class EtlParser {
             const description = this.getTextSafe(step.Description || step.Narration || step.Comments);
 
             // Build Context String (Simplified for Parser, Formatter can enhance)
-            // We'll define a simpler context here, delegating formatting to the View
+            // We'll define a simpler context here, delegating formatting to View
+            const stepNameDisplay = stepName;
             let contextText = stepType;
             const table = this.getTextSafe(storage.TableName || storage.InputTableName || 'dataset');
             const target = this.getTextSafe(storage.OutputTableName || storage.TableName || 'target');
@@ -264,32 +343,53 @@ export class EtlParser {
             // Replicating basic context string logic (without HTML formatting)
             if (mode === 'business') {
                 switch (stepType) {
-                    case 'RunDirectQuery': contextText = `Get data from ${table}`; break;
-                    case 'RunTableQuery': contextText = `Use data from ${table}`; break;
-                    case 'AddColumn': contextText = `Calculate fields`; break;
-                    case 'UpdateColumn': contextText = `Update fields`; break;
-                    case 'ImportWarehouseData': contextText = `Save to ${target}`; break;
-                    case 'DeleteWarehouseData': contextText = `Remove data from ${target}`; break;
-                    case 'JoinTable': contextText = `Combine with ${this.getTextSafe(storage.JoinTable2)}`; break;
-                    case 'Loop': contextText = `Repeat for ${this.getTextSafe(storage.InputVariable)}`; break;
-                    default: contextText = stepType;
+                    case 'RunDirectQuery': contextText = `${stepNameDisplay} (from ${table})`; break;
+                    case 'RunTableQuery': contextText = stepNameDisplay; break;
+                    case 'AddColumn': contextText = `${stepNameDisplay} (in ${table})`; break;
+                    case 'UpdateColumn': contextText = `${stepNameDisplay} (in ${table})`; break;
+                    case 'ImportWarehouseData': contextText = stepNameDisplay; break;
+                    case 'DeleteWarehouseData': contextText = `${stepNameDisplay} (from ${target})`; break;
+                    case 'JoinTable': contextText = `${stepNameDisplay} (with ${this.getTextSafe(storage.JoinTable2)})`; break;
+                    case 'Loop': contextText = `${stepNameDisplay} (iterate ${this.getTextSafe(storage.InputVariable)})`; break;
+                    default: contextText = stepNameDisplay;
                 }
 
             } else {
                 switch (stepType) {
-                    case 'RunDirectQuery': contextText = `Connects to source to pull ${table}`; break;
-                    case 'RunTableQuery': contextText = `Reads internal ${table}`; break;
+                    case 'RunDirectQuery': contextText = `${stepNameDisplay}: pull ${table}`; break;
+                    case 'RunTableQuery': contextText = `${stepNameDisplay}: read ${table}`; break;
                     case 'RunDatasourceQuery':
-                    case 'RunSimpleQuery': contextText = `${this.getTextSafe(storage.DatasourceName || 'Datasource')} ➔ ${target}`; break;
-                    case 'AddColumn': contextText = `Calculates fields in ${table}`; break;
-                    case 'UpdateColumn': contextText = `Updates values in ${table}`; break;
-                    case 'ImportWarehouseData': contextText = `Publishes to ${target}`; break;
+                    case 'RunSimpleQuery': contextText = `${stepNameDisplay}: ${this.getTextSafe(storage.DatasourceName || 'Datasource')} ➔ ${target}`; break;
+                    case 'AddColumn': contextText = `${stepNameDisplay}: calculate in ${table}`; break;
+                    case 'UpdateColumn': contextText = `${stepNameDisplay}: update values in ${table}`; break;
+                    case 'ImportWarehouseData': contextText = `${stepNameDisplay}: publish to ${target}`; break;
+                    case 'DeleteWarehouseData': contextText = `${stepNameDisplay}: remove from ${target}`; break;
+                    case 'JoinTable': contextText = `${stepNameDisplay}: combine with ${this.getTextSafe(storage.JoinTable2)}`; break;
+                    case 'Loop': contextText = `${stepNameDisplay}: iterate ${this.getTextSafe(storage.InputVariable)}`; break;
                     // New Support
-                    case 'ExportToExcel': contextText = `Export ${this.getTextSafe(storage.ExportMemoryTableName || table)} to Excel`; break;
-                    case 'SendEmail': contextText = `Send Email to ${this.getTextSafe(storage.SendTo)}`; break;
-                    case 'LoadTextFile': contextText = `Load Text File into ${this.getTextSafe(storage.MemoryTableName || table)}`; break;
+                    case 'ExportToExcel': {
+                        const filename = this.getTextSafe(storage.ExportMemoryTableName || table);
+                        const path = this.getTextSafe(storage.FileName || '');
+                        const pathPart = path ? ` (${path})` : '';
+                        contextText = `${stepNameDisplay}: export ${filename} to Excel${pathPart}`;
+                        break;
+                    }
+                    case 'SendEmail': contextText = `${stepNameDisplay}: send to ${this.getTextSafe(storage.SendTo)}`; break;
+                    case 'LoadTextFile': {
+                        const filename = this.getTextSafe(storage.FileName || '');
+                        const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
+                        const pathPart = path ? ` (${path})` : '';
+                        contextText = `${stepNameDisplay}: load ${pathPart ? `${filename}${pathPart}` : filename} into ${this.getTextSafe(storage.MemoryTableName || table)}`;
+                        break;
+                    }
                     case 'SaveText':
-                    case 'SaveTextfile': contextText = `Save ${this.getTextSafe(storage.MemoryTableName || table)} to ${this.getTextSafe(storage.FileName || 'Text File')}`; break;
+                    case 'SaveTextfile': {
+                        const filename = this.getTextSafe(storage.FileName || 'Text File');
+                        const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
+                        const pathPart = path ? ` (${path})` : '';
+                        contextText = `Save ${filename} to ${this.getTextSafe(storage.MemoryTableName || table)}${pathPart}`;
+                        break;
+                    }
                     case 'Decision': contextText = `Decision on ${this.getTextSafe(storage.InputTableName || 'Table')}`; break;
                     case 'Branch': contextText = `If ${this.getTextSafe(storage.Expression)}`; break;
                     default: contextText = stepType;
@@ -349,7 +449,21 @@ export class EtlParser {
                 LogicRules: null, // New field for Logic Table
                 id: `${stepType}_${stepName}`.replace(/[^a-zA-Z0-9]/g, '_'),
                 FlowLabel: '', // To be populated below
-                children: []
+                children: [],
+                // LOW VALUE - Technical view only (GUIDs, internal IDs)
+                StepId: step.StepId || '',
+                ParentStepId: step.ParentStepId || '0',
+                Sequence: step.Sequence || '',
+                ProcessId: step.ProcessId || '',
+                // MEDIUM VALUE - Technical view (operational settings)
+                ErrorHandling: storage.ErrorHandling || storage.OnError || '',
+                RetryCount: storage.RetryCount || storage.Retries || '',
+                Timeout: storage.Timeout || storage.TimeoutSeconds || '',
+                TransactionMode: storage.TransactionMode || storage.UseTransaction || '',
+                MaxRows: storage.MaxRows || storage.RowLimit || '',
+                DistinctRows: storage.DistinctRows || storage.Distinct || '',
+                LogLevel: storage.LogLevel || storage.Logging || '',
+                UseCache: storage.UseCache || storage.CacheResults || ''
             };
 
             // --- Enhance Flow Label (User Request) ---
@@ -368,7 +482,7 @@ export class EtlParser {
             } else if (stepType === 'SendEmail') {
                 const subj = this.getTextSafe(storage.SubjectLine);
                 const att = this.getListSafe(storage.SendEmailAttachmentConfigItems, 'SendEmailAttachmentConfigItem');
-                fl = `Email: "${subj ? subj.slice(0, 20) + '...' : 'No Subject'}"`;
+                fl = `Email: "${subj || 'No Subject'}"`;
                 if (att.length > 0) fl += ` (+${att.length} att)`;
             } else if (stepType === 'LoadTextFile' || stepType === 'SaveText' || stepType === 'SaveTextfile') {
                 const f = this.getTextSafe(storage.FileName).split('\\').pop();
@@ -408,10 +522,25 @@ export class EtlParser {
             if (stepType === 'SendEmail') {
                 info.Details.push(`Subject: ${this.getTextSafe(storage.SubjectLine)}`);
                 info.Details.push(`To: ${this.getTextSafe(storage.SendTo)}`);
+                // Enhanced email details
+                const cc = this.getTextSafe(storage.SendCC);
+                const bcc = this.getTextSafe(storage.SendBCC);
+                const from = this.getTextSafe(storage.SendFrom);
+                const priority = this.getTextSafe(storage.Priority);
+                if (cc) info.Details.push(`CC: ${cc}`);
+                if (bcc) info.Details.push(`BCC: ${bcc}`);
+                if (from) info.Details.push(`From: ${from}`);
+                if (priority && priority !== 'Normal') info.Details.push(`Priority: ${priority}`);
+                // Email body (truncated for display)
+                const bodyText = this.getTextSafe(storage.BodyText || storage.Body);
+                const isHtml = storage.IsHtmlBody === 'true' || storage.IsHtmlBody === true;
+                if (bodyText) {
+                    const truncated = bodyText.length > 200 ? bodyText.substring(0, 200) + '...' : bodyText;
+                    info.Details.push(`Body${isHtml ? ' (HTML)' : ''}: ${truncated}`);
+                }
             }
 
             if (stepType === 'RunDirectQuery' || stepType === 'RunTableQuery') {
-                info.Details.push(`Source Table: ${table}`);
                 const columns = this.getListSafe(storage.Columns, stepType === 'RunTableQuery' ? 'ColumnItem' : 'ColumnItem');
                 info.TableData = columns.map((c: any) => ({
                     Col1: this.getTextSafe(c.ColumnName),
@@ -420,7 +549,24 @@ export class EtlParser {
                     Col4: this.getTextSafe(c.ColumnActionType?.['#text'] || c.ColumnActionType) || 'Display'
                 }));
                 if (info.TableData.length > 0) info.Headers = ["Column Name", "Source Field", "Type", "Action"];
-                // Existing extractCriteria handles filters
+                // Query limits and aggregations
+                const topN = this.getTextSafe(storage.TopN || storage.Top || storage.MaxRows);
+                const skipN = this.getTextSafe(storage.SkipN || storage.Skip || storage.Offset);
+                const distinct = storage.Distinct === 'true' || storage.DistinctRows === 'true';
+                if (topN && topN !== '0') info.Details.push(`Limit: Top ${topN} rows`);
+                if (skipN && skipN !== '0') info.Details.push(`Skip: First ${skipN} rows`);
+                if (distinct) info.Details.push(`Distinct: Yes`);
+                // Group By
+                const groupByCols = this.getListSafe(storage.GroupByColumns || storage.GroupBy, 'GroupByColumnItem');
+                if (groupByCols.length > 0) {
+                    const groupNames = groupByCols.map((g: any) => this.getTextSafe(g.ColumnName || g)).join(', ');
+                    info.Details.push(`Group By: ${groupNames}`);
+                }
+                // Having
+                const having = this.getTextSafe(storage.HavingCriteria || storage.Having);
+                if (having) info.Details.push(`Having: ${having}`);
+                // Extract criteria/filters for query steps
+                this.extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
             }
             else if (stepType === 'AddColumn' || stepType === 'UpdateColumn') {
                 const columns = this.getListSafe(storage.Columns, 'ColumnItemDef');
@@ -436,6 +582,8 @@ export class EtlParser {
                     };
                 });
                 if (info.TableData.length > 0) info.Headers = ["Field", "Formula", "Type"];
+                // Extract criteria/filters for transformation steps
+                this.extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
             }
             else if (stepType === 'CalculateVariable' || stepType === 'SetVariable') {
                 const vName = this.getTextSafe(storage.VariableName);
@@ -460,12 +608,28 @@ export class EtlParser {
                     return { Col1: cName, Col2: sourceVal, Col3: type, Col4: meta.Origin || '-' };
                 });
                 if (info.TableData.length > 0) info.Headers = ["Target Column", "Source / Value", "Type", "Origin Step"];
-                // Existing extractCriteria handles filters (lines below)
+                // Import operation details
+                const batchSize = this.getTextSafe(storage.BatchSize || storage.CommitSize);
+                const ignoreDups = storage.IgnoreDuplicates === 'true' || storage.SkipDuplicates === 'true';
+                const truncateFirst = storage.TruncateFirst === 'true' || storage.ClearFirst === 'true';
+                if (batchSize && batchSize !== '0') info.Details.push(`Batch Size: ${batchSize}`);
+                if (ignoreDups) info.Details.push(`Duplicates: Ignored`);
+                if (truncateFirst) info.Details.push(`Pre-clear: Yes (truncate before import)`);
+                // Key columns for upsert
+                const keyCols = this.getListSafe(storage.KeyColumns || storage.MatchColumns, 'KeyColumn');
+                if (keyCols.length > 0) {
+                    const keyNames = keyCols.map((k: any) => this.getTextSafe(k.ColumnName || k)).join(', ');
+                    info.Details.push(`Key Columns: ${keyNames}`);
+                }
+                // Extract warehouse criteria/filters
+                this.extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
             }
             else if (stepType === 'JoinTable') {
                 const joins = this.getListSafe(storage.Joins, 'JoinItemDef');
                 info.TableData = joins.map((j: any) => ({ Col1: `${this.getTextSafe(j.JoinTable1)}.${this.getTextSafe(j.JoinColumn1)}`, Col2: `${this.getTextSafe(j.JoinType)} ${this.getTextSafe(j.JoinTable2)}.${this.getTextSafe(j.JoinColumn2)}` }));
                 if (info.TableData.length > 0) info.Headers = ["Left", "Condition"];
+                // Extract criteria/filters for join steps
+                this.extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
             }
             else if (stepType === 'CreateTable') {
                 let outCols = this.getListSafe(step.OutputTableDefinition?.Columns, 'ColumnItem');
@@ -521,6 +685,81 @@ export class EtlParser {
             }
             else if (stepType === 'Decision') {
                 if (storage.InputTableName) info.Details.push(`Input: ${this.getTextSafe(storage.InputTableName)}`);
+            }
+            // --- Loop step details ---
+            else if (stepType === 'Loop') {
+                const iterator = this.getTextSafe(storage.InputVariable);
+                if (iterator) info.Details.push(`Iterator: ${iterator}`);
+                // Loop constraints
+                const maxIter = this.getTextSafe(storage.MaxIterations);
+                const breakCond = this.getTextSafe(storage.BreakCondition || storage.ExitCondition);
+                const indexVar = this.getTextSafe(storage.IndexVariable || storage.LoopIndex);
+                if (maxIter && maxIter !== '0') info.Details.push(`Max Iterations: ${maxIter}`);
+                if (breakCond) info.Details.push(`Break When: ${breakCond}`);
+                if (indexVar) info.Details.push(`Index Variable: ${indexVar}`);
+            }
+            // --- Script/SQL execution steps ---
+            else if (stepType === 'Script' || stepType === 'ExecuteScript') {
+                const lang = this.getTextSafe(storage.ScriptLanguage || storage.Language);
+                const scriptText = this.getTextSafe(storage.ScriptText || storage.Script);
+                if (lang) info.Details.push(`Language: ${lang}`);
+                if (scriptText) {
+                    const preview = scriptText.length > 150 ? scriptText.substring(0, 150) + '...' : scriptText;
+                    info.Details.push(`Script: ${preview}`);
+                }
+            }
+            else if (stepType === 'ExecuteSQL' || stepType === 'RunSQL') {
+                const sql = this.getTextSafe(storage.SqlStatement || storage.SQL || storage.Query);
+                const conn = this.getTextSafe(storage.ConnectionString || storage.Connection);
+                if (conn) info.Details.push(`Connection: ${conn}`);
+                if (sql) {
+                    const preview = sql.length > 200 ? sql.substring(0, 200) + '...' : sql;
+                    info.Details.push(`SQL: ${preview}`);
+                }
+            }
+            else if (stepType === 'StartProcess' || stepType === 'RunProcess') {
+                const procName = this.getTextSafe(storage.ProcessName || storage.ProcessToRun);
+                const procId = this.getTextSafe(storage.ProcessId);
+                if (procName) info.Details.push(`Process: ${procName}`);
+                if (procId && !procName) info.Details.push(`Process ID: ${procId}`);
+                // Process parameters
+                const params = this.getListSafe(storage.Parameters, 'ParameterItem');
+                params.forEach((p: any) => {
+                    info.Details.push(`Param: ${this.getTextSafe(p.Name)} = ${this.getTextSafe(p.Value)}`);
+                });
+            }
+            // --- FilterTable and SortTable ---
+            else if (stepType === 'FilterTable') {
+                const inputTable = this.getTextSafe(storage.InputTableName || storage.TableName);
+                if (inputTable) info.Details.push(`Input: ${inputTable}`);
+                this.extractCriteria(storage).forEach(f => info.Details.push(`Filter: ${f}`));
+            }
+            else if (stepType === 'SortTable') {
+                const inputTable = this.getTextSafe(storage.InputTableName || storage.TableName);
+                if (inputTable) info.Details.push(`Input: ${inputTable}`);
+                const sortCols = this.getListSafe(storage.SortColumns, 'SortColumnItem');
+                if (sortCols.length > 0) {
+                    const sortInfo = sortCols.map((c: any) => {
+                        const colName = this.getTextSafe(c.ColumnName);
+                        const direction = this.getTextSafe(c.SortDirection || c.Direction) || 'Asc';
+                        return `${colName} ${direction === 'Descending' || direction === 'Desc' ? 'DESC' : 'ASC'}`;
+                    }).join(', ');
+                    info.Details.push(`Sort: ${sortInfo}`);
+                }
+            }
+            else if (stepType === 'DeleteColumn' || stepType === 'RenameColumn') {
+                const inputTable = this.getTextSafe(storage.InputTableName || storage.TableName);
+                if (inputTable) info.Details.push(`Table: ${inputTable}`);
+                if (stepType === 'RenameColumn') {
+                    const oldName = this.getTextSafe(storage.OldColumnName);
+                    const newName = this.getTextSafe(storage.NewColumnName);
+                    if (oldName && newName) info.Details.push(`Rename: ${oldName} → ${newName}`);
+                } else {
+                    const cols = this.getListSafe(storage.ColumnsToDelete || storage.Columns, 'ColumnItem');
+                    if (cols.length > 0) {
+                        info.Details.push(`Delete: ${cols.map((c: any) => this.getTextSafe(c.ColumnName || c)).join(', ')}`);
+                    }
+                }
             }
 
             // ... (previous logic)

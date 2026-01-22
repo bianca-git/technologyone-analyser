@@ -35,14 +35,14 @@ export class MermaidGenerator {
         let graph = 'flowchart TD\n';
 
         // Define classes for styling
-        graph += '    classDef source fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d;\n'; // Green
-        graph += '    classDef target fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a;\n'; // Blue
+        graph += '    classDef source fill:#dbeafe,stroke:#1e40af,stroke-width:2px,color:#1e40af;\n'; // Blue (light bg, dark text/border)
+        graph += '    classDef target fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#166534;\n'; // Green (light bg, dark text/border)
         graph += '    classDef process fill:#f3f4f6,stroke:#9ca3af,stroke-width:1px,color:#374151;\n'; // Gray
         graph += '    classDef decision fill:#fff7ed,stroke:#f97316,stroke-width:1px,color:#7c2d12,shape:diamond;\n'; // Orange
         graph += '    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;\n'; // Red
         graph += '    classDef group fill:#ffe4e6,stroke:#f43f5e,stroke-width:2px,color:#881337,stroke-dasharray: 5 5;\n'; // Dusky Pink (Rose)
         graph += '    classDef endNode fill:#1e293b,stroke:#334155,stroke-width:2px,color:#fff,shape:circle;\n'; // Dark Slate Circle
-        graph += '    classDef bigSave fill:#fef3c7,stroke:#d97706,stroke-width:3px,color:#78350f,font-size:14px,font-weight:bold;\n'; // Amber/Big
+        graph += '    classDef bigSave fill:#dcfce7,stroke:#166534,stroke-width:3px,color:#166534,font-size:14px,font-weight:bold;\n'; // Green (for files)
 
         let steps: string[] = [];
         let links: string[] = [];
@@ -124,29 +124,49 @@ export class MermaidGenerator {
                 if (['RunDirectQuery', 'RunTableQuery', 'RunDatasourceQuery'].includes(item.RawType)) {
                     shape = '[('; shapeEnd = ')]';
                     className = 'source';
-                    label = label.replace(/^Source Table: |^Source: /, ''); // Clean label
+                    // Clean label for better readability - add icon without trailing space
+                    const cleanLabel = label.replace(/^(Source Table: |Source: |Datasource: )/, '');
+                    label = '📥 ' + cleanLabel.trim();
                 }
                 else if (['ImportWarehouseData', 'ExportToExcel', 'SendEmail'].includes(item.RawType)) {
                     shape = '(['; shapeEnd = '])';
                     className = 'target';
+                    // Add icons for output actions - no trailing space
+                    const cleanLabel = label.trim();
+                    if (item.RawType === 'ImportWarehouseData') label = '📥' + cleanLabel;
+                    if (item.RawType === 'ExportToExcel') label = '📊' + cleanLabel;
+                    if (item.RawType === 'SendEmail') label = '✉️' + cleanLabel;
                 }
                 else if (['SaveText', 'SaveTextfile'].includes(item.RawType)) {
                     shape = '[/'; shapeEnd = '/]'; // Parallelogram
                     className = 'bigSave';
-                    // Label enhancement happens in Parser, here we just ensure style
+                    label = '📄 ' + label.trim(); // File icon
                 }
                 else if (['Decision'].includes(item.RawType)) {
                     shape = '{'; shapeEnd = '}';
                     className = 'decision';
+                    label = '❓' + label.trim();
                 }
-                // else if (['Group'].includes(item.RawType)) { // Handled as subgraph above
-                //     shape = '{{'; shapeEnd = '}}'; // Hexagon-ish or different shape for group
-                //     className = 'group';
-                // }
+                else if (['AddColumn', 'UpdateColumn'].includes(item.RawType)) {
+                    shape = '[('; shapeEnd = ')]';
+                    className = 'process';
+                    if (!isTech) label = '⚙️' + label.trim(); // Simplified in business
+                }
+                else if (['CalculateVariable', 'SetVariable'].includes(item.RawType)) {
+                    shape = '[('; shapeEnd = ')]';
+                    className = 'process';
+                    if (!isTech) label = '🔢' + label.trim(); // Simplified in business
+                }
 
-                // Business Mode Simplification: Skip simple calcs unless they have descriptions
+                // Business Mode Simplification: Make calc steps smaller/simplified but still visible
                 if (!isTech && (item.RawType === 'AddColumn' || item.RawType === 'CalculateVariable') && !item.Description) {
-                    return; // Skip this node, don't break the chain (logic below handles links)
+                    // Don't skip - just simplify label
+                    label = label.length > 30 ? label.substring(0, 30) + '...' : label;
+                    // Use minimal node style
+                    shape = '[('; shapeEnd = ')]';
+                    className = 'process';
+                    // Skip rendering this node in business mode
+                    return;
                 }
 
                 steps.push(`    ${id}${shape}"${label}"${shapeEnd}:::${className}`);

@@ -54,8 +54,8 @@ describe('EtlGenerator', () => {
 
         const html = await EtlGenerator.generateHtmlView(1, 'technical');
 
-        expect(html).toContain('extracts data from <strong>SRC</strong>');
-        expect(html).toContain('publishes results to the <strong>DEST</strong>');
+        expect(html).toContain('extracts data from <span class="t1-table-badge" data-type="table">𝄜 SRC</span>');
+        expect(html).toContain('publishes results to <strong>the DEST</strong>');
         expect(html).toContain('Executive Summary');
     });
 

@@ -465,7 +465,7 @@ window.openFeedback = () => {
 
 // --- Tour Logic ---
 function checkAndShowTour() {
-  if (localStorage.getItem('t1guru_tour_seen')) return;
+  if (localStorage.getItem('t1analyser_tour_seen')) return;
 
   const controls = document.getElementById('header-controls');
   if (!controls) return;
@@ -514,7 +514,7 @@ function checkAndShowTour() {
 
   // Close Handler
   const close = () => {
-    localStorage.setItem('t1guru_tour_seen', 'true');
+    localStorage.setItem('t1analyser_tour_seen', 'true');
     overlay.classList.add('opacity-0');
     popup.classList.add('opacity-0', 'translate-y-4');
     setTimeout(() => {

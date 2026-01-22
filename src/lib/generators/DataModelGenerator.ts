@@ -107,7 +107,7 @@ export class DataModelGenerator {
         const stepNotes = dm.stepNotes || {};
 
         // --- Helper: Table Renderer (Updated with Sets) ---
-        const renderTable = (headers: string[], rows: any[]) => {
+        const renderTable = (headers: string[], rows: any[], rowIds?: string[]) => {
             if (!rows || rows.length === 0) return '';
 
             const ths = headers.map(h => {
@@ -120,7 +120,7 @@ export class DataModelGenerator {
                 return `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0 ${w}">${h}</th>`;
             }).join('');
 
-            const trs = rows.map(r => {
+            const trs = rows.map((r, idx) => {
                 const cells = headers.map((h, i) => {
                     let rawVal = r[`Col${i + 1}`] || (i === 0 ? r.Name : r.Value) || '';
 
@@ -148,7 +148,8 @@ export class DataModelGenerator {
 
                     return `<td class="px-4 py-2 text-sm ${cellClass} ${alignClass} ${monoClass}">${cellContent}</td>`;
                 }).join('');
-                return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
+                const rowId = rowIds && rowIds[idx] ? ` id="${rowIds[idx]}"` : '';
+                return `<tr class="border-t border-gray-100 hover:bg-gray-50"${rowId}>${cells}</tr>`;
             }).join('');
 
             return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3 min-w-full"><table class="w-full divide-y divide-slate-300 text-left bg-slate-50"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
@@ -206,15 +207,21 @@ export class DataModelGenerator {
                         <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
                     </summary>
                     <div class="pt-6 pb-2 px-2">
-                        ${renderTable(
-                            ['Variable Name', 'Value', 'Type', 'Description'],
-                            variables.map((v: any) => ({
+                        ${(() => {
+                            const varRows = variables.map((v: any) => ({
                                 Col1: v.Name,
                                 Col2: v.Value,
                                 Col3: v.Type,
-                                Col4: v.Description
-                            }))
-                        )}
+                                Col4: v.Description,
+                                id: v.Name ? `var-${v.Name.replace(/[^a-zA-Z0-9_-]/g, '_')}` : ''
+                            }));
+                            const varIds = varRows.map((r: any) => r.id);
+                            return renderTable(
+                                ['Variable Name', 'Value', 'Type', 'Description'],
+                                varRows,
+                                varIds
+                            );
+                        })()}
                     </div>
                 </details>
                 ` : ''}
@@ -229,7 +236,15 @@ export class DataModelGenerator {
                         <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
                     </summary>
                     <div class="pt-6 pb-2 px-2">
-                         ${renderTable(['Index Name', 'Columns'], indexes.map((i: any) => ({ Col1: i.Name, Col2: i.Columns })))}
+                         ${(() => {
+                             const indexRows = indexes.map((i: any) => ({
+                                 Col1: i.Name,
+                                 Col2: i.Columns,
+                                 id: i.Name ? `index-${i.Name.replace(/[^a-zA-Z0-9_-]/g, '_')}` : ''
+                             }));
+                             const indexIds = indexRows.map((r: any) => r.id);
+                             return renderTable(['Index Name', 'Columns'], indexRows, indexIds);
+                         })()}
                     </div>
                 </details>
                 ` : ''}
@@ -244,7 +259,15 @@ export class DataModelGenerator {
                         <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
                     </summary>
                     <div class="pt-6 pb-2 px-2">
-                         ${renderTable(['View Name', 'Columns'], views.map((v: any) => ({ Col1: v.Name, Col2: v.Columns })))}
+                         ${(() => {
+                             const viewRows = views.map((v: any) => ({
+                                 Col1: v.Name,
+                                 Col2: v.Columns,
+                                 id: v.Name ? `view-${v.Name.replace(/[^a-zA-Z0-9_-]/g, '_')}` : ''
+                             }));
+                             const viewIds = viewRows.map((r: any) => r.id);
+                             return renderTable(['View Name', 'Columns'], viewRows, viewIds);
+                         })()}
                     </div>
                 </details>
                 ` : ''}
@@ -285,7 +308,7 @@ export class DataModelGenerator {
         `;
     }
 
-    private static renderQueryCard(query: any, content: any, renderTable: (h: string[], r: any[]) => string, variableSet: Set<string>, tableSet: Set<string>, indexMap: Map<string, any>, isFinal: boolean = false, reportId: number = 0, stepNotes: any = {}): string {
+    private static renderQueryCard(query: any, content: any, renderTable: (h: string[], r: any[], rowIds?: string[]) => string, variableSet: Set<string>, tableSet: Set<string>, indexMap: Map<string, any>, isFinal: boolean = false, reportId: number = 0, stepNotes: any = {}): string {
         const qName = query.QueryName;
         const id = query.Id;
 
@@ -344,12 +367,16 @@ export class DataModelGenerator {
             const typeHtml = `<div class="text-slate-700">${c.JavaType || c.DataType || 'String'}</div>` +
                 (c.Format && c.Format !== '-' ? `<div class="text-xs text-gray-500 italic mt-0.5">${c.Format}</div>` : '');
 
+            const columnId = c.ColumnName ? `col-${c.ColumnName.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
+
             return {
                 Col1: nameHtml,
                 Col2: typeHtml,
-                Col3: source
+                Col3: source,
+                id: columnId
             };
         });
+        const colIds = colRows.map((r: any) => r.id);
 
         // Find Filters (Criteria)
         const filters: { col: string, op: string, val: string, rawOp: string, isIndex: boolean, indexCols?: string }[] = [];
@@ -400,6 +427,7 @@ export class DataModelGenerator {
         }
 
         const qDisplayName = qName || '(Unnamed Query)';
+        const queryId = qName ? `query-${qName.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
 
         // Colors
         let bgHeader = isFinal ? 'bg-emerald-50 hover:bg-emerald-100' : 'bg-slate-50 hover:bg-slate-100';
@@ -408,7 +436,7 @@ export class DataModelGenerator {
         const showJoins = myJoins.length > 0;
 
         return `
-            <details class="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm transition hover:shadow-md" ${isFinal ? 'open' : ''}>
+            <details class="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm transition hover:shadow-md"${queryId ? ` id="${queryId}"` : ''} ${isFinal ? 'open' : ''}>
                 <summary class="flex items-center justify-between p-4 cursor-pointer ${bgHeader} transition list-none [&::-webkit-details-marker]:hidden [&::after]:hidden">
                     <div class="flex items-center space-x-3">
                         <span class="font-bold text-slate-800 text-lg">${qDisplayName}</span>
@@ -530,7 +558,8 @@ export class DataModelGenerator {
                         <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Columns</h4>
                         ${renderTable(
                             ['Name', 'Type', 'Source'],
-            colRows
+            colRows,
+            colIds
         )}
                     </div>
                 </div>

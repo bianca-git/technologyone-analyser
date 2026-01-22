@@ -12,9 +12,15 @@ export interface Report {
         status?: string;
         narration?: string;
         dateModified?: string;
+        // HIGH VALUE - shown in both views
+        processType?: string;        // e.g., "$ETL", "$SCRIPT"
+        parentPath?: string;         // T1 file hierarchy path
     };
     rawProcess: any;
     rawSteps: any;
+    rawVariables?: any;       // Variables.xml - process parameters
+    rawFileLocations?: any;   // FileLocations.xml - file path references
+    rawAttachments?: any;     // Attachments.xml - embedded files
     dateAdded: Date;
     stepNotes?: Record<string, string>; // Map of stepId -> note text
 }
@@ -35,12 +41,12 @@ export interface DataModel {
     stepNotes?: Record<string, string>; // Map of QueryName/Id -> note text
 }
 
-export class T1GuruDB extends Dexie {
+export class T1AnalyserDB extends Dexie {
     reports!: Table<Report>;
     dataModels!: Table<DataModel>;
 
     constructor() {
-        super('T1GuruDB');
+        super('T1AnalyserDB');
         this.version(1).stores({
             reports: '++id, filename, dateAdded' // Primary key and indexed props
         });
@@ -51,4 +57,4 @@ export class T1GuruDB extends Dexie {
     }
 }
 
-export const db = new T1GuruDB();
+export const db = new T1AnalyserDB();

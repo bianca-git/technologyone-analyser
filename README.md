@@ -6,10 +6,18 @@
 
 ## Documentation Index
 
+### Architecture & API
 - **[Architecture](./docs/ARCHITECTURE.md)**: High-level overview of the application structure, technology stack, and core data flows.
 - **[API Reference](./docs/API_REFERENCE.md)**: Technical detail on core classes (`FileProcessor`, `Parsers`, `Generators`).
 - **[File Processor](./docs/FILE_PROCESSOR.md)**: Details on the file ingestion pipeline, validation, and storage mechanisms.
 - **[Generators](./docs/GENERATORS.md)**: Explanation of the logic used to generate HTML views and downloadable DOCX reports.
+
+### File Format Specifications
+- **[File Formats](./docs/FILE_FORMATS.md)**: Detailed specification of `.t1etlp` and `.t1dm` file formats, XML schemas, and parsing strategies.
+- **[ETL Structure](./docs/ETL_STRUCTURE.md)**: Complete data structure reference for ETL processes - all extracted fields and Business/Technical report exposure.
+- **[Data Model Structure](./docs/DATAMODEL_STRUCTURE.md)**: Complete data structure reference for Data Models - all extracted fields and Business/Technical report exposure.
+
+### Quality & Integration
 - **[Test Coverage Report](./docs/TEST_COVERAGE_REPORT.md)**: Current status of unit testing coverage for core libraries.
 - **[GitHub Integration](./docs/GITHUB_INTEGRATION.md)**: Guide on setting up feedback mechanisms.
 
@@ -65,7 +73,7 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
     - Visualizing scheduling and Bursting rules.
 
 ### 🎨 UX & Reliability
-- [ ] **Recursive XML Parsing**: Handle deeply nested encoded XML strings often found in older T1 versions.
+- [x] **Recursive XML Parsing**: Handle deeply nested encoded XML strings often found in older T1 versions.
 - [ ] **Dark Mode**: Native visual theme support.
 - [ ] **Mobile Responsiveness**: Better touch optimization for tablet review.
 

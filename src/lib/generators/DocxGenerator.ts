@@ -44,41 +44,114 @@ export class DocxGenerator {
 
     // Reuse the Executive Summary logic from EtlGenerator
     private static generateEtlSummary(flow: any[]) {
-        const getSourceNames = (s: any) => {
-            if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery')
-                return s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
-            if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery')
-                return s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
-            if (s.RawType === 'LoadTextFile')
-                return s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-            return null;
-        };
+        const sources: string[] = [];
+        const targets: string[] = [];
+        const sourceNames = new Set<string>();
+        const targetNames = new Set<string>();
 
-        const getTargetNames = (s: any) => {
-            if (s.RawType === 'ImportWarehouseData') return `the ${s.Output?.name || 'Warehouse'}`;
-            if (s.RawType === 'ExportToExcel') return `an Excel file`;
-            if (s.RawType === 'SendEmail') return `Email recipients`;
-            if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') return `a Text file`;
-            return null;
-        };
+        flow.forEach((s: any) => {
+            // Extract sources from step Inputs (covers tables, warehouse, variables, etc.)
+            if (s.Inputs && Array.isArray(s.Inputs)) {
+                s.Inputs.forEach((input: string) => {
+                    if (input && input !== 'dataset' && input !== 'target' && input !== 'DATA') {
+                        const sourceName = input.trim();
+                        if (sourceName && !sourceNames.has(sourceName)) {
+                            sourceNames.add(sourceName);
+                            sources.push(sourceName);
+                        }
+                    }
+                });
+            }
 
-        const sources = [...new Set(flow.map(getSourceNames).filter(Boolean))];
-        const targets = [...new Set(flow.map(getTargetNames).filter(Boolean))];
+            // Query-specific sources (more detailed context)
+            if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery') {
+                const tableName = s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
+                if (tableName && !sourceNames.has(tableName)) {
+                    sourceNames.add(tableName);
+                    sources.push(tableName);
+                }
+            } else if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery') {
+                const source = s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
+                if (source && !sourceNames.has(source)) {
+                    sourceNames.add(source);
+                    sources.push(source);
+                }
+            } else if (s.RawType === 'LoadTextFile') {
+                const file = s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
+                if (file && !sourceNames.has(file)) {
+                    sourceNames.add(file);
+                    sources.push(file);
+                }
+            }
+
+            // Extract targets
+            if (s.RawType === 'ImportWarehouseData') {
+                const warehouse = s.Output?.name || 'Warehouse';
+                const targetKey = `WAREHOUSE_${warehouse}`;
+                if (!targetNames.has(targetKey)) {
+                    targetNames.add(targetKey);
+                    targets.push(`the ${warehouse}`);
+                }
+            } else if (s.RawType === 'ExportToExcel') {
+                const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
+                const targetName = filename ? `${filename} (Excel)` : 'an Excel file';
+                const targetKey = `EXCEL_${filename}`;
+                if (!targetNames.has(targetKey)) {
+                    targetNames.add(targetKey);
+                    targets.push(targetName);
+                }
+            } else if (s.RawType === 'SendEmail') {
+                const targetKey = 'EMAIL';
+                if (!targetNames.has(targetKey)) {
+                    targetNames.add(targetKey);
+                    targets.push('Email recipients');
+                }
+            } else if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') {
+                const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
+                const targetName = filename ? `${filename} (Text file)` : 'a Text file';
+                const targetKey = `TEXT_${filename}`;
+                if (!targetNames.has(targetKey)) {
+                    targetNames.add(targetKey);
+                    targets.push(targetName);
+                }
+            } else if (s.Outputs && Array.isArray(s.Outputs)) {
+                // Extract targets from step Outputs
+                s.Outputs.forEach((output: string) => {
+                    if (output && output !== 'dataset' && output !== 'target') {
+                        const targetName = output.trim();
+                        if (targetName && !targetNames.has(targetName)) {
+                            targetNames.add(targetName);
+                            targets.push(targetName);
+                        }
+                    }
+                });
+            }
+        });
 
         const hasCalcs = flow.some(s => s.RawType === 'AddColumn' || s.RawType === 'UpdateColumn' || s.RawType === 'CalculateVariable');
         const hasJoins = flow.some(s => s.RawType === 'JoinTable');
         const hasConditions = flow.some(s => s.RawType === 'Decision' || s.RawType === 'Branch');
 
-        let parts = [];
+        let parts: string[] = [];
         if (sources.length > 0) parts.push(`extracts data from ${sources.join(', ')}`);
         if (hasJoins) parts.push(`combines multiple datasets`);
         if (hasCalcs) parts.push(`performs business calculations`);
 
-        let targetAction = hasConditions ? "and, based on certain conditions, distributes results to " : "and publishes results to ";
-        if (targets.length > 0) parts.push(`${targetAction}${targets.join(', ')}`);
+        if (targets.length > 0) {
+            if (hasConditions) {
+                parts.push(`based on certain conditions, distributes results to ${targets.join(', ')}`);
+            } else {
+                parts.push(`publishes results to ${targets.join(', ')}`);
+            }
+        }
 
         if (parts.length === 0) return "This process performs a sequence of data operations.";
-        const narrative = parts.slice(0, -1).join(', ') + (parts.length > 1 ? ' and ' : '') + parts.slice(-1);
+
+        let narrative = parts.join(', ');
+        const lastComma = narrative.lastIndexOf(', ');
+        if (lastComma !== -1) {
+            narrative = narrative.substring(0, lastComma) + ' and ' + narrative.substring(lastComma + 2);
+        }
         return `This process ${narrative}.`;
     }
 
@@ -161,6 +234,94 @@ export class DocxGenerator {
 
             sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [vHeader, ...vRows] }));
             sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        }
+
+        // 3.1 Process Parameters (from Variables.xml)
+        const processParams = this.extractProcessParameters(report.rawVariables);
+        if (processParams.length > 0) {
+            sections.push(new Paragraph({ children: [this.createText("Process Parameters", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+
+            const resolveVarType = (t: string) => {
+                const types: Record<string, string> = { 'A': 'String', 'N': 'Numeric', 'D': 'Date', 'L': 'List', 'I': 'Integer' };
+                return types[t] || t || 'String';
+            };
+
+            const pHeader = new TableRow({
+                children: [
+                    this.createHeaderCell("Parameter"),
+                    this.createHeaderCell("Type"),
+                    this.createHeaderCell("Default"),
+                    this.createHeaderCell("Required"),
+                    this.createHeaderCell("Description")
+                ]
+            });
+
+            const pRows = processParams.map((p: any) => new TableRow({
+                children: [
+                    this.createCell(p.Name, { bold: true }),
+                    this.createCell(resolveVarType(p.VariableType)),
+                    this.createCell(p.DefaultValue || '-'),
+                    this.createCell(p.IsMandatory === 'true' ? 'Yes' : 'No'),
+                    this.createCell(p.Description || '')
+                ]
+            }));
+
+            sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [pHeader, ...pRows] }));
+            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        }
+
+        // 3.2 File Locations (Technical mode only)
+        if (mode === 'technical') {
+            const fileLocations = this.extractFileLocations(report.rawFileLocations);
+            if (fileLocations.length > 0) {
+                sections.push(new Paragraph({ children: [this.createText("File Locations", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+
+                const fHeader = new TableRow({
+                    children: [
+                        this.createHeaderCell("Location Name"),
+                        this.createHeaderCell("Type"),
+                        this.createHeaderCell("Path"),
+                        this.createHeaderCell("Description")
+                    ]
+                });
+
+                const fRows = fileLocations.map((loc: any) => new TableRow({
+                    children: [
+                        this.createCell(loc.Name, { bold: true }),
+                        this.createCell(loc.LocationType || 'ServerFolder'),
+                        this.createCell(loc.Path || loc.ServerFolder || '-', { font: "Courier New", size: 18 }),
+                        this.createCell(loc.Description || '')
+                    ]
+                }));
+
+                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] }));
+                sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            }
+
+            // 3.3 Attachments (Technical mode only)
+            const attachments = this.extractAttachments(report.rawAttachments);
+            if (attachments.length > 0) {
+                sections.push(new Paragraph({ children: [this.createText("Attachments", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+
+                const aHeader = new TableRow({
+                    children: [
+                        this.createHeaderCell("File Name"),
+                        this.createHeaderCell("Description"),
+                        this.createHeaderCell("Size")
+                    ]
+                });
+
+                const aRows = attachments.map((att: any) => new TableRow({
+                    children: [
+                        this.createCell(att.FileName || att.Name || 'Unknown', { bold: true }),
+                        this.createCell(att.Description || '-'),
+                        this.createCell(att.FileData ? `${Math.round(att.FileData.length * 0.75 / 1024)} KB` : '-')
+                    ]
+                }));
+
+                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [aHeader, ...aRows] }));
+                sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            }
         }
 
         // 4. Process Logic (The Steps)
@@ -518,5 +679,55 @@ export class DocxGenerator {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+    }
+
+    // --- Helper: Extract Process Parameters from Variables.xml ---
+    private static extractProcessParameters(rawVariables: any): any[] {
+        if (!rawVariables) return [];
+        
+        const vars = rawVariables?.ArrayOfC2GenericVariable?.C2GenericVariable 
+            || rawVariables?.ArrayOfVariableDef?.VariableDef
+            || rawVariables?.C2GenericVariable
+            || rawVariables?.VariableDef;
+        
+        if (!vars) return [];
+        return Array.isArray(vars) ? vars : [vars];
+    }
+
+    // --- Helper: Extract File Locations from FileLocations.xml ---
+    private static extractFileLocations(rawFileLocations: any): any[] {
+        if (!rawFileLocations) return [];
+        
+        const locations = rawFileLocations?.ArrayOfFileLocation?.FileLocation
+            || rawFileLocations?.FileLocation;
+        
+        if (!locations) return [];
+        
+        const list = Array.isArray(locations) ? locations : [locations];
+        
+        return list.map((loc: any) => {
+            const def = loc.Definition || {};
+            return {
+                Name: loc.Name || loc.Description || 'Unknown',
+                LocationType: loc.LocationType || 'ServerFolder',
+                ServerFolder: def.ServerFolder || def.Path || loc.ServerFolder || '',
+                SubPath: def.SubPath || '',
+                Description: loc.Description || '',
+                Path: def.ServerFolder ? `${def.ServerFolder}${def.SubPath || ''}` : (loc.Path || '')
+            };
+        });
+    }
+
+    // --- Helper: Extract Attachments from Attachments.xml ---
+    private static extractAttachments(rawAttachments: any): any[] {
+        if (!rawAttachments) return [];
+        
+        const attachments = rawAttachments?.ArrayOfAttachment?.Attachment
+            || rawAttachments?.ArrayOfProcessAttachment?.ProcessAttachment
+            || rawAttachments?.Attachment
+            || rawAttachments?.ProcessAttachment;
+        
+        if (!attachments) return [];
+        return Array.isArray(attachments) ? attachments : [attachments];
     }
 }

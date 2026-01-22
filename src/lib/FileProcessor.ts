@@ -9,6 +9,33 @@ const parser = new XMLParser({
     attributeNamePrefix: "@_"
 });
 
+/**
+ * Recursively parse any string field that looks like XML.
+ * This ensures ALL nested XML content is fully extracted.
+ */
+function deepParseAllXml(obj: any): void {
+    if (!obj || typeof obj !== 'object') return;
+
+    Object.keys(obj).forEach(key => {
+        const val = obj[key];
+        if (typeof val === 'string' && val.trim().startsWith('<?xml') || 
+            (typeof val === 'string' && val.trim().startsWith('<') && val.trim().endsWith('>'))) {
+            try {
+                const parsed = parser.parse(val);
+                obj[key] = parsed;
+                // Recursively parse the newly parsed object
+                deepParseAllXml(obj[key]);
+            } catch (_e) {
+                // Not valid XML, leave as string
+            }
+        } else if (Array.isArray(val)) {
+            val.forEach(item => deepParseAllXml(item));
+        } else if (typeof val === 'object') {
+            deepParseAllXml(val);
+        }
+    });
+}
+
 export class FileProcessor {
     static async processAndSave(file: File): Promise<number> {
         console.log(`Processing ${file.name}...`);
@@ -19,67 +46,39 @@ export class FileProcessor {
 
         // 1. Unzip
         const zip = await JSZip.loadAsync(file);
-        const processesFile = zip.file('Processes.xml');
-        const stepsFile = zip.file('Steps.xml');
+        
+        // 2. Parse ALL XML files in the archive
+        const rawData: Record<string, any> = {};
+        
+        const xmlFiles = [
+            'Processes.xml',
+            'Steps.xml',
+            'Variables.xml',
+            'FileLocations.xml',
+            'Attachments.xml'
+        ];
 
-        if (!processesFile) {
-            throw new Error('Invalid T1ETLP file: Processes.xml not found');
-        }
-
-        // 2. Parse XML
-        const procContent = await processesFile.async('string');
-        const procXml = parser.parse(procContent);
-
-        let stepsXml: any = {};
-        if (stepsFile) {
-            const stepsContent = await stepsFile.async('string');
-            stepsXml = parser.parse(stepsContent);
-
-            // 3. Deep Parse Definitions (Ported from scripts/inspect_etl_deep.ts)
-            const deepParseStep = (step: any) => {
-                Object.keys(step).forEach(key => {
-                    if (key.includes('Definition') && typeof step[key] === 'string') {
-                        try {
-                            const parsed = parser.parse(step[key]);
-                            step[key] = parsed;
-
-                            // 3a. Deep Parse TableColumnMapping if present
-                            // Often TableColumnMapping is an array of objects where DataType might be hidden
-                            const storage = parsed?.StorageObject;
-                            if (storage && storage.ColumnMapping?.TableColumnMapping) {
-                                // Sometimes TableColumnMapping entries contain further nested XML or complex structures
-                                // Ensure DataType is accessible
-                                const mappings = Array.isArray(storage.ColumnMapping.TableColumnMapping)
-                                    ? storage.ColumnMapping.TableColumnMapping
-                                    : [storage.ColumnMapping.TableColumnMapping];
-
-                                mappings.forEach((_m: any) => {
-                                    // Verify if DataType is here. If it's undefined, it might be in a nested Definition?
-                                    // Usually it is a direct property: <DataType>String</DataType>
-                                    // No extra action needed if fast-xml-parser handles it, but good to inspect.
-                                });
-                            }
-                        } catch (e) {
-                            // Ignore
-                        }
-                    }
-                });
-                if (step.children) {
-                    step.children.forEach(deepParseStep);
+        for (const fileName of xmlFiles) {
+            const f = zip.file(fileName);
+            if (f) {
+                const content = await f.async('string');
+                try {
+                    const parsed = parser.parse(content);
+                    // Deep parse ALL nested XML strings recursively
+                    deepParseAllXml(parsed);
+                    rawData[fileName.replace('.xml', '')] = parsed;
+                } catch (e) {
+                    console.warn(`Failed to parse ${fileName}`, e);
                 }
-            };
-
-            const steps = stepsXml.ArrayOfStep?.Step;
-            if (steps && Array.isArray(steps)) {
-                steps.forEach(deepParseStep);
-            } else if (steps) {
-                deepParseStep(steps);
             }
         }
 
-        // 4. Extract Basic Metadata
-        // fast-xml-parser might return the root element or not depending on structure.
-        // 4. Extract Basic Metadata
+        if (!rawData.Processes) {
+            throw new Error('Invalid T1ETLP file: Processes.xml not found');
+        }
+
+        // 3. Extract Basic Metadata
+        const procXml = rawData.Processes;
         const rawProcs = procXml?.ArrayOfProcess?.Process || procXml?.Process?.ArrayOfProcess?.Process;
         const procList = Array.isArray(rawProcs) ? rawProcs : (rawProcs ? [rawProcs] : []);
 
@@ -107,15 +106,21 @@ export class FileProcessor {
             description: getUnique(procList, 'Description') || 'N/A',
             status: getUnique(procList, 'Status') || 'D',
             narration: narration,
-            dateModified: publishedDate
+            dateModified: publishedDate,
+            // HIGH VALUE fields
+            processType: getUnique(procList, 'ProcessType') || '$ETL',
+            parentPath: getUnique(procList, 'ParentFileItemPath') || ''
         };
 
-        // 5. Save to DB
+        // 4. Save to DB - now includes all parsed XML files
         const reportId = await db.reports.add({
             filename: file.name,
             metadata,
-            rawProcess: procXml,
-            rawSteps: stepsXml,
+            rawProcess: rawData.Processes,
+            rawSteps: rawData.Steps || {},
+            rawVariables: rawData.Variables || {},
+            rawFileLocations: rawData.FileLocations || {},
+            rawAttachments: rawData.Attachments || {},
             dateAdded: new Date()
         });
 
@@ -127,8 +132,6 @@ export class FileProcessor {
         const content = await DataModelParser.parse(file);
 
         // Extract basic metadata safely
-        // Extract basic metadata safely
-        // Step 111 and 113 show 'DataModelDef' as the key, but checking both just in case
         const dmDef = content.DataModel?.DataModelDef || content.DataModel?.DataModelDefinition || {};
 
         // Extract ProcessMode deeply
@@ -147,7 +150,7 @@ export class FileProcessor {
 
         const metadata = {
             name: cleanName,
-            id: dmDef.DataModelId || 'N/A', // Extract GUID
+            id: dmDef.DataModelId || 'N/A',
             description: dmDef.Description || 'Imported Data Model',
             version: dmDef.Version || '1.0',
             owner: dmDef.Owner || 'Unknown',

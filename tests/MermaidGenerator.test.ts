@@ -28,11 +28,11 @@ describe('MermaidGenerator', () => {
 
     it('generates basic syntax in technical mode', () => {
         const syntax = MermaidGenerator.generateMermaidSyntax(mockFlow, 'technical');
-        // Basic Checks
+         // Basic Checks
         expect(syntax).toContain('flowchart TD');
-        expect(syntax).toContain('N0[("Data")]:::source'); // Fixed: No "Source: " prefix
-        expect(syntax).toContain('N1["Calculate Field"]');
-        expect(syntax).toContain('N2(["Save to Warehouse"])');
+        expect(syntax).toContain('N0[("📥 Data")]:::source');
+        expect(syntax).toContain('N1[("Calculate Field")]');
+        expect(syntax).toContain('N2(["📥Save to Warehouse"]):::target');
         expect(syntax).toContain('N0 --> N1');
         expect(syntax).toContain('N1 --> N2');
 
@@ -82,7 +82,7 @@ describe('MermaidGenerator', () => {
 
         const syntax = MermaidGenerator.generateMermaidSyntax(loopFlow, 'technical');
         expect(syntax).toContain('subgraph N0_sg');
-        expect(syntax).toContain('N1["Do Work"]');
+        expect(syntax).toContain('N1[("Do Work")]');
         expect(syntax).toContain('end');
     });
 

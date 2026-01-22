@@ -36,9 +36,10 @@ export class ExpressionFormatter {
                 return `\\[?${esc}\\]?`;
             });
             const varRegex = new RegExp(`(?<!\\w)(${varPatterns.join('|')})(?!\\w)`, 'g');
-
+ 
             str = str.replace(varRegex, (match) => {
-                return createPlaceholder(`<span class="var-badge">${match.replace(/^\[|\]$/g, '')}</span>`, 'var');
+                const varName = match.replace(/^\[|\]$/g, '');
+                return createPlaceholder(`<span class="var-badge">${varName}</span>`, 'var');
             });
         }
 
@@ -50,7 +51,8 @@ export class ExpressionFormatter {
             });
             const tableRegex = new RegExp(`(?<!\\w)(${tablePatterns.join('|')})(?!\\w)`, 'g');
             str = str.replace(tableRegex, (match) => {
-                return createPlaceholder(this.formatTable(match.replace(/^\[|\]$/g, '')), 'table');
+                const tableName = match.replace(/^\[|\]$/g, '');
+                return createPlaceholder(this.formatTable(tableName), 'table');
             });
         }
 
@@ -62,7 +64,8 @@ export class ExpressionFormatter {
             });
             const stepRegex = new RegExp(`(?<!\\w)(${stepPatterns.join('|')})(?!\\w)`, 'g');
             str = str.replace(stepRegex, (match) => {
-                return createPlaceholder(this.formatStepOutput(match.replace(/^\[|\]$/g, '')), 'step');
+                const stepName = match.replace(/^\[|\]$/g, '');
+                return createPlaceholder(this.formatStepOutput(stepName), 'step');
             });
         }
 
@@ -76,6 +79,10 @@ export class ExpressionFormatter {
 
     static formatTable(name: string): string {
         return `<span class="t1-table-badge" data-type="table">𝄜 ${name}</span>`;
+    }
+
+    static formatFile(name: string): string {
+        return `<span class="t1-table-badge" data-type="file">📄 ${name}</span>`;
     }
 
     static formatStepOutput(name: string): string {

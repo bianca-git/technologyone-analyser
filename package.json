@@ -13,6 +13,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -20,7 +22,10 @@
     "@commitlint/config-conventional": "^20.3.1",
     "@semantic-release/git": "^10.0.1",
     "@testing-library/dom": "^10.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
     "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
     "glob": "^13.0.0",
     "husky": "^9.1.7",
     "jsdom": "^27.4.0",
