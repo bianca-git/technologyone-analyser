@@ -114,7 +114,7 @@ export class DashboardGenerator {
             </div>
         `;
 
-        // --- Layout Diagram ---
+        // --- Layout Diagram with ASCII (kept for reference) ---
         const buildLayoutDiagram = () => {
             if (layoutItems.length === 0) {
                 return '<p class="text-gray-500 italic">No layout items defined</p>';
@@ -166,6 +166,35 @@ export class DashboardGenerator {
             diagram += '</pre>';
 
             return diagram;
+        };
+
+        // --- Layout Diagram with Mermaid ---
+        const buildMermaidLayout = () => {
+            if (layoutItems.length === 0) {
+                return '';
+            }
+
+            let mermaidDef = 'graph TB\n';
+            mermaidDef += '    classDef widget fill:#dbeafe,stroke:#1e40af,stroke-width:2px,color:#1e40af;\n';
+            mermaidDef += '    classDef slicer fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#166534;\n';
+            mermaidDef += '    classDef table fill:#fce7f3,stroke:#831843,stroke-width:2px,color:#831843;\n';
+            mermaidDef += '    classDef chart fill:#fff7ed,stroke:#b45309,stroke-width:2px,color:#b45309;\n';
+
+            layoutItems.forEach((item: any, idx: number) => {
+                const widget = widgetMap.get(item.Id);
+                const name = widget?.Description || `Widget ${idx + 1}`;
+                const type = widget?.EntitySubType || 'WIDGET';
+                const nodeId = `W${idx}`;
+                const typeClass = type === 'SLICER' ? 'slicer' : type === 'TABLE' ? 'table' : type === 'CHART' ? 'chart' : 'widget';
+
+                mermaidDef += `    ${nodeId}["${escapeHtml(name)}<br/><small>${type}</small>"]:::${typeClass}\n`;
+            });
+
+            return `
+                <div class="mt-4 mermaid flex justify-center bg-white p-4 rounded-lg border border-slate-100 shadow-inner overflow-x-auto min-h-[200px]">
+                    ${mermaidDef}
+                </div>
+            `;
         };
 
         // --- Widget Summary Table ---
@@ -376,8 +405,14 @@ export class DashboardGenerator {
 
                 <!-- Layout Diagram -->
                 <div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout Diagram (12-column grid)</h3>
-                    ${buildLayoutDiagram()}
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout Diagram</h3>
+                    ${buildMermaidLayout()}
+                    <details class="mt-4">
+                        <summary class="cursor-pointer text-sm text-gray-600 hover:text-gray-800">📋 ASCII Grid View (12-column)</summary>
+                        <div class="mt-3">
+                            ${buildLayoutDiagram()}
+                        </div>
+                    </details>
                 </div>
 
                 ${widgetSummaryHtml}
