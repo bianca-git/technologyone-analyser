@@ -11,7 +11,7 @@ export class EtlGenerator {
     }
 
     private static formatSummaryTable(name: string): string {
-        return `<span class="text-blue-800">${name}</span>`;
+        return `<span class="t1-table-badge" data-type="table">𝄜 ${name}</span>`;
     }
 
     private static formatSummaryFile(name: string): string {
@@ -19,7 +19,7 @@ export class EtlGenerator {
     }
 
     private static formatSummaryTarget(name: string): string {
-        return `<span class="text-emerald-700">${name}</span>`;
+        return `<strong>the ${name}</strong>`;
     }
 
     private static formatSummaryAnalyser(name: string): string {
