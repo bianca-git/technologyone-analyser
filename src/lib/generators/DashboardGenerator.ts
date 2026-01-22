@@ -8,58 +8,134 @@ export class DashboardGenerator {
         const content = dashboard.content;
         const metadata = dashboard.metadata;
 
-        // --- Helper: Format Date ---
-        const formatDate = (dateStr: string) => {
-            if (!dateStr || dateStr === 'N/A') return 'N/A';
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return dateStr;
-            const day = d.getDate();
-            const month = d.toLocaleString('en-US', { month: 'short' });
-            const year = d.getFullYear();
-            const currentYear = new Date().getFullYear();
-            return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
-        };
-
-        const displayDate = formatDate(metadata.dateModified || dashboard.dateAdded.toISOString());
-
-        // --- Helper: Safe List Getter ---
+        // --- Helpers ---
         const getList = (obj: any): any[] => {
             if (!obj) return [];
             return Array.isArray(obj) ? obj : [obj];
         };
 
-        // --- Section 1: Extract Core Data ---
+        const formatDate = (dateStr: string) => {
+            if (!dateStr) return 'N/A';
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch {
+                return dateStr;
+            }
+        };
+
+        const escapeHtml = (str: string): string => {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        // --- Extract Data ---
         const dashDef = content.Dashboard?.EntityDef || {};
         const dashLayout = dashDef.Definition?.Dashboard || {};
         const layoutItems = getList(dashLayout.Layout?.LayoutItem || []);
-
         const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
         const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef || []);
 
-        // --- Section 2: Build Widget Maps ---
+        // --- Build Widget Map ---
         const widgetMap = new Map(visualizations.map((v: any) => [v.GenericEntityId, v]));
 
-        // --- Section 3: Build Layout Diagram ---
-        const buildLayoutDiagram = () => {
-            if (layoutItems.length === 0) return '<p class="text-gray-500 italic">No widgets defined</p>';
+        // --- 1. OVERVIEW SECTION ---
+        const buildOverview = () => {
+            const widgetTypes = new Map<string, number>();
+            visualizations.forEach((v: any) => {
+                const type = v.EntitySubType || 'UNKNOWN';
+                widgetTypes.set(type, (widgetTypes.get(type) || 0) + 1);
+            });
 
-            // Find grid bounds
+            const typeList = Array.from(widgetTypes.entries())
+                .map(([type, count]) => `<li class="text-sm text-gray-700">${type}: <strong>${count}</strong></li>`)
+                .join('');
+
+            return `
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-800">${visualizations.length}</div>
+                        <div class="text-xs text-blue-600 uppercase font-semibold">Total Widgets</div>
+                    </div>
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-800">${new Set(visualizations.map((v: any) => v.AttributeString1)).size}</div>
+                        <div class="text-xs text-purple-600 uppercase font-semibold">Data Models</div>
+                    </div>
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="text-2xl font-bold text-green-800">${variables.length}</div>
+                        <div class="text-xs text-green-600 uppercase font-semibold">Variables</div>
+                    </div>
+                    <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div class="text-2xl font-bold text-orange-800">${layoutItems.length}</div>
+                        <div class="text-xs text-orange-600 uppercase font-semibold">Layout Items</div>
+                    </div>
+                </div>
+                ${typeList ? `<div class="bg-gray-50 p-4 rounded border border-gray-200 mb-8"><div class="font-semibold text-gray-700 mb-2">Widget Breakdown:</div><ul>${typeList}</ul></div>` : ''}
+            `;
+        };
+
+        // --- 2. DASHBOARD METADATA SECTION ---
+        const buildMetadata = () => {
+            return `
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-slate-100 p-2 rounded">ℹ️</span> Dashboard Metadata
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white border border-gray-200 rounded-lg p-6">
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase">Name</div>
+                            <div class="text-gray-800 font-medium">${escapeHtml(metadata.name || dashDef.Description || 'N/A')}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase">Owner</div>
+                            <div class="text-gray-800 font-medium">${escapeHtml(metadata.owner || dashDef.Owner || 'N/A')}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase">System ID</div>
+                            <div class="font-mono text-sm text-gray-600">${escapeHtml((dashDef.GenericEntityId || 'N/A').substring(0, 12))}...</div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase">Reporting System</div>
+                            <div class="text-gray-800 font-medium">${escapeHtml(dashDef.ReportingSystem || 'N/A')}</div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="text-xs font-semibold text-gray-500 uppercase">Folder Path</div>
+                            <div class="font-mono text-sm text-gray-600 break-words">${escapeHtml(metadata.parentPath || dashDef.ParentFileItemPath || 'N/A')}</div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="text-xs font-semibold text-gray-500 uppercase">Last Modified</div>
+                            <div class="text-gray-800 font-medium">${formatDate(metadata.dateModified || dashboard.dateAdded.toISOString())}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // --- 3. LAYOUT DIAGRAM ---
+        const buildLayoutDiagram = () => {
+            if (layoutItems.length === 0) {
+                return '<p class="text-gray-500 italic bg-gray-50 p-4 rounded">No layout items defined</p>';
+            }
+
             let maxX = 0, maxY = 0;
             layoutItems.forEach((item: any) => {
                 maxX = Math.max(maxX, (item.X || 0) + (item.Width || 1));
                 maxY = Math.max(maxY, (item.Y || 0) + (item.Height || 1));
             });
 
-            // Normalize Y values to discrete rows (every 100 units = 1 visual row)
             const normalizeRow = (y: number) => Math.floor((y || 0) / 100);
             const maxRow = normalizeRow(maxY);
 
-            // Create grid structure (12 columns)
             const grid: (string | null)[][] = Array(maxRow + 1)
                 .fill(null)
                 .map(() => Array(12).fill(null));
 
-            // Fill grid with widget references
             layoutItems.forEach((item: any) => {
                 const widget = widgetMap.get(item.Id);
                 const x = item.X || 0;
@@ -67,15 +143,14 @@ export class DashboardGenerator {
                 const width = Math.min(item.Width || 1, 12 - x);
 
                 if (row <= maxRow && width > 0) {
-                    const label = `${widget?.Description || 'Widget'} [${widget?.EntitySubType || 'N/A'}]`.substring(0, 20);
+                    const label = `${widget?.Description || 'Widget'}`.substring(0, 18);
                     for (let col = x; col < Math.min(x + width, 12); col++) {
                         grid[row][col] = label;
                     }
                 }
             });
 
-            // Render as ASCII table
-            let diagram = '<pre class="bg-slate-50 border border-slate-300 rounded p-3 overflow-x-auto text-xs font-mono text-slate-700 mb-4">';
+            let diagram = '<pre class="bg-gray-50 border border-gray-300 rounded p-4 overflow-x-auto text-xs font-mono text-gray-700 mb-4">';
             diagram += '╔' + Array(12).fill('═════════╦').slice(0, -1).join('') + '═════════╗\n';
 
             for (let row = 0; row <= maxRow; row++) {
@@ -96,280 +171,234 @@ export class DashboardGenerator {
             return diagram;
         };
 
-        // --- Section 4: Widget Inventory (Grouped by Type) ---
-        const buildWidgetInventory = () => {
-            const slicers = visualizations.filter((v: any) => v.EntitySubType === 'SLICER');
-            const tables = visualizations.filter((v: any) => v.EntitySubType === 'TABLE');
-            const charts = visualizations.filter((v: any) => v.EntitySubType === 'CHART');
-
-            const renderTable = (headers: string[], rows: any[]) => {
-                if (!rows || rows.length === 0) return '';
-                const ths = headers.map(h => 
-                    `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`
-                ).join('');
-                const trs = rows.map((r) => {
-                    const cells = headers.map((_h, i) => {
-                        const val = r[`Col${i + 1}`] || '';
-                        return `<td class="px-4 py-2 text-sm text-gray-700">${val}</td>`;
-                    }).join('');
-                    return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
-                }).join('');
-                return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3"><table class="w-full divide-y divide-slate-300 text-left bg-slate-50"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
-            };
-
-            let html = '';
-
-            if (slicers.length > 0) {
-                html += '<details open class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors"><span class="text-lg font-bold text-slate-800">🎛️ Slicers (' + slicers.length + ')</span><span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span></summary>';
-                const slicerRows = slicers.map((v: any) => {
-                    const dataModelId = v.AttributeString1 || '-';
-                    const filterCount = this.countFilters(v.AttributeText1);
-                    return {
-                        Col1: v.Description || 'Unnamed',
-                        Col2: this.getSlicerField(v.Definition?.Slicer),
-                        Col3: dataModelId === '-' ? '-' : dataModelId.substring(0, 8) + '...',
-                        Col4: filterCount > 0 ? filterCount.toString() : '-'
-                    };
-                });
-                html += '<div class="pt-4 pb-2 px-2">' + renderTable(['Name', 'Field', 'Data Model', 'Filters'], slicerRows) + '</div></details>';
+        // --- 4. DETAILED WIDGETS SECTION ---
+        const buildWidgetDetails = () => {
+            if (visualizations.length === 0) {
+                return '<p class="text-gray-500 italic">No widgets in dashboard</p>';
             }
 
-            if (tables.length > 0) {
-                html += '<details open class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors"><span class="text-lg font-bold text-slate-800">📊 Tables (' + tables.length + ')</span><span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span></summary>';
-                const tableRows = tables.map((v: any) => {
-                    const dataModelId = v.AttributeString1 || '-';
-                    const filterCount = this.countFilters(v.AttributeText1);
-                    const paramCount = this.countParams(v.AttributeText2);
-                    return {
-                        Col1: v.Description || 'Unnamed',
-                        Col2: dataModelId === '-' ? '-' : dataModelId.substring(0, 8) + '...',
-                        Col3: filterCount > 0 ? filterCount.toString() : '-',
-                        Col4: paramCount > 0 ? paramCount.toString() : '-'
-                    };
-                });
-                html += '<div class="pt-4 pb-2 px-2">' + renderTable(['Name', 'Data Model', 'Filters', 'Parameters'], tableRows) + '</div></details>';
-            }
+            let html = '<div class="space-y-6">';
 
-            if (charts.length > 0) {
-                html += '<details open class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors"><span class="text-lg font-bold text-slate-800">📈 Charts (' + charts.length + ')</span><span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span></summary>';
-                const chartRows = charts.map((v: any) => {
-                    const dataModelId = v.AttributeString1 || '-';
-                    const filterCount = this.countFilters(v.AttributeText1);
-                    const paramCount = this.countParams(v.AttributeText2);
-                    return {
-                        Col1: v.Description || 'Unnamed',
-                        Col2: dataModelId === '-' ? '-' : dataModelId.substring(0, 8) + '...',
-                        Col3: filterCount > 0 ? filterCount.toString() : '-',
-                        Col4: paramCount > 0 ? paramCount.toString() : '-'
-                    };
-                });
-                html += '<div class="pt-4 pb-2 px-2">' + renderTable(['Name', 'Data Model', 'Filters', 'Parameters'], chartRows) + '</div></details>';
-            }
+            visualizations.forEach((widget: any, idx: number) => {
+                const typeColor: Record<string, string> = {
+                    'SLICER': 'blue',
+                    'TABLE': 'purple',
+                    'CHART': 'pink',
+                };
+                const color = typeColor[widget.EntitySubType] || 'gray';
 
+                // Extract criteria
+                const criteria = widget.AttributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue || [];
+                const criteriaList = getList(criteria);
+
+                // Extract parameters
+                const params = widget.AttributeText2?.Parameters?.ParameterField || [];
+                const paramsList = getList(params);
+
+                html += `
+                    <div class="border border-${color}-200 bg-${color}-50 rounded-lg p-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">${escapeHtml(widget.Description || 'Unnamed Widget')}</h3>
+                                <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded bg-${color}-100 text-${color}-800">${widget.EntitySubType || 'UNKNOWN'}</span>
+                            </div>
+                            <div class="text-right text-xs text-gray-500">Widget #${idx + 1}</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-4">
+                            <div>
+                                <div class="font-semibold text-gray-700">ID</div>
+                                <div class="font-mono text-xs text-gray-600 break-all">${escapeHtml(widget.GenericEntityId?.substring(0, 12) || 'N/A')}...</div>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-700">Data Model</div>
+                                <div class="font-mono text-xs text-gray-600 break-all">${escapeHtml((widget.AttributeString1 || 'N/A').substring(0, 12))}...</div>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-700">Data Model Name</div>
+                                <div class="text-gray-600">${escapeHtml(widget.DatamodelDescription || 'N/A')}</div>
+                            </div>
+                        </div>
+
+                        ${criteriaList.length > 0 ? `
+                            <div class="mb-3 p-3 bg-white rounded border border-gray-200">
+                                <div class="font-semibold text-gray-700 mb-2">Criteria/Filters (${criteriaList.length}):</div>
+                                <ul class="text-sm space-y-1">
+                                    ${criteriaList.map((c: any) => `
+                                        <li class="text-gray-600">
+                                            <strong>${escapeHtml(c.ColumnId || 'N/A')}</strong> 
+                                            ${escapeHtml(c.Operator?.Value || '=')} 
+                                            <span class="font-mono text-xs bg-gray-100 px-1 rounded">${escapeHtml(c.Value1 || 'N/A')}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        ${paramsList.length > 0 ? `
+                            <div class="mb-3 p-3 bg-white rounded border border-gray-200">
+                                <div class="font-semibold text-gray-700 mb-2">Parameters (${paramsList.length}):</div>
+                                <ul class="text-sm space-y-1">
+                                    ${paramsList.map((p: any) => `
+                                        <li class="text-gray-600">
+                                            <strong>${escapeHtml(p.FieldName || 'N/A')}</strong> = 
+                                            <span class="font-mono text-xs bg-gray-100 px-1 rounded">${escapeHtml(p.Value || 'N/A')}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        ${widget.Owner ? `
+                            <div class="text-xs text-gray-500">
+                                <strong>Owner:</strong> ${escapeHtml(widget.Owner)}
+                                ${widget.OwnerType ? ` (${widget.OwnerType === 'E' ? 'Employee' : widget.OwnerType === 'R' ? 'Role' : widget.OwnerType})` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
             return html;
         };
 
-        // --- Section 5: Variables Inventory ---
-        const buildVariablesInventory = () => {
-            if (variables.length === 0) return '';
+        // --- 5. VARIABLES SECTION ---
+        const buildVariablesSection = () => {
+            if (variables.length === 0) {
+                return '<p class="text-gray-500 italic">No variables defined</p>';
+            }
 
-            const rows = variables.map((v: any) => {
-                const typeMap: Record<string, string> = {
-                    'A': 'String', 'L': 'Boolean', 'N': 'Numeric', 'D': 'Date', 'I': 'Integer', 'F': 'Float'
-                };
-                return {
-                    Col1: v.Name || '-',
-                    Col2: typeMap[v.VariableType || ''] || v.VariableType || '-',
-                    Col3: v.DefaultValue || '-',
-                    Col4: v.SelectionTypeListType || v.ListType || '-',
-                    Col5: v.Description || '-'
-                };
-            });
+            const typeMap: Record<string, string> = {
+                'A': 'String',
+                'L': 'Boolean',
+                'N': 'Numeric',
+                'D': 'Date',
+                'I': 'Integer',
+                'F': 'Float'
+            };
 
-            const ths = ['Name', 'Type', 'Default', 'List Source', 'Description']
-                .map(h => `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`)
-                .join('');
-            const trs = rows.map((r: any) => {
-                const cells = [1, 2, 3, 4, 5].map(i => {
-                    const val = r[`Col${i}`] || '';
-                    return `<td class="px-4 py-2 text-sm text-gray-700">${val}</td>`;
-                }).join('');
-                return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
-            }).join('');
-            const table = `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3"><table class="w-full divide-y divide-slate-300 text-left bg-slate-50"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
-
-            return `
-                <details open class="group mb-6">
-                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors">
-                        <span class="text-lg font-bold text-slate-800">#️⃣ Variables (${variables.length})</span>
-                        <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
-                    </summary>
-                    <div class="pt-4 pb-2 px-2">${table}</div>
-                </details>
-            `;
-        };
-
-        // --- Section 6: Data Model Dependencies ---
-        const buildDependencies = () => {
-            const dmIds = new Set(visualizations
-                .map((v: any) => v.AttributeString1)
-                .filter(Boolean)
-            );
-
-            if (dmIds.size === 0) return '<p class="text-gray-500 italic">No data model dependencies</p>';
-
-            const rows = Array.from(dmIds).map((id: any) => {
-                let dmName = '-';
-                let status = 'Not in library';
-                let statusClass = 'bg-amber-50 text-amber-700 border-amber-200';
-
-                // Try to find the data model in DB
-                const foundDM = visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription;
-                if (foundDM) {
-                    dmName = foundDM;
-                }
-
-                return {
-                    Col1: dmName,
-                    Col2: id.substring(0, 12) + '...',
-                    Col3: `<span class="text-xs px-2 py-1 rounded border ${statusClass}">${status}</span>`
-                };
-            });
-
-            const ths = ['Data Model', 'ID', 'Status']
-                .map(h => `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`)
-                .join('');
-            const trs = rows.map((r: any) => {
-                return `<tr class="border-t border-gray-100 hover:bg-gray-50">
-                    <td class="px-4 py-2 text-sm text-gray-700">${r.Col1}</td>
-                    <td class="px-4 py-2 text-sm text-gray-500 font-mono">${r.Col2}</td>
-                    <td class="px-4 py-2 text-sm">${r.Col3}</td>
-                </tr>`;
-            }).join('');
-            const table = `<div class="w-full overflow-hidden border border-slate-300 rounded-md"><table class="w-full divide-y divide-slate-300 text-left bg-slate-50"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
-
-            return `
-                <details open class="group mb-6">
-                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-slate-100 hover:bg-slate-200 transition-colors">
-                        <span class="text-lg font-bold text-slate-800">🔗 Data Model Dependencies</span>
-                        <span class="transform group-open:rotate-180 transition-transform text-slate-400">▼</span>
-                    </summary>
-                    <div class="pt-4 pb-2 px-2">${table}</div>
-                </details>
-            `;
-        };
-
-        // --- Metadata Grid ---
-        const metaGrid = `
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mt-6 p-4 bg-white border border-gray-200 rounded-lg text-sm shadow-sm">
-                <div class="md:col-span-1">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Owner</span>
-                    <span class="font-medium text-gray-800">${metadata.owner || '-'}</span>
-                </div>
-                <div class="md:col-span-1">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Folder</span>
-                    <span class="font-medium text-gray-800 text-xs truncate" title="${metadata.parentPath}">${metadata.parentPath?.split('/').pop() || '-'}</span>
-                </div>
-                <div class="md:col-span-2">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Widgets</span>
-                    <span class="font-medium text-gray-800">${visualizations.length}</span>
-                </div>
-                <div class="md:col-span-1">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Last Modified</span>
-                    <span class="font-medium text-gray-800">${displayDate}</span>
-                </div>
-                <div class="md:col-span-1 text-right">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">System ID</span>
-                    <span class="font-mono text-gray-500 text-[11px] truncate block" title="${metadata.id}">${(metadata.id || id).toString().substring(0, 8)}...</span>
-                </div>
-            </div>
-        `;
-
-        // --- Executive Summary ---
-        const summaryHtml = `
-            <div class="p-6 bg-slate-50 border-l-4 border-emerald-400 rounded-r-xl shadow-sm mb-8">
-                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <span class="text-lg">📋</span> Executive Summary
-                </h3>
-                <p class="text-slate-700 text-lg leading-relaxed italic">
-                    "This dashboard contains <strong>${visualizations.length} widgets</strong> across <strong>${new Set(visualizations.map((v: any) => v.AttributeString1)).size} data models</strong> to provide business intelligence and reporting capabilities."
-                </p>
-            </div>
-        `;
-
-        // --- Final HTML ---
-        return `
-            <div class="doc-header">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h2 class="text-3xl font-bold text-slate-800 tracking-tight">${metadata.name}</h2>
-                        ${metadata.description ? `<p class="text-lg text-slate-600 mt-2 leading-relaxed">${metadata.description}</p>` : ''}
+            let html = '<div class="space-y-3">';
+            variables.forEach((v: any) => {
+                html += `
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="font-bold text-gray-800">${escapeHtml(v.Name || 'Unnamed')}</div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mt-2">
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Type</div>
+                                <div class="text-gray-800">${typeMap[v.VariableType] || v.VariableType || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Default Value</div>
+                                <div class="font-mono text-xs text-gray-700">${escapeHtml(v.DefaultValue || 'N/A')}</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">List Source</div>
+                                <div class="text-gray-800">${escapeHtml(v.SelectionTypeListType || v.ListType || 'N/A')}</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Description</div>
+                                <div class="text-gray-800">${escapeHtml(v.Description || 'N/A')}</div>
+                            </div>
+                        </div>
                     </div>
-                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-emerald-200">Dashboard</span>
+                `;
+            });
+            html += '</div>';
+            return html;
+        };
+
+        // --- 6. DATA MODELS SECTION ---
+        const buildDataModelsSection = () => {
+            const dmIds = new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean));
+            if (dmIds.size === 0) {
+                return '<p class="text-gray-500 italic">No data models referenced</p>';
+            }
+
+            let html = '<div class="space-y-3">';
+            Array.from(dmIds).forEach((dmId: any) => {
+                const dmName = visualizations.find((v: any) => v.AttributeString1 === dmId)?.DatamodelDescription || 'Unknown';
+                const widgetCount = visualizations.filter((v: any) => v.AttributeString1 === dmId).length;
+
+                html += `
+                    <div class="border border-cyan-200 bg-cyan-50 rounded-lg p-4">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="font-bold text-gray-800">${escapeHtml(dmName)}</div>
+                                <div class="font-mono text-xs text-gray-600 mt-1">${escapeHtml(dmId)}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-cyan-700">${widgetCount} widgets</div>
+                                <div class="text-xs text-cyan-600">reference this DM</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        };
+
+        // --- FINAL OUTPUT ---
+        return `
+            <div class="doc-header mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h1 class="text-4xl font-bold text-gray-900">${escapeHtml(metadata.name || dashDef.Description || 'Dashboard')}</h1>
+                        <p class="text-gray-600 mt-2">Comprehensive dashboard documentation and analysis</p>
+                    </div>
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Dashboard</span>
                 </div>
-                ${metaGrid}
             </div>
 
             <div class="doc-body space-y-8">
-                ${summaryHtml}
+                <!-- Overview Stats -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-blue-100 p-2 rounded">📊</span> Overview
+                    </h2>
+                    ${buildOverview()}
+                </section>
+
+                <!-- Metadata -->
+                <section>
+                    ${buildMetadata()}
+                </section>
 
                 <!-- Layout Diagram -->
-                <div class="mb-8">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4H5a2 2 0 00-2 2v14a2 2 0 002 2h4m0-21v21m0-21h4a2 2 0 012 2v14a2 2 0 01-2 2h-4m6-21v21"></path></svg>
-                        </span>
-                        <h2 class="text-2xl font-bold text-gray-800">Layout Diagram</h2>
-                    </div>
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-orange-100 p-2 rounded">📐</span> Layout Diagram
+                    </h2>
                     ${buildLayoutDiagram()}
-                </div>
+                </section>
 
-                <!-- Widget Inventory -->
-                <div class="mb-8">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="bg-purple-100 text-purple-600 p-1.5 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        </span>
-                        <h2 class="text-2xl font-bold text-gray-800">Widget Inventory</h2>
-                    </div>
-                    ${buildWidgetInventory()}
-                </div>
+                <!-- Widget Details -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 p-2 rounded">🎛️</span> Widget Details (${visualizations.length})
+                    </h2>
+                    ${buildWidgetDetails()}
+                </section>
 
                 <!-- Variables -->
-                ${buildVariablesInventory()}
+                ${variables.length > 0 ? `
+                    <section>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="bg-green-100 p-2 rounded">📋</span> Variables (${variables.length})
+                        </h2>
+                        ${buildVariablesSection()}
+                    </section>
+                ` : ''}
 
-                <!-- Dependencies -->
-                <div class="mb-8">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="bg-cyan-100 text-cyan-600 p-1.5 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.658 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                        </span>
-                        <h2 class="text-2xl font-bold text-gray-800">Data Model Dependencies</h2>
-                    </div>
-                    ${buildDependencies()}
-                </div>
+                <!-- Data Models -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-cyan-100 p-2 rounded">🔗</span> Data Models Referenced
+                    </h2>
+                    ${buildDataModelsSection()}
+                </section>
             </div>
         `;
-    }
-
-    private static countFilters(criteriaText: any): number {
-        if (!criteriaText) return 0;
-        const criteria = criteriaText.CriteriaSetItem;
-        if (!criteria) return 0;
-        const values = criteria.CriteriaValues?.CriteriaValue;
-        if (!values) return 0;
-        return Array.isArray(values) ? values.length : 1;
-    }
-
-    private static countParams(paramsText: any): number {
-        if (!paramsText) return 0;
-        const params = paramsText.Parameters?.ParameterField;
-        if (!params) return 0;
-        return Array.isArray(params) ? params.length : 1;
-    }
-
-    private static getSlicerField(slicerDef: any): string {
-        if (!slicerDef) return '-';
-        return slicerDef.ValueField?.['#text'] || slicerDef.ValueField || '-';
     }
 }
