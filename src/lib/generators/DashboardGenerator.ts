@@ -1,7 +1,7 @@
 import { db } from '../db';
 
 export class DashboardGenerator {
-    static async generateHtmlView(id: number, _mode: 'business' | 'technical' = 'business'): Promise<string> {
+    static async generateHtmlView(id: number, mode: 'business' | 'technical' = 'business'): Promise<string> {
         const dashboard = await db.dashboards.get(id);
         if (!dashboard) throw new Error("Dashboard not found");
 
@@ -168,35 +168,130 @@ export class DashboardGenerator {
             return diagram;
         };
 
-        // --- Widget Details Section ---
-        let widgetDetailsHtml = '';
+        // --- Widget Summary Table ---
+        let widgetSummaryHtml = '';
         if (visualizations.length > 0) {
-            const widgetRows = visualizations.map((v: any) => {
+            const widgetRows = visualizations.map((v: any, idx: number) => {
                 const filterCount = this.countFilters(v.AttributeText1);
                 const paramCount = this.countParams(v.AttributeText2);
                 return {
-                    Col1: v.Description || 'Unnamed',
-                    Col2: v.EntitySubType || 'UNKNOWN',
-                    Col3: (v.AttributeString1 || '-').substring(0, 12) + '...',
+                    Col1: `${idx + 1}`,
+                    Col2: v.Description || 'Unnamed',
+                    Col3: v.EntitySubType || 'UNKNOWN',
                     Col4: v.DatamodelDescription || '-',
-                    Col5: filterCount > 0 ? filterCount.toString() : '-',
-                    Col6: paramCount > 0 ? paramCount.toString() : '-'
+                    Col5: filterCount > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">${filterCount}</span>` : '-',
+                    Col6: paramCount > 0 ? `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${paramCount}</span>` : '-'
                 };
             });
 
-            widgetDetailsHtml = `
+            widgetSummaryHtml = `
                 <details open class="group">
                     <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200">
                         <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
-                            <span class="text-purple-500 text-lg">🎛️</span> Widget Details
+                            <span class="text-purple-500 text-lg">🎛️</span> Widgets Summary
                             <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full border border-purple-200">${visualizations.length}</span>
                         </span>
                     </summary>
                     <div class="pt-4 pb-2 px-2">
-                        ${renderTable(['Widget Name', 'Type', 'Data Model ID', 'Data Model Name', 'Filters', 'Parameters'], widgetRows)}
+                        ${renderTable(['#', 'Widget Name', 'Type', 'Data Model', 'Filters', 'Parameters'], widgetRows)}
                     </div>
                 </details>
             `;
+        }
+
+        // --- Detailed Widgets Section (Technical View Only) ---
+        let detailedWidgetsHtml = '';
+        if (visualizations.length > 0 && mode === 'technical') {
+            detailedWidgetsHtml = '<details class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200"><span class="text-xl font-bold text-slate-800 flex items-center gap-3"><span class="text-purple-500 text-lg">📋</span> Widget Details</span></summary><div class="pt-4 pb-2 px-2 space-y-4">';
+
+            visualizations.forEach((widget: any) => {
+                const criteria = widget.AttributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue || [];
+                const criteriaList = getList(criteria);
+                const params = widget.AttributeText2?.Parameters?.ParameterField || [];
+                const paramsList = getList(params);
+                const tableDef = widget.Definition?.Table;
+                const columns = tableDef?.Columns ? getList(tableDef.Columns) : [];
+                let filterHtml = '';
+                let paramHtml = '';
+                let columnHtml = '';
+
+                if (criteriaList.length > 0) {
+                    const filterRows = criteriaList.map((c: any) => ({
+                        Col1: escapeHtml(c.ColumnId || 'N/A'),
+                        Col2: escapeHtml(c.Operator?.Value || '='),
+                        Col3: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(c.Value1 || 'N/A')}</code>`,
+                        Col4: escapeHtml(c.Link || 'AND')
+                    }));
+                    filterHtml = `
+                        <div class="mt-3">
+                            <h4 class="font-semibold text-gray-700 mb-2">🔍 Filters (${criteriaList.length})</h4>
+                            ${renderTable(['Column', 'Operator', 'Value', 'Link'], filterRows)}
+                        </div>
+                    `;
+                }
+
+                if (paramsList.length > 0) {
+                    const paramRows = paramsList.map((p: any) => ({
+                        Col1: escapeHtml(p.FieldName || 'N/A'),
+                        Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`
+                    }));
+                    paramHtml = `
+                        <div class="mt-3">
+                            <h4 class="font-semibold text-gray-700 mb-2">⚙️ Parameters (${paramsList.length})</h4>
+                            ${renderTable(['Field Name', 'Value'], paramRows)}
+                        </div>
+                    `;
+                }
+
+                if (columns.length > 0) {
+                    const columnRows = columns.map((col: any) => ({
+                        Col1: escapeHtml(col.Id || col.Name || 'N/A'),
+                        Col2: escapeHtml(col.Format || col.DataType || 'N/A'),
+                        Col3: escapeHtml(col.DisplayName || col.Label || '-'),
+                        Col4: col.Visible !== false ? '✓' : '✗'
+                    }));
+                    columnHtml = `
+                        <div class="mt-3">
+                            <h4 class="font-semibold text-gray-700 mb-2">📊 Columns (${columns.length})</h4>
+                            ${renderTable(['Column ID', 'Format/Type', 'Display Name', 'Visible'], columnRows)}
+                        </div>
+                    `;
+                }
+
+                detailedWidgetsHtml += `
+                    <div class="border border-purple-200 bg-purple-50 rounded-lg p-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">${escapeHtml(widget.Description || 'Unnamed Widget')}</h3>
+                                <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded bg-purple-100 text-purple-800">${widget.EntitySubType || 'UNKNOWN'}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-4 bg-white p-3 rounded border border-purple-100">
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Widget ID</div>
+                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.GenericEntityId || 'N/A').substring(0, 16))}...</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Data Model ID</div>
+                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.AttributeString1 || 'N/A').substring(0, 16))}...</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Data Model Name</div>
+                                <div class="text-gray-700">${escapeHtml(widget.DatamodelDescription || 'N/A')}</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-semibold text-gray-600">Owner</div>
+                                <div class="text-gray-700">${escapeHtml(widget.Owner || 'N/A')}</div>
+                            </div>
+                        </div>
+                        ${filterHtml}
+                        ${paramHtml}
+                        ${columnHtml}
+                    </div>
+                `;
+            });
+
+            detailedWidgetsHtml += '</div></details>';
         }
 
         // --- Variables Section ---
@@ -285,7 +380,8 @@ export class DashboardGenerator {
                     ${buildLayoutDiagram()}
                 </div>
 
-                ${widgetDetailsHtml}
+                ${widgetSummaryHtml}
+                ${detailedWidgetsHtml}
                 ${variablesHtml}
                 ${dependenciesHtml}
             </div>
