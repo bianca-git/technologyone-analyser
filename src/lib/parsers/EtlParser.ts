@@ -1,17 +1,24 @@
-import type { EtlStep, LogicRule } from './types';
+import type { EtlStep, LogicRule, XmlNode, XmlValue } from './types';
+import { asNode } from './types';
 export type { EtlStep, LogicRule } from './types';
 
+/** A raw XML step node with the `children` array the parser grafts on. */
+type RawStep = XmlNode & { children?: RawStep[] };
+
 export class EtlParser {
-    static getListSafe(obj: any, key: string): any[] {
-        if (!obj || !obj[key]) return [];
-        const val = obj[key];
-        return Array.isArray(val) ? val : [val];
+    static getListSafe(obj: XmlValue, key: string): XmlNode[] {
+        const node = asNode(obj);
+        if (!node || node[key] == null) return [];
+        const val = node[key];
+        return (Array.isArray(val) ? val : [val]) as XmlNode[];
     }
 
-    static getTextSafe(val: any): string {
-        if (!val) return '';
+    static getTextSafe(val: XmlValue): string {
+        if (val == null || val === '') return '';
         if (typeof val === 'string') return val;
-        if (val['#text']) return val['#text'];
+        if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+        const node = asNode(val);
+        if (node && typeof node['#text'] === 'string') return node['#text'];
         return JSON.stringify(val); // Fallback
     }
 
@@ -76,9 +83,9 @@ export class EtlParser {
         return success && rules.length > 0 ? rules : null;
     }
 
-    static inferLoopPurpose(step: any): string {
-        const children = step.children || [];
-        const types = children.map((c: any) => c.StepType);
+    static inferLoopPurpose(step: XmlNode): string {
+        const children = (step.children as RawStep[] | undefined) || [];
+        const types = children.map((c) => c.StepType);
         if (types.includes('RunDirectQuery') || types.includes('RunTableQuery'))
             return 'Fetching detailed data for each item';
         if (types.includes('ImportWarehouseData')) return 'Saving results for each item';
@@ -86,8 +93,8 @@ export class EtlParser {
         return 'Processing items in batch';
     }
 
-    static extractCriteria(storage: any): string[] {
-        const locations = [
+    static extractCriteria(storage: XmlNode): string[] {
+        const locations: XmlValue[] = [
             storage.Criteria,
             storage.WarehouseCriteria,
             storage.SourceCriteria,
@@ -96,7 +103,16 @@ export class EtlParser {
         ];
         const results: string[] = [];
 
-        locations.forEach((loc) => {
+        locations.forEach((rawLoc) => {
+            if (!rawLoc) return;
+
+            // Handle direct string value
+            if (typeof rawLoc === 'string') {
+                if (rawLoc.trim() !== '') results.push(rawLoc);
+                return;
+            }
+
+            const loc = asNode(rawLoc);
             if (!loc) return;
 
             // Handle CriteriaSetItem structure (nested criteria)
@@ -104,12 +120,12 @@ export class EtlParser {
                 this.processCriteriaSet(loc.CriteriaSetItem, results);
             }
             // Handle direct CriteriaValues
-            else if (loc.CriteriaValues?.CriteriaValue) {
-                const cv = loc.CriteriaValues.CriteriaValue;
-                const list = Array.isArray(cv) ? cv : [cv];
-                list.forEach((c: any) => {
+            else if (asNode(loc.CriteriaValues)?.CriteriaValue) {
+                const cv = asNode(loc.CriteriaValues)!.CriteriaValue;
+                const list = (Array.isArray(cv) ? cv : [cv]) as XmlNode[];
+                list.forEach((c) => {
                     const col = this.getTextSafe(c.ColumnId);
-                    const op = this.getTextSafe(c.Operator?.Value || c.Operator) || '=';
+                    const op = this.getTextSafe(asNode(c.Operator)?.Value || c.Operator) || '=';
                     const val1 = this.getTextSafe(c.Value1);
                     const val2 = this.getTextSafe(c.Value2);
                     if (col) {
@@ -125,28 +141,24 @@ export class EtlParser {
             else if (typeof loc.CriteriaValues === 'string' && loc.CriteriaValues.trim() !== '') {
                 results.push(loc.CriteriaValues);
             }
-            // Handle direct string value
-            else if (typeof loc === 'string' && loc.trim() !== '') {
-                results.push(loc);
-            }
         });
 
         return results;
     }
 
     // Helper to recursively process nested criteria sets
-    private static processCriteriaSet(criteriaSet: any, results: string[]): void {
+    private static processCriteriaSet(criteriaSet: XmlValue, results: string[]): void {
         if (!criteriaSet) return;
 
-        const sets = Array.isArray(criteriaSet) ? criteriaSet : [criteriaSet];
-        sets.forEach((set: any) => {
+        const sets = (Array.isArray(criteriaSet) ? criteriaSet : [criteriaSet]) as XmlNode[];
+        sets.forEach((set) => {
             // Process CriteriaValues in this set
-            if (set.CriteriaValues?.CriteriaValue) {
-                const cv = set.CriteriaValues.CriteriaValue;
-                const list = Array.isArray(cv) ? cv : [cv];
-                list.forEach((c: any) => {
+            if (asNode(set.CriteriaValues)?.CriteriaValue) {
+                const cv = asNode(set.CriteriaValues)!.CriteriaValue;
+                const list = (Array.isArray(cv) ? cv : [cv]) as XmlNode[];
+                list.forEach((c) => {
                     const col = this.getTextSafe(c.ColumnId);
-                    const op = this.getTextSafe(c.Operator?.Value || c.Operator) || '=';
+                    const op = this.getTextSafe(asNode(c.Operator)?.Value || c.Operator) || '=';
                     const val1 = this.getTextSafe(c.Value1);
                     const val2 = this.getTextSafe(c.Value2);
                     if (col) {
@@ -160,13 +172,13 @@ export class EtlParser {
             }
 
             // Recurse into nested sets
-            if (set.NestedSets?.CriteriaSetItem) {
-                this.processCriteriaSet(set.NestedSets.CriteriaSetItem, results);
+            if (asNode(set.NestedSets)?.CriteriaSetItem) {
+                this.processCriteriaSet(asNode(set.NestedSets)!.CriteriaSetItem, results);
             }
         });
     }
 
-    static getExplicitOutput(stepType: string, storage: any, _step: any) {
+    static getExplicitOutput(stepType: string, storage: XmlNode, _step: XmlValue) {
         const target = this.getTextSafe(storage.OutputTableName || storage.TableName || storage.VariableName);
         switch (stepType) {
             case 'ImportWarehouseData':
@@ -192,23 +204,32 @@ export class EtlParser {
      * Main Parsing Method
      * Returns a structured execution tree with metadata, variable usage, and logic rules pre-calculated.
      */
-    static parseSteps(json: any, mode: 'business' | 'technical' = 'technical') {
-        let stepsRaw = this.getListSafe(json?.ArrayOfStep, 'Step');
-        const stepMap = new Map();
-        const rootSteps: any[] = [];
-        stepsRaw.forEach((step: any) => {
+    static parseSteps(json: XmlValue, mode: 'business' | 'technical' = 'technical') {
+        const stepsRaw = this.getListSafe(asNode(json)?.ArrayOfStep, 'Step') as RawStep[];
+        const stepMap = new Map<number, RawStep>();
+        const rootSteps: RawStep[] = [];
+        const toInt = (val: XmlValue): number => {
+            const n = parseInt(String(val), 10);
+            return isNaN(n) ? NaN : n;
+        };
+        stepsRaw.forEach((step) => {
             step.children = [];
-            stepMap.set(step.StepId, step);
+            const stepId = toInt(step.StepId);
+            if (!isNaN(stepId)) stepMap.set(stepId, step);
         });
-        stepsRaw.forEach((step: any) => {
-            const parentId = parseInt(step.ParentStepId) || 0;
-            if (parentId !== 0 && stepMap.has(parentId)) stepMap.get(parentId).children.push(step);
+        stepsRaw.forEach((step) => {
+            const parentId = toInt(step.ParentStepId) || 0;
+            if (parentId !== 0 && stepMap.has(parentId)) stepMap.get(parentId)!.children!.push(step);
             else rootSteps.push(step);
         });
 
-        const sortSteps = (list: any[]) => {
-            list.sort((a, b) => (parseInt(a.Sequence) || 999) - (parseInt(b.Sequence) || 999));
-            list.forEach((item) => sortSteps(item.children));
+        const sortSteps = (list: RawStep[]) => {
+            const seq = (s: XmlValue) => {
+                const n = toInt(s);
+                return isNaN(n) ? 999 : n;
+            };
+            list.sort((a, b) => seq(a.Sequence) - seq(b.Sequence));
+            list.forEach((item) => sortSteps(item.children || []));
         };
         sortSteps(rootSteps);
 
@@ -250,9 +271,9 @@ export class EtlParser {
         };
 
         // 1. Collect Variables & Initial Table Names
-        stepsRaw.forEach((step: any) => {
+        stepsRaw.forEach((step) => {
             const type = step.StepType;
-            const storage = step.Definition?.StorageObject || {};
+            const storage = asNode(asNode(step.Definition)?.StorageObject) || {};
 
             // Collect Table Names
             [
@@ -281,7 +302,7 @@ export class EtlParser {
             if (type === 'SetVariable' || type === 'CalculateVariable') {
                 const vName = this.getTextSafe(storage.VariableName);
                 const vValue = this.getTextSafe(storage.VariableValue || storage.Expression) || '';
-                setVariableValue(vName, vValue, step.Name);
+                setVariableValue(vName, vValue, this.getTextSafe(step.Name));
                 variableNames.add(vName);
             }
 
@@ -302,7 +323,7 @@ export class EtlParser {
 
             if (type === 'Loop' && storage.InputVariable) {
                 const vName = this.getTextSafe(storage.InputVariable);
-                setVariableValue(vName, 'Loop Condition', step.Name);
+                setVariableValue(vName, 'Loop Condition', this.getTextSafe(step.Name));
                 variableNames.add(vName);
             }
         });
@@ -319,20 +340,20 @@ export class EtlParser {
             });
         };
 
-        stepsRaw.forEach((step: any) => {
-            const storage = step.Definition?.StorageObject || {};
+        stepsRaw.forEach((step) => {
+            const storage = asNode(asNode(step.Definition)?.StorageObject) || {};
             registerUsage(JSON.stringify(storage), this.getTextSafe(step.Name));
         });
 
         const columnMetadata = new Map<string, { Type: string; Source: string; Origin: string }>();
-        const registerMetadata = (columns: any[], originStep: string, type: 'Query' | 'Calc' | 'Table') => {
+        const registerMetadata = (columns: XmlNode[], originStep: string, type: 'Query' | 'Calc' | 'Table') => {
             if (!columns) return;
             const cols = Array.isArray(columns) ? columns : [columns];
             cols.forEach((c) => {
                 const name = this.getTextSafe(c.ColumnName);
                 if (!name) return;
                 const dataType = this.getTextSafe(
-                    c.ColumnType?.['#text'] || c.ColumnType || c.ColumnDataType || c.DataType || 'String'
+                    asNode(c.ColumnType)?.['#text'] || c.ColumnType || c.ColumnDataType || c.DataType || 'String'
                 );
                 let source = '';
                 if (type === 'Query') source = this.getTextSafe(c.ColumnSource);
@@ -343,12 +364,12 @@ export class EtlParser {
         };
 
         const executionFlow: EtlStep[] = [];
-        const traverse = (step: any, depth: number): EtlStep | null => {
-            const stepType = step.StepType;
+        const traverse = (step: RawStep, depth: number): EtlStep | null => {
+            const stepType = this.getTextSafe(step.StepType);
             let isActive = step.IsActive !== false;
             // Decisions and Branches are structural logic, so we treat them as active even if marked inactive in XML
             if (stepType === 'Decision' || stepType === 'Branch') isActive = true;
-            const storage = step.Definition?.StorageObject || {};
+            const storage = asNode(asNode(step.Definition)?.StorageObject) || {};
             const stepName = this.getTextSafe(step.Name);
 
             // Metadata Registration
@@ -359,7 +380,7 @@ export class EtlParser {
                     registerMetadata(this.getListSafe(storage.Columns, 'ColumnItemDef'), stepName, 'Calc');
                 else if (stepType === 'CreateTable')
                     registerMetadata(
-                        this.getListSafe(step.OutputTableDefinition?.Columns, 'ColumnItem'),
+                        this.getListSafe(asNode(step.OutputTableDefinition)?.Columns, 'ColumnItem'),
                         stepName,
                         'Table'
                     );
@@ -369,7 +390,7 @@ export class EtlParser {
             let smartDesc = '';
             if (stepType === 'Loop') smartDesc = this.inferLoopPurpose(step);
             if (stepType === 'SetVariable' || stepType === 'CalculateVariable') {
-                const vName = this.getTextSafe(step.Definition?.StorageObject?.VariableName);
+                const vName = this.getTextSafe(asNode(asNode(step.Definition)?.StorageObject)?.VariableName);
                 const usedIn = variableUsage.get(vName);
                 if (usedIn && usedIn.length > 0) {
                     smartDesc = `Used in: ${usedIn.join(', ')}`;
@@ -496,7 +517,7 @@ export class EtlParser {
             const outputs: string[] = [];
 
             // Helper to add if valid string
-            const add = (arr: string[], val: any) => {
+            const add = (arr: string[], val: XmlValue) => {
                 const s = this.getTextSafe(val);
                 if (s && s.trim().length > 0 && !arr.includes(s) && s !== 'dataset' && s !== 'target') arr.push(s);
             };
@@ -590,7 +611,7 @@ export class EtlParser {
                 // Source -> Target
                 let src = table;
                 if (stepType === 'RunDatasourceQuery')
-                    src = this.getTextSafe(storage.DataSource?.Description || 'Datasource');
+                    src = this.getTextSafe(asNode(storage.DataSource)?.Description || 'Datasource');
                 if (stepType === 'RunDirectQuery') src = `Query: ${table}`;
                 fl = `${src} ➔ ${target}`;
             } else if (stepType === 'ImportWarehouseData') {
@@ -600,7 +621,7 @@ export class EtlParser {
             } else if (stepType === 'DeleteWarehouseData') {
                 fl = `Delete Warehouse Data: ${target}`;
             } else if (stepType === 'CreateTable') {
-                const outName = this.getTextSafe(step.OutputTableDefinition?.TableName || 'New Table');
+                const outName = this.getTextSafe(asNode(step.OutputTableDefinition)?.TableName || 'New Table');
                 fl = `Create Table: ${outName}`;
             } else if (stepType === 'AppendTable') {
                 fl = `Append to: ${this.getTextSafe(storage.AppendToTableName || 'Table')}`;
@@ -616,7 +637,7 @@ export class EtlParser {
             if (storage.SortColumns) {
                 const cols = this.getListSafe(storage.SortColumns, 'SortColumnItem');
                 if (cols.length > 0)
-                    info.Details.push(`Sort Order: ${cols.map((c: any) => this.getTextSafe(c.ColumnName)).join(', ')}`);
+                    info.Details.push(`Sort Order: ${cols.map((c) => this.getTextSafe(c.ColumnName)).join(', ')}`);
             }
 
             if (stepType === 'SendEmail') {
@@ -645,11 +666,11 @@ export class EtlParser {
                     storage.Columns,
                     stepType === 'RunTableQuery' ? 'ColumnItem' : 'ColumnItem'
                 );
-                info.TableData = columns.map((c: any) => ({
+                info.TableData = columns.map((c) => ({
                     Col1: this.getTextSafe(c.ColumnName),
                     Col2: this.getTextSafe(c.ColumnSource) || this.getTextSafe(c.ColumnName) || '-',
                     Col3: this.getTextSafe(c.ColumnDataType || c.DataType) || 'String',
-                    Col4: this.getTextSafe(c.ColumnActionType?.['#text'] || c.ColumnActionType) || 'Display',
+                    Col4: this.getTextSafe(asNode(c.ColumnActionType)?.['#text'] || c.ColumnActionType) || 'Display',
                 }));
                 if (info.TableData.length > 0) info.Headers = ['Column Name', 'Source Field', 'Type', 'Action'];
                 // Query limits and aggregations
@@ -662,7 +683,7 @@ export class EtlParser {
                 // Group By
                 const groupByCols = this.getListSafe(storage.GroupByColumns || storage.GroupBy, 'GroupByColumnItem');
                 if (groupByCols.length > 0) {
-                    const groupNames = groupByCols.map((g: any) => this.getTextSafe(g.ColumnName || g)).join(', ');
+                    const groupNames = groupByCols.map((g) => this.getTextSafe(g.ColumnName || g)).join(', ');
                     info.Details.push(`Group By: ${groupNames}`);
                 }
                 // Having
@@ -672,7 +693,7 @@ export class EtlParser {
                 this.extractCriteria(storage).forEach((f) => info.Details.push(`Filter: ${f}`));
             } else if (stepType === 'AddColumn' || stepType === 'UpdateColumn') {
                 const columns = this.getListSafe(storage.Columns, 'ColumnItemDef');
-                info.TableData = columns.map((col: any) => {
+                info.TableData = columns.map((col) => {
                     const rawExpr = this.getTextSafe(col.Expression);
                     // Critical: Parse Logic Rules Here
                     const rules = this.flattenLogic(rawExpr);
@@ -701,7 +722,7 @@ export class EtlParser {
                 info.Headers = ['Variable', 'Expression', 'Type'];
             } else if (stepType === 'ImportWarehouseData') {
                 const mappings = this.getListSafe(storage.ColumnMapping, 'TableColumnMapping');
-                info.TableData = mappings.map((m: any) => {
+                info.TableData = mappings.map((m) => {
                     const cName = this.getTextSafe(m.ColumnName);
                     const sourceVal = this.getTextSafe(m.MappedValue);
                     const sourceCol = sourceVal.replace(/^\[|\]$/g, '');
@@ -721,14 +742,14 @@ export class EtlParser {
                 // Key columns for upsert
                 const keyCols = this.getListSafe(storage.KeyColumns || storage.MatchColumns, 'KeyColumn');
                 if (keyCols.length > 0) {
-                    const keyNames = keyCols.map((k: any) => this.getTextSafe(k.ColumnName || k)).join(', ');
+                    const keyNames = keyCols.map((k) => this.getTextSafe(k.ColumnName || k)).join(', ');
                     info.Details.push(`Key Columns: ${keyNames}`);
                 }
                 // Extract warehouse criteria/filters
                 this.extractCriteria(storage).forEach((f) => info.Details.push(`Filter: ${f}`));
             } else if (stepType === 'JoinTable') {
                 const joins = this.getListSafe(storage.Joins, 'JoinItemDef');
-                info.TableData = joins.map((j: any) => ({
+                info.TableData = joins.map((j) => ({
                     Col1: `${this.getTextSafe(j.JoinTable1)}.${this.getTextSafe(j.JoinColumn1)}`,
                     Col2: `${this.getTextSafe(j.JoinType)} ${this.getTextSafe(j.JoinTable2)}.${this.getTextSafe(j.JoinColumn2)}`,
                 }));
@@ -736,15 +757,15 @@ export class EtlParser {
                 // Extract criteria/filters for join steps
                 this.extractCriteria(storage).forEach((f) => info.Details.push(`Filter: ${f}`));
             } else if (stepType === 'CreateTable') {
-                let outCols = this.getListSafe(step.OutputTableDefinition?.Columns, 'ColumnItem');
+                let outCols = this.getListSafe(asNode(step.OutputTableDefinition)?.Columns, 'ColumnItem');
                 if (outCols.length === 0)
                     outCols = this.getListSafe(
-                        step.OutputTableDefinition?.TableDefinition?.Columns,
+                        asNode(asNode(step.OutputTableDefinition)?.TableDefinition)?.Columns,
                         'TableColumnDefinition'
                     );
-                info.TableData = outCols.map((c: any) => ({
+                info.TableData = outCols.map((c) => ({
                     Col1: this.getTextSafe(c.ColumnName),
-                    Col2: this.getTextSafe(c.ColumnType['#text'] || c.ColumnType) || 'String',
+                    Col2: this.getTextSafe(asNode(c.ColumnType)?.['#text'] || c.ColumnType) || 'String',
                 }));
                 if (info.TableData.length > 0) info.Headers = ['Column Name', 'Type'];
             }
@@ -760,7 +781,7 @@ export class EtlParser {
                     storage.SendEmailAttachmentConfigItems,
                     'SendEmailAttachmentConfigItem'
                 );
-                attachments.forEach((a: any) => {
+                attachments.forEach((a) => {
                     info.Details.push(`Attachment: ${this.getTextSafe(a.FileMask)}`);
                 });
             } else if (stepType === 'LoadTextFile' || stepType === 'SaveText' || stepType === 'SaveTextfile') {
@@ -768,12 +789,13 @@ export class EtlParser {
                 if (file) info.Details.push(`File: ${file}`);
             } else if (stepType === 'RunDatasourceQuery' || stepType === 'RunSimpleQuery') {
                 const dsName =
-                    this.getTextSafe(storage.DataSource?.['@_Description'] || storage.DataSource?.Description) ||
-                    'Datasource';
+                    this.getTextSafe(
+                        asNode(storage.DataSource)?.['@_Description'] || asNode(storage.DataSource)?.Description
+                    ) || 'Datasource';
                 info.Details.push(`Source: ${dsName}`);
 
                 const params = this.getListSafe(storage.DataSourceParameters, 'DataSourceParameterItem');
-                params.forEach((p: any) => {
+                params.forEach((p) => {
                     info.Details.push(
                         `Param: ${this.getTextSafe(p.DataSourceParameterName)} = ${this.getTextSafe(p.DataSourceParameterValue)}`
                     );
@@ -782,11 +804,12 @@ export class EtlParser {
                 if (stepType === 'RunSimpleQuery') {
                     // Reuse table parsing logic for columns
                     const columns = this.getListSafe(storage.Columns, 'ColumnItem');
-                    info.TableData = columns.map((c: any) => ({
+                    info.TableData = columns.map((c) => ({
                         Col1: this.getTextSafe(c.ColumnName),
                         Col2: this.getTextSafe(c.ColumnSource) || this.getTextSafe(c.ColumnName) || '-',
                         Col3: this.getTextSafe(c.ColumnDataType || c.DataType) || 'String',
-                        Col4: this.getTextSafe(c.ColumnActionType?.['#text'] || c.ColumnActionType) || 'Display',
+                        Col4:
+                            this.getTextSafe(asNode(c.ColumnActionType)?.['#text'] || c.ColumnActionType) || 'Display',
                     }));
                     if (info.TableData.length > 0) info.Headers = ['Column Name', 'Source Field', 'Type', 'Action'];
                 }
@@ -834,7 +857,7 @@ export class EtlParser {
                 if (procId && !procName) info.Details.push(`Process ID: ${procId}`);
                 // Process parameters
                 const params = this.getListSafe(storage.Parameters, 'ParameterItem');
-                params.forEach((p: any) => {
+                params.forEach((p) => {
                     info.Details.push(`Param: ${this.getTextSafe(p.Name)} = ${this.getTextSafe(p.Value)}`);
                 });
             }
@@ -849,7 +872,7 @@ export class EtlParser {
                 const sortCols = this.getListSafe(storage.SortColumns, 'SortColumnItem');
                 if (sortCols.length > 0) {
                     const sortInfo = sortCols
-                        .map((c: any) => {
+                        .map((c) => {
                             const colName = this.getTextSafe(c.ColumnName);
                             const direction = this.getTextSafe(c.SortDirection || c.Direction) || 'Asc';
                             return `${colName} ${direction === 'Descending' || direction === 'Desc' ? 'DESC' : 'ASC'}`;
@@ -867,9 +890,7 @@ export class EtlParser {
                 } else {
                     const cols = this.getListSafe(storage.ColumnsToDelete || storage.Columns, 'ColumnItem');
                     if (cols.length > 0) {
-                        info.Details.push(
-                            `Delete: ${cols.map((c: any) => this.getTextSafe(c.ColumnName || c)).join(', ')}`
-                        );
+                        info.Details.push(`Delete: ${cols.map((c) => this.getTextSafe(c.ColumnName || c)).join(', ')}`);
                     }
                 }
             }
@@ -881,32 +902,32 @@ export class EtlParser {
             // 1. DynamicFields (Data Dictionary)
             // Available in queries and most transformations
             const dynFields = this.getListSafe(
-                storage.DynamicFields?.Field || step.OutputTableDefinition?.Columns,
+                asNode(storage.DynamicFields)?.Field || asNode(step.OutputTableDefinition)?.Columns,
                 step.OutputTableDefinition ? 'ColumnItem' : 'Field'
             );
             if (dynFields.length > 0) {
-                info.DataDictionary = dynFields.map((f: any) => {
+                info.DataDictionary = dynFields.map((f) => {
                     // Handle various XML structures for Field definitions
-                    const def = f.FieldDef?.ValueObjectFieldDefinitionOfString || f;
+                    const def = asNode(asNode(f.FieldDef)?.ValueObjectFieldDefinitionOfString) || f;
                     return {
                         Name: this.getTextSafe(f['@_Name'] || f.ColumnName),
                         Type: this.getTextSafe(
-                            def.FieldType || def.ColumnType?.['#text'] || def.ColumnType || 'String'
+                            def.FieldType || asNode(def.ColumnType)?.['#text'] || def.ColumnType || 'String'
                         ),
                         Length: this.getTextSafe(def.MaxLength),
-                        Description: this.getTextSafe(f.Description?.string?.['#text']),
+                        Description: this.getTextSafe(asNode(asNode(f.Description)?.string)?.['#text']),
                     };
                 });
             }
 
             // 2. Exists Filters (Critical Logic)
-            if (storage.ExistsFilters?.ExistsFilterItem) {
+            if (asNode(storage.ExistsFilters)?.ExistsFilterItem) {
                 const exists = this.getListSafe(storage.ExistsFilters, 'ExistsFilterItem');
-                info.ExistsLogic = exists.map((e: any) => {
+                info.ExistsLogic = exists.map((e) => {
                     const table = this.getTextSafe(e.FilterTableName);
                     const notIdx = e.NotExistsFlag === 'true' ? 'NOT ' : '';
                     const links = this.getListSafe(e.Links, 'ExistsFilterItemLink')
-                        .map((l: any) => `${this.getTextSafe(l.FieldName)} = ${this.getTextSafe(l.ColumnName)}`)
+                        .map((l) => `${this.getTextSafe(l.FieldName)} = ${this.getTextSafe(l.ColumnName)}`)
                         .join(' AND ');
                     return `${notIdx}EXISTS IN ${table} WHERE ${links}`;
                 });
@@ -918,7 +939,7 @@ export class EtlParser {
 
             // 4. Import Options
             if (stepType === 'ImportWarehouseData') {
-                const modeCode = this.getTextSafe(storage.ImportOption?.['#text'] || storage.ImportOption);
+                const modeCode = this.getTextSafe(asNode(storage.ImportOption)?.['#text'] || storage.ImportOption);
                 const modeMap: Record<string, string> = {
                     IU: 'Insert or Update',
                     I: 'Insert Only',
@@ -948,7 +969,7 @@ export class EtlParser {
             // We attach them to 'info', ReportGenerator decides display.
 
             executionFlow.push(info);
-            step.children.forEach((child: any) => {
+            (step.children || []).forEach((child) => {
                 const childInfo = traverse(child, depth + 1);
                 if (childInfo) info.children!.push(childInfo);
             });

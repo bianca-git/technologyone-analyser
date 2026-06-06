@@ -1,4 +1,5 @@
 import { db } from '../db';
+import { asNode, type XmlNode, type XmlValue } from '../parsers/types';
 
 export class DashboardGenerator {
     static async generateHtmlView(id: number, mode: 'business' | 'technical' = 'business'): Promise<string> {
@@ -9,9 +10,18 @@ export class DashboardGenerator {
         const metadata = dashboard.metadata;
 
         // --- Helpers ---
-        const getList = (obj: any): any[] => {
-            if (!obj) return [];
-            return Array.isArray(obj) ? obj : [obj];
+        const getList = (obj: XmlValue): XmlNode[] => {
+            if (obj == null) return [];
+            return (Array.isArray(obj) ? obj : [obj]) as XmlNode[];
+        };
+
+        const getText = (val: XmlValue): string => {
+            if (val == null) return '';
+            if (typeof val === 'object') {
+                const node = asNode(val);
+                return node && typeof node['#text'] === 'string' ? node['#text'] : '';
+            }
+            return String(val);
         };
 
         const formatDate = (dateStr: string) => {
@@ -29,8 +39,8 @@ export class DashboardGenerator {
             }
         };
 
-        const escapeHtml = (str: string): string => {
-            if (!str) return '';
+        const escapeHtml = (str: XmlValue): string => {
+            if (str == null) return '';
             return String(str)
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -39,7 +49,7 @@ export class DashboardGenerator {
                 .replace(/'/g, '&#039;');
         };
 
-        const renderTable = (headers: string[], rows: any[]) => {
+        const renderTable = (headers: string[], rows: Record<string, string>[]) => {
             if (!rows || rows.length === 0) return '';
             const ths = headers
                 .map(
@@ -62,13 +72,13 @@ export class DashboardGenerator {
         };
 
         // --- Extract Data ---
-        const dashDef = content.Dashboard?.EntityDef || {};
-        const dashLayout = dashDef.Definition?.Dashboard || {};
-        const layoutItems = getList(dashLayout.Layout?.LayoutItem || []);
-        const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
-        const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef || []);
+        const dashDef = asNode(asNode(content.Dashboard)?.EntityDef) || {};
+        const dashLayout = asNode(asNode(dashDef.Definition)?.Dashboard) || {};
+        const layoutItems = getList(asNode(dashLayout.Layout)?.LayoutItem);
+        const visualizations = getList(asNode(content.Visualisations?.ArrayOfEntityDef)?.EntityDef);
+        const variables = getList(asNode(content.Variables?.ArrayOfVariableDef)?.VariableDef);
 
-        const widgetMap = new Map(visualizations.map((v: any) => [v.GenericEntityId, v]));
+        const widgetMap = new Map(visualizations.map((v) => [getText(v.GenericEntityId), v]));
         const displayDate = formatDate(metadata.dateModified || dashboard.dateAdded.toISOString());
 
         // --- Metadata Grid ---
@@ -80,11 +90,11 @@ export class DashboardGenerator {
                 </div>
                 <div>
                     <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Folder</span>
-                    <span class="font-medium text-gray-800 text-xs truncate" title="${metadata.parentPath || dashDef.ParentFileItemPath || ''}">${(metadata.parentPath || dashDef.ParentFileItemPath || '-').split('/').pop()}</span>
+                    <span class="font-medium text-gray-800 text-xs truncate" title="${metadata.parentPath || getText(dashDef.ParentFileItemPath) || ''}">${(metadata.parentPath || getText(dashDef.ParentFileItemPath) || '-').split('/').pop()}</span>
                 </div>
                 <div class="text-right">
                     <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">System ID</span>
-                    <span class="font-mono text-gray-600 text-xs">${(dashDef.GenericEntityId || '-').substring(0, 12)}...</span>
+                    <span class="font-mono text-gray-600 text-xs">${(getText(dashDef.GenericEntityId) || '-').substring(0, 12)}...</span>
                 </div>
                 <div>
                     <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Reporting System</span>
@@ -96,15 +106,15 @@ export class DashboardGenerator {
                 </div>
                 <div class="text-right">
                     <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Dashboard ID</span>
-                    <span class="font-mono text-gray-500 text-[11px] truncate inline-block" title="${dashDef.GenericEntityId}">${(dashDef.GenericEntityId || 'N/A').substring(0, 12)}</span>
+                    <span class="font-mono text-gray-500 text-[11px] truncate inline-block" title="${getText(dashDef.GenericEntityId)}">${(getText(dashDef.GenericEntityId) || 'N/A').substring(0, 12)}</span>
                 </div>
             </div>
         `;
 
         // --- Executive Summary ---
         const widgetTypes = new Map<string, number>();
-        visualizations.forEach((v: any) => {
-            const type = v.EntitySubType || 'UNKNOWN';
+        visualizations.forEach((v) => {
+            const type = getText(v.EntitySubType) || 'UNKNOWN';
             widgetTypes.set(type, (widgetTypes.get(type) || 0) + 1);
         });
 
@@ -118,7 +128,7 @@ export class DashboardGenerator {
                     <span class="text-lg">📋</span> Executive Summary
                 </h3>
                 <p class="text-slate-700 text-lg leading-relaxed">
-                    This dashboard contains <strong>${visualizations.length} widgets</strong> (${typeBreakdown}) across <strong>${new Set(visualizations.map((v: any) => v.AttributeString1)).size} data models</strong> to provide business intelligence and reporting capabilities.
+                    This dashboard contains <strong>${visualizations.length} widgets</strong> (${typeBreakdown}) across <strong>${new Set(visualizations.map((v) => getText(v.AttributeString1))).size} data models</strong> to provide business intelligence and reporting capabilities.
                 </p>
             </div>
         `;
@@ -133,20 +143,20 @@ export class DashboardGenerator {
             let maxRow = 0;
             const widgetsByPos = new Map<string, { name: string; type: string; width: number }>();
 
-            layoutItems.forEach((item: any) => {
-                const widget = widgetMap.get(item.Id);
-                const x = item.X || 0;
+            layoutItems.forEach((item) => {
+                const widget = widgetMap.get(getText(item.Id));
+                const x = Number(item.X) || 0;
                 // Guard the 12-column grid: x >= 12 would make width <= 0, and a
                 // zero/negative colspan never advances `col` in the render loop
                 // below -> infinite loop. Skip out-of-range items, clamp width >= 1.
                 if (x >= 12) return;
-                const row = Math.floor((item.Y || 0) / 100);
-                const width = Math.max(1, Math.min(item.Width || 1, 12 - x));
+                const row = Math.floor((Number(item.Y) || 0) / 100);
+                const width = Math.max(1, Math.min(Number(item.Width) || 1, 12 - x));
 
                 maxRow = Math.max(maxRow, row);
                 widgetsByPos.set(`${row},${x}`, {
-                    name: widget?.Description || 'Widget',
-                    type: widget?.EntitySubType || 'UNKNOWN',
+                    name: getText(widget?.Description) || 'Widget',
+                    type: getText(widget?.EntitySubType) || 'UNKNOWN',
                     width: width,
                 });
             });
@@ -189,10 +199,10 @@ export class DashboardGenerator {
 
         // --- Dashboard-level Parameters Section ---
         let dashboardParamsHtml = '';
-        const dashParams = dashLayout.Parameters?.ParameterField || [];
+        const dashParams = asNode(dashLayout.Parameters)?.ParameterField;
         const dashParamsList = getList(dashParams);
         if (dashParamsList.length > 0 && mode === 'technical') {
-            const paramRows = dashParamsList.map((p: any) => ({
+            const paramRows = dashParamsList.map((p) => ({
                 Col1: escapeHtml(p.FieldName || 'N/A'),
                 Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`,
                 Col3: escapeHtml(p.Description || '-'),
@@ -216,14 +226,14 @@ export class DashboardGenerator {
         // --- Widget Summary Table ---
         let widgetSummaryHtml = '';
         if (visualizations.length > 0) {
-            const widgetRows = visualizations.map((v: any, idx: number) => {
+            const widgetRows = visualizations.map((v, idx: number) => {
                 const criteriaCount = this.countCriteria(v.AttributeText1);
                 const paramCount = this.countParams(v.AttributeText2);
                 return {
                     Col1: `${idx + 1}`,
-                    Col2: v.Description || 'Unnamed',
-                    Col3: v.EntitySubType || 'UNKNOWN',
-                    Col4: v.DatamodelDescription || '-',
+                    Col2: getText(v.Description) || 'Unnamed',
+                    Col3: getText(v.EntitySubType) || 'UNKNOWN',
+                    Col4: getText(v.DatamodelDescription) || '-',
                     Col5:
                         criteriaCount > 0
                             ? `<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">${criteriaCount}</span>`
@@ -256,21 +266,23 @@ export class DashboardGenerator {
             detailedWidgetsHtml =
                 '<details class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200"><span class="text-xl font-bold text-slate-800 flex items-center gap-3"><span class="text-purple-500 text-lg">📋</span> Widget Details</span></summary><div class="pt-4 pb-2 px-2 space-y-4">';
 
-            visualizations.forEach((widget: any) => {
-                const criteria = widget.AttributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue || [];
+            visualizations.forEach((widget) => {
+                const criteria = asNode(
+                    asNode(asNode(widget.AttributeText1)?.CriteriaSetItem)?.CriteriaValues
+                )?.CriteriaValue;
                 const criteriaList = getList(criteria);
-                const params = widget.AttributeText2?.Parameters?.ParameterField || [];
+                const params = asNode(asNode(widget.AttributeText2)?.Parameters)?.ParameterField;
                 const paramsList = getList(params);
-                const tableDef = widget.Definition?.Table;
+                const tableDef = asNode(asNode(widget.Definition)?.Table);
                 const columns = tableDef?.Columns ? getList(tableDef.Columns) : [];
                 let filterHtml = '';
                 let paramHtml = '';
                 let columnHtml = '';
 
                 if (criteriaList.length > 0) {
-                    const filterRows = criteriaList.map((c: any) => ({
+                    const filterRows = criteriaList.map((c) => ({
                         Col1: escapeHtml(c.ColumnId || 'N/A'),
-                        Col2: escapeHtml(c.Operator?.Value || '='),
+                        Col2: escapeHtml(asNode(c.Operator)?.Value || '='),
                         Col3: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(c.Value1 || 'N/A')}</code>`,
                         Col4: escapeHtml(c.Link || 'AND'),
                     }));
@@ -283,7 +295,7 @@ export class DashboardGenerator {
                 }
 
                 if (paramsList.length > 0) {
-                    const paramRows = paramsList.map((p: any) => ({
+                    const paramRows = paramsList.map((p) => ({
                         Col1: escapeHtml(p.FieldName || 'N/A'),
                         Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`,
                     }));
@@ -296,7 +308,7 @@ export class DashboardGenerator {
                 }
 
                 if (columns.length > 0) {
-                    const columnRows = columns.map((col: any) => {
+                    const columnRows = columns.map((col) => {
                         let formula = '';
                         let isCalculation = false;
                         if (col.Expression) {
@@ -369,7 +381,7 @@ export class DashboardGenerator {
                             </div>
                             <div>
                                 <div class="text-xs font-semibold text-gray-600">Widget ID</div>
-                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.GenericEntityId || 'N/A').substring(0, 16))}...</div>
+                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((getText(widget.GenericEntityId) || 'N/A').substring(0, 16))}...</div>
                             </div>
                         </div>
                         ${filterHtml}
@@ -394,12 +406,12 @@ export class DashboardGenerator {
                 F: 'Float',
             };
 
-            const varRows = variables.map((v: any) => ({
-                Col1: v.Name || '-',
-                Col2: typeMap[v.VariableType || ''] || v.VariableType || '-',
-                Col3: v.DefaultValue || '-',
-                Col4: v.SelectionTypeListType || v.ListType || '-',
-                Col5: v.Description || '-',
+            const varRows = variables.map((v) => ({
+                Col1: getText(v.Name) || '-',
+                Col2: typeMap[getText(v.VariableType)] || getText(v.VariableType) || '-',
+                Col3: getText(v.DefaultValue) || '-',
+                Col4: getText(v.SelectionTypeListType || v.ListType) || '-',
+                Col5: getText(v.Description) || '-',
             }));
 
             variablesHtml = `
@@ -419,13 +431,14 @@ export class DashboardGenerator {
         }
 
         // --- Data Model Dependencies ---
-        const dmIds = new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean));
+        const dmIds = new Set(visualizations.map((v) => getText(v.AttributeString1)).filter(Boolean));
         let dependenciesHtml = '';
         if (dmIds.size > 0) {
-            const dmRows = Array.from(dmIds).map((id: any) => {
+            const dmRows = Array.from(dmIds).map((id) => {
                 const dmName =
-                    visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription || 'Unknown';
-                const widgetCount = visualizations.filter((v: any) => v.AttributeString1 === id).length;
+                    getText(visualizations.find((v) => getText(v.AttributeString1) === id)?.DatamodelDescription) ||
+                    'Unknown';
+                const widgetCount = visualizations.filter((v) => getText(v.AttributeString1) === id).length;
                 return {
                     Col1: dmName,
                     Col2: `${widgetCount} widget${widgetCount !== 1 ? 's' : ''}`,
@@ -477,18 +490,16 @@ export class DashboardGenerator {
         `;
     }
 
-    private static countCriteria(criteriaText: any): number {
-        if (!criteriaText) return 0;
-        const criteria = criteriaText.CriteriaSetItem;
+    private static countCriteria(criteriaText: XmlValue): number {
+        const criteria = asNode(asNode(criteriaText)?.CriteriaSetItem);
         if (!criteria) return 0;
-        const values = criteria.CriteriaValues?.CriteriaValue;
+        const values = asNode(criteria.CriteriaValues)?.CriteriaValue;
         if (!values) return 0;
         return Array.isArray(values) ? values.length : 1;
     }
 
-    private static countParams(paramsText: any): number {
-        if (!paramsText) return 0;
-        const params = paramsText.Parameters?.ParameterField;
+    private static countParams(paramsText: XmlValue): number {
+        const params = asNode(asNode(paramsText)?.Parameters)?.ParameterField;
         if (!params) return 0;
         return Array.isArray(params) ? params.length : 1;
     }

@@ -20,6 +20,7 @@ import { EtlParser } from '../parsers/EtlParser';
 import { MermaidGenerator } from './MermaidGenerator';
 import { extractSourcesAndTargets, buildEtlNarrative, plainSummaryFormatter } from './EtlSummary';
 import { createText, createHeaderCell, createCell } from './DocxPrimitives';
+import { asNode } from '../parsers/types';
 
 export class DocxGenerator {
     // --- Helpers (low-level docx primitives live in DocxPrimitives.ts; these
@@ -488,7 +489,7 @@ export class DocxGenerator {
         const metaRows = [
             ['Description', metadata.description],
             ['Version', metadata.version],
-            ['Process Mode', content.DataModel?.DataModelDef?.ProcessMode || 'N/A'],
+            ['Process Mode', String(asNode(content.DataModel?.DataModelDef)?.ProcessMode || 'N/A')],
             ['Last Modified', metadata.dateModified || '-'],
         ];
 
@@ -508,15 +509,15 @@ export class DocxGenerator {
         // 2. Executive Summary
         // Re-implementing logic from DataModelGenerator
         const getList = (obj: any) => (Array.isArray(obj) ? obj : obj ? [obj] : []);
-        const rawQueries = getList(content.Queries?.ArrayOfQuery?.Query).sort(
+        const rawQueries = getList(asNode(content.Queries?.ArrayOfQuery)?.Query).sort(
             (a: any, b: any) => (Number(a.Sequence) || 0) - (Number(b.Sequence) || 0)
         );
         const finalQuery = rawQueries.length > 0 ? rawQueries[rawQueries.length - 1] : null;
-        const allDS = getList(content.QueryDatasources?.ArrayOfQueryDatasource?.QueryDatasource);
+        const allDS = getList(asNode(content.QueryDatasources?.ArrayOfQueryDatasource)?.QueryDatasource);
         const uniqueSources = new Set(
             allDS.filter((d: any) => d.DataSourceType !== 'Query').map((d: any) => d.DataSourceName || d.TableName)
         ).size;
-        const finalCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter(
+        const finalCols = getList(asNode(content.QueryColumns?.ArrayOfQueryColumn)?.QueryColumn).filter(
             (c: any) => c.QueryName === finalQuery?.QueryName
         );
 
@@ -536,7 +537,7 @@ export class DocxGenerator {
         );
 
         // 3. Global Variables (with Source removed per request)
-        const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef);
+        const variables = getList(asNode(content.Variables?.ArrayOfVariableDef)?.VariableDef);
         if (variables.length > 0) {
             sections.push(
                 new Paragraph({
@@ -585,7 +586,9 @@ export class DocxGenerator {
         }
 
         // 4. Indexes
-        const indexes = getList(content.DataModel?.Definition?.DataModelDefinition?.Indexes?.Index);
+        const indexes = getList(
+            asNode(asNode(asNode(content.DataModel?.Definition)?.DataModelDefinition)?.Indexes)?.Index
+        );
         if (indexes.length > 0) {
             sections.push(
                 new Paragraph({
@@ -713,7 +716,7 @@ export class DocxGenerator {
             }
 
             // Columns (Name | Type | Source) - 3 Column Layout
-            const myCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter(
+            const myCols = getList(asNode(content.QueryColumns?.ArrayOfQueryColumn)?.QueryColumn).filter(
                 (c: any) => c.QueryName === qName
             );
             if (myCols.length > 0) {
@@ -940,10 +943,10 @@ export class DocxGenerator {
         sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
 
         // 3. Extract data
-        const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
-        const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef || []);
-        const dashLayout = content.Dashboard?.EntityDef?.Definition?.Dashboard || {};
-        const layoutItems = getList(dashLayout.Layout?.LayoutItem || []);
+        const visualizations = getList(asNode(content.Visualisations?.ArrayOfEntityDef)?.EntityDef);
+        const variables = getList(asNode(content.Variables?.ArrayOfVariableDef)?.VariableDef);
+        const dashLayout = asNode(asNode(asNode(content.Dashboard?.EntityDef)?.Definition)?.Dashboard) || {};
+        const layoutItems = getList(asNode(dashLayout.Layout)?.LayoutItem);
 
         // 4. Executive Summary
         const slicerCount = visualizations.filter((v: any) => v.EntitySubType === 'SLICER').length;

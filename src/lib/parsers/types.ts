@@ -47,17 +47,31 @@ export interface EtlStep {
 }
 
 /**
+ * A single leaf or node value in the raw `fast-xml-parser` tree. Leaves are
+ * strings/numbers/booleans (text and attribute values); interior values are
+ * further {@link XmlNode}s or arrays of values.
+ */
+export type XmlValue = string | number | boolean | XmlNode | XmlValue[] | undefined;
+
+/**
  * Raw output of `fast-xml-parser`. Nodes are arbitrarily nested objects whose
  * leaves are strings (text/attribute values) or further nodes/arrays.
  *
- * The index signature intentionally resolves to `any`: it names the parser
- * boundary shape (replacing bare `any` parameters/returns) without forcing the
- * deferred generator/consumer code — which deep-reads dynamic XML paths like
- * `content.DataModel?.DataModelDef.Definition` — to narrow every access. Those
- * consumers are typed in a follow-up (see issue #19).
+ * The index signature is `XmlValue` (issue #28 tightened it from `any`).
+ * Deep consumers narrow each access via {@link asNode} before reading nested
+ * keys, and funnel leaf reads through `EtlParser.getTextSafe`/`getListSafe`.
  */
 export interface XmlNode {
-    [key: string]: any;
+    [key: string]: XmlValue;
+}
+
+/**
+ * Narrow an {@link XmlValue} to an object node — returns the node when `v` is a
+ * non-array object, otherwise `undefined`. Use to walk dynamic XML paths
+ * (`asNode(content.DataModel)?.DataModelDef`) without scattering `any`.
+ */
+export function asNode(v: XmlValue): XmlNode | undefined {
+    return v != null && typeof v === 'object' && !Array.isArray(v) ? (v as XmlNode) : undefined;
 }
 
 /** Parsed Data Model package (each key is the parsed contents of one XML file). */
