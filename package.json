@@ -35,7 +35,6 @@
     "husky": "^9.1.7",
     "jsdom": "^27.4.0",
     "lint-staged": "^16.2.7",
-    "nyc": "^17.1.0",
     "prettier": "^3.4.2",
     "semantic-release": "^25.0.2",
     "typescript": "~5.9.3",
