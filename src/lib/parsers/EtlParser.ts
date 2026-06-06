@@ -14,7 +14,7 @@ export class EtlParser {
     }
 
     static getTextSafe(val: XmlValue): string {
-        if (!val) return '';
+        if (val == null || val === '') return '';
         if (typeof val === 'string') return val;
         if (typeof val === 'number' || typeof val === 'boolean') return String(val);
         const node = asNode(val);
@@ -208,18 +208,27 @@ export class EtlParser {
         const stepsRaw = this.getListSafe(asNode(json)?.ArrayOfStep, 'Step') as RawStep[];
         const stepMap = new Map<number, RawStep>();
         const rootSteps: RawStep[] = [];
+        const toInt = (val: XmlValue): number => {
+            const n = parseInt(String(val), 10);
+            return isNaN(n) ? NaN : n;
+        };
         stepsRaw.forEach((step) => {
             step.children = [];
-            stepMap.set(parseInt(String(step.StepId)), step);
+            const stepId = toInt(step.StepId);
+            if (!isNaN(stepId)) stepMap.set(stepId, step);
         });
         stepsRaw.forEach((step) => {
-            const parentId = parseInt(String(step.ParentStepId)) || 0;
+            const parentId = toInt(step.ParentStepId) || 0;
             if (parentId !== 0 && stepMap.has(parentId)) stepMap.get(parentId)!.children!.push(step);
             else rootSteps.push(step);
         });
 
         const sortSteps = (list: RawStep[]) => {
-            list.sort((a, b) => (parseInt(String(a.Sequence)) || 999) - (parseInt(String(b.Sequence)) || 999));
+            const seq = (s: XmlValue) => {
+                const n = toInt(s);
+                return isNaN(n) ? 999 : n;
+            };
+            list.sort((a, b) => seq(a.Sequence) - seq(b.Sequence));
             list.forEach((item) => sortSteps(item.children || []));
         };
         sortSteps(rootSteps);

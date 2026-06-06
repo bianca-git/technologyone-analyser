@@ -17,7 +17,10 @@ export class DashboardGenerator {
 
         const getText = (val: XmlValue): string => {
             if (val == null) return '';
-            if (typeof val === 'object') return '';
+            if (typeof val === 'object') {
+                const node = asNode(val);
+                return node && typeof node['#text'] === 'string' ? node['#text'] : '';
+            }
             return String(val);
         };
 
@@ -37,7 +40,7 @@ export class DashboardGenerator {
         };
 
         const escapeHtml = (str: XmlValue): string => {
-            if (!str) return '';
+            if (str == null) return '';
             return String(str)
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')

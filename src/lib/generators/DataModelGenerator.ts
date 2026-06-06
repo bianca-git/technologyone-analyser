@@ -673,10 +673,17 @@ export class DataModelGenerator {
         return (Array.isArray(obj) ? obj : [obj]) as XmlNode[];
     }
 
-    /** Coerce a leaf XmlValue to a display string ('' for nullish/object/array). */
+    /**
+     * Coerce a leaf XmlValue to a display string. Extracts `#text` when the
+     * value is an attributed node (`{ '@_x': ..., '#text': ... }`); '' for
+     * other objects/arrays/nullish.
+     */
     private static getText(val: XmlValue): string {
         if (val == null) return '';
-        if (typeof val === 'object') return '';
+        if (typeof val === 'object') {
+            const node = asNode(val);
+            return node && typeof node['#text'] === 'string' ? node['#text'] : '';
+        }
         return String(val);
     }
 }

@@ -4,12 +4,26 @@ import { db } from './db';
 
 import { DataModelParser } from './parsers/DataModelParser';
 import { DashboardParser } from './parsers/DashboardParser';
-import { asNode, type XmlNode } from './parsers/types';
+import { asNode, type XmlNode, type XmlValue } from './parsers/types';
 
 const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: '@_',
 });
+
+/**
+ * Coerce a leaf XmlValue to a string. With `ignoreAttributes: false`, attributed
+ * nodes parse as `{ '@_x': ..., '#text': ... }`; extract `#text` so metadata
+ * isn't stored as "[object Object]". '' for other objects/arrays/nullish.
+ */
+function getText(val: XmlValue): string {
+    if (val == null) return '';
+    if (typeof val === 'object') {
+        const node = asNode(val);
+        return node && typeof node['#text'] === 'string' ? node['#text'] : '';
+    }
+    return String(val);
+}
 
 /**
  * Recursively parse any string field that looks like XML.
@@ -142,12 +156,12 @@ export class FileProcessor {
 
         // Extract ProcessMode deeply
         const rootDef = asNode(asNode(dmDef.Definition)?.DataModelDefinition) || dmDef;
-        const processMode = rootDef.ProcessMode || 'N/A';
+        const processMode = getText(rootDef.ProcessMode) || 'N/A';
 
         // Name Strategy:
         // 1. Description from XML (usually the cleanest name)
         // 2. Fallback to Filename, with GUID/Timestamp stripped
-        let cleanName = typeof dmDef.Description === 'string' ? dmDef.Description : '';
+        let cleanName = getText(dmDef.Description);
         if (!cleanName) {
             cleanName = file.name.replace(/\.t1dm$/i, '');
             // Remove GUID if present (e.g. _c2dfa917-7450-42b8-a5bb-f5802916cedc...)
@@ -159,11 +173,11 @@ export class FileProcessor {
 
         const metadata = {
             name: cleanName,
-            id: String(dmDef.DataModelId || 'N/A'),
-            description: String(dmDef.Description || 'Imported Data Model'),
-            version: String(dmDef.Version || '1.0'),
-            owner: String(dmDef.Owner || 'Unknown'),
-            processMode: String(processMode),
+            id: getText(dmDef.DataModelId) || 'N/A',
+            description: getText(dmDef.Description) || 'Imported Data Model',
+            version: getText(dmDef.Version) || '1.0',
+            owner: getText(dmDef.Owner) || 'Unknown',
+            processMode: processMode,
             dateModified: new Date().toISOString(),
         };
 
@@ -185,17 +199,14 @@ export class FileProcessor {
         const dashDef = asNode(asNode(content.Dashboard)?.EntityDef) || {};
 
         // Name: Use Description as the primary name
-        const name =
-            typeof dashDef.Description === 'string' && dashDef.Description
-                ? dashDef.Description
-                : file.name.replace(/\.t1db$/i, '');
+        const name = getText(dashDef.Description) || file.name.replace(/\.t1db$/i, '');
 
         const metadata = {
             name: name,
-            id: String(dashDef.GenericEntityId || 'N/A'),
-            description: String(dashDef.Description || ''),
-            owner: String(dashDef.Owner || 'Unknown'),
-            parentPath: String(dashDef.ParentFileItemPath || ''),
+            id: getText(dashDef.GenericEntityId) || 'N/A',
+            description: getText(dashDef.Description),
+            owner: getText(dashDef.Owner) || 'Unknown',
+            parentPath: getText(dashDef.ParentFileItemPath),
             dateModified: new Date().toISOString(),
         };
 
