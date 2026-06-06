@@ -47,6 +47,11 @@
       "prettier --write"
     ]
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "dexie": "^4.2.1",
