@@ -1,12 +1,27 @@
+import type mermaid from 'mermaid';
 
-import mermaid from 'mermaid';
+type MermaidApi = typeof mermaid;
 
 export class MermaidGenerator {
+    /** Lazily-loaded mermaid module (kept out of the main bundle chunk). */
+    private static mermaidPromise: Promise<MermaidApi> | null = null;
+
+    /**
+     * Dynamically imports mermaid on first use so the heavy diagram library
+     * is split into its own chunk and only fetched when a flow chart renders.
+     */
+    private static async load(): Promise<MermaidApi> {
+        if (!this.mermaidPromise) {
+            this.mermaidPromise = import('mermaid').then((m) => m.default);
+        }
+        return this.mermaidPromise;
+    }
 
     /**
      * initializes the mermaid library with the "Clean" theme.
      */
-    static initialize() {
+    static async initialize() {
+        const mermaid = await this.load();
         mermaid.initialize({
             startOnLoad: false,
             theme: 'base',
@@ -23,7 +38,7 @@ export class MermaidGenerator {
                 padding: 15,
                 nodeSpacing: 50,
                 rankSpacing: 50,
-            }
+            },
         });
     }
 
@@ -40,9 +55,11 @@ export class MermaidGenerator {
         graph += '    classDef process fill:#f3f4f6,stroke:#9ca3af,stroke-width:1px,color:#374151;\n'; // Gray
         graph += '    classDef decision fill:#fff7ed,stroke:#f97316,stroke-width:1px,color:#7c2d12,shape:diamond;\n'; // Orange
         graph += '    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;\n'; // Red
-        graph += '    classDef group fill:#ffe4e6,stroke:#f43f5e,stroke-width:2px,color:#881337,stroke-dasharray: 5 5;\n'; // Dusky Pink (Rose)
+        graph +=
+            '    classDef group fill:#ffe4e6,stroke:#f43f5e,stroke-width:2px,color:#881337,stroke-dasharray: 5 5;\n'; // Dusky Pink (Rose)
         graph += '    classDef endNode fill:#1e293b,stroke:#334155,stroke-width:2px,color:#fff,shape:circle;\n'; // Dark Slate Circle
-        graph += '    classDef bigSave fill:#dcfce7,stroke:#166534,stroke-width:3px,color:#166534,font-size:14px,font-weight:bold;\n'; // Green (for files)
+        graph +=
+            '    classDef bigSave fill:#dcfce7,stroke:#166534,stroke-width:3px,color:#166534,font-size:14px,font-weight:bold;\n'; // Green (for files)
 
         let steps: string[] = [];
         let links: string[] = [];
@@ -65,13 +82,13 @@ export class MermaidGenerator {
             let previousId = parentId;
             let currentLabel = incomingLabel;
 
-            items.forEach(item => {
+            items.forEach((item) => {
                 // --- Group Handling (Subgraph) ---
                 if (item.RawType === 'Group' || (isTech && item.RawType === 'Loop')) {
                     const groupId = getSafeId(item.Step);
                     // Use a subgraph for visual grouping
                     steps.push(`    subgraph ${groupId}_sg ["${item.RawType}: ${item.Step}"]`);
-                    graph += `    style ${groupId}_sg fill:#ffe4e6,stroke:#f43f5e,stroke-dasharray: 5 5\n`; // Inline style workaround or use classDef if possible for subgraphs? 
+                    graph += `    style ${groupId}_sg fill:#ffe4e6,stroke:#f43f5e,stroke-dasharray: 5 5\n`; // Inline style workaround or use classDef if possible for subgraphs?
                     // Note: Mermaid classes on subgraphs are tricky.
 
                     // Recurse: The first child links to 'previousId'.
@@ -107,7 +124,6 @@ export class MermaidGenerator {
                     return; // Done with Branch, don't render it as a node
                 }
 
-
                 const id = getSafeId(item.Step);
                 // Use FlowLabel if available, fallback to Context/Step
                 let label = escapeLabel(item.FlowLabel || item.Context || item.Step);
@@ -117,53 +133,60 @@ export class MermaidGenerator {
                     label = `🌪️ ${label}`;
                 }
 
-                let shape = '[', shapeEnd = ']';
+                let shape = '[',
+                    shapeEnd = ']';
                 let className = 'process';
 
                 // --- Shape & Logic Mapping ---
                 if (['RunDirectQuery', 'RunTableQuery', 'RunDatasourceQuery'].includes(item.RawType)) {
-                    shape = '[('; shapeEnd = ')]';
+                    shape = '[(';
+                    shapeEnd = ')]';
                     className = 'source';
                     // Clean label for better readability - add icon without trailing space
                     const cleanLabel = label.replace(/^(Source Table: |Source: |Datasource: )/, '');
                     label = '📥 ' + cleanLabel.trim();
-                }
-                else if (['ImportWarehouseData', 'ExportToExcel', 'SendEmail'].includes(item.RawType)) {
-                    shape = '(['; shapeEnd = '])';
+                } else if (['ImportWarehouseData', 'ExportToExcel', 'SendEmail'].includes(item.RawType)) {
+                    shape = '([';
+                    shapeEnd = '])';
                     className = 'target';
                     // Add icons for output actions - no trailing space
                     const cleanLabel = label.trim();
                     if (item.RawType === 'ImportWarehouseData') label = '📥' + cleanLabel;
                     if (item.RawType === 'ExportToExcel') label = '📊' + cleanLabel;
                     if (item.RawType === 'SendEmail') label = '✉️' + cleanLabel;
-                }
-                else if (['SaveText', 'SaveTextfile'].includes(item.RawType)) {
-                    shape = '[/'; shapeEnd = '/]'; // Parallelogram
+                } else if (['SaveText', 'SaveTextfile'].includes(item.RawType)) {
+                    shape = '[/';
+                    shapeEnd = '/]'; // Parallelogram
                     className = 'bigSave';
                     label = '📄 ' + label.trim(); // File icon
-                }
-                else if (['Decision'].includes(item.RawType)) {
-                    shape = '{'; shapeEnd = '}';
+                } else if (['Decision'].includes(item.RawType)) {
+                    shape = '{';
+                    shapeEnd = '}';
                     className = 'decision';
                     label = '❓' + label.trim();
-                }
-                else if (['AddColumn', 'UpdateColumn'].includes(item.RawType)) {
-                    shape = '[('; shapeEnd = ')]';
+                } else if (['AddColumn', 'UpdateColumn'].includes(item.RawType)) {
+                    shape = '[(';
+                    shapeEnd = ')]';
                     className = 'process';
                     if (!isTech) label = '⚙️' + label.trim(); // Simplified in business
-                }
-                else if (['CalculateVariable', 'SetVariable'].includes(item.RawType)) {
-                    shape = '[('; shapeEnd = ')]';
+                } else if (['CalculateVariable', 'SetVariable'].includes(item.RawType)) {
+                    shape = '[(';
+                    shapeEnd = ')]';
                     className = 'process';
                     if (!isTech) label = '🔢' + label.trim(); // Simplified in business
                 }
 
                 // Business Mode Simplification: Make calc steps smaller/simplified but still visible
-                if (!isTech && (item.RawType === 'AddColumn' || item.RawType === 'CalculateVariable') && !item.Description) {
+                if (
+                    !isTech &&
+                    (item.RawType === 'AddColumn' || item.RawType === 'CalculateVariable') &&
+                    !item.Description
+                ) {
                     // Don't skip - just simplify label
                     label = label.length > 30 ? label.substring(0, 30) + '...' : label;
                     // Use minimal node style
-                    shape = '[('; shapeEnd = ')]';
+                    shape = '[(';
+                    shapeEnd = ')]';
                     className = 'process';
                     // Skip rendering this node in business mode
                     return;
@@ -190,15 +213,15 @@ export class MermaidGenerator {
                     //     steps.push(`    end`);
                     // }
                     if (item.RawType === 'Decision') {
-                        // For Decision, children are Branches. 
-                        // We pass 'id' (the Decision Node) as the parent. 
+                        // For Decision, children are Branches.
+                        // We pass 'id' (the Decision Node) as the parent.
                         // The loop above will handle the 'Branch' types.
                         traverse(item.children, id);
                         // Decision flow continues? Usually Decision is a split.
-                        // The siblings after decision? 
-                        // Flow usually ends or converges. 
+                        // The siblings after decision?
+                        // Flow usually ends or converges.
                         // For now, assume Decision is a terminal split or logic handles merge manually.
-                        // We don't update previousId for Decision? 
+                        // We don't update previousId for Decision?
                         // Actually, if there are steps AFTER Decision in the array, they should probably link from where?
                         // In this ETL, Decision usually contains steps. Steps matching sequence.
                     } else {
@@ -226,8 +249,13 @@ export class MermaidGenerator {
     /**
      * Renders the flow chart to an SVG string using Mermaid.
      */
-    static async renderToSvg(flow: any[], mode: 'business' | 'technical', id: string = 'mermaid-chart'): Promise<string> {
-        this.initialize();
+    static async renderToSvg(
+        flow: any[],
+        mode: 'business' | 'technical',
+        id: string = 'mermaid-chart'
+    ): Promise<string> {
+        await this.initialize();
+        const mermaid = await this.load();
         const syntax = this.generateMermaidSyntax(flow, mode);
         try {
             const { svg } = await mermaid.render(id, syntax);

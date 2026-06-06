@@ -1,0 +1,9 @@
+dist
+node_modules
+public
+coverage
+pnpm-lock.yaml
+*.t1db
+*.t1dm
+*.t1etlp
+docs/wireframes
