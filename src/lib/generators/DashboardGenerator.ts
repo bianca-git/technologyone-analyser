@@ -124,7 +124,7 @@ export class DashboardGenerator {
         `;
 
         // --- Layout Diagram (Simple Grid Table) ---
-        const buildMermaidLayout = () => {
+        const buildLayoutGrid = () => {
             if (layoutItems.length === 0) {
                 return '';
             }
@@ -465,7 +465,7 @@ export class DashboardGenerator {
                 <!-- Layout Diagram -->
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout</h3>
-                    ${buildMermaidLayout()}
+                    ${buildLayoutGrid()}
                 </div>
 
                 ${dashboardParamsHtml}

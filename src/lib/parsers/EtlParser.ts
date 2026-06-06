@@ -593,7 +593,6 @@ export class EtlParser {
                     src = this.getTextSafe(storage.DataSource?.Description || 'Datasource');
                 if (stepType === 'RunDirectQuery') src = `Query: ${table}`;
                 fl = `${src} ➔ ${target}`;
-                fl = `${src} ➔ ${target}`;
             } else if (stepType === 'ImportWarehouseData') {
                 fl = `Save to Warehouse: ${target}`;
             } else if (stepType === 'PurgeTable') {
