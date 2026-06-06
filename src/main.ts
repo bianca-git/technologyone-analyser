@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css';
 import { db } from './lib/db';
 import { FileProcessor } from './lib/FileProcessor';
 import { EtlParser } from './lib/parsers/EtlParser';
@@ -11,18 +11,18 @@ import { OfflineVerifier } from './lib/ux/OfflineVerifier';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
 const registerServiceWorker = async () => {
-  if ('serviceWorker' in navigator) {
-    try {
-      // Use sw.js for production, sw.ts for development
-      const swUrl = import.meta.env.PROD ? '/sw.js' : '/sw.ts';
-      await navigator.serviceWorker.register(swUrl, {
-        scope: '/',
-      });
-      console.log('SW registration successful');
-    } catch (error) {
-      console.error('SW: Registration failed:', error);
+    if ('serviceWorker' in navigator) {
+        try {
+            // Use sw.js for production, sw.ts for development
+            const swUrl = import.meta.env.PROD ? '/sw.js' : '/sw.ts';
+            await navigator.serviceWorker.register(swUrl, {
+                scope: '/',
+            });
+            console.log('SW registration successful');
+        } catch (error) {
+            console.error('SW: Registration failed:', error);
+        }
     }
-  }
 };
 
 registerServiceWorker();
@@ -35,7 +35,7 @@ let currentMode: 'business' | 'technical' = 'business';
 
 // --- HTML Template Helpers ---
 function header() {
-  return `
+    return `
     <header class="bg-slate-800 text-white p-4 shadow-md z-10 transition-transform duration-300">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="window.navigateTo('dashboard')">
@@ -68,44 +68,47 @@ function header() {
 }
 
 function formatDate(date: Date) {
-  const d = new Date(date);
-  const day = d.getDate();
-  const month = d.toLocaleString('en-US', { month: 'short' });
-  const year = d.getFullYear();
-  const currentYear = new Date().getFullYear();
-  return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
+    const d = new Date(date);
+    const day = d.getDate();
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    const year = d.getFullYear();
+    const currentYear = new Date().getFullYear();
+    return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
 }
 
 function dashboardLayout(items: any[]) {
+    const list = items
+        .map((r) => {
+            let summaryText = r.metadata.description;
+            if (r.type === 'report') {
+                try {
+                    const flowData = EtlParser.parseSteps(r.rawSteps, 'business');
+                    summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
+                } catch (e) {
+                    console.error('Failed dashboard summary', e);
+                }
+            } else if (r.type === 'dashboard') {
+                try {
+                    const visualizations = r.content.Visualisations?.ArrayOfEntityDef?.EntityDef || [];
+                    const vizList = Array.isArray(visualizations) ? visualizations : [visualizations];
+                    const slicers = vizList.filter((v: any) => v.EntitySubType === 'SLICER').length;
+                    const tables = vizList.filter((v: any) => v.EntitySubType === 'TABLE').length;
+                    const charts = vizList.filter((v: any) => v.EntitySubType === 'CHART').length;
+                    summaryText = `${vizList.length} widgets: ${slicers} slicers, ${tables} tables, ${charts} charts`;
+                } catch (e) {
+                    console.error('Failed to compute widget summary', e);
+                }
+            }
 
-  const list = items.map(r => {
-    let summaryText = r.metadata.description;
-    if (r.type === 'report') {
-      try {
-        const flowData = EtlParser.parseSteps(r.rawSteps, 'business');
-        summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
-      } catch (e) {
-        console.error('Failed dashboard summary', e);
-      }
-    } else if (r.type === 'dashboard') {
-      try {
-        const visualizations = r.content.Visualisations?.ArrayOfEntityDef?.EntityDef || [];
-        const vizList = Array.isArray(visualizations) ? visualizations : [visualizations];
-        const slicers = vizList.filter((v: any) => v.EntitySubType === 'SLICER').length;
-        const tables = vizList.filter((v: any) => v.EntitySubType === 'TABLE').length;
-        const charts = vizList.filter((v: any) => v.EntitySubType === 'CHART').length;
-        summaryText = `${vizList.length} widgets: ${slicers} slicers, ${tables} tables, ${charts} charts`;
-      } catch (e) {
-        console.error('Failed to compute widget summary', e);
-      }
-    }
+            const badgeBg =
+                r.type === 'report'
+                    ? 'bg-blue-50 text-blue-700 border-blue-200'
+                    : r.type === 'datamodel'
+                      ? 'bg-purple-50 text-purple-700 border-purple-200'
+                      : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            const badgeText = r.type === 'report' ? 'ETL' : r.type === 'datamodel' ? 'Data Model' : 'DASHBOARD';
 
-    const badgeBg = r.type === 'report' ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                  : r.type === 'datamodel' ? 'bg-purple-50 text-purple-700 border-purple-200'
-                  : 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    const badgeText = r.type === 'report' ? 'ETL' : r.type === 'datamodel' ? 'Data Model' : 'DASHBOARD';
-
-    return `
+            return `
         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition flex justify-between items-center group relative">
             <div class="cursor-pointer grow" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
                 <div class="flex items-center space-x-2 mb-1">
@@ -128,9 +131,11 @@ function dashboardLayout(items: any[]) {
                 </button>
             </div>
         </div>
-    `}).join('');
+    `;
+        })
+        .join('');
 
-  return `
+    return `
     <main class="grow p-6 bg-gray-100 w-full">
         <div class="max-w-4xl mx-auto space-y-6">
             <!-- Upload -->
@@ -158,21 +163,21 @@ function dashboardLayout(items: any[]) {
 }
 
 async function render() {
-  let content = header();
+    let content = header();
 
-  if (currentView === 'dashboard') {
-    const reports = await db.reports.toArray();
-    const dms = await db.dataModels.toArray();
-    const dashboards = await db.dashboards.toArray();
-    const allItems = [
-      ...reports.map(r => ({ ...r, type: 'report' })),
-      ...dms.map(d => ({ ...d, type: 'datamodel' })),
-      ...dashboards.map(d => ({ ...d, type: 'dashboard' }))
-    ];
-    allItems.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
-    content += dashboardLayout(allItems);
-  } else if (currentView === 'detail' && currentReportId) {
-    content += `
+    if (currentView === 'dashboard') {
+        const reports = await db.reports.toArray();
+        const dms = await db.dataModels.toArray();
+        const dashboards = await db.dashboards.toArray();
+        const allItems = [
+            ...reports.map((r) => ({ ...r, type: 'report' })),
+            ...dms.map((d) => ({ ...d, type: 'datamodel' })),
+            ...dashboards.map((d) => ({ ...d, type: 'dashboard' })),
+        ];
+        allItems.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
+        content += dashboardLayout(allItems);
+    } else if (currentView === 'detail' && currentReportId) {
+        content += `
         <main class="grow p-6 bg-gray-100 w-full animate-fade-in">
              <div class="w-full">
                  <div class="sticky top-0 z-30 glass-toolbar flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 mb-2">
@@ -201,264 +206,268 @@ async function render() {
              </div>
         </main>
         `;
-  }
+    }
 
-  app.className = "flex flex-col min-h-screen text-left";
-  app.innerHTML = content;
+    app.className = 'flex flex-col min-h-screen text-left';
+    app.innerHTML = content;
 
-  if (currentView === 'detail' && currentReportId) {
-    try {
-      let html = '';
-      if (currentType === 'report') {
-        html = await EtlGenerator.generateHtmlView(currentReportId, currentMode);
-      } else if (currentType === 'datamodel') {
-        html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
-      } else if (currentType === 'dashboard') {
-        html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
-      }
-      const container = document.getElementById('detailContainer');
-      if (container) {
-        container.innerHTML = html;
-        // Initialize Mermaid if charts are present
-        if (container.querySelector('.mermaid')) {
-          try {
-            const { MermaidGenerator } = await import('./lib/generators/MermaidGenerator');
-            MermaidGenerator.initialize();
-            const { default: mermaid } = await import('mermaid');
-            await mermaid.run({
-              querySelector: '.mermaid'
-            });
-          } catch (err) {
-            console.error('Failed to render flow chart:', err);
-          }
-        }
-      }
-    } catch (e: any) {
-      const container = document.getElementById('detailContainer');
-      if (container) container.innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded border border-red-200">
+    if (currentView === 'detail' && currentReportId) {
+        try {
+            let html = '';
+            if (currentType === 'report') {
+                html = await EtlGenerator.generateHtmlView(currentReportId, currentMode);
+            } else if (currentType === 'datamodel') {
+                html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
+            } else if (currentType === 'dashboard') {
+                html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
+            }
+            const container = document.getElementById('detailContainer');
+            if (container) {
+                container.innerHTML = html;
+                // Initialize Mermaid if charts are present
+                if (container.querySelector('.mermaid')) {
+                    try {
+                        const { MermaidGenerator } = await import('./lib/generators/MermaidGenerator');
+                        await MermaidGenerator.initialize();
+                        const { default: mermaid } = await import('mermaid');
+                        await mermaid.run({
+                            querySelector: '.mermaid',
+                        });
+                    } catch (err) {
+                        console.error('Failed to render flow chart:', err);
+                    }
+                }
+            }
+        } catch (e: any) {
+            const container = document.getElementById('detailContainer');
+            if (container)
+                container.innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded border border-red-200">
                 <h3 class="font-bold">Error Loading Item</h3>
                 <pre class="mt-2 text-xs overflow-auto">${e.message}\n${e.stack}</pre>
              </div>`;
-      console.error(e);
+            console.error(e);
+        }
     }
-  }
 
-  if (currentView === 'dashboard') {
-    setupDragAndDrop();
-  }
+    if (currentView === 'dashboard') {
+        setupDragAndDrop();
+    }
 }
 
 function setupDragAndDrop() {
-  const dropZone = document.getElementById('dropZone');
-  if (!dropZone) return;
+    const dropZone = document.getElementById('dropZone');
+    if (!dropZone) return;
 
-  dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropZone.classList.add('border-blue-500', 'bg-blue-50');
-  });
-
-  dropZone.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-  });
-
-  dropZone.addEventListener('drop', async (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-    const files = Array.from(e.dataTransfer?.files || []);
-    if (files.length === 0) return;
-    dropZone.innerHTML = `<div class="text-blue-600 font-bold animate-pulse">Processing ${files.length} file(s)...</div>`;
-    for (const file of files) {
-      try {
-        await FileProcessor.processAndSave(file);
-      } catch (err) {
-        console.error(err);
-        alert(`Failed to process ${file.name}`);
-      }
-    }
-    render();
-  });
-
-  dropZone.addEventListener('click', () => {
-    const input = document.getElementById('fileInput') as HTMLInputElement;
-    if (input) input.click();
-  });
-
-  const input = document.getElementById('fileInput') as HTMLInputElement;
-  if (input) {
-    input.addEventListener('change', async (e: any) => {
-      const files = Array.from(e.target.files || []) as File[];
-      if (files.length === 0) return;
-      dropZone.innerHTML = `<div class="text-blue-600 font-bold animate-pulse">Processing ${files.length} file(s)...</div>`;
-      for (const file of files) {
-        try {
-          await FileProcessor.processAndSave(file);
-        } catch (err) {
-          console.error(err);
-          alert(`Failed to process ${file.name}`);
-        }
-      }
-      render();
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-blue-50');
     });
-  }
+
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+    });
+
+    dropZone.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+        const files = Array.from(e.dataTransfer?.files || []);
+        if (files.length === 0) return;
+        dropZone.innerHTML = `<div class="text-blue-600 font-bold animate-pulse">Processing ${files.length} file(s)...</div>`;
+        for (const file of files) {
+            try {
+                await FileProcessor.processAndSave(file);
+            } catch (err) {
+                console.error(err);
+                alert(`Failed to process ${file.name}`);
+            }
+        }
+        render();
+    });
+
+    dropZone.addEventListener('click', () => {
+        const input = document.getElementById('fileInput') as HTMLInputElement;
+        if (input) input.click();
+    });
+
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    if (input) {
+        input.addEventListener('change', async (e: any) => {
+            const files = Array.from(e.target.files || []) as File[];
+            if (files.length === 0) return;
+            dropZone.innerHTML = `<div class="text-blue-600 font-bold animate-pulse">Processing ${files.length} file(s)...</div>`;
+            for (const file of files) {
+                try {
+                    await FileProcessor.processAndSave(file);
+                } catch (err) {
+                    console.error(err);
+                    alert(`Failed to process ${file.name}`);
+                }
+            }
+            render();
+        });
+    }
 }
 
 // --- Global Actions ---
 declare global {
-  interface Window {
-    navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel' | 'dashboard') => void;
-    setMode: (mode: 'business' | 'technical') => void;
-    exportDocx: () => void;
-    deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard') => void;
-    editStepNote: (reportId: string, stepId: string) => void;
-    saveStepNote: (reportId: string, stepId: string) => void;
-    cancelNote: (stepId: string) => void;
-    exportJson: () => void;
-    verifyOffline: () => void;
-    openFeedback: () => void;
-  }
+    interface Window {
+        navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel' | 'dashboard') => void;
+        setMode: (mode: 'business' | 'technical') => void;
+        exportDocx: () => void;
+        deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard') => void;
+        editStepNote: (reportId: string, stepId: string) => void;
+        saveStepNote: (reportId: string, stepId: string) => void;
+        cancelNote: (stepId: string) => void;
+        exportJson: () => void;
+        verifyOffline: () => void;
+        openFeedback: () => void;
+    }
 }
 
 window.navigateTo = (view, id, type) => {
-  currentView = view;
-  if (id) currentReportId = id;
-  if (type) currentType = type;
-  render();
+    currentView = view;
+    if (id) currentReportId = id;
+    if (type) currentType = type;
+    render();
 };
 
 window.setMode = (mode) => {
-  currentMode = mode;
-  render();
+    currentMode = mode;
+    render();
 };
 
 window.exportDocx = async () => {
-  if (currentReportId) {
-    try {
-      if (currentType === 'report') {
-        await DocxGenerator.downloadDocx(currentReportId, currentMode);
-      } else if (currentType === 'datamodel') {
-        await DocxGenerator.downloadDataModelDocx(currentReportId, currentMode);
-      } else if (currentType === 'dashboard') {
-        await DocxGenerator.downloadDashboardDocx(currentReportId, currentMode);
-      }
-    } catch (e) {
-      console.error(e);
-      alert('Export failed');
+    if (currentReportId) {
+        try {
+            if (currentType === 'report') {
+                await DocxGenerator.downloadDocx(currentReportId, currentMode);
+            } else if (currentType === 'datamodel') {
+                await DocxGenerator.downloadDataModelDocx(currentReportId, currentMode);
+            } else if (currentType === 'dashboard') {
+                await DocxGenerator.downloadDashboardDocx(currentReportId, currentMode);
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Export failed');
+        }
     }
-  }
 };
 
 window.exportJson = async () => {
-  try {
-    const reports = await db.reports.toArray();
-    const dataModels = await db.dataModels.toArray();
-    const dashboards = await db.dashboards.toArray();
-    const exportData = {
-      generated: new Date().toISOString(),
-      version: '1.0',
-      appVersion: '3.1',
-      library: { reports, dataModels, dashboards }
-    };
-    const filename = `library-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  } catch (e) {
-    console.error(e);
-    alert('Library backup failed');
-  }
+    try {
+        const reports = await db.reports.toArray();
+        const dataModels = await db.dataModels.toArray();
+        const dashboards = await db.dashboards.toArray();
+        const exportData = {
+            generated: new Date().toISOString(),
+            version: '1.0',
+            appVersion: '3.1',
+            library: { reports, dataModels, dashboards },
+        };
+        const filename = `library-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (e) {
+        console.error(e);
+        alert('Library backup failed');
+    }
 };
 
 window.verifyOffline = () => {
-  new OfflineVerifier();
+    new OfflineVerifier();
 };
 
 window.deleteEntity = async (id: number, type: 'report' | 'datamodel' | 'dashboard') => {
-  const typeLabel = type === 'report' ? 'Report' : type === 'datamodel' ? 'Data Model' : 'Dashboard';
-  if (confirm(`Are you sure you want to delete this ${typeLabel}?`)) {
-    if (type === 'report') await db.reports.delete(id);
-    else if (type === 'datamodel') await db.dataModels.delete(id);
-    else if (type === 'dashboard') await db.dashboards.delete(id);
-    render();
-  }
+    const typeLabel = type === 'report' ? 'Report' : type === 'datamodel' ? 'Data Model' : 'Dashboard';
+    if (confirm(`Are you sure you want to delete this ${typeLabel}?`)) {
+        if (type === 'report') await db.reports.delete(id);
+        else if (type === 'datamodel') await db.dataModels.delete(id);
+        else if (type === 'dashboard') await db.dashboards.delete(id);
+        render();
+    }
 };
 
 window.editStepNote = (_reportId: string, stepId: string) => {
-  const editor = document.getElementById(`note-editor-${stepId}`);
-  if (editor) {
-    editor.classList.remove('hidden');
-    const textarea = editor.querySelector('textarea');
-    if (textarea) textarea.focus();
-  }
+    const editor = document.getElementById(`note-editor-${stepId}`);
+    if (editor) {
+        editor.classList.remove('hidden');
+        const textarea = editor.querySelector('textarea');
+        if (textarea) textarea.focus();
+    }
 };
 
 window.cancelNote = (stepId: string) => {
-  const editor = document.getElementById(`note-editor-${stepId}`);
-  if (editor) editor.classList.add('hidden');
+    const editor = document.getElementById(`note-editor-${stepId}`);
+    if (editor) editor.classList.add('hidden');
 };
 
 window.saveStepNote = async (reportId: string, stepId: string) => {
-  const rid = parseInt(reportId);
-  const editor = document.getElementById(`note-editor-${stepId}`);
-  const textarea = editor?.querySelector('textarea');
-  if (!textarea) return;
-  const text = textarea.value.trim();
-  if (currentType === 'report') {
-    const report = await db.reports.get(rid);
-    if (report) {
-      const stepNotes = report.stepNotes || {};
-      if (text) stepNotes[stepId] = text; else delete stepNotes[stepId];
-      await db.reports.update(rid, { stepNotes });
-      render();
+    const rid = parseInt(reportId);
+    const editor = document.getElementById(`note-editor-${stepId}`);
+    const textarea = editor?.querySelector('textarea');
+    if (!textarea) return;
+    const text = textarea.value.trim();
+    if (currentType === 'report') {
+        const report = await db.reports.get(rid);
+        if (report) {
+            const stepNotes = report.stepNotes || {};
+            if (text) stepNotes[stepId] = text;
+            else delete stepNotes[stepId];
+            await db.reports.update(rid, { stepNotes });
+            render();
+        }
+    } else {
+        const dm = await db.dataModels.get(rid);
+        if (dm) {
+            const stepNotes = dm.stepNotes || {};
+            if (text) stepNotes[stepId] = text;
+            else delete stepNotes[stepId];
+            await db.dataModels.update(rid, { stepNotes });
+            render();
+        }
     }
-  } else {
-    const dm = await db.dataModels.get(rid);
-    if (dm) {
-      const stepNotes = dm.stepNotes || {};
-      if (text) stepNotes[stepId] = text; else delete stepNotes[stepId];
-      await db.dataModels.update(rid, { stepNotes });
-      render();
-    }
-  }
 };
 
 // --- Feedback Integration ---
-const FORM_ID = "1FAIpQLSd6QUXK9Rk2zBi_HFSA-freeSqQMRbKPxkaNndL_QczQ1nbUQ";
-const ENTRY_BROWSER = "entry.924115014";
-const ENTRY_OS = "entry.495502239";
+const FORM_ID = '1FAIpQLSd6QUXK9Rk2zBi_HFSA-freeSqQMRbKPxkaNndL_QczQ1nbUQ';
+const ENTRY_BROWSER = 'entry.924115014';
+const ENTRY_OS = 'entry.495502239';
 
 function getOS(): string {
-  const n = window.navigator;
-  const ua = n.userAgent;
-  // @ts-ignore
-  const platform = n.userAgentData?.platform || n.platform || 'Unknown';
-  if (platform.toLowerCase().startsWith('win')) return 'Windows';
-  if (platform.toLowerCase().startsWith('mac')) return 'MacOS';
-  if (ua.includes('Android')) return 'Android';
-  if (ua.includes('Linux')) return 'Linux';
-  if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
-  return platform;
+    const n = window.navigator;
+    const ua = n.userAgent;
+    // @ts-ignore
+    const platform = n.userAgentData?.platform || n.platform || 'Unknown';
+    if (platform.toLowerCase().startsWith('win')) return 'Windows';
+    if (platform.toLowerCase().startsWith('mac')) return 'MacOS';
+    if (ua.includes('Android')) return 'Android';
+    if (ua.includes('Linux')) return 'Linux';
+    if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
+    return platform;
 }
 
 window.openFeedback = () => {
-  const browserInfo = `${navigator.userAgent} (v3.1 Local)`;
-  const osInfo = getOS();
-  const params = new URLSearchParams();
-  params.append(ENTRY_BROWSER, browserInfo);
-  params.append(ENTRY_OS, osInfo);
-  params.append("embedded", "true");
-  const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?${params.toString()}`;
+    const browserInfo = `${navigator.userAgent} (v3.1 Local)`;
+    const osInfo = getOS();
+    const params = new URLSearchParams();
+    params.append(ENTRY_BROWSER, browserInfo);
+    params.append(ENTRY_OS, osInfo);
+    params.append('embedded', 'true');
+    const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?${params.toString()}`;
 
-  const modal = document.createElement('div');
-  modal.id = 'feedback-modal';
-  modal.className = "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in";
-  modal.innerHTML = `
+    const modal = document.createElement('div');
+    modal.id = 'feedback-modal';
+    modal.className =
+        'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
+    modal.innerHTML = `
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col overflow-hidden relative animate-scale-in">
         <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center shrink-0">
             <h3 class="font-bold text-lg flex items-center">
@@ -484,36 +493,49 @@ window.openFeedback = () => {
         </div>
     </div>
   `;
-  document.body.appendChild(modal);
-  modal.querySelector('#close-feedback')?.addEventListener('click', () => document.body.removeChild(modal));
-  modal.addEventListener('click', (e) => { if (e.target === modal) document.body.removeChild(modal); });
+    document.body.appendChild(modal);
+    modal.querySelector('#close-feedback')?.addEventListener('click', () => document.body.removeChild(modal));
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) document.body.removeChild(modal);
+    });
 };
 
 // --- Tour Logic ---
 function checkAndShowTour() {
-  if (localStorage.getItem('t1analyser_tour_seen')) return;
+    if (localStorage.getItem('t1analyser_tour_seen')) return;
 
-  const controls = document.getElementById('header-controls');
-  if (!controls) return;
+    const controls = document.getElementById('header-controls');
+    if (!controls) return;
 
-  // Create Overlay
-  const overlay = document.createElement('div');
-  overlay.className = "fixed inset-0 bg-black/30 z-40 animate-fade-in"; // Reduced opacity, no blur
-  overlay.id = "tour-overlay";
+    // Create Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/30 z-40 animate-fade-in'; // Reduced opacity, no blur
+    overlay.id = 'tour-overlay';
 
-  // Highlight Controls
-  controls.classList.add('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2', 'ring-4', 'ring-blue-500/30');
+    // Highlight Controls
+    controls.classList.add(
+        'z-50',
+        'relative',
+        'bg-slate-800',
+        'px-3',
+        'py-2',
+        'rounded-full',
+        '-mr-2',
+        'ring-4',
+        'ring-blue-500/30'
+    );
 
-  // Create Popup
-  const popup = document.createElement('div');
-  popup.className = "fixed max-w-sm bg-white p-6 rounded-xl shadow-2xl z-50 animate-scale-in text-slate-800 border border-blue-500/20";
+    // Create Popup
+    const popup = document.createElement('div');
+    popup.className =
+        'fixed max-w-sm bg-white p-6 rounded-xl shadow-2xl z-50 animate-scale-in text-slate-800 border border-blue-500/20';
 
-  // Calculate Position
-  const rect = controls.getBoundingClientRect();
-  popup.style.top = `${rect.bottom + 16}px`;
-  popup.style.right = `${window.innerWidth - rect.right}px`;
+    // Calculate Position
+    const rect = controls.getBoundingClientRect();
+    popup.style.top = `${rect.bottom + 16}px`;
+    popup.style.right = `${window.innerWidth - rect.right}px`;
 
-  popup.innerHTML = `
+    popup.innerHTML = `
         <div class="absolute -top-2 right-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-blue-500/20"></div>
         <div class="flex items-center mb-3">
              <span class="text-2xl mr-3">👋</span>
@@ -535,26 +557,36 @@ function checkAndShowTour() {
         </div>
     `;
 
-  document.body.appendChild(overlay);
-  document.body.appendChild(popup);
+    document.body.appendChild(overlay);
+    document.body.appendChild(popup);
 
-  // Close Handler
-  const close = () => {
-    localStorage.setItem('t1analyser_tour_seen', 'true');
-    overlay.classList.add('opacity-0');
-    popup.classList.add('opacity-0', 'translate-y-4');
-    setTimeout(() => {
-      if (document.body.contains(overlay)) document.body.removeChild(overlay);
-      if (document.body.contains(popup)) document.body.removeChild(popup);
-      controls.classList.remove('z-50', 'relative', 'bg-slate-800', 'px-3', 'py-2', 'rounded-full', '-mr-2', 'ring-4', 'ring-blue-500/30');
-    }, 300);
-  };
+    // Close Handler
+    const close = () => {
+        localStorage.setItem('t1analyser_tour_seen', 'true');
+        overlay.classList.add('opacity-0');
+        popup.classList.add('opacity-0', 'translate-y-4');
+        setTimeout(() => {
+            if (document.body.contains(overlay)) document.body.removeChild(overlay);
+            if (document.body.contains(popup)) document.body.removeChild(popup);
+            controls.classList.remove(
+                'z-50',
+                'relative',
+                'bg-slate-800',
+                'px-3',
+                'py-2',
+                'rounded-full',
+                '-mr-2',
+                'ring-4',
+                'ring-blue-500/30'
+            );
+        }, 300);
+    };
 
-  document.getElementById('close-tour')?.addEventListener('click', close);
-  overlay.addEventListener('click', close);
+    document.getElementById('close-tour')?.addEventListener('click', close);
+    overlay.addEventListener('click', close);
 }
 
 // Start App
 render().then(() => {
-  setTimeout(checkAndShowTour, 1000);
+    setTimeout(checkAndShowTour, 1000);
 });

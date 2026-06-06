@@ -45,3 +45,40 @@ export interface EtlStep {
     // forcing churn across the large parser builder object.
     [key: string]: any;
 }
+
+/**
+ * Raw output of `fast-xml-parser`. Nodes are arbitrarily nested objects whose
+ * leaves are strings (text/attribute values) or further nodes/arrays.
+ *
+ * The index signature intentionally resolves to `any`: it names the parser
+ * boundary shape (replacing bare `any` parameters/returns) without forcing the
+ * deferred generator/consumer code — which deep-reads dynamic XML paths like
+ * `content.DataModel?.DataModelDef.Definition` — to narrow every access. Those
+ * consumers are typed in a follow-up (see issue #19).
+ */
+export interface XmlNode {
+    [key: string]: any;
+}
+
+/** Parsed Data Model package (each key is the parsed contents of one XML file). */
+export interface DataModelParsed {
+    DataModel?: XmlNode;
+    Queries?: XmlNode;
+    QueryColumns?: XmlNode;
+    QueryJoins?: XmlNode;
+    QueryDatasources?: XmlNode;
+    Variables?: XmlNode;
+    Resources?: XmlNode;
+    [key: string]: XmlNode | undefined;
+}
+
+/** Parsed Dashboard package (each key is the parsed contents of one XML file). */
+export interface DashboardParsed {
+    Dashboard?: XmlNode;
+    Visualisations?: XmlNode;
+    Links?: XmlNode;
+    Variables?: XmlNode;
+    Resources?: XmlNode;
+    Theme?: XmlNode;
+    [key: string]: XmlNode | undefined;
+}

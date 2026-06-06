@@ -1,42 +1,45 @@
 import JSZip from 'jszip';
 import { XMLParser } from 'fast-xml-parser';
+import type { DashboardParsed, XmlNode } from './types';
 
 const parser = new XMLParser({
     ignoreAttributes: false,
-    attributeNamePrefix: "@_"
+    attributeNamePrefix: '@_',
 });
 
 /**
  * Recursively parse any string field that looks like XML.
  * This ensures ALL nested XML content is fully extracted.
  */
-function deepParseAllXml(obj: any): void {
+function deepParseAllXml(obj: XmlNode): void {
     if (!obj || typeof obj !== 'object') return;
 
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
         const val = obj[key];
-        if (typeof val === 'string' && val.trim().startsWith('<?xml') || 
-            (typeof val === 'string' && val.trim().startsWith('<') && val.trim().endsWith('>'))) {
+        if (
+            (typeof val === 'string' && val.trim().startsWith('<?xml')) ||
+            (typeof val === 'string' && val.trim().startsWith('<') && val.trim().endsWith('>'))
+        ) {
             try {
-                const parsed = parser.parse(val);
+                const parsed = parser.parse(val as string) as XmlNode;
                 obj[key] = parsed;
                 // Recursively parse the newly parsed object
-                deepParseAllXml(obj[key]);
+                deepParseAllXml(parsed);
             } catch (_e) {
                 // Not valid XML, leave as string
             }
         } else if (Array.isArray(val)) {
-            val.forEach(item => deepParseAllXml(item));
-        } else if (typeof val === 'object') {
-            deepParseAllXml(val);
+            val.forEach((item) => deepParseAllXml(item as XmlNode));
+        } else if (val && typeof val === 'object') {
+            deepParseAllXml(val as XmlNode);
         }
     });
 }
 
 export class DashboardParser {
-    static async parse(file: File): Promise<any> {
+    static async parse(file: File): Promise<DashboardParsed> {
         const zip = await JSZip.loadAsync(file);
-        const result: any = {};
+        const result: DashboardParsed = {};
 
         // Parse ALL XML files in the Dashboard package
         const fileNames = [
@@ -45,7 +48,7 @@ export class DashboardParser {
             'Links.xml',
             'Variables.xml',
             'Resources.xml',
-            'Theme.xml'
+            'Theme.xml',
         ];
 
         for (const fileName of fileNames) {
@@ -53,7 +56,7 @@ export class DashboardParser {
             if (f) {
                 const content = await f.async('string');
                 try {
-                    const parsed = parser.parse(content);
+                    const parsed = parser.parse(content) as XmlNode;
                     // Deep parse ALL nested XML strings recursively
                     deepParseAllXml(parsed);
                     result[fileName.replace('.xml', '')] = parsed;
