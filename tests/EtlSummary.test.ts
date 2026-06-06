@@ -6,9 +6,10 @@ import {
 } from '../src/lib/generators/EtlSummary';
 import type { EtlSummaryFormatter } from '../src/lib/generators/EtlSummary';
 
-// HTML formatter mirrors the one in EtlGenerator (kept local to the test so we
-// can assert the two callers extract the SAME source/target set regardless of
-// how each one formats the names).
+// A simplified test-only formatter with distinct, easily-strippable tags
+// (NOT identical to EtlGenerator's real HTML output). Its only job is to prove
+// that extraction yields the SAME source/target set regardless of formatting —
+// the strip() helper in the parity test removes these tags before comparing.
 const htmlFormatter: EtlSummaryFormatter = {
     table: (n) => `<table>${n}</table>`,
     file: (n) => `<file>${n}</file>`,
