@@ -97,10 +97,12 @@ export function extractSourcesAndTargets(
                 }
             }
         } else if (s.RawType === 'LoadTextFile') {
-            const file = s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
+            const file = s.Details.find((d: string) => d.startsWith('File:'))
+                ?.split(': ')[1]
+                ?.trim();
             if (file && !sourceNames.has(file)) {
                 sourceNames.add(file);
-                sources.push(fmt.file(file.trim()));
+                sources.push(fmt.file(file));
             }
         }
 
@@ -118,11 +120,11 @@ export function extractSourcesAndTargets(
 
         // Targets
         if (s.RawType === 'ImportWarehouseData') {
-            const warehouse = s.Output?.name || 'Warehouse';
+            const warehouse = (s.Output?.name || 'Warehouse').trim();
             const targetKey = `WAREHOUSE_${warehouse}`;
             if (!targetNames.has(targetKey)) {
                 targetNames.add(targetKey);
-                targets.push(fmt.target(warehouse.trim()));
+                targets.push(fmt.target(warehouse));
             }
         } else if (s.RawType === 'ExportToExcel') {
             const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
@@ -148,7 +150,7 @@ export function extractSourcesAndTargets(
             }
         } else if (s.Outputs && Array.isArray(s.Outputs)) {
             s.Outputs.forEach((output: string) => {
-                if (output && output !== 'dataset' && output !== 'target') {
+                if (output && output !== 'dataset' && output !== 'target' && output !== 'DATA') {
                     const targetKey = normalizeTableName(output);
                     if (targetKey && !targetNames.has(targetKey)) {
                         targetNames.add(targetKey);

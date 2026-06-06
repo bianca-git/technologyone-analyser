@@ -54,6 +54,25 @@ describe('EtlSummary', () => {
         expect(html.targets.map(strip)).toEqual(plain.targets.map(strip));
     });
 
+    it('excludes the synthetic DATA output from targets', () => {
+        const flow = [{ RawType: 'LoadTextFile', Details: ['File: in.csv'], Outputs: ['DATA', 'REAL_TARGET'] }];
+        const { targets } = extractSourcesAndTargets(flow, plainSummaryFormatter);
+        expect(targets).not.toContain('DATA');
+        expect(targets).toContain('REAL_TARGET');
+    });
+
+    it('de-duplicates sources/targets despite surrounding whitespace', () => {
+        const flow = [
+            { RawType: 'LoadTextFile', Details: ['File:  data.csv '] },
+            { RawType: 'LoadTextFile', Details: ['File: data.csv'] },
+            { RawType: 'ImportWarehouseData', Output: { name: ' WH ' } },
+            { RawType: 'ImportWarehouseData', Output: { name: 'WH' } },
+        ];
+        const { sources, targets } = extractSourcesAndTargets(flow, plainSummaryFormatter);
+        expect(sources).toEqual(['data.csv']);
+        expect(targets).toEqual(['the WH']);
+    });
+
     it('builds a narrative sentence with joins and conditions', () => {
         const flow = [
             { RawType: 'RunDirectQuery', Details: ['Source Table: SRC'] },
