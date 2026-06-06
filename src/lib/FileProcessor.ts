@@ -4,35 +4,38 @@ import { db } from './db';
 
 import { DataModelParser } from './parsers/DataModelParser';
 import { DashboardParser } from './parsers/DashboardParser';
+import { asNode, type XmlNode } from './parsers/types';
 
 const parser = new XMLParser({
     ignoreAttributes: false,
-    attributeNamePrefix: "@_"
+    attributeNamePrefix: '@_',
 });
 
 /**
  * Recursively parse any string field that looks like XML.
  * This ensures ALL nested XML content is fully extracted.
  */
-function deepParseAllXml(obj: any): void {
+function deepParseAllXml(obj: XmlNode): void {
     if (!obj || typeof obj !== 'object') return;
 
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
         const val = obj[key];
-        if (typeof val === 'string' && val.trim().startsWith('<?xml') || 
-            (typeof val === 'string' && val.trim().startsWith('<') && val.trim().endsWith('>'))) {
+        if (
+            (typeof val === 'string' && val.trim().startsWith('<?xml')) ||
+            (typeof val === 'string' && val.trim().startsWith('<') && val.trim().endsWith('>'))
+        ) {
             try {
-                const parsed = parser.parse(val);
+                const parsed = parser.parse(val as string) as XmlNode;
                 obj[key] = parsed;
                 // Recursively parse the newly parsed object
-                deepParseAllXml(obj[key]);
+                deepParseAllXml(parsed);
             } catch (_e) {
                 // Not valid XML, leave as string
             }
         } else if (Array.isArray(val)) {
-            val.forEach(item => deepParseAllXml(item));
-        } else if (typeof val === 'object') {
-            deepParseAllXml(val);
+            val.forEach((item) => deepParseAllXml(item as XmlNode));
+        } else if (val && typeof val === 'object') {
+            deepParseAllXml(val as XmlNode);
         }
     });
 }
@@ -51,17 +54,11 @@ export class FileProcessor {
 
         // 1. Unzip
         const zip = await JSZip.loadAsync(file);
-        
+
         // 2. Parse ALL XML files in the archive
         const rawData: Record<string, any> = {};
-        
-        const xmlFiles = [
-            'Processes.xml',
-            'Steps.xml',
-            'Variables.xml',
-            'FileLocations.xml',
-            'Attachments.xml'
-        ];
+
+        const xmlFiles = ['Processes.xml', 'Steps.xml', 'Variables.xml', 'FileLocations.xml', 'Attachments.xml'];
 
         for (const fileName of xmlFiles) {
             const f = zip.file(fileName);
@@ -85,18 +82,21 @@ export class FileProcessor {
         // 3. Extract Basic Metadata
         const procXml = rawData.Processes;
         const rawProcs = procXml?.ArrayOfProcess?.Process || procXml?.Process?.ArrayOfProcess?.Process;
-        const procList = Array.isArray(rawProcs) ? rawProcs : (rawProcs ? [rawProcs] : []);
+        const procList = Array.isArray(rawProcs) ? rawProcs : rawProcs ? [rawProcs] : [];
 
-        const getUnique = (arr: any[], key: string) => [...new Set(arr.map(x => x[key]).filter(Boolean))].join(', ');
+        const getUnique = (arr: any[], key: string) => [...new Set(arr.map((x) => x[key]).filter(Boolean))].join(', ');
 
         const rawOwner = getUnique(procList, 'Owner') || 'N/A';
         let publisher = rawOwner;
-        let publishedDate = getUnique(procList, 'DateSaved') || getUnique(procList, 'DateModified') || new Date().toISOString();
+        let publishedDate =
+            getUnique(procList, 'DateSaved') || getUnique(procList, 'DateModified') || new Date().toISOString();
         const narration = getUnique(procList, 'VersionNarration') || getUnique(procList, 'Narration') || '';
 
         // Try to extract actual publisher and date from narration (e.g. "Published by MGUPTA on 28-Nov-2025 17:55:48")
         if (narration && narration.includes('Published by ')) {
-            const match = narration.match(/Published by\s+([A-Za-z0-9_]+)(?:\s+on\s+([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4}\s+[0-9:]{8}))?/i);
+            const match = narration.match(
+                /Published by\s+([A-Za-z0-9_]+)(?:\s+on\s+([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4}\s+[0-9:]{8}))?/i
+            );
             if (match) {
                 if (match[1]) publisher = match[1];
                 if (match[2]) publishedDate = match[2];
@@ -114,7 +114,7 @@ export class FileProcessor {
             dateModified: publishedDate,
             // HIGH VALUE fields
             processType: getUnique(procList, 'ProcessType') || '$ETL',
-            parentPath: getUnique(procList, 'ParentFileItemPath') || ''
+            parentPath: getUnique(procList, 'ParentFileItemPath') || '',
         };
 
         // 4. Save to DB - now includes all parsed XML files
@@ -126,7 +126,7 @@ export class FileProcessor {
             rawVariables: rawData.Variables || {},
             rawFileLocations: rawData.FileLocations || {},
             rawAttachments: rawData.Attachments || {},
-            dateAdded: new Date()
+            dateAdded: new Date(),
         });
 
         console.log(`Saved report ${reportId} to DB`);
@@ -137,37 +137,41 @@ export class FileProcessor {
         const content = await DataModelParser.parse(file);
 
         // Extract basic metadata safely
-        const dmDef = content.DataModel?.DataModelDef || content.DataModel?.DataModelDefinition || {};
+        const dataModel = asNode(content.DataModel);
+        const dmDef = asNode(dataModel?.DataModelDef) || asNode(dataModel?.DataModelDefinition) || {};
 
         // Extract ProcessMode deeply
-        const rootDef = dmDef.Definition?.DataModelDefinition || dmDef;
+        const rootDef = asNode(asNode(dmDef.Definition)?.DataModelDefinition) || dmDef;
         const processMode = rootDef.ProcessMode || 'N/A';
 
         // Name Strategy:
         // 1. Description from XML (usually the cleanest name)
         // 2. Fallback to Filename, with GUID/Timestamp stripped
-        let cleanName = dmDef.Description;
+        let cleanName = typeof dmDef.Description === 'string' ? dmDef.Description : '';
         if (!cleanName) {
             cleanName = file.name.replace(/\.t1dm$/i, '');
             // Remove GUID if present (e.g. _c2dfa917-7450-42b8-a5bb-f5802916cedc...)
-            cleanName = cleanName.replace(/_[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}.*$/, '');
+            cleanName = cleanName.replace(
+                /_[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}.*$/,
+                ''
+            );
         }
 
         const metadata = {
             name: cleanName,
-            id: dmDef.DataModelId || 'N/A',
-            description: dmDef.Description || 'Imported Data Model',
-            version: dmDef.Version || '1.0',
-            owner: dmDef.Owner || 'Unknown',
-            processMode: processMode,
-            dateModified: new Date().toISOString()
+            id: String(dmDef.DataModelId || 'N/A'),
+            description: String(dmDef.Description || 'Imported Data Model'),
+            version: String(dmDef.Version || '1.0'),
+            owner: String(dmDef.Owner || 'Unknown'),
+            processMode: String(processMode),
+            dateModified: new Date().toISOString(),
         };
 
         const id = await db.dataModels.add({
             filename: file.name,
             metadata,
             content, // Parsed JSON of all XMLs
-            dateAdded: new Date()
+            dateAdded: new Date(),
         });
 
         console.log(`Saved Data Model ${id} to DB`);
@@ -178,25 +182,28 @@ export class FileProcessor {
         const content = await DashboardParser.parse(file);
 
         // Extract metadata from Dashboard.xml
-        const dashDef = content.Dashboard?.EntityDef || {};
+        const dashDef = asNode(asNode(content.Dashboard)?.EntityDef) || {};
 
         // Name: Use Description as the primary name
-        const name = dashDef.Description || file.name.replace(/\.t1db$/i, '');
+        const name =
+            typeof dashDef.Description === 'string' && dashDef.Description
+                ? dashDef.Description
+                : file.name.replace(/\.t1db$/i, '');
 
         const metadata = {
             name: name,
-            id: dashDef.GenericEntityId || 'N/A',
-            description: dashDef.Description || '',
-            owner: dashDef.Owner || 'Unknown',
-            parentPath: dashDef.ParentFileItemPath || '',
-            dateModified: new Date().toISOString()
+            id: String(dashDef.GenericEntityId || 'N/A'),
+            description: String(dashDef.Description || ''),
+            owner: String(dashDef.Owner || 'Unknown'),
+            parentPath: String(dashDef.ParentFileItemPath || ''),
+            dateModified: new Date().toISOString(),
         };
 
         const id = await db.dashboards.add({
             filename: file.name,
             metadata,
             content, // Parsed JSON of all XMLs
-            dateAdded: new Date()
+            dateAdded: new Date(),
         });
 
         console.log(`Saved Dashboard ${id} to DB`);
