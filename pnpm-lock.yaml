@@ -18,7 +18,7 @@ importers:
         specifier: ^9.5.1
         version: 9.7.1
       fast-xml-parser:
-        specifier: ^5.3.3
+        specifier: ^5.3.4
         version: 5.8.0
       jszip:
         specifier: ^3.10.1

@@ -1,6 +1,6 @@
 {
   "name": "t1-analyser",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -59,7 +59,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "dexie": "^4.2.1",
     "docx": "^9.5.1",
-    "fast-xml-parser": "^5.3.3",
+    "fast-xml-parser": "^5.3.4",
     "jszip": "^3.10.1",
     "mermaid": "^11.12.2",
     "tailwindcss": "^4.1.18"
