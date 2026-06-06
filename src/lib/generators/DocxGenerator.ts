@@ -12,147 +12,27 @@ import {
     Header,
     Footer,
     AlignmentType,
-    ShadingType,
     PageNumber,
     BorderStyle,
-    ImageRun
+    ImageRun,
 } from 'docx';
 import { EtlParser } from '../parsers/EtlParser';
 import { MermaidGenerator } from './MermaidGenerator';
+import { extractSourcesAndTargets, buildEtlNarrative, plainSummaryFormatter } from './EtlSummary';
+import { createText, createHeaderCell, createCell } from './DocxPrimitives';
 
 export class DocxGenerator {
+    // --- Helpers (low-level docx primitives live in DocxPrimitives.ts; these
+    //     thin delegates keep the existing `this.createX(...)` call sites working) ---
+    private static createText = createText;
+    private static createHeaderCell = createHeaderCell;
+    private static createCell = createCell;
 
-    // --- Helpers ---
-    private static createText(text: string, opts: any = {}) {
-        return new TextRun({ text: text || '', font: "Segoe UI", size: 22, ...opts });
-    }
-
-    private static createHeaderCell(text: string) {
-        return new TableCell({
-            children: [new Paragraph({ children: [this.createText(text, { bold: true, size: 20 })] })],
-            shading: { fill: "E0E0E0", type: ShadingType.CLEAR },
-            verticalAlign: AlignmentType.CENTER
-        });
-    }
-
-    private static createCell(text: string | Paragraph[], opts: any = {}) {
-        const children = typeof text === 'string'
-            ? [new Paragraph({ children: [this.createText(text, { size: 20, ...opts })] })]
-            : text;
-        return new TableCell({ children, verticalAlign: AlignmentType.CENTER });
-    }
-
-    // Reuse the Executive Summary logic from EtlGenerator
+    // Executive Summary — shares extraction/narrative logic with EtlGenerator
+    // (see EtlSummary.ts). Word export uses plain-text formatting.
     private static generateEtlSummary(flow: any[]) {
-        const sources: string[] = [];
-        const targets: string[] = [];
-        const sourceNames = new Set<string>();
-        const targetNames = new Set<string>();
-
-        flow.forEach((s: any) => {
-            // Extract sources from step Inputs (covers tables, warehouse, variables, etc.)
-            if (s.Inputs && Array.isArray(s.Inputs)) {
-                s.Inputs.forEach((input: string) => {
-                    if (input && input !== 'dataset' && input !== 'target' && input !== 'DATA') {
-                        const sourceName = input.trim();
-                        if (sourceName && !sourceNames.has(sourceName)) {
-                            sourceNames.add(sourceName);
-                            sources.push(sourceName);
-                        }
-                    }
-                });
-            }
-
-            // Query-specific sources (more detailed context)
-            if (s.RawType === 'RunDirectQuery' || s.RawType === 'RunTableQuery') {
-                const tableName = s.Details.find((d: string) => d.startsWith('Source Table:'))?.split(': ')[1];
-                if (tableName && !sourceNames.has(tableName)) {
-                    sourceNames.add(tableName);
-                    sources.push(tableName);
-                }
-            } else if (s.RawType === 'RunDatasourceQuery' || s.RawType === 'RunSimpleQuery') {
-                const source = s.Details.find((d: string) => d.startsWith('Source:'))?.split(': ')[1];
-                if (source && !sourceNames.has(source)) {
-                    sourceNames.add(source);
-                    sources.push(source);
-                }
-            } else if (s.RawType === 'LoadTextFile') {
-                const file = s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                if (file && !sourceNames.has(file)) {
-                    sourceNames.add(file);
-                    sources.push(file);
-                }
-            }
-
-            // Extract targets
-            if (s.RawType === 'ImportWarehouseData') {
-                const warehouse = s.Output?.name || 'Warehouse';
-                const targetKey = `WAREHOUSE_${warehouse}`;
-                if (!targetNames.has(targetKey)) {
-                    targetNames.add(targetKey);
-                    targets.push(`the ${warehouse}`);
-                }
-            } else if (s.RawType === 'ExportToExcel') {
-                const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                const targetName = filename ? `${filename} (Excel)` : 'an Excel file';
-                const targetKey = `EXCEL_${filename}`;
-                if (!targetNames.has(targetKey)) {
-                    targetNames.add(targetKey);
-                    targets.push(targetName);
-                }
-            } else if (s.RawType === 'SendEmail') {
-                const targetKey = 'EMAIL';
-                if (!targetNames.has(targetKey)) {
-                    targetNames.add(targetKey);
-                    targets.push('Email recipients');
-                }
-            } else if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') {
-                const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-                const targetName = filename ? `${filename} (Text file)` : 'a Text file';
-                const targetKey = `TEXT_${filename}`;
-                if (!targetNames.has(targetKey)) {
-                    targetNames.add(targetKey);
-                    targets.push(targetName);
-                }
-            } else if (s.Outputs && Array.isArray(s.Outputs)) {
-                // Extract targets from step Outputs
-                s.Outputs.forEach((output: string) => {
-                    if (output && output !== 'dataset' && output !== 'target') {
-                        const targetName = output.trim();
-                        if (targetName && !targetNames.has(targetName)) {
-                            targetNames.add(targetName);
-                            targets.push(targetName);
-                        }
-                    }
-                });
-            }
-        });
-
-        const hasCalcs = flow.some(s => s.RawType === 'AddColumn' || s.RawType === 'UpdateColumn' || s.RawType === 'CalculateVariable');
-        const hasJoins = flow.some(s => s.RawType === 'JoinTable');
-        const hasConditions = flow.some(s => s.RawType === 'Decision' || s.RawType === 'Branch');
-
-        let parts: string[] = [];
-        if (sources.length > 0) parts.push(`extracts data from ${sources.join(', ')}`);
-        if (hasJoins) parts.push(`combines multiple datasets`);
-        if (hasCalcs) parts.push(`performs business calculations`);
-
-        if (targets.length > 0) {
-            if (hasConditions) {
-                parts.push(`based on certain conditions, distributes results to ${targets.join(', ')}`);
-            } else {
-                parts.push(`publishes results to ${targets.join(', ')}`);
-            }
-        }
-
-        if (parts.length === 0) return "This process performs a sequence of data operations.";
-
-        let narrative = parts.join(', ');
-        const lastComma = narrative.lastIndexOf(', ');
-        if (lastComma !== -1) {
-            narrative = narrative.substring(0, lastComma) + ' and ' + narrative.substring(lastComma + 2);
-        }
-        return `This process ${narrative}.`;
+        const { sources, targets } = extractSourcesAndTargets(flow, plainSummaryFormatter);
+        return buildEtlNarrative(sources, targets, flow);
     }
 
     // --- ETL Report Extraction ---
@@ -164,34 +44,49 @@ export class DocxGenerator {
         const sections: any[] = [];
 
         // 1. Header Information
-        sections.push(new Paragraph({
-            children: [this.createText(report.metadata.name, { bold: true, size: 32 })],
-            heading: HeadingLevel.HEADING_1,
-            spacing: { after: 300 }
-        }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText(report.metadata.name, { bold: true, size: 32 })],
+                heading: HeadingLevel.HEADING_1,
+                spacing: { after: 300 },
+            })
+        );
 
         // Meta Table
         const metaRows = [
-            ["Description", report.metadata.description],
-            ["Version", `${report.metadata.version} (${report.metadata.status === 'P' ? 'Published' : 'Draft'})`],
-            ["Owner", report.metadata.owner],
-            ["Last Modified", report.metadata.dateModified || '-']
+            ['Description', report.metadata.description],
+            ['Version', `${report.metadata.version} (${report.metadata.status === 'P' ? 'Published' : 'Draft'})`],
+            ['Owner', report.metadata.owner],
+            ['Last Modified', report.metadata.dateModified || '-'],
         ];
 
-        sections.push(new Table({
-            width: { size: 100, type: WidthType.PERCENTAGE },
-            rows: metaRows.map(r => new TableRow({
-                children: [
-                    this.createHeaderCell(r[0]!),
-                    this.createCell(r[1]!)
-                ]
-            }))
-        }));
-        sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        sections.push(
+            new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: metaRows.map(
+                    (r) =>
+                        new TableRow({
+                            children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)],
+                        })
+                ),
+            })
+        );
+        sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
 
         // 2. Executive Summary & Flow Chart
-        sections.push(new Paragraph({ children: [this.createText("Executive Summary", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
-        sections.push(new Paragraph({ children: [this.createText(this.generateEtlSummary(flowData.executionFlow), { italic: true })], spacing: { after: 300 } }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Executive Summary', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
+        sections.push(
+            new Paragraph({
+                children: [this.createText(this.generateEtlSummary(flowData.executionFlow), { italic: true })],
+                spacing: { after: 300 },
+            })
+        );
 
         try {
             const imageBase64 = await MermaidGenerator.getFlowChartImage(flowData.executionTree, mode);
@@ -201,257 +96,364 @@ export class DocxGenerator {
                 const blob = await res.blob();
                 const buffer = await blob.arrayBuffer();
 
-                sections.push(new Paragraph({
-                    children: [
-                        new ImageRun({
-                            data: buffer,
-                            transformation: { width: 600, height: 300 }, // Default size, aspect ratio is generally preserved but constrained
-                            type: 'png'
-                        })
-                    ],
-                    alignment: AlignmentType.CENTER,
-                    spacing: { after: 300 }
-                }));
+                sections.push(
+                    new Paragraph({
+                        children: [
+                            new ImageRun({
+                                data: buffer,
+                                transformation: { width: 600, height: 300 }, // Default size, aspect ratio is generally preserved but constrained
+                                type: 'png',
+                            }),
+                        ],
+                        alignment: AlignmentType.CENTER,
+                        spacing: { after: 300 },
+                    })
+                );
             }
         } catch (e) {
-            console.error("Failed to generate DOCX Flow Chart", e);
-            sections.push(new Paragraph({ children: [this.createText("(Flow Chart could not be generated)", { color: "red", italic: true })] }));
+            console.error('Failed to generate DOCX Flow Chart', e);
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('(Flow Chart could not be generated)', { color: 'red', italic: true })],
+                })
+            );
         }
         // 3. Variables & Parameters
         if (flowData.variables.length > 0) {
-            sections.push(new Paragraph({ children: [this.createText("Variables & Parameters", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Variables & Parameters', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const vHeader = new TableRow({
-                children: [this.createHeaderCell("Name"), this.createHeaderCell("Value / Setting")]
+                children: [this.createHeaderCell('Name'), this.createHeaderCell('Value / Setting')],
             });
 
-            const vRows = flowData.variables.map((v: any) => new TableRow({
-                children: [
-                    this.createCell(v.Name, { bold: true }),
-                    this.createCell(v.Value)
-                ]
-            }));
+            const vRows = flowData.variables.map(
+                (v: any) =>
+                    new TableRow({
+                        children: [this.createCell(v.Name, { bold: true }), this.createCell(v.Value)],
+                    })
+            );
 
             sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [vHeader, ...vRows] }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 3.1 Process Parameters (from Variables.xml)
         const processParams = this.extractProcessParameters(report.rawVariables);
         if (processParams.length > 0) {
-            sections.push(new Paragraph({ children: [this.createText("Process Parameters", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Process Parameters', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const resolveVarType = (t: string) => {
-                const types: Record<string, string> = { 'A': 'String', 'N': 'Numeric', 'D': 'Date', 'L': 'List', 'I': 'Integer' };
+                const types: Record<string, string> = { A: 'String', N: 'Numeric', D: 'Date', L: 'List', I: 'Integer' };
                 return types[t] || t || 'String';
             };
 
             const pHeader = new TableRow({
                 children: [
-                    this.createHeaderCell("Parameter"),
-                    this.createHeaderCell("Type"),
-                    this.createHeaderCell("Default"),
-                    this.createHeaderCell("Required"),
-                    this.createHeaderCell("Description")
-                ]
+                    this.createHeaderCell('Parameter'),
+                    this.createHeaderCell('Type'),
+                    this.createHeaderCell('Default'),
+                    this.createHeaderCell('Required'),
+                    this.createHeaderCell('Description'),
+                ],
             });
 
-            const pRows = processParams.map((p: any) => new TableRow({
-                children: [
-                    this.createCell(p.Name, { bold: true }),
-                    this.createCell(resolveVarType(p.VariableType)),
-                    this.createCell(p.DefaultValue || '-'),
-                    this.createCell(p.IsMandatory === 'true' ? 'Yes' : 'No'),
-                    this.createCell(p.Description || '')
-                ]
-            }));
+            const pRows = processParams.map(
+                (p: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(p.Name, { bold: true }),
+                            this.createCell(resolveVarType(p.VariableType)),
+                            this.createCell(p.DefaultValue || '-'),
+                            this.createCell(p.IsMandatory === 'true' ? 'Yes' : 'No'),
+                            this.createCell(p.Description || ''),
+                        ],
+                    })
+            );
 
             sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [pHeader, ...pRows] }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 3.2 File Locations (Technical mode only)
         if (mode === 'technical') {
             const fileLocations = this.extractFileLocations(report.rawFileLocations);
             if (fileLocations.length > 0) {
-                sections.push(new Paragraph({ children: [this.createText("File Locations", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+                sections.push(
+                    new Paragraph({
+                        children: [this.createText('File Locations', { bold: true, size: 28 })],
+                        heading: HeadingLevel.HEADING_2,
+                        spacing: { after: 150 },
+                    })
+                );
 
                 const fHeader = new TableRow({
                     children: [
-                        this.createHeaderCell("Location Name"),
-                        this.createHeaderCell("Type"),
-                        this.createHeaderCell("Path"),
-                        this.createHeaderCell("Description")
-                    ]
+                        this.createHeaderCell('Location Name'),
+                        this.createHeaderCell('Type'),
+                        this.createHeaderCell('Path'),
+                        this.createHeaderCell('Description'),
+                    ],
                 });
 
-                const fRows = fileLocations.map((loc: any) => new TableRow({
-                    children: [
-                        this.createCell(loc.Name, { bold: true }),
-                        this.createCell(loc.LocationType || 'ServerFolder'),
-                        this.createCell(loc.Path || loc.ServerFolder || '-', { font: "Courier New", size: 18 }),
-                        this.createCell(loc.Description || '')
-                    ]
-                }));
+                const fRows = fileLocations.map(
+                    (loc: any) =>
+                        new TableRow({
+                            children: [
+                                this.createCell(loc.Name, { bold: true }),
+                                this.createCell(loc.LocationType || 'ServerFolder'),
+                                this.createCell(loc.Path || loc.ServerFolder || '-', { font: 'Courier New', size: 18 }),
+                                this.createCell(loc.Description || ''),
+                            ],
+                        })
+                );
 
-                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] }));
-                sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+                sections.push(
+                    new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] })
+                );
+                sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
             }
 
             // 3.3 Attachments (Technical mode only)
             const attachments = this.extractAttachments(report.rawAttachments);
             if (attachments.length > 0) {
-                sections.push(new Paragraph({ children: [this.createText("Attachments", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+                sections.push(
+                    new Paragraph({
+                        children: [this.createText('Attachments', { bold: true, size: 28 })],
+                        heading: HeadingLevel.HEADING_2,
+                        spacing: { after: 150 },
+                    })
+                );
 
                 const aHeader = new TableRow({
                     children: [
-                        this.createHeaderCell("File Name"),
-                        this.createHeaderCell("Description"),
-                        this.createHeaderCell("Size")
-                    ]
+                        this.createHeaderCell('File Name'),
+                        this.createHeaderCell('Description'),
+                        this.createHeaderCell('Size'),
+                    ],
                 });
 
-                const aRows = attachments.map((att: any) => new TableRow({
-                    children: [
-                        this.createCell(att.FileName || att.Name || 'Unknown', { bold: true }),
-                        this.createCell(att.Description || '-'),
-                        this.createCell(att.FileData ? `${Math.round(att.FileData.length * 0.75 / 1024)} KB` : '-')
-                    ]
-                }));
+                const aRows = attachments.map(
+                    (att: any) =>
+                        new TableRow({
+                            children: [
+                                this.createCell(att.FileName || att.Name || 'Unknown', { bold: true }),
+                                this.createCell(att.Description || '-'),
+                                this.createCell(
+                                    att.FileData ? `${Math.round((att.FileData.length * 0.75) / 1024)} KB` : '-'
+                                ),
+                            ],
+                        })
+                );
 
-                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [aHeader, ...aRows] }));
-                sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+                sections.push(
+                    new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [aHeader, ...aRows] })
+                );
+                sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
             }
         }
 
         // 4. Process Logic (The Steps)
-        sections.push(new Paragraph({ children: [this.createText("Process Details", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Process Details', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
 
         const processStep = (item: any) => {
             const indent = item.Depth * 300;
 
-        // Step Header
-            sections.push(new Paragraph({
-                children: [this.createText(`${item.Phase}: ${item.Step}`, { bold: true, size: 24 })],
-                heading: HeadingLevel.HEADING_3,
-                indent: { left: indent },
-                spacing: { before: 200, after: 100 }
-            }));
+            // Step Header
+            sections.push(
+                new Paragraph({
+                    children: [this.createText(`${item.Phase}: ${item.Step}`, { bold: true, size: 24 })],
+                    heading: HeadingLevel.HEADING_3,
+                    indent: { left: indent },
+                    spacing: { before: 200, after: 100 },
+                })
+            );
 
             // Context
-            sections.push(new Paragraph({
-                children: [
-                    this.createText("Purpose: ", { bold: true }),
-                    this.createText(item.Context)
-                ],
-                indent: { left: indent + 300 },
-                spacing: { after: 100 }
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Purpose: ', { bold: true }), this.createText(item.Context)],
+                    indent: { left: indent + 300 },
+                    spacing: { after: 100 },
+                })
+            );
 
             if (mode === 'business' && item.SmartDesc) {
-                sections.push(new Paragraph({
-                    children: [this.createText("Summary: " + item.SmartDesc, { italic: true, color: "0055AA" })],
-                    indent: { left: indent + 300 },
-                    spacing: { after: 100 }
-                }));
+                sections.push(
+                    new Paragraph({
+                        children: [this.createText('Summary: ' + item.SmartDesc, { italic: true, color: '0055AA' })],
+                        indent: { left: indent + 300 },
+                        spacing: { after: 100 },
+                    })
+                );
             }
 
             // Note
             if (report.stepNotes?.[item.id]) {
-                sections.push(new Paragraph({
-                    children: [this.createText("Note: " + report.stepNotes[item.id], { italic: true, color: "D97706" })],
-                    indent: { left: indent + 300 },
-                    spacing: { after: 100 }
-                }));
+                sections.push(
+                    new Paragraph({
+                        children: [
+                            this.createText('Note: ' + report.stepNotes[item.id], { italic: true, color: 'D97706' }),
+                        ],
+                        indent: { left: indent + 300 },
+                        spacing: { after: 100 },
+                    })
+                );
             }
 
             // Data Dictionary (Output Schema)
             if (item.DataDictionary && item.DataDictionary.length > 0) {
-                sections.push(new Paragraph({
-                    children: [this.createText("Generated Output Schema", { bold: true, size: 20, color: "666666" })],
-                    indent: { left: indent + 300 },
-                    spacing: { before: 100, after: 50 }
-                }));
+                sections.push(
+                    new Paragraph({
+                        children: [
+                            this.createText('Generated Output Schema', { bold: true, size: 20, color: '666666' }),
+                        ],
+                        indent: { left: indent + 300 },
+                        spacing: { before: 100, after: 50 },
+                    })
+                );
 
                 const ddHeader = new TableRow({
-                    children: ["Output Column", "Type", "Length", "Description"].map(h =>
-                        new TableCell({
-                            children: [new Paragraph({ children: [this.createText(h, { bold: true, size: 18 })] })],
-                            shading: { fill: "F3F4F6" }
-                        }))
+                    children: ['Output Column', 'Type', 'Length', 'Description'].map(
+                        (h) =>
+                            new TableCell({
+                                children: [new Paragraph({ children: [this.createText(h, { bold: true, size: 18 })] })],
+                                shading: { fill: 'F3F4F6' },
+                            })
+                    ),
                 });
 
-                const ddRows = item.DataDictionary.map((d: any) => new TableRow({
-                    children: [
-                        this.createCell(d.Name || '', { size: 18 }),
-                        this.createCell(d.Type || '', { size: 18 }),
-                        this.createCell(d.Length || '-', { size: 18 }),
-                        this.createCell(d.Description || '', { size: 18 })
-                    ]
-                }));
+                const ddRows = item.DataDictionary.map(
+                    (d: any) =>
+                        new TableRow({
+                            children: [
+                                this.createCell(d.Name || '', { size: 18 }),
+                                this.createCell(d.Type || '', { size: 18 }),
+                                this.createCell(d.Length || '-', { size: 18 }),
+                                this.createCell(d.Description || '', { size: 18 }),
+                            ],
+                        })
+                );
 
-                sections.push(new Table({
-                    width: { size: 100, type: WidthType.PERCENTAGE },
-                    indent: { size: indent + 300, type: WidthType.DXA },
-                    rows: [ddHeader, ...ddRows]
-                }));
-                sections.push(new Paragraph({ text: "", spacing: { after: 100 } }));
+                sections.push(
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        indent: { size: indent + 300, type: WidthType.DXA },
+                        rows: [ddHeader, ...ddRows],
+                    })
+                );
+                sections.push(new Paragraph({ text: '', spacing: { after: 100 } }));
             }
 
             // Main Data Table (Transformations/Formulas)
             if (item.TableData && item.TableData.length > 0) {
-                const headers = item.Headers || ["Col 1", "Col 2"];
+                const headers = item.Headers || ['Col 1', 'Col 2'];
 
                 // Render Logic Table logic
                 const createLogicTable = (rules: any[]) => {
                     const header = new TableRow({
                         children: [
-                            new TableCell({ children: [new Paragraph({ children: [this.createText("Outcome", { bold: true, size: 16 })] })], shading: { fill: "F1F5F9" }, width: { size: 30, type: WidthType.PERCENTAGE } }),
-                            new TableCell({ children: [new Paragraph({ children: [this.createText("When", { bold: true, size: 16 })] })], shading: { fill: "F1F5F9" }, width: { size: 70, type: WidthType.PERCENTAGE } })
-                        ]
+                            new TableCell({
+                                children: [
+                                    new Paragraph({ children: [this.createText('Outcome', { bold: true, size: 16 })] }),
+                                ],
+                                shading: { fill: 'F1F5F9' },
+                                width: { size: 30, type: WidthType.PERCENTAGE },
+                            }),
+                            new TableCell({
+                                children: [
+                                    new Paragraph({ children: [this.createText('When', { bold: true, size: 16 })] }),
+                                ],
+                                shading: { fill: 'F1F5F9' },
+                                width: { size: 70, type: WidthType.PERCENTAGE },
+                            }),
+                        ],
                     });
 
-                    const rRows = rules.map((r: any) => new TableRow({
-                        children: [
-                            new TableCell({ children: [new Paragraph({ children: [this.createText(r.outcome, { font: "Courier New", size: 16 })] })] }),
-                            new TableCell({ children: [new Paragraph({ children: [this.createText(r.condition, { font: "Courier New", size: 16 })] })] })
-                        ]
-                    }));
+                    const rRows = rules.map(
+                        (r: any) =>
+                            new TableRow({
+                                children: [
+                                    new TableCell({
+                                        children: [
+                                            new Paragraph({
+                                                children: [
+                                                    this.createText(r.outcome, { font: 'Courier New', size: 16 }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                    new TableCell({
+                                        children: [
+                                            new Paragraph({
+                                                children: [
+                                                    this.createText(r.condition, { font: 'Courier New', size: 16 }),
+                                                ],
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            })
+                    );
 
                     return new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [header, ...rRows] });
                 };
 
                 const tHeader = new TableRow({
-                    children: headers.map((h: string) => new TableCell({
-                         children: [new Paragraph({ children: [this.createText(h, { bold: true, size: 18 })] })],
-                         shading: { fill: "E5E7EB" }
-                     }))
-                 });
+                    children: headers.map(
+                        (h: string) =>
+                            new TableCell({
+                                children: [new Paragraph({ children: [this.createText(h, { bold: true, size: 18 })] })],
+                                shading: { fill: 'E5E7EB' },
+                            })
+                    ),
+                });
 
                 const tRows = item.TableData.map((row: any) => {
                     const cells = headers.map((_: any, i: number) => {
-                         // Check for Rules in Col 2 (index 1) which indicates a Logic Table
-                         if (i === 1 && row.Rules) {
-                             return new TableCell({ children: [createLogicTable(row.Rules)] });
-                         }
+                        // Check for Rules in Col 2 (index 1) which indicates a Logic Table
+                        if (i === 1 && row.Rules) {
+                            return new TableCell({ children: [createLogicTable(row.Rules)] });
+                        }
 
-                         let val = row[`Col${i + 1}`] || (i === 0 ? row.Name : row.Value) || '';
-                         let font = "Segoe UI";
-                         if (i === 1 && (headers.includes('Formula') || headers.includes('Expression'))) {
-                             font = "Courier New";
-                         }
+                        let val = row[`Col${i + 1}`] || (i === 0 ? row.Name : row.Value) || '';
+                        let font = 'Segoe UI';
+                        if (i === 1 && (headers.includes('Formula') || headers.includes('Expression'))) {
+                            font = 'Courier New';
+                        }
 
-                         return new TableCell({ children: [new Paragraph({ children: [this.createText(val, { font, size: 18 })] })] });
-                     });
-                     return new TableRow({ children: cells });
-                 });
+                        return new TableCell({
+                            children: [new Paragraph({ children: [this.createText(val, { font, size: 18 })] })],
+                        });
+                    });
+                    return new TableRow({ children: cells });
+                });
 
-                sections.push(new Table({
-                    width: { size: 100, type: WidthType.PERCENTAGE },
-                    indent: { size: indent + 300, type: WidthType.DXA },
-                    rows: [tHeader, ...tRows]
-                }));
-                sections.push(new Paragraph({ text: "", spacing: { after: 100 } }));
+                sections.push(
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        indent: { size: indent + 300, type: WidthType.DXA },
+                        rows: [tHeader, ...tRows],
+                    })
+                );
+                sections.push(new Paragraph({ text: '', spacing: { after: 100 } }));
             }
 
             // Recursion
@@ -462,7 +464,7 @@ export class DocxGenerator {
 
         flowData.executionFlow.forEach((step: any) => processStep(step));
 
-        await this.generateAndDownload(report.metadata.name + "_ETL", sections);
+        await this.generateAndDownload(report.metadata.name + '_ETL', sections);
     }
 
     // --- Data Model Extraction ---
@@ -475,88 +477,151 @@ export class DocxGenerator {
         const sections: any[] = [];
 
         // 1. Header
-        sections.push(new Paragraph({
-            children: [this.createText(metadata.name, { bold: true, size: 32 })],
-            heading: HeadingLevel.HEADING_1,
-            spacing: { after: 300 }
-        }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText(metadata.name, { bold: true, size: 32 })],
+                heading: HeadingLevel.HEADING_1,
+                spacing: { after: 300 },
+            })
+        );
 
         const metaRows = [
-            ["Description", metadata.description],
-            ["Version", metadata.version],
-            ["Process Mode", content.DataModel?.DataModelDef?.ProcessMode || 'N/A'],
-            ["Last Modified", metadata.dateModified || '-']
+            ['Description', metadata.description],
+            ['Version', metadata.version],
+            ['Process Mode', content.DataModel?.DataModelDef?.ProcessMode || 'N/A'],
+            ['Last Modified', metadata.dateModified || '-'],
         ];
 
-        sections.push(new Table({
-            width: { size: 100, type: WidthType.PERCENTAGE },
-            rows: metaRows.map(r => new TableRow({
-                children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)]
-            }))
-        }));
-        sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        sections.push(
+            new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: metaRows.map(
+                    (r) =>
+                        new TableRow({
+                            children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)],
+                        })
+                ),
+            })
+        );
+        sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
 
         // 2. Executive Summary
         // Re-implementing logic from DataModelGenerator
-        const getList = (obj: any) => Array.isArray(obj) ? obj : (obj ? [obj] : []);
-        const rawQueries = getList(content.Queries?.ArrayOfQuery?.Query).sort((a: any, b: any) => (Number(a.Sequence) || 0) - (Number(b.Sequence) || 0));
+        const getList = (obj: any) => (Array.isArray(obj) ? obj : obj ? [obj] : []);
+        const rawQueries = getList(content.Queries?.ArrayOfQuery?.Query).sort(
+            (a: any, b: any) => (Number(a.Sequence) || 0) - (Number(b.Sequence) || 0)
+        );
         const finalQuery = rawQueries.length > 0 ? rawQueries[rawQueries.length - 1] : null;
         const allDS = getList(content.QueryDatasources?.ArrayOfQueryDatasource?.QueryDatasource);
-        const uniqueSources = new Set(allDS.filter((d: any) => d.DataSourceType !== 'Query').map((d: any) => d.DataSourceName || d.TableName)).size;
-        const finalCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter((c: any) => c.QueryName === finalQuery?.QueryName);
+        const uniqueSources = new Set(
+            allDS.filter((d: any) => d.DataSourceType !== 'Query').map((d: any) => d.DataSourceName || d.TableName)
+        ).size;
+        const finalCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter(
+            (c: any) => c.QueryName === finalQuery?.QueryName
+        );
 
         const summaryText = finalQuery
             ? `This Data Model generates the "${finalQuery.QueryName}" dataset. It aggregates data from ${uniqueSources} external sources across ${rawQueries.length} transformation steps to produce ${finalCols.length} output columns.`
-            : "No queries defined.";
+            : 'No queries defined.';
 
-        sections.push(new Paragraph({ children: [this.createText("Executive Summary", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
-        sections.push(new Paragraph({ children: [this.createText(summaryText, { italic: true })], spacing: { after: 300 } }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Executive Summary', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
+        sections.push(
+            new Paragraph({ children: [this.createText(summaryText, { italic: true })], spacing: { after: 300 } })
+        );
 
         // 3. Global Variables (with Source removed per request)
         const variables = getList(content.Variables?.ArrayOfVariableDef?.VariableDef);
         if (variables.length > 0) {
-            sections.push(new Paragraph({ children: [this.createText("Global Variables", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Global Variables', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const vHeader = new TableRow({
-                children: [this.createHeaderCell("Name"), this.createHeaderCell("Value"), this.createHeaderCell("Type"), this.createHeaderCell("Description")]
+                children: [
+                    this.createHeaderCell('Name'),
+                    this.createHeaderCell('Value'),
+                    this.createHeaderCell('Type'),
+                    this.createHeaderCell('Description'),
+                ],
             });
 
             // Resolve Types
             const resolveType = (t: string) => {
-                const types: Record<string, string> = { 'A': 'String', 'L': 'Boolean', 'N': 'Numeric', 'D': 'Date', 'I': 'Integer', 'F': 'Float' };
+                const types: Record<string, string> = {
+                    A: 'String',
+                    L: 'Boolean',
+                    N: 'Numeric',
+                    D: 'Date',
+                    I: 'Integer',
+                    F: 'Float',
+                };
                 return types[t] || t || 'String';
             };
 
-            const vRows = variables.map((v: any) => new TableRow({
-                children: [
-                    this.createCell(v.Name, { bold: true }),
-                    this.createCell(v.DefaultValue),
-                    this.createCell(resolveType(v.DataType || v.VariableType)),
-                    this.createCell(v.Description)
-                ]
-            }));
+            const vRows = variables.map(
+                (v: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(v.Name, { bold: true }),
+                            this.createCell(v.DefaultValue),
+                            this.createCell(resolveType(v.DataType || v.VariableType)),
+                            this.createCell(v.Description),
+                        ],
+                    })
+            );
 
             sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [vHeader, ...vRows] }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 4. Indexes
         const indexes = getList(content.DataModel?.Definition?.DataModelDefinition?.Indexes?.Index);
         if (indexes.length > 0) {
-            sections.push(new Paragraph({ children: [this.createText("Indexes", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
-            const iHeader = new TableRow({ children: [this.createHeaderCell("Index Name"), this.createHeaderCell("Columns")] });
-            const iRows = indexes.map((i: any) => new TableRow({
-                children: [
-                    this.createCell(i.Name, { bold: true }),
-                    this.createCell(getList(i.Columns?.Column).map((c: any) => c.Name).join(', '))
-                ]
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Indexes', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
+            const iHeader = new TableRow({
+                children: [this.createHeaderCell('Index Name'), this.createHeaderCell('Columns')],
+            });
+            const iRows = indexes.map(
+                (i: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(i.Name, { bold: true }),
+                            this.createCell(
+                                getList(i.Columns?.Column)
+                                    .map((c: any) => c.Name)
+                                    .join(', ')
+                            ),
+                        ],
+                    })
+            );
             sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [iHeader, ...iRows] }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 5. Query Logic
-        sections.push(new Paragraph({ children: [this.createText("Transformation Layers", { bold: true, size: 28 })], heading: HeadingLevel.HEADING_2, spacing: { after: 150 } }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Transformation Layers', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
 
         // Map indexes for filter lookup
         const indexMap = new Map(indexes.map((i: any) => [i.Name, i]));
@@ -565,19 +630,23 @@ export class DocxGenerator {
             const qName = q.QueryName;
 
             // Title
-            sections.push(new Paragraph({
-                children: [this.createText(qName, { bold: true, size: 24 })],
-                heading: HeadingLevel.HEADING_3,
-                spacing: { before: 200, after: 100 },
-                border: { bottom: { color: "CCCCCC", space: 1, style: BorderStyle.SINGLE, size: 6 } }
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText(qName, { bold: true, size: 24 })],
+                    heading: HeadingLevel.HEADING_3,
+                    spacing: { before: 200, after: 100 },
+                    border: { bottom: { color: 'CCCCCC', space: 1, style: BorderStyle.SINGLE, size: 6 } },
+                })
+            );
 
             // Step Note
             if (dm.stepNotes?.[q.Id]) {
-                sections.push(new Paragraph({
-                     children: [this.createText("Note: " + dm.stepNotes[q.Id], { italic: true, color: "D97706" })],
-                     spacing: { after: 100 }
-                }));
+                sections.push(
+                    new Paragraph({
+                        children: [this.createText('Note: ' + dm.stepNotes[q.Id], { italic: true, color: 'D97706' })],
+                        spacing: { after: 100 },
+                    })
+                );
             }
 
             // Filters
@@ -587,57 +656,123 @@ export class DocxGenerator {
                     const values = getList(crit.CriteriaValues?.CriteriaValue);
                     values.forEach((v: any) => {
                         if (v.ColumnId && v.Operator?.Value) {
-                            let op = v.Operator.Value.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+                            let op = v.Operator.Value.replace(/([A-Z])/g, ' $1')
+                                .trim()
+                                .toLowerCase();
                             let val = v.Value1 || '';
                             if (v.Operator.Value === 'Between') val = `${v.Value1 || '?'} and ${v.Value2 || '?'}`;
 
                             const index = indexMap.get(v.ColumnId);
-                            filters.push({ col: v.ColumnId, op, val, isIndex: !!index, indexCols: index?.Columns ? getList(index.Columns.Column).map((c: any) => c.Name).join(', ') : '' });
+                            filters.push({
+                                col: v.ColumnId,
+                                op,
+                                val,
+                                isIndex: !!index,
+                                indexCols: index?.Columns
+                                    ? getList(index.Columns.Column)
+                                          .map((c: any) => c.Name)
+                                          .join(', ')
+                                    : '',
+                            });
                         }
                     });
-                    if (crit.NestedSets?.CriteriaSetItem) getList(crit.NestedSets.CriteriaSetItem).forEach(processCriteria);
+                    if (crit.NestedSets?.CriteriaSetItem)
+                        getList(crit.NestedSets.CriteriaSetItem).forEach(processCriteria);
                 };
                 processCriteria(q.Criteria.CriteriaSetItem); // Process parent set
 
                 if (filters.length > 0) {
-                    sections.push(new Paragraph({ children: [this.createText("Filters", { bold: true, size: 20 })], spacing: { after: 50 } }));
-                    const fHeader = new TableRow({ children: [this.createHeaderCell("Column"), this.createHeaderCell("Operator"), this.createHeaderCell("Value")] });
-                    const fRows = filters.map(f => {
+                    sections.push(
+                        new Paragraph({
+                            children: [this.createText('Criteria', { bold: true, size: 20 })],
+                            spacing: { after: 50 },
+                        })
+                    );
+                    const fHeader = new TableRow({
+                        children: [
+                            this.createHeaderCell('Column'),
+                            this.createHeaderCell('Operator'),
+                            this.createHeaderCell('Value'),
+                        ],
+                    });
+                    const fRows = filters.map((f) => {
                         const colText = f.isIndex ? `${f.col} (Index on: ${f.indexCols})` : f.col;
                         return new TableRow({
                             children: [
                                 this.createCell(colText, { bold: f.isIndex }),
                                 this.createCell(f.op),
-                                this.createCell(f.val, { size: 18 })
-                            ]
+                                this.createCell(f.val, { size: 18 }),
+                            ],
                         });
-                     });
-                    sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] }));
-                    sections.push(new Paragraph({ text: "", spacing: { after: 150 } }));
+                    });
+                    sections.push(
+                        new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] })
+                    );
+                    sections.push(new Paragraph({ text: '', spacing: { after: 150 } }));
                 }
             }
 
             // Columns (Name | Type | Source) - 3 Column Layout
-            const myCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter((c: any) => c.QueryName === qName);
+            const myCols = getList(content.QueryColumns?.ArrayOfQueryColumn?.QueryColumn).filter(
+                (c: any) => c.QueryName === qName
+            );
             if (myCols.length > 0) {
-                sections.push(new Paragraph({ children: [this.createText("Columns", { bold: true, size: 20 })], spacing: { after: 50 } }));
+                sections.push(
+                    new Paragraph({
+                        children: [this.createText('Columns', { bold: true, size: 20 })],
+                        spacing: { after: 50 },
+                    })
+                );
 
                 const cHeader = new TableRow({
                     children: [
-                        new TableCell({ children: [new Paragraph({ children: [this.createText("Name / Description", { bold: true, size: 18 })] })], shading: { fill: "E0E0E0" }, width: { size: 30, type: WidthType.PERCENTAGE } }),
-                        new TableCell({ children: [new Paragraph({ children: [this.createText("Type / Format", { bold: true, size: 18 })] })], shading: { fill: "E0E0E0" }, width: { size: 20, type: WidthType.PERCENTAGE } }),
-                        new TableCell({ children: [new Paragraph({ children: [this.createText("Source", { bold: true, size: 18 })] })], shading: { fill: "E0E0E0" }, width: { size: 50, type: WidthType.PERCENTAGE } })
-                    ]
+                        new TableCell({
+                            children: [
+                                new Paragraph({
+                                    children: [this.createText('Name / Description', { bold: true, size: 18 })],
+                                }),
+                            ],
+                            shading: { fill: 'E0E0E0' },
+                            width: { size: 30, type: WidthType.PERCENTAGE },
+                        }),
+                        new TableCell({
+                            children: [
+                                new Paragraph({
+                                    children: [this.createText('Type / Format', { bold: true, size: 18 })],
+                                }),
+                            ],
+                            shading: { fill: 'E0E0E0' },
+                            width: { size: 20, type: WidthType.PERCENTAGE },
+                        }),
+                        new TableCell({
+                            children: [
+                                new Paragraph({ children: [this.createText('Source', { bold: true, size: 18 })] }),
+                            ],
+                            shading: { fill: 'E0E0E0' },
+                            width: { size: 50, type: WidthType.PERCENTAGE },
+                        }),
+                    ],
                 });
 
                 const cRows = myCols.map((c: any) => {
                     // Logic for Name/Desc stacking
                     const namePara = new Paragraph({ children: [this.createText(c.ColumnName, { bold: true })] });
-                    const descPara = c.Description ? new Paragraph({ children: [this.createText(c.Description, { italic: true, size: 18, color: "666666" })] }) : null;
+                    const descPara = c.Description
+                        ? new Paragraph({
+                              children: [this.createText(c.Description, { italic: true, size: 18, color: '666666' })],
+                          })
+                        : null;
 
                     // Logic for Type/Format stacking
-                    const typePara = new Paragraph({ children: [this.createText(c.JavaType || c.DataType || 'String')] });
-                    const fmtPara = (c.Format && c.Format !== '-') ? new Paragraph({ children: [this.createText(c.Format, { italic: true, size: 18, color: "666666" })] }) : null;
+                    const typePara = new Paragraph({
+                        children: [this.createText(c.JavaType || c.DataType || 'String')],
+                    });
+                    const fmtPara =
+                        c.Format && c.Format !== '-'
+                            ? new Paragraph({
+                                  children: [this.createText(c.Format, { italic: true, size: 18, color: '666666' })],
+                              })
+                            : null;
 
                     // Source/Table formatting
                     let source = c.DataSourceName || '';
@@ -648,31 +783,61 @@ export class DocxGenerator {
                         children: [
                             this.createCell(descPara ? [namePara, descPara] : [namePara]),
                             this.createCell(fmtPara ? [typePara, fmtPara] : [typePara]),
-                            this.createCell(source, { font: "Courier New", size: 18 })
-                        ]
+                            this.createCell(source, { font: 'Courier New', size: 18 }),
+                        ],
                     });
                 });
 
-                sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [cHeader, ...cRows] }));
+                sections.push(
+                    new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [cHeader, ...cRows] })
+                );
             }
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         });
 
-        await this.generateAndDownload(metadata.name + "_DataModel", sections);
+        await this.generateAndDownload(metadata.name + '_DataModel', sections);
     }
 
     private static async generateAndDownload(filename: string, sections: any[]) {
         const doc = new Document({
-            sections: [{
-                headers: { default: new Header({ children: [new Paragraph({ children: [this.createText("Generated Specification", { size: 16, color: "888888" })], alignment: AlignmentType.RIGHT })] }) },
-                footers: { default: new Footer({ children: [new Paragraph({ children: [new TextRun({ children: ["Page ", PageNumber.CURRENT], font: "Segoe UI", size: 18 })], alignment: AlignmentType.CENTER })] }) },
-                children: sections
-            }]
+            sections: [
+                {
+                    headers: {
+                        default: new Header({
+                            children: [
+                                new Paragraph({
+                                    children: [
+                                        this.createText('Generated Specification', { size: 16, color: '888888' }),
+                                    ],
+                                    alignment: AlignmentType.RIGHT,
+                                }),
+                            ],
+                        }),
+                    },
+                    footers: {
+                        default: new Footer({
+                            children: [
+                                new Paragraph({
+                                    children: [
+                                        new TextRun({
+                                            children: ['Page ', PageNumber.CURRENT],
+                                            font: 'Segoe UI',
+                                            size: 18,
+                                        }),
+                                    ],
+                                    alignment: AlignmentType.CENTER,
+                                }),
+                            ],
+                        }),
+                    },
+                    children: sections,
+                },
+            ],
         });
 
         const blob = await Packer.toBlob(doc);
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         document.body.appendChild(a);
         a.href = url;
         a.download = `${filename}.docx`;
@@ -684,12 +849,13 @@ export class DocxGenerator {
     // --- Helper: Extract Process Parameters from Variables.xml ---
     private static extractProcessParameters(rawVariables: any): any[] {
         if (!rawVariables) return [];
-        
-        const vars = rawVariables?.ArrayOfC2GenericVariable?.C2GenericVariable 
-            || rawVariables?.ArrayOfVariableDef?.VariableDef
-            || rawVariables?.C2GenericVariable
-            || rawVariables?.VariableDef;
-        
+
+        const vars =
+            rawVariables?.ArrayOfC2GenericVariable?.C2GenericVariable ||
+            rawVariables?.ArrayOfVariableDef?.VariableDef ||
+            rawVariables?.C2GenericVariable ||
+            rawVariables?.VariableDef;
+
         if (!vars) return [];
         return Array.isArray(vars) ? vars : [vars];
     }
@@ -697,14 +863,13 @@ export class DocxGenerator {
     // --- Helper: Extract File Locations from FileLocations.xml ---
     private static extractFileLocations(rawFileLocations: any): any[] {
         if (!rawFileLocations) return [];
-        
-        const locations = rawFileLocations?.ArrayOfFileLocation?.FileLocation
-            || rawFileLocations?.FileLocation;
-        
+
+        const locations = rawFileLocations?.ArrayOfFileLocation?.FileLocation || rawFileLocations?.FileLocation;
+
         if (!locations) return [];
-        
+
         const list = Array.isArray(locations) ? locations : [locations];
-        
+
         return list.map((loc: any) => {
             const def = loc.Definition || {};
             return {
@@ -713,7 +878,7 @@ export class DocxGenerator {
                 ServerFolder: def.ServerFolder || def.Path || loc.ServerFolder || '',
                 SubPath: def.SubPath || '',
                 Description: loc.Description || '',
-                Path: def.ServerFolder ? `${def.ServerFolder}${def.SubPath || ''}` : (loc.Path || '')
+                Path: def.ServerFolder ? `${def.ServerFolder}${def.SubPath || ''}` : loc.Path || '',
             };
         });
     }
@@ -721,12 +886,13 @@ export class DocxGenerator {
     // --- Helper: Extract Attachments from Attachments.xml ---
     private static extractAttachments(rawAttachments: any): any[] {
         if (!rawAttachments) return [];
-        
-        const attachments = rawAttachments?.ArrayOfAttachment?.Attachment
-            || rawAttachments?.ArrayOfProcessAttachment?.ProcessAttachment
-            || rawAttachments?.Attachment
-            || rawAttachments?.ProcessAttachment;
-        
+
+        const attachments =
+            rawAttachments?.ArrayOfAttachment?.Attachment ||
+            rawAttachments?.ArrayOfProcessAttachment?.ProcessAttachment ||
+            rawAttachments?.Attachment ||
+            rawAttachments?.ProcessAttachment;
+
         if (!attachments) return [];
         return Array.isArray(attachments) ? attachments : [attachments];
     }
@@ -741,30 +907,37 @@ export class DocxGenerator {
         const sections: any[] = [];
 
         // Helper
-        const getList = (obj: any) => Array.isArray(obj) ? obj : (obj ? [obj] : []);
+        const getList = (obj: any) => (Array.isArray(obj) ? obj : obj ? [obj] : []);
 
         // 1. Header
-        sections.push(new Paragraph({
-            children: [this.createText(metadata.name, { bold: true, size: 32 })],
-            heading: HeadingLevel.HEADING_1,
-            spacing: { after: 300 }
-        }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText(metadata.name, { bold: true, size: 32 })],
+                heading: HeadingLevel.HEADING_1,
+                spacing: { after: 300 },
+            })
+        );
 
         // 2. Metadata Table
         const metaRows = [
-            ["Owner", metadata.owner || '-'],
-            ["Folder", metadata.parentPath || '-'],
-            ["Last Modified", metadata.dateModified || '-'],
-            ["System ID", metadata.id || '-']
+            ['Owner', metadata.owner || '-'],
+            ['Folder', metadata.parentPath || '-'],
+            ['Last Modified', metadata.dateModified || '-'],
+            ['System ID', metadata.id || '-'],
         ];
 
-        sections.push(new Table({
-            width: { size: 100, type: WidthType.PERCENTAGE },
-            rows: metaRows.map(r => new TableRow({
-                children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)]
-            }))
-        }));
-        sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+        sections.push(
+            new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: metaRows.map(
+                    (r) =>
+                        new TableRow({
+                            children: [this.createHeaderCell(r[0]!), this.createCell(r[1]!)],
+                        })
+                ),
+            })
+        );
+        sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
 
         // 3. Extract data
         const visualizations = getList(content.Visualisations?.ArrayOfEntityDef?.EntityDef || []);
@@ -778,29 +951,38 @@ export class DocxGenerator {
         const chartCount = visualizations.filter((v: any) => v.EntitySubType === 'CHART').length;
         const dmCount = new Set(visualizations.map((v: any) => v.AttributeString1)).size;
 
-        sections.push(new Paragraph({ 
-            children: [this.createText("Executive Summary", { bold: true, size: 28 })], 
-            heading: HeadingLevel.HEADING_2, 
-            spacing: { after: 150 } 
-        }));
-        sections.push(new Paragraph({ 
-            children: [this.createText(
-                `This dashboard contains ${visualizations.length} widgets (${slicerCount} slicers, ${tableCount} tables, ${chartCount} charts) sourced from ${dmCount} data models.`, 
-                { italic: true }
-            )], 
-            spacing: { after: 300 } 
-        }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Executive Summary', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
+        sections.push(
+            new Paragraph({
+                children: [
+                    this.createText(
+                        `This dashboard contains ${visualizations.length} widgets (${slicerCount} slicers, ${tableCount} tables, ${chartCount} charts) sourced from ${dmCount} data models.`,
+                        { italic: true }
+                    ),
+                ],
+                spacing: { after: 300 },
+            })
+        );
 
         // 5. Layout Diagram (ASCII)
-        sections.push(new Paragraph({ 
-            children: [this.createText("Layout Diagram", { bold: true, size: 28 })], 
-            heading: HeadingLevel.HEADING_2, 
-            spacing: { after: 150 } 
-        }));
+        sections.push(
+            new Paragraph({
+                children: [this.createText('Layout Diagram', { bold: true, size: 28 })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { after: 150 },
+            })
+        );
 
         if (layoutItems.length > 0) {
             // Build simple ASCII grid
-            let maxX = 0, maxY = 0;
+            let maxX = 0,
+                maxY = 0;
             layoutItems.forEach((item: any) => {
                 maxX = Math.max(maxX, (item.X || 0) + (item.Width || 1));
                 maxY = Math.max(maxY, (item.Y || 0) + (item.Height || 1));
@@ -810,7 +992,9 @@ export class DocxGenerator {
             const maxRow = normalizeRow(maxY);
             const widgetMap = new Map(visualizations.map((v: any) => [v.GenericEntityId, v]));
 
-            const grid: (string | null)[][] = Array(maxRow + 1).fill(null).map(() => Array(12).fill(null));
+            const grid: (string | null)[][] = Array(maxRow + 1)
+                .fill(null)
+                .map(() => Array(12).fill(null));
 
             layoutItems.forEach((item: any) => {
                 const widget = widgetMap.get(item.Id);
@@ -819,7 +1003,10 @@ export class DocxGenerator {
                 const width = Math.min(item.Width || 1, 12 - x);
 
                 if (row <= maxRow && width > 0) {
-                    const label = `${widget?.Description || 'Widget'} [${widget?.EntitySubType || 'N/A'}]`.substring(0, 20);
+                    const label = `${widget?.Description || 'Widget'} [${widget?.EntitySubType || 'N/A'}]`.substring(
+                        0,
+                        20
+                    );
                     for (let col = x; col < Math.min(x + width, 12); col++) {
                         grid[row][col] = label;
                     }
@@ -840,106 +1027,128 @@ export class DocxGenerator {
             }
             diagram += '└' + Array(12).fill('────────┴').slice(0, -1).join('') + '────────┘';
 
-            sections.push(new Paragraph({
-                children: [this.createText(diagram, { font: "Courier New", size: 16 })],
-                spacing: { after: 300 }
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText(diagram, { font: 'Courier New', size: 16 })],
+                    spacing: { after: 300 },
+                })
+            );
         } else {
-            sections.push(new Paragraph({
-                children: [this.createText("No widgets defined", { italic: true })],
-                spacing: { after: 300 }
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('No widgets defined', { italic: true })],
+                    spacing: { after: 300 },
+                })
+            );
         }
 
         // 6. Widget Inventory
         if (visualizations.length > 0) {
-            sections.push(new Paragraph({ 
-                children: [this.createText("Widget Inventory", { bold: true, size: 28 })], 
-                heading: HeadingLevel.HEADING_2, 
-                spacing: { after: 150 } 
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Widget Inventory', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const wHeader = new TableRow({
                 children: [
-                    this.createHeaderCell("Name"),
-                    this.createHeaderCell("Type"),
-                    this.createHeaderCell("Data Model"),
-                    this.createHeaderCell("Filters")
-                ]
+                    this.createHeaderCell('Name'),
+                    this.createHeaderCell('Type'),
+                    this.createHeaderCell('Data Model'),
+                    this.createHeaderCell('Criteria'),
+                ],
             });
 
             const wRows = visualizations.map((v: any) => {
-                const filterCount = this.countWidgetFilters(v.AttributeText1);
+                const criteriaCount = this.countWidgetFilters(v.AttributeText1);
                 const dmId = v.AttributeString1 ? v.AttributeString1.substring(0, 8) + '...' : '-';
                 return new TableRow({
                     children: [
                         this.createCell(v.Description || 'Unnamed', { bold: true }),
                         this.createCell(v.EntitySubType || 'N/A'),
                         this.createCell(dmId, { size: 18 }),
-                        this.createCell(filterCount > 0 ? filterCount.toString() : '-')
-                    ]
+                        this.createCell(criteriaCount > 0 ? criteriaCount.toString() : '-'),
+                    ],
                 });
             });
 
-            sections.push(new Table({
-                width: { size: 100, type: WidthType.PERCENTAGE },
-                rows: [wHeader, ...wRows]
-            }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(
+                new Table({
+                    width: { size: 100, type: WidthType.PERCENTAGE },
+                    rows: [wHeader, ...wRows],
+                })
+            );
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 7. Variables
         if (variables.length > 0) {
-            sections.push(new Paragraph({ 
-                children: [this.createText("Variables", { bold: true, size: 28 })], 
-                heading: HeadingLevel.HEADING_2, 
-                spacing: { after: 150 } 
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Variables', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const vHeader = new TableRow({
                 children: [
-                    this.createHeaderCell("Name"),
-                    this.createHeaderCell("Type"),
-                    this.createHeaderCell("Default Value"),
-                    this.createHeaderCell("List Source")
-                ]
+                    this.createHeaderCell('Name'),
+                    this.createHeaderCell('Type'),
+                    this.createHeaderCell('Default Value'),
+                    this.createHeaderCell('List Source'),
+                ],
             });
 
             const typeMap: Record<string, string> = {
-                'A': 'String', 'L': 'Boolean', 'N': 'Numeric', 'D': 'Date', 'I': 'Integer', 'F': 'Float'
+                A: 'String',
+                L: 'Boolean',
+                N: 'Numeric',
+                D: 'Date',
+                I: 'Integer',
+                F: 'Float',
             };
 
-            const vRows = variables.map((v: any) => new TableRow({
-                children: [
-                    this.createCell(v.Name || '-', { bold: true }),
-                    this.createCell(typeMap[v.VariableType || ''] || v.VariableType || '-'),
-                    this.createCell(v.DefaultValue || '-'),
-                    this.createCell(v.SelectionTypeListType || v.ListType || '-')
-                ]
-            }));
+            const vRows = variables.map(
+                (v: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(v.Name || '-', { bold: true }),
+                            this.createCell(typeMap[v.VariableType || ''] || v.VariableType || '-'),
+                            this.createCell(v.DefaultValue || '-'),
+                            this.createCell(v.SelectionTypeListType || v.ListType || '-'),
+                        ],
+                    })
+            );
 
-            sections.push(new Table({
-                width: { size: 100, type: WidthType.PERCENTAGE },
-                rows: [vHeader, ...vRows]
-            }));
-            sections.push(new Paragraph({ text: "", spacing: { after: 300 } }));
+            sections.push(
+                new Table({
+                    width: { size: 100, type: WidthType.PERCENTAGE },
+                    rows: [vHeader, ...vRows],
+                })
+            );
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 8. Data Model Dependencies
         const dmIds = Array.from(new Set(visualizations.map((v: any) => v.AttributeString1).filter(Boolean)));
         if (dmIds.length > 0) {
-            sections.push(new Paragraph({ 
-                children: [this.createText("Data Model Dependencies", { bold: true, size: 28 })], 
-                heading: HeadingLevel.HEADING_2, 
-                spacing: { after: 150 } 
-            }));
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Data Model Dependencies', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
             const dHeader = new TableRow({
                 children: [
-                    this.createHeaderCell("Data Model"),
-                    this.createHeaderCell("ID"),
-                    this.createHeaderCell("Status")
-                ]
+                    this.createHeaderCell('Data Model'),
+                    this.createHeaderCell('ID'),
+                    this.createHeaderCell('Status'),
+                ],
             });
 
             const dRows = dmIds.map((id: any) => {
@@ -949,15 +1158,17 @@ export class DocxGenerator {
                     children: [
                         this.createCell(dmName, { bold: true }),
                         this.createCell(id.substring(0, 12) + '...', { size: 18 }),
-                        this.createCell('Not in library')
-                    ]
+                        this.createCell('Not in library'),
+                    ],
                 });
             });
 
-            sections.push(new Table({
-                width: { size: 100, type: WidthType.PERCENTAGE },
-                rows: [dHeader, ...dRows]
-            }));
+            sections.push(
+                new Table({
+                    width: { size: 100, type: WidthType.PERCENTAGE },
+                    rows: [dHeader, ...dRows],
+                })
+            );
         }
 
         // Create and download document

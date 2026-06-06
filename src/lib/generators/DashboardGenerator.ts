@@ -3,7 +3,7 @@ import { db } from '../db';
 export class DashboardGenerator {
     static async generateHtmlView(id: number, mode: 'business' | 'technical' = 'business'): Promise<string> {
         const dashboard = await db.dashboards.get(id);
-        if (!dashboard) throw new Error("Dashboard not found");
+        if (!dashboard) throw new Error('Dashboard not found');
 
         const content = dashboard.content;
         const metadata = dashboard.metadata;
@@ -41,14 +41,23 @@ export class DashboardGenerator {
 
         const renderTable = (headers: string[], rows: any[]) => {
             if (!rows || rows.length === 0) return '';
-            const ths = headers.map(h => `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`).join('');
-            const trs = rows.map((r) => {
-                const cells = headers.map((_, i) => {
-                    const val = r[`Col${i + 1}`] || '';
-                    return `<td class="px-4 py-2 text-sm text-gray-700">${val}</td>`;
-                }).join('');
-                return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
-            }).join('');
+            const ths = headers
+                .map(
+                    (h) =>
+                        `<th class="px-4 py-2 text-left text-xs font-bold text-slate-700 uppercase tracking-wider bg-slate-200 border-r border-slate-300 last:border-r-0">${h}</th>`
+                )
+                .join('');
+            const trs = rows
+                .map((r) => {
+                    const cells = headers
+                        .map((_, i) => {
+                            const val = r[`Col${i + 1}`] || '';
+                            return `<td class="px-4 py-2 text-sm text-gray-700">${val}</td>`;
+                        })
+                        .join('');
+                    return `<tr class="border-t border-gray-100 hover:bg-gray-50">${cells}</tr>`;
+                })
+                .join('');
             return `<div class="w-full overflow-hidden border border-slate-300 rounded-md mb-3"><table class="w-full divide-y divide-slate-300"><thead><tr class="bg-slate-200">${ths}</tr></thead><tbody class="bg-white divide-y divide-slate-200">${trs}</tbody></table></div>`;
         };
 
@@ -114,102 +123,111 @@ export class DashboardGenerator {
             </div>
         `;
 
-        // --- Layout Diagram with ASCII (kept for reference) ---
-        const buildLayoutDiagram = () => {
-            if (layoutItems.length === 0) {
-                return '<p class="text-gray-500 italic">No layout items defined</p>';
-            }
-
-            let maxX = 0, maxY = 0;
-            layoutItems.forEach((item: any) => {
-                maxX = Math.max(maxX, (item.X || 0) + (item.Width || 1));
-                maxY = Math.max(maxY, (item.Y || 0) + (item.Height || 1));
-            });
-
-            const normalizeRow = (y: number) => Math.floor((y || 0) / 100);
-            const maxRow = normalizeRow(maxY);
-
-            const grid: (string | null)[][] = Array(maxRow + 1)
-                .fill(null)
-                .map(() => Array(12).fill(null));
-
-            layoutItems.forEach((item: any) => {
-                const widget = widgetMap.get(item.Id);
-                const x = item.X || 0;
-                const row = normalizeRow(item.Y || 0);
-                const width = Math.min(item.Width || 1, 12 - x);
-
-                if (row <= maxRow && width > 0) {
-                    const label = `${widget?.Description || 'Widget'}`.substring(0, 18);
-                    for (let col = x; col < Math.min(x + width, 12); col++) {
-                        grid[row][col] = label;
-                    }
-                }
-            });
-
-            let diagram = '<pre class="bg-slate-50 border border-slate-300 rounded p-3 overflow-x-auto text-xs font-mono text-slate-700 mb-4">';
-            diagram += '╔' + Array(12).fill('═════════╦').slice(0, -1).join('') + '═════════╗\n';
-
-            for (let row = 0; row <= maxRow; row++) {
-                diagram += '║';
-                for (let col = 0; col < 12; col++) {
-                    const cell = grid[row][col] || '';
-                    diagram += ` ${cell.padEnd(7)} ║`;
-                }
-                diagram += '\n';
-                if (row < maxRow) {
-                    diagram += '╠' + Array(12).fill('═════════╬').slice(0, -1).join('') + '═════════╣\n';
-                }
-            }
-
-            diagram += '╚' + Array(12).fill('═════════╩').slice(0, -1).join('') + '═════════╝';
-            diagram += '</pre>';
-
-            return diagram;
-        };
-
-        // --- Layout Diagram with Mermaid ---
+        // --- Layout Diagram (Simple Grid Table) ---
         const buildMermaidLayout = () => {
             if (layoutItems.length === 0) {
                 return '';
             }
 
-            let mermaidDef = 'graph TB\n';
-            mermaidDef += '    classDef widget fill:#dbeafe,stroke:#1e40af,stroke-width:2px,color:#1e40af;\n';
-            mermaidDef += '    classDef slicer fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#166534;\n';
-            mermaidDef += '    classDef table fill:#fce7f3,stroke:#831843,stroke-width:2px,color:#831843;\n';
-            mermaidDef += '    classDef chart fill:#fff7ed,stroke:#b45309,stroke-width:2px,color:#b45309;\n';
+            // Build widget grid - map by position
+            let maxRow = 0;
+            const widgetsByPos = new Map<string, { name: string; type: string; width: number }>();
 
-            layoutItems.forEach((item: any, idx: number) => {
+            layoutItems.forEach((item: any) => {
                 const widget = widgetMap.get(item.Id);
-                const name = widget?.Description || `Widget ${idx + 1}`;
-                const type = widget?.EntitySubType || 'WIDGET';
-                const nodeId = `W${idx}`;
-                const typeClass = type === 'SLICER' ? 'slicer' : type === 'TABLE' ? 'table' : type === 'CHART' ? 'chart' : 'widget';
+                const x = item.X || 0;
+                const row = Math.floor((item.Y || 0) / 100);
+                const width = Math.min(item.Width || 1, 12 - x);
 
-                mermaidDef += `    ${nodeId}["${escapeHtml(name)}<br/><small>${type}</small>"]:::${typeClass}\n`;
+                maxRow = Math.max(maxRow, row);
+                widgetsByPos.set(`${row},${x}`, {
+                    name: widget?.Description || 'Widget',
+                    type: widget?.EntitySubType || 'UNKNOWN',
+                    width: width,
+                });
             });
 
-            return `
-                <div class="mt-4 mermaid flex justify-center bg-white p-4 rounded-lg border border-slate-100 shadow-inner overflow-x-auto min-h-[200px]">
-                    ${mermaidDef}
-                </div>
-            `;
+            let html = '<div style="overflow-x: auto; margin: 12px 0; border: 1px solid #000;">';
+            html += '<table style="width: 100%; border-collapse: collapse; font-size: 11px;">';
+
+            // Add column headers
+            html += '<thead><tr>';
+            for (let col = 0; col < 12; col++) {
+                html += `<th style="border: 1px solid #000; padding: 1px; text-align: center; font-weight: 400; background: #f0f0f0; width: 8.33%; height: 14px; font-size: 7px; line-height: 1;">${col + 1}</th>`;
+            }
+            html += '</tr></thead>';
+
+            html += '<tbody>';
+            for (let row = 0; row <= maxRow; row++) {
+                html += '<tr>';
+                for (let col = 0; col < 12; ) {
+                    const key = `${row},${col}`;
+                    const cell = widgetsByPos.get(key);
+                    if (cell) {
+                        // Widget cell with colspan
+                        const label = `${cell.type}: ${cell.name}`.substring(0, 35);
+                        const height = Math.max(40, cell.width * 10);
+                        html += `<td colspan="${cell.width}" style="border: 1px solid #000; padding: 4px; text-align: center; font-weight: 500; height: ${height}px; font-size: 10px; word-break: break-word;">${escapeHtml(label)}</td>`;
+                        col += cell.width;
+                    } else {
+                        // Empty cell
+                        html +=
+                            '<td style="border: 1px solid #000; padding: 4px; background: #fafafa; height: 40px;"></td>';
+                        col += 1;
+                    }
+                }
+                html += '</tr>';
+            }
+
+            html += '</tbody></table></div>';
+            return html;
         };
+
+        // --- Dashboard-level Parameters Section ---
+        let dashboardParamsHtml = '';
+        const dashParams = dashLayout.Parameters?.ParameterField || [];
+        const dashParamsList = getList(dashParams);
+        if (dashParamsList.length > 0 && mode === 'technical') {
+            const paramRows = dashParamsList.map((p: any) => ({
+                Col1: escapeHtml(p.FieldName || 'N/A'),
+                Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`,
+                Col3: escapeHtml(p.Description || '-'),
+            }));
+            dashboardParamsHtml = `
+                <details class="group">
+                    <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-indigo-50 hover:bg-indigo-100 transition-colors select-none border-t border-b border-indigo-200">
+                        <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                            <span class="text-indigo-600 text-lg">⚙️</span> Dashboard Parameters
+                            <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">${dashParamsList.length}</span>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 px-2">
+                        <p class="text-sm text-slate-600 mb-3">Dashboard-level parameters that affect all widgets:</p>
+                        ${renderTable(['Field Name', 'Value', 'Description'], paramRows)}
+                    </div>
+                </details>
+            `;
+        }
 
         // --- Widget Summary Table ---
         let widgetSummaryHtml = '';
         if (visualizations.length > 0) {
             const widgetRows = visualizations.map((v: any, idx: number) => {
-                const filterCount = this.countFilters(v.AttributeText1);
+                const criteriaCount = this.countCriteria(v.AttributeText1);
                 const paramCount = this.countParams(v.AttributeText2);
                 return {
                     Col1: `${idx + 1}`,
                     Col2: v.Description || 'Unnamed',
                     Col3: v.EntitySubType || 'UNKNOWN',
                     Col4: v.DatamodelDescription || '-',
-                    Col5: filterCount > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">${filterCount}</span>` : '-',
-                    Col6: paramCount > 0 ? `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${paramCount}</span>` : '-'
+                    Col5:
+                        criteriaCount > 0
+                            ? `<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">${criteriaCount}</span>`
+                            : '-',
+                    Col6:
+                        paramCount > 0
+                            ? `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${paramCount}</span>`
+                            : '-',
                 };
             });
 
@@ -222,7 +240,7 @@ export class DashboardGenerator {
                         </span>
                     </summary>
                     <div class="pt-4 pb-2 px-2">
-                        ${renderTable(['#', 'Widget Name', 'Type', 'Data Model', 'Filters', 'Parameters'], widgetRows)}
+                        ${renderTable(['#', 'Widget Name', 'Type', 'Data Model', 'Criteria', 'Parameters'], widgetRows)}
                     </div>
                 </details>
             `;
@@ -231,7 +249,8 @@ export class DashboardGenerator {
         // --- Detailed Widgets Section (Technical View Only) ---
         let detailedWidgetsHtml = '';
         if (visualizations.length > 0 && mode === 'technical') {
-            detailedWidgetsHtml = '<details class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200"><span class="text-xl font-bold text-slate-800 flex items-center gap-3"><span class="text-purple-500 text-lg">📋</span> Widget Details</span></summary><div class="pt-4 pb-2 px-2 space-y-4">';
+            detailedWidgetsHtml =
+                '<details class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200"><span class="text-xl font-bold text-slate-800 flex items-center gap-3"><span class="text-purple-500 text-lg">📋</span> Widget Details</span></summary><div class="pt-4 pb-2 px-2 space-y-4">';
 
             visualizations.forEach((widget: any) => {
                 const criteria = widget.AttributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue || [];
@@ -249,11 +268,11 @@ export class DashboardGenerator {
                         Col1: escapeHtml(c.ColumnId || 'N/A'),
                         Col2: escapeHtml(c.Operator?.Value || '='),
                         Col3: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(c.Value1 || 'N/A')}</code>`,
-                        Col4: escapeHtml(c.Link || 'AND')
+                        Col4: escapeHtml(c.Link || 'AND'),
                     }));
                     filterHtml = `
                         <div class="mt-3">
-                            <h4 class="font-semibold text-gray-700 mb-2">🔍 Filters (${criteriaList.length})</h4>
+                            <h4 class="font-semibold text-gray-700 mb-2">🔍 Criteria (${criteriaList.length})</h4>
                             ${renderTable(['Column', 'Operator', 'Value', 'Link'], filterRows)}
                         </div>
                     `;
@@ -262,7 +281,7 @@ export class DashboardGenerator {
                 if (paramsList.length > 0) {
                     const paramRows = paramsList.map((p: any) => ({
                         Col1: escapeHtml(p.FieldName || 'N/A'),
-                        Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`
+                        Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`,
                     }));
                     paramHtml = `
                         <div class="mt-3">
@@ -273,16 +292,54 @@ export class DashboardGenerator {
                 }
 
                 if (columns.length > 0) {
-                    const columnRows = columns.map((col: any) => ({
-                        Col1: escapeHtml(col.Id || col.Name || 'N/A'),
-                        Col2: escapeHtml(col.Format || col.DataType || 'N/A'),
-                        Col3: escapeHtml(col.DisplayName || col.Label || '-'),
-                        Col4: col.Visible !== false ? '✓' : '✗'
-                    }));
+                    const columnRows = columns.map((col: any) => {
+                        let formula = '';
+                        let isCalculation = false;
+                        if (col.Expression) {
+                            formula = escapeHtml(col.Expression);
+                            isCalculation = true;
+                        } else if (col.Source) {
+                            formula = escapeHtml(col.Source);
+                            isCalculation = true;
+                        }
+
+                        // Format/Type display with badge styling
+                        const formatType = col.Format || col.DataType || 'N/A';
+                        const formatBadge =
+                            formatType === 'N/A'
+                                ? formatType
+                                : formatType.includes('Currency')
+                                  ? `<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs font-mono">${formatType}</span>`
+                                  : formatType.includes('Percent')
+                                    ? `<span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-mono">${formatType}</span>`
+                                    : formatType.includes('Date')
+                                      ? `<span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-mono">${formatType}</span>`
+                                      : formatType.includes('Number')
+                                        ? `<span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded text-xs font-mono">${formatType}</span>`
+                                        : `<span class="bg-gray-100 text-gray-800 px-2 py-0.5 rounded text-xs font-mono">${formatType}</span>`;
+
+                        return {
+                            Col1: escapeHtml(col.Id || col.Name || 'N/A'),
+                            Col2: formatBadge,
+                            Col3: escapeHtml(col.DisplayName || col.Label || '-'),
+                            Col4:
+                                col.Visible !== false
+                                    ? '<span class="text-green-600 font-bold">✓</span>'
+                                    : '<span class="text-red-600 font-bold">✗</span>',
+                            Col5: formula
+                                ? `<code class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-xs font-mono block break-words max-w-sm">${formula}</code>`
+                                : isCalculation
+                                  ? '<em class="text-gray-500">no formula</em>'
+                                  : '<em class="text-gray-500">source field</em>',
+                            Col6: isCalculation
+                                ? '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">CALCULATED</span>'
+                                : '<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs font-bold">SOURCE</span>',
+                        };
+                    });
                     columnHtml = `
                         <div class="mt-3">
                             <h4 class="font-semibold text-gray-700 mb-2">📊 Columns (${columns.length})</h4>
-                            ${renderTable(['Column ID', 'Format/Type', 'Display Name', 'Visible'], columnRows)}
+                            ${renderTable(['Column ID', 'Format/Type', 'Display Name', 'Visible', 'Formula/Source', 'Type'], columnRows)}
                         </div>
                     `;
                 }
@@ -297,20 +354,16 @@ export class DashboardGenerator {
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-4 bg-white p-3 rounded border border-purple-100">
                             <div>
-                                <div class="text-xs font-semibold text-gray-600">Widget ID</div>
-                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.GenericEntityId || 'N/A').substring(0, 16))}...</div>
-                            </div>
-                            <div>
-                                <div class="text-xs font-semibold text-gray-600">Data Model ID</div>
-                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.AttributeString1 || 'N/A').substring(0, 16))}...</div>
+                                <div class="text-xs font-semibold text-gray-600">Owner</div>
+                                <div class="text-gray-700">${escapeHtml(widget.Owner || 'N/A')}</div>
                             </div>
                             <div>
                                 <div class="text-xs font-semibold text-gray-600">Data Model Name</div>
                                 <div class="text-gray-700">${escapeHtml(widget.DatamodelDescription || 'N/A')}</div>
                             </div>
                             <div>
-                                <div class="text-xs font-semibold text-gray-600">Owner</div>
-                                <div class="text-gray-700">${escapeHtml(widget.Owner || 'N/A')}</div>
+                                <div class="text-xs font-semibold text-gray-600">Widget ID</div>
+                                <div class="font-mono text-xs text-gray-700 break-all">${escapeHtml((widget.GenericEntityId || 'N/A').substring(0, 16))}...</div>
                             </div>
                         </div>
                         ${filterHtml}
@@ -327,12 +380,12 @@ export class DashboardGenerator {
         let variablesHtml = '';
         if (variables.length > 0) {
             const typeMap: Record<string, string> = {
-                'A': 'String',
-                'L': 'Boolean',
-                'N': 'Numeric',
-                'D': 'Date',
-                'I': 'Integer',
-                'F': 'Float'
+                A: 'String',
+                L: 'Boolean',
+                N: 'Numeric',
+                D: 'Date',
+                I: 'Integer',
+                F: 'Float',
             };
 
             const varRows = variables.map((v: any) => ({
@@ -340,7 +393,7 @@ export class DashboardGenerator {
                 Col2: typeMap[v.VariableType || ''] || v.VariableType || '-',
                 Col3: v.DefaultValue || '-',
                 Col4: v.SelectionTypeListType || v.ListType || '-',
-                Col5: v.Description || '-'
+                Col5: v.Description || '-',
             }));
 
             variablesHtml = `
@@ -364,12 +417,12 @@ export class DashboardGenerator {
         let dependenciesHtml = '';
         if (dmIds.size > 0) {
             const dmRows = Array.from(dmIds).map((id: any) => {
-                const dmName = visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription || 'Unknown';
+                const dmName =
+                    visualizations.find((v: any) => v.AttributeString1 === id)?.DatamodelDescription || 'Unknown';
                 const widgetCount = visualizations.filter((v: any) => v.AttributeString1 === id).length;
                 return {
                     Col1: dmName,
-                    Col2: id.substring(0, 12) + '...',
-                    Col3: `${widgetCount} widget${widgetCount !== 1 ? 's' : ''}`
+                    Col2: `${widgetCount} widget${widgetCount !== 1 ? 's' : ''}`,
                 };
             });
 
@@ -383,7 +436,7 @@ export class DashboardGenerator {
                     </summary>
                     <div class="pt-4 pb-2 px-2">
                         <p class="text-sm text-slate-600 mb-3">Data models referenced by widgets in this dashboard:</p>
-                        ${renderTable(['Data Model Name', 'ID', 'Widget Count'], dmRows)}
+                        ${renderTable(['Data Model Name', 'Widget Count'], dmRows)}
                     </div>
                 </details>
             `;
@@ -405,16 +458,11 @@ export class DashboardGenerator {
 
                 <!-- Layout Diagram -->
                 <div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout Diagram</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">📐 Layout</h3>
                     ${buildMermaidLayout()}
-                    <details class="mt-4">
-                        <summary class="cursor-pointer text-sm text-gray-600 hover:text-gray-800">📋 ASCII Grid View (12-column)</summary>
-                        <div class="mt-3">
-                            ${buildLayoutDiagram()}
-                        </div>
-                    </details>
                 </div>
 
+                ${dashboardParamsHtml}
                 ${widgetSummaryHtml}
                 ${detailedWidgetsHtml}
                 ${variablesHtml}
@@ -423,7 +471,7 @@ export class DashboardGenerator {
         `;
     }
 
-    private static countFilters(criteriaText: any): number {
+    private static countCriteria(criteriaText: any): number {
         if (!criteriaText) return 0;
         const criteria = criteriaText.CriteriaSetItem;
         if (!criteria) return 0;

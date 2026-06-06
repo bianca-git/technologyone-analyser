@@ -31,3 +31,9 @@ dist-ssr
 .vercel
 /coverage
 package-lock.json
+
+# AI agent scratch (local only)
+.opencode/
+.openwork/
+opencode.jsonc
+.claude/

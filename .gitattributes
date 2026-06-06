@@ -1,0 +1,11 @@
+# Normalize line endings: LF in repo, auto on checkout.
+# Kills the perpetual CRLF/LF churn warning on Windows.
+* text=auto eol=lf
+
+# Binary samples — never touch.
+*.t1db binary
+*.t1dm binary
+*.t1etlp binary
+*.png binary
+*.ico binary
+*.svg text

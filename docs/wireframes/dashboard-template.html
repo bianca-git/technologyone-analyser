@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            background: #fff;
+            color: #000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 11px;
+        }
+
+        .slicers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .slicer {
+            border: 1px solid #000;
+        }
+
+        .slicer-header {
+            font-weight: 600;
+            padding: 8px;
+            border-bottom: 1px solid #000;
+            font-size: 12px;
+        }
+
+        .slicer-search {
+            padding: 6px;
+            border-bottom: 1px solid #000;
+        }
+
+        .slicer-search input {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #000;
+            font-size: 11px;
+            font-family: inherit;
+        }
+
+        .slicer-items {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 6px;
+        }
+
+        .slicer-item {
+            padding: 3px 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+        }
+
+        .slicer-item input {
+            margin-right: 6px;
+        }
+
+        .slicer-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            text-align: center;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .summary-stat {
+            border: 1px solid #000;
+            padding: 12px;
+            min-width: 180px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            font-family: monospace;
+        }
+
+        .stat-change {
+            font-size: 10px;
+        }
+
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .widget {
+            border: 1px solid #000;
+        }
+
+        .widget-header {
+            padding: 8px;
+            border-bottom: 1px solid #000;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .widget-body {
+            padding: 8px;
+            min-height: 200px;
+            overflow: hidden;
+        }
+
+        .widget-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .widget-table th {
+            text-align: left;
+            padding: 4px;
+            border-bottom: 1px solid #000;
+            font-weight: 600;
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+
+        .widget-table td {
+            padding: 4px;
+            border-bottom: 1px solid #000;
+        }
+
+        .widget-table tr:last-child td {
+            border-bottom: 1px solid #000;
+        }
+
+        .number {
+            text-align: right;
+            font-family: monospace;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 160px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 11px;
+            position: relative;
+        }
+
+        .chart-grid {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 8px;
+            gap: 2px;
+        }
+
+        .bar {
+            width: 15px;
+            background: #fff;
+            border: 1px solid #000;
+        }
+
+        .pie-placeholder {
+            width: 120px;
+            height: 120px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .line-chart {
+            width: 100%;
+            height: 140px;
+            border: 1px solid #000;
+            position: relative;
+        }
+
+        .line-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .metadata-footer {
+            padding: 8px;
+            border-top: 1px solid #000;
+            font-size: 9px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .meta-label {
+            font-weight: 600;
+        }
+
+        .widget-type-badge {
+            display: inline-block;
+            border: 1px solid #000;
+            padding: 2px 4px;
+            font-size: 9px;
+            margin-right: 4px;
+        }
+
+        @media (max-width: 1024px) {
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>{{dashboard.metadata.name}}</h1>
+            {{#if dashboard.metadata.description}}
+            <p>{{dashboard.metadata.description}}</p>
+            {{/if}}
+            <div class="header-meta">
+                <span>Owner: {{dashboard.metadata.owner}}</span>
+                <span>System: {{dashboard.content.Dashboard.EntityDef.ReportingSystem}}</span>
+                <span>ID: {{dashboard.metadata.id}}</span>
+                <span>Modified: {{dashboard.metadata.dateModified}}</span>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="summary-row">
+            <div class="summary-stat">
+                <div class="stat-label">Total Widgets</div>
+                <div class="stat-value">{{widgets.length}}</div>
+            </div>
+            {{#each widgetTypeCounts}}
+            <div class="summary-stat">
+                <div class="stat-label">{{this.type}}</div>
+                <div class="stat-value">{{this.count}}</div>
+            </div>
+            {{/each}}
+            <div class="summary-stat">
+                <div class="stat-label">Data Models</div>
+                <div class="stat-value">{{dataModelCount}}</div>
+            </div>
+        </div>
+
+        <!-- Slicers (Filter Widgets) -->
+        {{#if slicers.length}}
+        <div class="section-title">Filters</div>
+        <div class="slicers">
+            {{#each slicers}}
+            <div class="slicer">
+                <div class="slicer-header">{{this.name}}</div>
+                <div class="slicer-search">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="slicer-items">
+                    {{#each this.items}}
+                    <div class="slicer-item">
+                        <input type="checkbox">
+                        <label>{{this}}</label>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        <!-- Widgets -->
+        <div class="section-title">Widgets</div>
+        <div class="widgets-grid">
+            {{#each widgets}}
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-type-badge">{{this.type}}</span>
+                    {{this.name}}
+                </div>
+                <div class="widget-body">
+                    {{#if this.type "TABLE"}}
+                    <table class="widget-table">
+                        <thead>
+                            <tr>
+                                {{#each this.columns}}
+                                <th>{{this}}</th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.rows}}
+                            <tr>
+                                {{#each this}}
+                                <td class="{{#if isNumber}}number{{/if}}">{{this}}</td>
+                                {{/each}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else if this.type "CHART"}}
+                    <div class="chart-placeholder">
+                        <div class="chart-grid">
+                            <div class="bar" style="height: 60%;"></div>
+                            <div class="bar" style="height: 80%;"></div>
+                            <div class="bar" style="height: 40%;"></div>
+                            <div class="bar" style="height: 90%;"></div>
+                            <div class="bar" style="height: 50%;"></div>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="chart-placeholder">[{{this.type}}]</div>
+                    {{/if}}
+                </div>
+                {{#if this.datamodel}}
+                <div class="metadata-footer">
+                    <div class="meta-item">
+                        <span class="meta-label">Model:</span>
+                        <span>{{this.datamodel}}</span>
+                    </div>
+                    {{#if this.filterCount}}
+                    <div class="meta-item">
+                        <span class="meta-label">Filters:</span>
+                        <span>{{this.filterCount}}</span>
+                    </div>
+                    {{/if}}
+                    {{#if this.paramCount}}
+                    <div class="meta-item">
+                        <span class="meta-label">Params:</span>
+                        <span>{{this.paramCount}}</span>
+                    </div>
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Variables -->
+        {{#if variables.length}}
+        <div class="section-title">Variables</div>
+        <div class="widgets-grid">
+            <div class="widget">
+                <div class="widget-header">Dashboard Variables ({{variables.length}})</div>
+                <div class="widget-body">
+                    <table class="widget-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each variables}}
+                            <tr>
+                                <td><strong>{{this.Name}}</strong></td>
+                                <td>{{this.Type}}</td>
+                                <td class="number">{{this.DefaultValue}}</td>
+                                <td>{{this.Description}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+
+    <script>
+        /**
+         * DATA MAPPING FROM YOUR DASHBOARD STRUCTURE
+         * 
+         * Extract widgets with all metadata:
+         * 
+         * function extractWidgets(dashboard) {
+         *   const visualizations = toArray(
+         *     dashboard.content.Visualisations?.ArrayOfEntityDef?.EntityDef
+         *   );
+         * 
+         *   return visualizations.map(v => ({
+         *     id: v.GenericEntityId,
+         *     name: v.Description,
+         *     type: v.EntitySubType, // CHART, TABLE, SLICER
+         *     datamodel: v.DatamodelDescription,
+         *     datamodelId: v.AttributeString1,
+         *     filterCount: countFilters(v.AttributeText1),
+         *     paramCount: countParams(v.AttributeText2),
+         *     columns: extractColumns(v.Definition?.Table),
+         *     owner: v.Owner
+         *   }));
+         * }
+         * 
+         * Extract filter widgets (slicers):
+         * 
+         * function extractSlicers(dashboard) {
+         *   const visualizations = toArray(
+         *     dashboard.content.Visualisations?.ArrayOfEntityDef?.EntityDef
+         *   );
+         * 
+         *   return visualizations
+         *     .filter(v => v.EntitySubType === 'SLICER')
+         *     .map(v => ({
+         *       name: v.Description,
+         *       items: extractSlicerItems(v.AttributeText1)
+         *     }));
+         * }
+         * 
+         * Count widget types:
+         * 
+         * function getWidgetTypeCounts(widgets) {
+         *   const map = new Map();
+         *   widgets.forEach(w => {
+         *     map.set(w.type, (map.get(w.type) || 0) + 1);
+         *   });
+         *   return Array.from(map, ([type, count]) => ({type, count}));
+         * }
+         * 
+         * Count unique data models:
+         * 
+         * function getDataModelCount(widgets) {
+         *   return new Set(widgets.map(w => w.datamodelId)).size;
+         * }
+         * 
+         * Count filters in widget:
+         * 
+         * function countFilters(attributeText1) {
+         *   const criteria = attributeText1?.CriteriaSetItem?.CriteriaValues?.CriteriaValue;
+         *   if (!criteria) return 0;
+         *   return Array.isArray(criteria) ? criteria.length : 1;
+         * }
+         * 
+         * Count parameters:
+         * 
+         * function countParams(attributeText2) {
+         *   const params = attributeText2?.Parameters?.ParameterField;
+         *   if (!params) return 0;
+         *   return Array.isArray(params) ? params.length : 1;
+         * }
+         * 
+         * Extract columns from table definition:
+         * 
+         * function extractColumns(tableDefinition) {
+         *   if (!tableDefinition?.Columns) return [];
+         *   const cols = toArray(tableDefinition.Columns);
+         *   return cols.map(c => ({
+         *     id: c.Id || c.Name,
+         *     name: c.DisplayName || c.Label || c.Name,
+         *     type: c.DataType || c.Format,
+         *     visible: c.Visible !== false
+         *   }));
+         * }
+         * 
+         * Extract variables:
+         * 
+         * function extractVariables(dashboard) {
+         *   const variables = toArray(
+         *     dashboard.content.Variables?.ArrayOfVariableDef?.VariableDef
+         *   );
+         *   return variables.map(v => ({
+         *     Name: v.Name,
+         *     Type: v.Type,
+         *     DefaultValue: v.DefaultValue,
+         *     Description: v.Description
+         *   }));
+         * }
+         * 
+         * Helper to normalize arrays:
+         * 
+         * function toArray(obj) {
+         *   if (!obj) return [];
+         *   return Array.isArray(obj) ? obj : [obj];
+         * }
+         */
+    </script>
+</body>
+</html>
