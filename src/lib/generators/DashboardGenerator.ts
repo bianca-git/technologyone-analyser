@@ -136,8 +136,12 @@ export class DashboardGenerator {
             layoutItems.forEach((item: any) => {
                 const widget = widgetMap.get(item.Id);
                 const x = item.X || 0;
+                // Guard the 12-column grid: x >= 12 would make width <= 0, and a
+                // zero/negative colspan never advances `col` in the render loop
+                // below -> infinite loop. Skip out-of-range items, clamp width >= 1.
+                if (x >= 12) return;
                 const row = Math.floor((item.Y || 0) / 100);
-                const width = Math.min(item.Width || 1, 12 - x);
+                const width = Math.max(1, Math.min(item.Width || 1, 12 - x));
 
                 maxRow = Math.max(maxRow, row);
                 widgetsByPos.set(`${row},${x}`, {
@@ -304,7 +308,9 @@ export class DashboardGenerator {
                         }
 
                         // Format/Type display with badge styling
-                        const formatType = col.Format || col.DataType || 'N/A';
+                        // String() guard: XML parsing can yield a non-string
+                        // (e.g. {} from an empty tag); .includes() below would throw.
+                        const formatType = String(col.Format || col.DataType || 'N/A');
                         const formatBadge =
                             formatType === 'N/A'
                                 ? formatType

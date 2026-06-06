@@ -73,6 +73,17 @@ describe('EtlSummary', () => {
         expect(targets).toEqual(['the WH']);
     });
 
+    it('de-duplicates Excel and Text file targets despite whitespace', () => {
+        const flow = [
+            { RawType: 'ExportToExcel', Output: { name: ' report.xlsx ' } },
+            { RawType: 'ExportToExcel', Output: { name: 'report.xlsx' } },
+            { RawType: 'SaveText', Output: { name: ' out.txt ' } },
+            { RawType: 'SaveText', Output: { name: 'out.txt' } },
+        ];
+        const { targets } = extractSourcesAndTargets(flow, plainSummaryFormatter);
+        expect(targets).toEqual(['report.xlsx (Excel)', 'out.txt (Text file)']);
+    });
+
     it('builds a narrative sentence with joins and conditions', () => {
         const flow = [
             { RawType: 'RunDirectQuery', Details: ['Source Table: SRC'] },

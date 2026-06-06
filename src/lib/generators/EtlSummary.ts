@@ -26,7 +26,11 @@ export interface EtlSummaryFormatter {
     emailRecipients: () => string;
 }
 
-/** Plain-text formatter (Word export): mirrors the old DocxGenerator output. */
+/**
+ * Plain-text formatter (Word export). Names reach the formatter already
+ * normalized (uppercased + whitespace-collapsed via normalizeTableName), so
+ * this just wraps them; it does not re-case or alter the value.
+ */
 export const plainSummaryFormatter: EtlSummaryFormatter = {
     table: (name) => name,
     file: (name) => name,
@@ -127,8 +131,10 @@ export function extractSourcesAndTargets(
                 targets.push(fmt.target(warehouse));
             }
         } else if (s.RawType === 'ExportToExcel') {
-            const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-            const targetName = filename ? `${fmt.file(filename.trim())} (Excel)` : `an Excel file`;
+            const filename = (
+                s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1]
+            )?.trim();
+            const targetName = filename ? `${fmt.file(filename)} (Excel)` : `an Excel file`;
             const targetKey = `EXCEL_${filename}`;
             if (!targetNames.has(targetKey)) {
                 targetNames.add(targetKey);
@@ -141,8 +147,10 @@ export function extractSourcesAndTargets(
                 targets.push(fmt.emailRecipients());
             }
         } else if (s.RawType === 'SaveText' || s.RawType === 'SaveTextfile') {
-            const filename = s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1];
-            const targetName = filename ? `${fmt.file(filename.trim())} (Text file)` : `a Text file`;
+            const filename = (
+                s.Output?.name || s.Details.find((d: string) => d.startsWith('File:'))?.split(': ')[1]
+            )?.trim();
+            const targetName = filename ? `${fmt.file(filename)} (Text file)` : `a Text file`;
             const targetKey = `TEXT_${filename}`;
             if (!targetNames.has(targetKey)) {
                 targetNames.add(targetKey);
