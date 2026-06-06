@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Wireframe: HTML vs Mermaid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        /* HTML Wireframe Styles */
+        .html-wireframe {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 0;
+            min-height: 400px;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            padding: 15px;
+        }
+
+        .sidebar-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #e8f4f8;
+            border-left: 3px solid #667eea;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #d0e8f2;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            font-weight: 600;
+            font-size: 12px;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .wide-card {
+            grid-column: 1 / -1;
+        }
+
+        /* Code Block Styles */
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .code-block code {
+            color: #333;
+        }
+
+        .mermaid-diagram {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1000px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Wireframe: HTML vs Mermaid Comparison</h1>
+
+        <div class="comparison">
+            <!-- HTML Section -->
+            <div class="section">
+                <h2>HTML Mockup</h2>
+                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Fully styled, interactive prototype</p>
+                <div class="html-wireframe">
+                    <div class="dashboard-header">📊 Sales Dashboard</div>
+                    <div class="dashboard-content">
+                        <div class="sidebar">
+                            <div class="sidebar-item">Overview</div>
+                            <div class="sidebar-item">Sales</div>
+                            <div class="sidebar-item">Revenue</div>
+                            <div class="sidebar-item">Customers</div>
+                            <div class="sidebar-item">Reports</div>
+                        </div>
+                        <div class="main-content">
+                            <div class="card">
+                                <div class="card-header">Total Revenue</div>
+                                <div class="card-value">$45.2K</div>
+                                <div class="card-subtitle">↑ 12% vs last month</div>
+                                <div class="chart-placeholder">[Chart]</div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">Orders</div>
+                                <div class="card-value">1,234</div>
+                                <div class="card-subtitle">↑ 8% vs last month</div>
+                                <div class="chart-placeholder">[Chart]</div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">Conversion Rate</div>
+                                <div class="card-value">3.2%</div>
+                                <div class="card-subtitle">↓ 0.5% vs last month</div>
+                                <div class="chart-placeholder">[Chart]</div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">Avg. Order Value</div>
+                                <div class="card-value">$156</div>
+                                <div class="card-subtitle">↑ 5% vs last month</div>
+                                <div class="chart-placeholder">[Chart]</div>
+                            </div>
+
+                            <div class="card wide-card">
+                                <div class="card-header">Recent Activity</div>
+                                <div class="chart-placeholder" style="height: 60px;">[Activity Timeline]</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-buttons" style="margin-top: 15px;">
+                    <button class="tab-btn active" onclick="switchTab('html-preview', this)">Preview</button>
+                    <button class="tab-btn" onclick="switchTab('html-code', this)">Code</button>
+                </div>
+
+                <div id="html-code" class="tab-content">
+                    <div class="code-block"><pre>&lt;div class="dashboard"&gt;
+  &lt;header&gt;📊 Sales Dashboard&lt;/header&gt;
+  &lt;div class="dashboard-content"&gt;
+    &lt;aside class="sidebar"&gt;
+      &lt;nav&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Overview&lt;/li&gt;
+          &lt;li&gt;Sales&lt;/li&gt;
+          &lt;li&gt;Revenue&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/aside&gt;
+    
+    &lt;main class="grid"&gt;
+      &lt;card&gt;
+        &lt;h3&gt;Total Revenue&lt;/h3&gt;
+        &lt;p class="value"&gt;$45.2K&lt;/p&gt;
+        &lt;chart&gt;&lt;/chart&gt;
+      &lt;/card&gt;
+      
+      &lt;card&gt;
+        &lt;h3&gt;Orders&lt;/h3&gt;
+        &lt;p class="value"&gt;1,234&lt;/p&gt;
+        &lt;chart&gt;&lt;/chart&gt;
+      &lt;/card&gt;
+      
+      &lt;!-- More cards... --&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
+                </div>
+            </div>
+
+            <!-- Mermaid Section -->
+            <div class="section">
+                <h2>Mermaid Diagram</h2>
+                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Structure-focused, text-based diagram</p>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('mermaid-preview', this)">Preview</button>
+                    <button class="tab-btn" onclick="switchTab('mermaid-code', this)">Code</button>
+                </div>
+
+                <div id="mermaid-preview" class="tab-content active" style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px;">
+                    <svg width="100%" height="450" style="border: 1px solid #e0e0e0; border-radius: 4px;">
+                        <!-- Dashboard Container -->
+                        <rect x="10" y="10" width="380" height="430" fill="#f9f9f9" stroke="#667eea" stroke-width="2" rx="4"/>
+                        <text x="20" y="30" font-size="14" font-weight="bold" fill="#333">Dashboard</text>
+
+                        <!-- Header -->
+                        <rect x="20" y="40" width="360" height="40" fill="#667eea" stroke="#555" stroke-width="1" rx="3"/>
+                        <text x="30" y="65" font-size="13" font-weight="bold" fill="white">Header: Sales Dashboard</text>
+
+                        <!-- Sidebar -->
+                        <rect x="20" y="90" width="100" height="340" fill="#f0f0f0" stroke="#999" stroke-width="1" rx="3"/>
+                        <text x="30" y="110" font-size="11" font-weight="bold" fill="#333">Sidebar</text>
+                        <line x1="30" y1="115" x2="100" y2="115" stroke="#999" stroke-width="1"/>
+                        <text x="30" y="135" font-size="10" fill="#555">Overview</text>
+                        <text x="30" y="155" font-size="10" fill="#555">Sales</text>
+                        <text x="30" y="175" font-size="10" fill="#555">Revenue</text>
+                        <text x="30" y="195" font-size="10" fill="#555">Customers</text>
+                        <text x="30" y="215" font-size="10" fill="#555">Reports</text>
+
+                        <!-- Main Content Area -->
+                        <rect x="130" y="90" width="250" height="340" fill="white" stroke="#999" stroke-width="1" rx="3"/>
+                        <text x="140" y="110" font-size="11" font-weight="bold" fill="#333">Main Content (Grid 2x2)</text>
+                        <line x1="140" y1="115" x2="360" y2="115" stroke="#999" stroke-width="1"/>
+
+                        <!-- Card 1 -->
+                        <rect x="140" y="130" width="105" height="75" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="2"/>
+                        <text x="145" y="148" font-size="9" font-weight="bold" fill="#667eea">Revenue</text>
+                        <text x="145" y="165" font-size="13" font-weight="bold" fill="#333">$45.2K</text>
+                        <text x="145" y="180" font-size="8" fill="#999">↑ 12% vs last</text>
+
+                        <!-- Card 2 -->
+                        <rect x="255" y="130" width="105" height="75" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="2"/>
+                        <text x="260" y="148" font-size="9" font-weight="bold" fill="#667eea">Orders</text>
+                        <text x="260" y="165" font-size="13" font-weight="bold" fill="#333">1,234</text>
+                        <text x="260" y="180" font-size="8" fill="#999">↑ 8% vs last</text>
+
+                        <!-- Card 3 -->
+                        <rect x="140" y="215" width="105" height="75" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="2"/>
+                        <text x="145" y="233" font-size="9" font-weight="bold" fill="#667eea">Conversion</text>
+                        <text x="145" y="250" font-size="13" font-weight="bold" fill="#333">3.2%</text>
+                        <text x="145" y="265" font-size="8" fill="#999">↓ 0.5% vs last</text>
+
+                        <!-- Card 4 -->
+                        <rect x="255" y="215" width="105" height="75" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="2"/>
+                        <text x="260" y="233" font-size="9" font-weight="bold" fill="#667eea">Avg Order</text>
+                        <text x="260" y="250" font-size="13" font-weight="bold" fill="#333">$156</text>
+                        <text x="260" y="265" font-size="8" fill="#999">↑ 5% vs last</text>
+
+                        <!-- Wide Card -->
+                        <rect x="140" y="300" width="220" height="60" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="2"/>
+                        <text x="145" y="318" font-size="9" font-weight="bold" fill="#667eea">Activity</text>
+                        <text x="145" y="345" font-size="9" fill="#999">[Recent Activity Timeline]</text>
+                    </svg>
+                </div>
+
+                <div id="mermaid-code" class="tab-content">
+                    <div class="code-block"><pre>graph TD
+    DB["🖥️ Dashboard"]
+    
+    DB --> H["Header<br/>Sales Dashboard"]
+    DB --> C["Dashboard Content"]
+    
+    C --> S["Sidebar<br/>- Overview<br/>- Sales<br/>- Revenue<br/>- Customers<br/>- Reports"]
+    
+    C --> M["Main Content<br/>Grid Layout 2x2"]
+    
+    M --> C1["Card: Revenue<br/>$45.2K<br/>↑ 12%"]
+    M --> C2["Card: Orders<br/>1,234<br/>↑ 8%"]
+    M --> C3["Card: Conversion<br/>3.2%<br/>↓ 0.5%"]
+    M --> C4["Card: Avg Order<br/>$156<br/>↑ 5%"]
+    
+    M --> W["Full-width Card<br/>Activity Timeline"]
+    
+    style DB fill:#667eea,stroke:#555,color:#fff
+    style H fill:#667eea,stroke:#555,color:#fff
+    style C fill:#f9f9f9,stroke:#999
+    style S fill:#f0f0f0,stroke:#999
+    style M fill:#fff,stroke:#999
+    style C1 fill:#f5f5f5,stroke:#ccc
+    style C2 fill:#f5f5f5,stroke:#ccc
+    style C3 fill:#f5f5f5,stroke:#ccc
+    style C4 fill:#f5f5f5,stroke:#ccc
+    style W fill:#f5f5f5,stroke:#ccc</pre></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="section">
+            <h2>When to Use Each Approach</h2>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="background: #f0f0f0;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #667eea;">Aspect</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #667eea;">HTML Mockup</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #667eea;">Mermaid Diagram</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;"><strong>Purpose</strong></td>
+                        <td style="padding: 12px;">Interactive prototype, final design</td>
+                        <td style="padding: 12px;">Quick structural overview, documentation</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;"><strong>Styling</strong></td>
+                        <td style="padding: 12px;">Full control, colors, fonts, spacing</td>
+                        <td style="padding: 12px;">Limited, basic styling</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;"><strong>Interactivity</strong></td>
+                        <td style="padding: 12px;">Can add JavaScript interactions</td>
+                        <td style="padding: 12px;">Static diagrams only</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;"><strong>Learning Curve</strong></td>
+                        <td style="padding: 12px;">HTML/CSS/JS knowledge required</td>
+                        <td style="padding: 12px;">Simple text-based syntax</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;"><strong>Best For</strong></td>
+                        <td style="padding: 12px;">Detailed mockups, presentations, development</td>
+                        <td style="padding: 12px;">Early concepts, documentation, architecture</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px;"><strong>File Size</strong></td>
+                        <td style="padding: 12px;">Larger (with CSS/JS)</td>
+                        <td style="padding: 12px;">Minimal (text-based)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Differences -->
+        <div class="section">
+            <h2>Key Differences</h2>
+            <ul style="font-size: 13px; line-height: 1.8; color: #555;">
+                <li><strong>HTML:</strong> Best for pixel-perfect designs, client presentations, and clickable prototypes. Shows actual visual hierarchy and design details.</li>
+                <li><strong>Mermaid:</strong> Best for communicating structure, component relationships, and layout logic. Great for documentation and quick iterations.</li>
+                <li><strong>Use Together:</strong> Mermaid for architecture planning → HTML for detailed mockup → CSS for final styling → JavaScript for interactivity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(contentId, button) {
+            // Hide all tab content in the same section
+            const section = button.closest('.section');
+            const allContent = section.querySelectorAll('.tab-content');
+            allContent.forEach(content => content.classList.remove('active'));
+
+            // Remove active from all buttons in the same section
+            const allButtons = section.querySelectorAll('.tab-btn');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected content and mark button as active
+            document.getElementById(contentId).classList.add('active');
+            button.classList.add('active');
+        }
+    </script>
+</body>
+</html>
