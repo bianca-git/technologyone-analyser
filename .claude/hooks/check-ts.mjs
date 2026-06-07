@@ -36,11 +36,21 @@ const file = normalize(input.file_path ?? input.filePath ?? input.path);
 // Only act on src TS/TSX files (accept absolute or relative paths; case-insensitive for Windows).
 if (!/(?:^|\/)src\/.*\.(ts|tsx)$/i.test(file)) process.exit(0);
 
+// Defence in depth: on win32 we spawn with shell:true (needed to resolve the
+// pnpm .cmd shim), so the shell could reinterpret metacharacters in `file`.
+// Reject any path containing shell-significant chars — a legitimate source
+// path under src/ never needs them.
+if (/[;&|`$(){}<>"'!*?\s\\]/.test(file.replace(/\//g, ''))) {
+    process.exit(0);
+}
+
 const out = [];
 
-// Pass args as an array (never a shell string) so a file path with shell
-// metacharacters can't inject commands. shell:true only on win32, where
-// `pnpm` resolves to a .cmd that spawn can't exec directly.
+// Args are passed as an array (not a shell string). On POSIX (shell:false)
+// this fully prevents shell interpretation of the file path. On win32 we set
+// shell:true so spawn can resolve the `pnpm` .cmd shim — there the shell CAN
+// reinterpret metacharacters, which is why the caller already rejects any
+// `file` containing shell-significant characters before we get here.
 function run(label, cmd, args) {
     const res = spawnSync(cmd, args, {
         stdio: 'pipe',
