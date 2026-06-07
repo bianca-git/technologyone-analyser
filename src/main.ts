@@ -229,7 +229,8 @@ async function render() {
         content += `
         <main class="grow p-6 bg-gray-100 w-full animate-fade-in">
              <div class="w-full">
-                 <div class="sticky top-0 z-30 glass-toolbar flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 mb-2">
+                 <div class="sticky top-0 z-30 glass-toolbar w-full flex items-center gap-2 text-sm text-gray-500 ">
+                 <div class="flex flex-col md:flex-row md:space-between gap-4 py-4 mb-2 mw-4xl mx-auto">
                     <button onclick="window.navigateTo('dashboard')" class="text-sm text-gray-500 hover:text-gray-900 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                         Back to Library
@@ -239,6 +240,7 @@ async function render() {
                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                          Export
                     </button>
+                    </div>
                  </div>
                  <div id="detailContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden w-full flex flex-col max-w-4xl mx-auto">
                     <div class="p-12 text-center text-gray-400">

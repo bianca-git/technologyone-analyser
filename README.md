@@ -51,7 +51,7 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
 
 ### 🔄 Module: Integration & ETL (Current)
 - [x] **ETL Parser (`.t1etlp`)**: Full step-by-step visualisation, loop handling, and logic extraction.
-- [ ] **Advanced Logic**: Better distinct handling for `StartProcess`, `Script`, and `DTS` tasks.
+- [x] **Advanced Logic**: Better distinct handling for `StartProcess`, `Script`, and `DTS` tasks.
 
 ### 📊 Module: BI & Analytics (Active Development)
 - [x] **Data Models (`.t1dm`)**:

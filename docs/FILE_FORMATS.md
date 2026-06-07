@@ -753,3 +753,22 @@ These step types exist in TechnologyOne but haven't been observed in sample file
 - Source: `src/lib/FileProcessor.ts` - Main file ingestion
 - Source: `src/lib/parsers/EtlParser.ts` - ETL parsing logic
 - Source: `src/lib/parsers/DataModelParser.ts` - Data Model parsing logic
+
+## Advanced step types — UNVERIFIED field names
+
+`StartProcess`, `Script`, and `DTS` step types are parsed defensively because no
+sample `.t1etlp` in this repo contains them and TechnologyOne's ETL XML schema is
+not publicly documented. The parser (`src/lib/parsers/StepDescriptors.ts`) tries
+multiple candidate keys per field and degrades gracefully if none match. **These
+key names are assumptions — correct them against a real file when available.**
+
+| Step type    | Field        | Candidate keys (first non-empty wins)                      |
+| ------------ | ------------ | ---------------------------------------------------------- |
+| StartProcess | process name | `ProcessName`, `ProcessToRun`, `Process`, `SubProcessName` |
+| Script       | language     | `ScriptLanguage`, `Language`                               |
+| Script       | body         | `ScriptText`, `Script`                                     |
+| DTS          | package      | `DTSPackageName`, `PackageName`, `DTSPackage`, `Package`   |
+| DTS          | connection   | `ConnectionString`, `Connection`, `DTSConnection`          |
+
+`Group` handling is verified against real sample data (the step `<Name>` is the
+label; children attach via `ParentStepId`).

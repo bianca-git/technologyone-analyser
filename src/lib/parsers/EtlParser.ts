@@ -1,11 +1,26 @@
 import type { EtlStep, LogicRule, XmlNode, XmlValue } from './types';
 import { asNode } from './types';
+import { STEP_DESCRIPTORS, type StepDescriptor } from './StepDescriptors';
 export type { EtlStep, LogicRule } from './types';
 
 /** A raw XML step node with the `children` array the parser grafts on. */
-type RawStep = XmlNode & { children?: RawStep[] };
+export type RawStep = XmlNode & { children?: RawStep[] };
 
 export class EtlParser {
+    private static descriptorHelpers = {
+        getTextSafe: (v: XmlValue) => EtlParser.getTextSafe(v),
+        getListSafe: (v: XmlValue, key: string) => EtlParser.getListSafe(v, key),
+        // firstOf uses EtlParser.getTextSafe so descriptor text extraction matches
+        // the rest of the parser (its #text/fallback behavior), not a divergent copy.
+        firstOf: (storage: XmlNode, keys: string[]): string => {
+            for (const k of keys) {
+                const t = EtlParser.getTextSafe(storage[k]);
+                if (t && t.trim().length > 0) return t.trim();
+            }
+            return '';
+        },
+    };
+
     static getListSafe(obj: XmlValue, key: string): XmlNode[] {
         const node = asNode(obj);
         if (!node || node[key] == null) return [];
@@ -179,6 +194,14 @@ export class EtlParser {
     }
 
     static getExplicitOutput(stepType: string, storage: XmlNode, _step: XmlValue) {
+        const descriptor = STEP_DESCRIPTORS[stepType];
+        if (descriptor) {
+            try {
+                return descriptor(storage, _step as RawStep, this.descriptorHelpers).explicitOutput;
+            } catch {
+                return null;
+            }
+        }
         const target = this.getTextSafe(storage.OutputTableName || storage.TableName || storage.VariableName);
         switch (stepType) {
             case 'ImportWarehouseData':
@@ -589,6 +612,26 @@ export class EtlParser {
 
             info.FlowLabel = fl;
 
+            // --- Advanced step descriptors (Group / Script / StartProcess / DTS) ---
+            const advDescriptor = STEP_DESCRIPTORS[stepType];
+            if (advDescriptor) {
+                try {
+                    const d: StepDescriptor = advDescriptor(storage, step, this.descriptorHelpers);
+                    info.Context = d.contextText;
+                    info.FlowLabel = d.flowLabel;
+                    if (d.icon) info.Icon = d.icon;
+                    if (d.smartDesc) info.SmartDesc = d.smartDesc;
+                    if (d.inputs.length) info.Inputs = d.inputs;
+                    if (d.outputs.length) info.Outputs = d.outputs;
+                    d.details.forEach((line) => {
+                        if (!info.Details.includes(line)) info.Details.push(line);
+                    });
+                } catch (e) {
+                    console.error(`Descriptor failed for ${stepType}:`, e);
+                    // Fall back to the generic context already set above.
+                }
+            }
+
             if (!isActive) info.Phase += ' [DISABLED]';
 
             // --- General Details Population ---
@@ -793,16 +836,8 @@ export class EtlParser {
                 if (breakCond) info.Details.push(`Break When: ${breakCond}`);
                 if (indexVar) info.Details.push(`Index Variable: ${indexVar}`);
             }
-            // --- Script/SQL execution steps ---
-            else if (stepType === 'Script' || stepType === 'ExecuteScript') {
-                const lang = this.getTextSafe(storage.ScriptLanguage || storage.Language);
-                const scriptText = this.getTextSafe(storage.ScriptText || storage.Script);
-                if (lang) info.Details.push(`Language: ${lang}`);
-                if (scriptText) {
-                    const preview = scriptText.length > 150 ? scriptText.substring(0, 150) + '...' : scriptText;
-                    info.Details.push(`Script: ${preview}`);
-                }
-            } else if (stepType === 'ExecuteSQL' || stepType === 'RunSQL') {
+            // --- SQL execution steps (Script/StartProcess/DTS handled by StepDescriptors) ---
+            else if (stepType === 'ExecuteSQL' || stepType === 'RunSQL') {
                 const sql = this.getTextSafe(storage.SqlStatement || storage.SQL || storage.Query);
                 const conn = this.getTextSafe(storage.ConnectionString || storage.Connection);
                 if (conn) info.Details.push(`Connection: ${conn}`);
@@ -810,16 +845,6 @@ export class EtlParser {
                     const preview = sql.length > 200 ? sql.substring(0, 200) + '...' : sql;
                     info.Details.push(`SQL: ${preview}`);
                 }
-            } else if (stepType === 'StartProcess' || stepType === 'RunProcess') {
-                const procName = this.getTextSafe(storage.ProcessName || storage.ProcessToRun);
-                const procId = this.getTextSafe(storage.ProcessId);
-                if (procName) info.Details.push(`Process: ${procName}`);
-                if (procId && !procName) info.Details.push(`Process ID: ${procId}`);
-                // Process parameters
-                const params = this.getListSafe(storage.Parameters, 'ParameterItem');
-                params.forEach((p) => {
-                    info.Details.push(`Param: ${this.getTextSafe(p.Name)} = ${this.getTextSafe(p.Value)}`);
-                });
             }
             // --- FilterTable and SortTable ---
             else if (stepType === 'FilterTable') {

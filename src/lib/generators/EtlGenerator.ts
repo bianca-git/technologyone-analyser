@@ -602,16 +602,24 @@ export class EtlGenerator {
                 item.RawType === 'SendEmail'
                     ? 'filename-orange'
                     : '';
-            const filenameIcon =
-                item.RawType === 'ExportToExcel'
-                    ? '📊'
-                    : item.RawType === 'SaveText' || item.RawType === 'SaveTextfile'
-                      ? '📦'
-                      : item.RawType === 'LoadTextFile'
-                        ? '📄'
-                        : item.RawType === 'SendEmail'
-                          ? '📧'
-                          : '';
+            // Descriptor-supplied Icon is authoritative; fall back to the
+            // RawType→glyph map for types that don't go through a descriptor
+            // (ExportToExcel, SaveText, LoadTextFile, SendEmail).
+            const RAW_TYPE_ICONS: Record<string, string> = {
+                ExportToExcel: '📊',
+                SaveText: '📦',
+                SaveTextfile: '📦',
+                LoadTextFile: '📄',
+                SendEmail: '📧',
+                Script: '📜',
+                ExecuteScript: '📜',
+                StartProcess: '▶',
+                RunProcess: '▶',
+                DTS: '🔀',
+                ExecuteDTS: '🔀',
+                RunDTS: '🔀',
+            };
+            const filenameIcon = item.Icon || RAW_TYPE_ICONS[item.RawType] || '';
             const stepId = item.id || item.StepId || '';
             const stepAnchorId = stepId ? `step-${stepId.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
 
