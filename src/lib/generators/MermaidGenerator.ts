@@ -46,7 +46,6 @@ export class MermaidGenerator {
      * Generates the mermaid syntax for the given flow.
      */
     static generateMermaidSyntax(flow: any[]): string {
-        const isTech = true;
         let graph = 'flowchart TD\n';
 
         // Define classes for styling
@@ -84,7 +83,7 @@ export class MermaidGenerator {
 
             items.forEach((item) => {
                 // --- Group Handling (Subgraph) ---
-                if (item.RawType === 'Group' || (isTech && item.RawType === 'Loop')) {
+                if (item.RawType === 'Group' || item.RawType === 'Loop') {
                     const groupId = getSafeId(item.Step);
                     // Use a subgraph for visual grouping
                     steps.push(`    subgraph ${groupId}_sg ["${item.RawType}: ${item.Step}"]`);
