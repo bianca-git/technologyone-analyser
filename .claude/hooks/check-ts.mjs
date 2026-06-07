@@ -10,7 +10,7 @@
  * always exits 0 so edits aren't rejected; findings are printed for Claude to act on.
  */
 import { readFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 
 function normalize(p) {
     return String(p || '').replace(/\\/g, '/');
@@ -33,22 +33,32 @@ try {
 const input = payload.tool_input ?? payload.toolInput ?? {};
 const file = normalize(input.file_path ?? input.filePath ?? input.path);
 
-// Only act on src TS/TSX files.
-if (!/\/src\/.*\.(ts|tsx)$/.test(file)) process.exit(0);
+// Only act on src TS/TSX files (accept absolute or relative paths).
+if (!/(?:^|\/)src\/.*\.(ts|tsx)$/.test(file)) process.exit(0);
 
 const out = [];
 
-function run(label, cmd) {
-    try {
-        execSync(cmd, { stdio: 'pipe', encoding: 'utf-8' });
-    } catch (e) {
-        const msg = `${e.stdout || ''}${e.stderr || ''}`.trim();
+// Pass args as an array (never a shell string) so a file path with shell
+// metacharacters can't inject commands. shell:true only on win32, where
+// `pnpm` resolves to a .cmd that spawn can't exec directly.
+function run(label, cmd, args) {
+    const res = spawnSync(cmd, args, {
+        stdio: 'pipe',
+        encoding: 'utf-8',
+        shell: process.platform === 'win32',
+    });
+    if (res.error) {
+        out.push(`[${label}]\n${res.error.message}`);
+        return;
+    }
+    if (res.status !== 0) {
+        const msg = `${res.stdout || ''}${res.stderr || ''}`.trim();
         if (msg) out.push(`[${label}]\n${msg}`);
     }
 }
 
-run('eslint', `pnpm exec eslint --fix "${file}"`);
-run('tsc', `pnpm exec tsc --noEmit`);
+run('eslint', 'pnpm', ['exec', 'eslint', '--fix', file]);
+run('tsc', 'pnpm', ['exec', 'tsc', '--noEmit']);
 
 if (out.length) {
     process.stderr.write(out.join('\n\n') + '\n');

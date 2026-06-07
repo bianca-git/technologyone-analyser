@@ -38,9 +38,12 @@ See `docs/ARCHITECTURE.md`, `docs/API_REFERENCE.md`, `docs/FILE_FORMATS.md` for 
 ### Security: escape ALL file-derived text in HTML
 Generators build HTML via string concatenation. Every file-derived value interpolated into an
 HTML string (incl. `innerHTML`/`insertAdjacentHTML` sinks) **MUST** pass through
-`ExpressionFormatter.escapeHtml()` — UNLESS it goes through `colouriseTextHTML` (which escapes
-internally). XSS has regressed here 3× (SmartDesc, `main.ts` itemRow, `EtlGenerator`). Treat
-unescaped interpolation of parsed XML as a bug.
+`ExpressionFormatter.escapeHtml()`. Note: `colouriseTextHTML` does **NOT** fully escape — it
+only wraps matched var/table/step names in span badges and passes all other text (and the
+matched names themselves) through raw, so its output is XSS-unsafe for arbitrary HTML. Escape
+the input with `escapeHtml()` *before* colourising if it can contain arbitrary HTML. XSS has
+regressed here 3× (SmartDesc, `main.ts` itemRow, `EtlGenerator`). Treat unescaped interpolation
+of parsed XML as a bug.
 
 ### Typing: no `any` on the XML spine
 Deep XML is typed via `XmlNode`/`XmlValue`/`asNode()` in `parsers/types.ts`. Don't reintroduce

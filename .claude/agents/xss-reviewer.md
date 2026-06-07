@@ -22,9 +22,14 @@ even though the app is "local", a malicious sample file shared between users is 
 
 Every file-derived value placed into an HTML string MUST be one of:
 1. Passed through `ExpressionFormatter.escapeHtml()`, OR
-2. Passed through `ExpressionFormatter.colouriseTextHTML()` (escapes internally), OR
-3. A value the code itself produced from a fixed allowlist (e.g. a known icon name, a
+2. A value the code itself produced from a fixed allowlist (e.g. a known icon name, a
    numeric count, a hardcoded CSS class) — NOT raw file content.
+
+**Do NOT treat `colouriseTextHTML()` as an escaping function.** It only wraps matched
+var/table/step names in span badges; all other text — and the matched names themselves — pass
+through raw and unescaped. Input containing arbitrary HTML must be `escapeHtml()`'d *before*
+being colourised, or it's an XSS sink. Flag any code that relies on `colouriseTextHTML` alone to
+sanitise file-derived text.
 
 Anything else interpolated into a template literal that becomes `innerHTML`,
 `insertAdjacentHTML`, `outerHTML`, or a returned HTML string is a finding.
