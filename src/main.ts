@@ -43,7 +43,7 @@ function header() {
                 <h1 class="text-xl font-bold tracking-tight hover:text-blue-300">TechnologyOne Analyser</h1>
             </div>
             <div class="flex items-center">
-                <span class="text-xs text-slate-400 mr-4">v0.1.0 (Testing)</span>
+                <span class="text-xs text-slate-400 mr-4">v${__APP_VERSION__}</span>
 
                 <div id="header-controls" class="flex items-center gap-2">
                     <button onclick="window.verifyOffline()" title="Verify Privacy" class="group bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-full font-medium transition-all duration-300 ease-in-out border border-emerald-700 flex items-center shadow-sm">
