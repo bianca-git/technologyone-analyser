@@ -75,55 +75,42 @@ function formatDate(date: Date) {
     return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
 }
 
-function dashboardLayout(items: any[]) {
-    const list = items
-        .map((r) => {
-            let summaryText = r.metadata.description;
-            if (r.type === 'report') {
-                try {
-                    const flowData = EtlParser.parseSteps(r.rawSteps);
-                    summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
-                } catch (e) {
-                    console.error('Failed dashboard summary', e);
-                }
-            } else if (r.type === 'dashboard') {
-                try {
-                    const visualizations = r.content.Visualisations?.ArrayOfEntityDef?.EntityDef || [];
-                    const vizList = Array.isArray(visualizations) ? visualizations : [visualizations];
-                    const slicers = vizList.filter((v: any) => v.EntitySubType === 'SLICER').length;
-                    const tables = vizList.filter((v: any) => v.EntitySubType === 'TABLE').length;
-                    const charts = vizList.filter((v: any) => v.EntitySubType === 'CHART').length;
-                    summaryText = `${vizList.length} widgets: ${slicers} slicers, ${tables} tables, ${charts} charts`;
-                } catch (e) {
-                    console.error('Failed to compute widget summary', e);
-                }
-            }
+function itemSummary(r: any): string {
+    let summaryText = r.metadata.description;
+    if (r.type === 'report') {
+        try {
+            const flowData = EtlParser.parseSteps(r.rawSteps);
+            summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
+        } catch (e) {
+            console.error('Failed dashboard summary', e);
+        }
+    } else if (r.type === 'dashboard') {
+        try {
+            const visualizations = r.content.Visualisations?.ArrayOfEntityDef?.EntityDef || [];
+            const vizList = Array.isArray(visualizations) ? visualizations : [visualizations];
+            const slicers = vizList.filter((v: any) => v.EntitySubType === 'SLICER').length;
+            const tables = vizList.filter((v: any) => v.EntitySubType === 'TABLE').length;
+            const charts = vizList.filter((v: any) => v.EntitySubType === 'CHART').length;
+            summaryText = `${vizList.length} widgets: ${slicers} slicers, ${tables} tables, ${charts} charts`;
+        } catch (e) {
+            console.error('Failed to compute widget summary', e);
+        }
+    }
+    return summaryText;
+}
 
-            const badgeBg =
-                r.type === 'report'
-                    ? 'bg-blue-50 text-blue-700 border-blue-200'
-                    : r.type === 'datamodel'
-                      ? 'bg-purple-50 text-purple-700 border-purple-200'
-                      : 'bg-emerald-50 text-emerald-700 border-emerald-200';
-            const badgeText = r.type === 'report' ? 'ETL' : r.type === 'datamodel' ? 'Data Model' : 'DASHBOARD';
-
-            return `
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition flex justify-between items-center group relative">
-            <div class="cursor-pointer grow" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
-                <div class="flex items-center space-x-2 mb-1">
-                    <span class="text-[0.65rem] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded border ${badgeBg}">
-                        ${badgeText}
-                    </span>
-                    <h3 class="font-bold text-gray-800 group-hover:text-blue-600">${r.metadata.name}</h3>
-                </div>
-                <p class="text-xs text-gray-500">Publisher: ${r.metadata.owner} • Ver: ${r.metadata.version || '-'}</p>
-                 <p class="text-[10px] text-gray-500 mt-1 line-clamp-2 leading-tight">${summaryText}</p>
+function itemRow(r: any): string {
+    const summaryText = itemSummary(r);
+    return `
+        <div class="group flex items-center justify-between gap-4 bg-white px-4 py-3 rounded-lg border border-gray-200 hover:shadow-md hover:border-gray-300 transition cursor-pointer" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
+            <div class="min-w-0">
+                <h3 class="font-bold text-gray-800 group-hover:text-blue-600 leading-tight truncate">${r.metadata.name}</h3>
+                <p class="text-xs text-gray-500">${r.metadata.owner} • v${r.metadata.version || '-'}</p>
+                <p class="text-[11px] text-gray-500 mt-0.5 line-clamp-1">${summaryText}</p>
             </div>
-             <div class="flex items-center space-x-4 ml-4">
-                <div class="text-xs text-gray-400 whitespace-nowrap">
-                    ${formatDate(r.dateAdded)}
-                </div>
-                <button onclick="event.stopPropagation(); window.deleteEntity(${r.id}, '${r.type}')" class="text-gray-300 hover:text-red-500 transition p-1" title="Delete">
+            <div class="flex items-center gap-4 shrink-0">
+                <span class="text-xs text-gray-400 whitespace-nowrap">${formatDate(r.dateAdded)}</span>
+                <button onclick="event.stopPropagation(); window.deleteEntity(${r.id}, '${r.type}')" class="text-gray-300 hover:text-red-500 transition p-1 opacity-0 group-hover:opacity-100" title="Delete">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -131,30 +118,81 @@ function dashboardLayout(items: any[]) {
             </div>
         </div>
     `;
-        })
-        .join('');
+}
+
+const SECTION_DEFS = [
+    { type: 'report', title: 'ETL Reports', dot: 'bg-blue-500', accent: 'border-blue-200', head: 'text-blue-700' },
+    {
+        type: 'datamodel',
+        title: 'Data Models',
+        dot: 'bg-purple-500',
+        accent: 'border-purple-200',
+        head: 'text-purple-700',
+    },
+    {
+        type: 'dashboard',
+        title: 'Dashboards',
+        dot: 'bg-emerald-500',
+        accent: 'border-emerald-200',
+        head: 'text-emerald-700',
+    },
+] as const;
+
+function dashboardLayout(items: any[]) {
+    const counts = {
+        report: items.filter((i) => i.type === 'report').length,
+        datamodel: items.filter((i) => i.type === 'datamodel').length,
+        dashboard: items.filter((i) => i.type === 'dashboard').length,
+    };
+
+    const sections = SECTION_DEFS.map((s) => {
+        const secItems = items.filter((i) => i.type === s.type);
+        if (secItems.length === 0) return '';
+        return `
+        <section>
+            <div class="flex items-center gap-2 mb-3 pb-2 border-b ${s.accent}">
+                <span class="w-2.5 h-2.5 rounded-full ${s.dot}"></span>
+                <h2 class="text-sm font-bold ${s.head}">${s.title}</h2>
+                <span class="text-xs text-gray-400">${secItems.length}</span>
+            </div>
+            <div class="space-y-2">${secItems.map(itemRow).join('')}</div>
+        </section>`;
+    }).join('');
+
+    const emptyState =
+        items.length === 0
+            ? `<div class="text-center text-gray-400 py-12">Library empty — upload a definition to get started.</div>`
+            : '';
 
     return `
     <main class="grow p-6 bg-gray-100 w-full">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <!-- Upload -->
-            <div id="dropZone" class="bg-white p-10 rounded-xl shadow-sm border-2 border-dashed border-gray-300 text-center transition-all hover:border-blue-500 hover:bg-blue-50">
-                <div class="space-y-3 pointer-events-none">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-2">
+        <div class="max-w-5xl mx-auto space-y-8">
+            <!-- Hero: upload + stats split -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div id="dropZone" class="md:col-span-2 bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-8 rounded-2xl shadow-md border-2 border-transparent hover:border-blue-300 cursor-pointer transition-all flex items-center gap-5">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/15 backdrop-blur shrink-0 pointer-events-none">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900">Upload Definitions</h2>
-                    <p class="text-sm text-gray-500">Drag & drop <code>.t1etlp</code>, <code>.t1dm</code>, or <code>.t1db</code> files here</p>
+                    <div class="pointer-events-none">
+                        <h2 class="text-2xl font-bold leading-tight">Upload Definitions</h2>
+                        <p class="text-sm text-blue-100 mt-1">Drag & drop <code class="bg-white/20 px-1 rounded">.t1etlp</code>, <code class="bg-white/20 px-1 rounded">.t1dm</code>, <code class="bg-white/20 px-1 rounded">.t1db</code> — everything stays on your device.</p>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm,.t1db" class="hidden">
                 </div>
-                  <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm,.t1db" class="hidden">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 flex flex-col justify-center">
+                    <p class="text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-3">Library (${items.length})</p>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div><div class="text-2xl font-bold text-blue-600">${counts.report}</div><div class="text-[10px] text-gray-500">ETL</div></div>
+                        <div><div class="text-2xl font-bold text-purple-600">${counts.datamodel}</div><div class="text-[10px] text-gray-500">Models</div></div>
+                        <div><div class="text-2xl font-bold text-emerald-600">${counts.dashboard}</div><div class="text-[10px] text-gray-500">Dash</div></div>
+                    </div>
+                </div>
             </div>
 
-            <!-- List -->
-            <div>
-                <h2 class="text-lg font-bold text-gray-700 mb-3">Library (${items.length})</h2>
-                <div class="space-y-3">
-                    ${list}
-                </div>
+            <!-- Sections by type -->
+            <div class="space-y-8">
+                ${sections}
+                ${emptyState}
             </div>
         </div>
     </main>
@@ -219,6 +257,8 @@ async function render() {
             const container = document.getElementById('detailContainer');
             if (container) {
                 container.innerHTML = html;
+                // Wire flow-diagram lineage (hover to trace, click to pin)
+                wireFlowLineage(container);
                 // Initialize Mermaid if charts are present
                 if (container.querySelector('.mermaid')) {
                     try {
@@ -247,6 +287,63 @@ async function render() {
     if (currentView === 'dashboard') {
         setupDragAndDrop();
     }
+}
+
+/**
+ * Wire the linked-flow lineage interaction. Tokens carry data-token (normalized
+ * name) and data-role (producer|consumer). Hovering a chip lights every chip of
+ * the same token (producer marked "made here", others "used") and dims the rest;
+ * clicking pins that lineage so it persists while scrolling. Click again, click a
+ * different token, or click empty space to clear.
+ */
+function wireFlowLineage(container: HTMLElement) {
+    const toks = Array.from(container.querySelectorAll<HTMLElement>('.flow-tok[data-token]'));
+    if (toks.length === 0) return;
+    let pinned: string | null = null;
+
+    const clear = () => {
+        toks.forEach((t) => t.classList.remove('dim', 'lit', 'is-producer', 'is-consumer', 'pinned'));
+    };
+
+    const highlight = (name: string, pin: boolean) => {
+        clear();
+        toks.forEach((t) => {
+            if (t.dataset.token === name) {
+                t.classList.add('lit');
+                t.classList.add(t.dataset.role === 'producer' ? 'is-producer' : 'is-consumer');
+                if (pin) t.classList.add('pinned');
+            } else {
+                t.classList.add('dim');
+            }
+        });
+    };
+
+    toks.forEach((tok) => {
+        const name = tok.dataset.token!;
+        tok.addEventListener('mouseenter', () => {
+            if (pinned) return; // pinned lineage takes precedence over hover
+            highlight(name, false);
+        });
+        tok.addEventListener('mouseleave', () => {
+            if (pinned) return;
+            clear();
+        });
+        tok.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (tok.classList.contains('flow-tok-empty')) return;
+            pinned = pinned === name ? null : name;
+            if (pinned) highlight(name, true);
+            else clear();
+        });
+    });
+
+    // Click anywhere else clears a pin.
+    container.addEventListener('click', () => {
+        if (pinned) {
+            pinned = null;
+            clear();
+        }
+    });
 }
 
 function setupDragAndDrop() {

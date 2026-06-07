@@ -300,6 +300,90 @@ details[open]>summary::after {
   opacity: 1;
 }
 
+/* ===== Linked Flow Diagram ===== */
+
+/* Continuous spine: one vertical line threading every node in a column. */
+.flow-spine {
+  position: relative;
+}
+.flow-spine::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #cbd5e1;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.flow-spine > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Connector carrying the flowing data down the spine. */
+.flow-wire {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.3rem 0;
+}
+.flow-head {
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  line-height: 0.4;
+}
+
+/* Token chips — identical look wherever a given name appears, so the eye
+   links producer to consumer. data-token is the link key. */
+.flow-tok {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 0.3rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: box-shadow 0.12s, transform 0.12s, opacity 0.12s;
+  white-space: nowrap;
+}
+.flow-tok-table { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+.flow-tok-out   { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+.flow-tok-rs    { background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; }
+.flow-tok-file  { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+.flow-tok-empty {
+  background: #f8fafc;
+  color: #94a3b8;
+  border: 1px dashed #cbd5e1;
+  font-style: italic;
+  cursor: default;
+}
+/* Data riding a wire gets a dashed outline to read as "in transit". */
+.flow-wire .flow-tok { background: #fff; border-style: dashed; }
+
+/* Hover / pinned lineage highlight. */
+.flow-tok.dim { opacity: 0.3; }
+.flow-tok.lit { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4); transform: translateY(-1px); z-index: 5; }
+.flow-tok.is-producer::after {
+  content: '▲ made here';
+  font-size: 0.55rem;
+  font-weight: 600;
+  margin-left: 0.25rem;
+  opacity: 0.7;
+}
+.flow-tok.is-consumer::after {
+  content: 'used';
+  font-size: 0.55rem;
+  font-weight: 600;
+  margin-left: 0.25rem;
+  opacity: 0.55;
+}
+.flow-tok.pinned { box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.55); }
+
  /* Step Output Badge (String) */
  .t1-step-output-badge {
       display: inline-flex;
