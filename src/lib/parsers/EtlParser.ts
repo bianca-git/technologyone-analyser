@@ -1,6 +1,6 @@
 import type { EtlStep, LogicRule, XmlNode, XmlValue } from './types';
 import { asNode } from './types';
-import { STEP_DESCRIPTORS, makeHelpers, type StepDescriptor } from './StepDescriptors';
+import { STEP_DESCRIPTORS, type StepDescriptor } from './StepDescriptors';
 export type { EtlStep, LogicRule } from './types';
 
 /** A raw XML step node with the `children` array the parser grafts on. */
@@ -10,7 +10,15 @@ export class EtlParser {
     private static descriptorHelpers = {
         getTextSafe: (v: XmlValue) => EtlParser.getTextSafe(v),
         getListSafe: (v: XmlValue, key: string) => EtlParser.getListSafe(v, key),
-        firstOf: makeHelpers().firstOf,
+        // firstOf uses EtlParser.getTextSafe so descriptor text extraction matches
+        // the rest of the parser (its #text/fallback behavior), not a divergent copy.
+        firstOf: (storage: XmlNode, keys: string[]): string => {
+            for (const k of keys) {
+                const t = EtlParser.getTextSafe(storage[k]);
+                if (t && t.trim().length > 0) return t.trim();
+            }
+            return '';
+        },
     };
 
     static getListSafe(obj: XmlValue, key: string): XmlNode[] {

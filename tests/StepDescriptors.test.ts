@@ -69,6 +69,12 @@ describe('StepDescriptors', () => {
             const d = STEP_DESCRIPTORS['RunProcess']({ ProcessToRun: 'P2' }, { StepType: 'RunProcess' }, h);
             expect(d.flowLabel).toBe('Run: P2');
         });
+
+        it('keeps subprocess lineage out of outputs (control flow, not data)', () => {
+            const d = STEP_DESCRIPTORS['StartProcess']({ ProcessName: 'Sub' }, { StepType: 'StartProcess' }, h);
+            expect(d.outputs).toEqual([]);
+            expect(d.explicitOutput).toEqual({ type: 'PROCESS', name: 'Sub' });
+        });
     });
 
     describe('DTS', () => {

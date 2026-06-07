@@ -102,7 +102,10 @@ const startProcessDescriptor: DescriptorFn = (storage, _step, h) => {
         flowLabel: label,
         details,
         inputs: [],
-        outputs: proc ? [proc] : [],
+        // Subprocess lineage lives in explicitOutput only. Leaving `outputs`
+        // empty keeps EtlSummary/flow-wires from treating the subprocess name
+        // as a produced data table/target (it's control flow, not data).
+        outputs: [],
         explicitOutput: proc ? { type: 'PROCESS', name: proc } : null,
         icon: '▶',
     };

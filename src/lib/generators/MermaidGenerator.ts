@@ -172,20 +172,22 @@ export class MermaidGenerator {
                     shapeEnd = ')]';
                     className = 'process';
                 } else if (['Script', 'ExecuteScript'].includes(item.RawType)) {
+                    // Shape stays type-driven; the glyph prefers the descriptor's
+                    // Icon (single source of truth) and falls back to the literal.
                     shape = '[/';
                     shapeEnd = '/]';
                     className = 'process';
-                    label = '📜 ' + label.trim();
+                    label = `${item.Icon || '📜'} ` + label.trim();
                 } else if (['StartProcess', 'RunProcess'].includes(item.RawType)) {
                     shape = '[[';
                     shapeEnd = ']]';
                     className = 'process';
-                    label = '▶ ' + label.trim();
+                    label = `${item.Icon || '▶'} ` + label.trim();
                 } else if (['DTS', 'ExecuteDTS', 'RunDTS'].includes(item.RawType)) {
                     shape = '[/';
                     shapeEnd = '/]';
                     className = 'process';
-                    label = '🔀 ' + label.trim();
+                    label = `${item.Icon || '🔀'} ` + label.trim();
                 }
 
                 steps.push(`    ${id}${shape}"${label}"${shapeEnd}:::${className}`);
