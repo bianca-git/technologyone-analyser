@@ -27,7 +27,7 @@ export class XlOneGenerator {
                 ${this.metaCell('Type', h.type || '-')}
                 ${this.metaCell('Reporting System', h.reportingSystem || '-')}
                 ${this.metaCell('Report ID', (h.reportId || 'N/A').substring(0, 12))}
-                ${this.metaCell('Data Source', this.dmLink(h.datasource, dmByGuid))}
+                ${this.metaCell('Data Source', this.dmLink(h.datasource, dmByGuid), true)}
             </div>
         `;
 
@@ -53,13 +53,17 @@ export class XlOneGenerator {
         `;
     }
 
-    private static metaCell(label: string, value: string): string {
-        // `value` may already be safe HTML (e.g. a dmLink anchor) — those start
-        // with '<'. Plain values are escaped here.
+    /**
+     * Render a label/value cell. `value` is escaped by default; pass `isHtml=true`
+     * ONLY for values that are already-safe generated HTML (e.g. a dmLink anchor).
+     * Never infer "safe HTML" from the value's content — file-derived fields can
+     * start with '<' and would bypass escaping (XSS).
+     */
+    private static metaCell(label: string, value: string, isHtml = false): string {
         return `
             <div>
                 <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">${esc(label)}</span>
-                <span class="font-medium text-gray-800">${value.startsWith('<') ? value : esc(value)}</span>
+                <span class="font-medium text-gray-800">${isHtml ? value : esc(value)}</span>
             </div>`;
     }
 

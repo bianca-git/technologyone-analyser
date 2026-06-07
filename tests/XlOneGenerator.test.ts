@@ -71,6 +71,19 @@ describe('XlOneGenerator', () => {
         expect(html).toContain('&lt;script&gt;');
     });
 
+    it('escapes meta-grid fields that start with "<" (no startsWith bypass)', async () => {
+        const content = makeParsed({
+            header: { ...makeParsed().header, userId: '<img src=x onerror=alert(3)>', type: '<b>B</b>' },
+        });
+        vi.mocked(db.xlReports.get).mockResolvedValue(
+            mockRecord(content, { name: 'r', owner: '<img src=x onerror=alert(3)>' })
+        );
+        const html = await XlOneGenerator.generateHtmlView(1);
+        expect(html).not.toContain('<img src=x onerror=alert(3)>');
+        expect(html).not.toContain('<b>B</b>');
+        expect(html).toContain('&lt;img');
+    });
+
     it('renders a column definition with its data source name', async () => {
         const content = makeParsed({
             sheet: {

@@ -7,6 +7,7 @@ import {
     type XlReportParsed,
     type XlDefinitionSheet,
     type XlColumnDefn,
+    type XlCriteriaRow,
     type XlDataSourceRef,
 } from './types';
 
@@ -167,15 +168,53 @@ function reconstructSheet(cells: Map<string, string>): XlDefinitionSheet {
     }
     const rowNums = Array.from(byRow.keys()).sort((a, b) => a - b);
 
-    type Block = 'none' | 'settings' | 'column';
+    // Block discriminator. 'variables'/'rowcommands' are tabular (header row of
+    // column labels, then data rows). 'settings'/'column' are label:value rows.
+    type Block = 'none' | 'settings' | 'column' | 'variables' | 'rowcommands';
     let block: Block = 'none';
     let current: XlColumnDefn | null = null;
 
-    const flush = () => {
+    // Header column-letter -> field label, captured from the first row after a
+    // tabular section header (REPORT VARIABLES / ROW COMMANDS).
+    let tableHeader: Map<string, string> | null = null;
+
+    // Criteria for the current column is a vertical label:value block in a side
+    // column (col G label, col H value in the samples). A new "Column Name:" label
+    // starts a fresh criteria row.
+    let pendingCriteria: XlCriteriaRow | null = null;
+    const criteriaFieldFor = (label: string): keyof XlCriteriaRow | null => {
+        switch (label) {
+            case 'Column Name':
+                return 'columnName';
+            case 'Action':
+                return 'action';
+            case 'Field':
+                return 'field';
+            case 'Details':
+                return 'details';
+            case 'Display':
+                return 'display';
+            default:
+                return null;
+        }
+    };
+    const flushCriteria = () => {
+        if (pendingCriteria && current) current.criteria.push(pendingCriteria);
+        pendingCriteria = null;
+    };
+
+    const flushColumn = () => {
+        flushCriteria();
         if (current) {
             sheet.columns.push(current);
             current = null;
         }
+    };
+
+    /** Read the data cells of a tabular row against the captured header map. */
+    const rowValues = (cols: Map<string, string>): string[] => {
+        if (!tableHeader) return [];
+        return Array.from(tableHeader.keys()).map((col) => (cols.get(col) || '').trim());
     };
 
     for (const rn of rowNums) {
@@ -183,39 +222,103 @@ function reconstructSheet(cells: Map<string, string>): XlDefinitionSheet {
         const a = (cols.get('A') || '').trim();
         const b = (cols.get('B') || '').trim();
 
+        // --- Section headers switch the active block ---
         if (a === 'REPORT SETTINGS') {
+            flushColumn();
             block = 'settings';
+            tableHeader = null;
             continue;
         }
         if (a === 'REPORT VARIABLES') {
-            block = 'none';
+            flushColumn();
+            block = 'variables';
+            tableHeader = null; // captured on the next row
             continue;
         }
         if (a === 'COLUMN DEFINITION') {
-            flush();
+            flushColumn();
             block = 'column';
             current = { name: '', dataSource: null, parameters: {}, runtime: {}, criteria: [] };
+            tableHeader = null;
             continue;
         }
         if (a === 'ROW COMMANDS') {
-            flush();
-            block = 'none';
+            flushColumn();
+            block = 'rowcommands';
+            tableHeader = null; // captured on the next row
             continue;
         }
-        if (a === 'FORMAT CIAXLONE REPORT' || a === '') continue;
+        if (a === 'FORMAT CIAXLONE REPORT') continue;
 
-        const label = a.replace(/:$/, '');
+        // --- Side-column criteria (label:value in cols G/H) for the current column ---
+        if (block === 'column' && current) {
+            const g = (cols.get('G') || '').trim();
+            if (g !== '') {
+                const cf = criteriaFieldFor(g.replace(/:$/, ''));
+                if (cf) {
+                    if (cf === 'columnName') {
+                        flushCriteria();
+                        pendingCriteria = { columnName: '', action: '', field: '', details: '', display: '' };
+                    }
+                    if (pendingCriteria) pendingCriteria[cf] = (cols.get('H') || '').trim();
+                    continue;
+                }
+            }
+        }
 
         if (block === 'settings') {
-            sheet.settings[label] = b;
+            if (a === '') continue;
+            sheet.settings[a.replace(/:$/, '')] = b;
         } else if (block === 'column' && current) {
+            if (a === '') continue;
+            const label = a.replace(/:$/, '');
             if (label === 'Name') current.name = b;
             else if (label === 'Data Source') current.dataSource = parseDataSourceRef(b);
             else if (label === 'Parameters') current.parameters = parseKvString(b);
             else if (label === 'Runtime') current.runtime = parseKvString(b);
+            // 'Criteria:' label row itself carries no value; rows handled above.
+        } else if (block === 'variables') {
+            if (tableHeader == null) {
+                // First row after the section header carries the column labels.
+                tableHeader = new Map();
+                for (const [col, val] of cols) {
+                    const t = (val || '').trim();
+                    if (t !== '') tableHeader.set(col, t);
+                }
+                continue;
+            }
+            const vals = rowValues(cols);
+            // Skip an all-empty row.
+            if (vals.every((v) => v === '')) continue;
+            sheet.variables.push({
+                name: vals[0] || a,
+                description: vals[1] || '',
+                type: vals[2] || '',
+                value: vals[3] || '',
+                listValues: vals[4] || '',
+            });
+        } else if (block === 'rowcommands') {
+            if (tableHeader == null) {
+                tableHeader = new Map();
+                for (const [col, val] of cols) {
+                    const t = (val || '').trim();
+                    if (t !== '') tableHeader.set(col, t);
+                }
+                continue;
+            }
+            const vals = rowValues(cols);
+            if (vals.every((v) => v === '')) continue;
+            sheet.rowCommands.push({
+                command: vals[0] || '',
+                details: vals[1] || '',
+                selection: vals[2] || '',
+                search: vals[3] || '',
+                valueFrom: vals[4] || '',
+                valueTo: vals[5] || '',
+            });
         }
     }
-    flush();
+    flushColumn();
     return sheet;
 }
 
