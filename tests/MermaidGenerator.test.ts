@@ -27,7 +27,7 @@ describe('MermaidGenerator', () => {
     ];
 
     it('generates basic syntax in technical mode', () => {
-        const syntax = MermaidGenerator.generateMermaidSyntax(mockFlow, 'technical');
+        const syntax = MermaidGenerator.generateMermaidSyntax(mockFlow);
          // Basic Checks
         expect(syntax).toContain('flowchart TD');
         expect(syntax).toContain('N0[("📥 Data")]:::source');
@@ -38,29 +38,6 @@ describe('MermaidGenerator', () => {
 
         // Colors
         expect(syntax).toContain('classDef source');
-    });
-
-    it('filters correctly in business mode', () => {
-        const busFlow = [
-            ...mockFlow,
-            { // Should be ignored
-                Step: 'StepIgnore',
-                Context: 'Hidden Calc',
-                RawType: 'AddColumn',
-                children: []
-            }
-        ];
-
-        const syntax = MermaidGenerator.generateMermaidSyntax(busFlow, 'business');
-        expect(syntax).toContain('N0');
-        expect(syntax).toContain('N1'); // Has description, so kept
-        expect(syntax).toContain('N2');
-
-        // StepIgnore should NOT be in the syntax if filtered correctly
-        // N3 would be the index if it was included. 
-        // Logic check: The generator relies on `traverse` pushing to `steps`.
-        // If skipped, no node is created.
-        expect(syntax).not.toContain('Hidden Calc');
     });
 
 
@@ -80,7 +57,7 @@ describe('MermaidGenerator', () => {
             ]
         }];
 
-        const syntax = MermaidGenerator.generateMermaidSyntax(loopFlow, 'technical');
+        const syntax = MermaidGenerator.generateMermaidSyntax(loopFlow);
         expect(syntax).toContain('subgraph N0_sg');
         expect(syntax).toContain('N1[("Do Work")]');
         expect(syntax).toContain('end');
@@ -95,7 +72,7 @@ describe('MermaidGenerator', () => {
             children: []
         }];
 
-        const syntax = MermaidGenerator.generateMermaidSyntax(groupFlow, 'business');
+        const syntax = MermaidGenerator.generateMermaidSyntax(groupFlow);
         // Expect subgraph for Groups now
         expect(syntax).toContain('subgraph N0_sg');
         expect(syntax).toContain('style N0_sg fill:#ffe4e6');
@@ -124,7 +101,7 @@ describe('MermaidGenerator', () => {
             ]
         }];
 
-        const syntax = MermaidGenerator.generateMermaidSyntax(decisionFlow, 'technical');
+        const syntax = MermaidGenerator.generateMermaidSyntax(decisionFlow);
         // Relaxed Checks
         expect(syntax).toContain('Check Value');
         expect(syntax).toContain('Yes');

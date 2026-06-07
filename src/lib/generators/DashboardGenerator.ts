@@ -2,7 +2,7 @@ import { db } from '../db';
 import { asNode, type XmlNode, type XmlValue } from '../parsers/types';
 
 export class DashboardGenerator {
-    static async generateHtmlView(id: number, mode: 'business' | 'technical' = 'business'): Promise<string> {
+    static async generateHtmlView(id: number): Promise<string> {
         const dashboard = await db.dashboards.get(id);
         if (!dashboard) throw new Error('Dashboard not found');
 
@@ -201,7 +201,7 @@ export class DashboardGenerator {
         let dashboardParamsHtml = '';
         const dashParams = asNode(dashLayout.Parameters)?.ParameterField;
         const dashParamsList = getList(dashParams);
-        if (dashParamsList.length > 0 && mode === 'technical') {
+        if (dashParamsList.length > 0) {
             const paramRows = dashParamsList.map((p) => ({
                 Col1: escapeHtml(p.FieldName || 'N/A'),
                 Col2: `<code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">${escapeHtml(p.Value || 'N/A')}</code>`,
@@ -260,9 +260,9 @@ export class DashboardGenerator {
             `;
         }
 
-        // --- Detailed Widgets Section (Technical View Only) ---
+        // --- Detailed Widgets Section ---
         let detailedWidgetsHtml = '';
-        if (visualizations.length > 0 && mode === 'technical') {
+        if (visualizations.length > 0) {
             detailedWidgetsHtml =
                 '<details class="group mb-6"><summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200"><span class="text-xl font-bold text-slate-800 flex items-center gap-3"><span class="text-purple-500 text-lg">📋</span> Widget Details</span></summary><div class="pt-4 pb-2 px-2 space-y-4">';
 

@@ -1,18 +1,35 @@
-
 // --- Helper Types ---
-export type LogicRule = { outcome: string, condition: string };
+export type LogicRule = { outcome: string; condition: string };
 
 export class ExpressionFormatter {
-
     static escapeRegExp(string: string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     /**
+     * Escapes HTML special characters for safe interpolation into innerHTML.
+     * Use for plain-text, file-derived values that are NOT run through colouriseTextHTML.
+     */
+    static escapeHtml(value: any): string {
+        if (value === null || value === undefined) return '';
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /**
      * Colourises text by highlighting variables and tables found in the respective sets.
      */
-    static colouriseTextHTML(text: any, varSet: Set<string>, tableSet: Set<string> = new Set(), stepSet: Set<string> = new Set()): string {
-        if (text === null || text === undefined) return "";
+    static colouriseTextHTML(
+        text: any,
+        varSet: Set<string>,
+        tableSet: Set<string> = new Set(),
+        stepSet: Set<string> = new Set()
+    ): string {
+        if (text === null || text === undefined) return '';
         let str = String(text);
 
         // Placeholder strategy to prevent double wrapping
@@ -31,12 +48,12 @@ export class ExpressionFormatter {
 
         // 2. Handle generic variable names found in the set
         if (varSet.size > 0) {
-            const varPatterns = Array.from(varSet).map(v => {
+            const varPatterns = Array.from(varSet).map((v) => {
                 const esc = this.escapeRegExp(v);
                 return `\\[?${esc}\\]?`;
             });
             const varRegex = new RegExp(`(?<!\\w)(${varPatterns.join('|')})(?!\\w)`, 'g');
- 
+
             str = str.replace(varRegex, (match) => {
                 const varName = match.replace(/^\[|\]$/g, '');
                 return createPlaceholder(`<span class="var-badge">${varName}</span>`, 'var');
@@ -45,7 +62,7 @@ export class ExpressionFormatter {
 
         // 3. Handle table names found in the table set
         if (tableSet.size > 0) {
-            const tablePatterns = Array.from(tableSet).map(t => {
+            const tablePatterns = Array.from(tableSet).map((t) => {
                 const esc = this.escapeRegExp(t);
                 return `\\[?${esc}\\]?`;
             });
@@ -58,7 +75,7 @@ export class ExpressionFormatter {
 
         // 4. Handle step output names (Strings from LoadText etc)
         if (stepSet.size > 0) {
-            const stepPatterns = Array.from(stepSet).map(s => {
+            const stepPatterns = Array.from(stepSet).map((s) => {
                 const esc = this.escapeRegExp(s);
                 return `\\[?${esc}\\]?`;
             });
@@ -70,7 +87,7 @@ export class ExpressionFormatter {
         }
 
         // 5. Restore Placeholders
-        Object.keys(placeholders).forEach(key => {
+        Object.keys(placeholders).forEach((key) => {
             str = str.replace(key, placeholders[key]);
         });
 
@@ -97,17 +114,23 @@ export class ExpressionFormatter {
         return `<span class="t1-code-token">${text}</span>`;
     }
 
-    static renderLogicTable(rules: LogicRule[], formatter: (text: string) => string = (t) => ExpressionFormatter.formatCode(t)): string {
+    static renderLogicTable(
+        rules: LogicRule[],
+        formatter: (text: string) => string = (t) => ExpressionFormatter.formatCode(t)
+    ): string {
         if (!rules || rules.length === 0) return '';
         // Note: The caller of renderLogicTable typically binds the colouriseTextHTML with the sets.
 
-        const rows = rules.map(r => `
+        const rows = rules
+            .map(
+                (r) => `
             <div class="t1-logic-row">
                 <div class="t1-logic-outcome">${formatter(r.outcome)}</div>
                 <div class="t1-logic-condition">${formatter(r.condition)}</div>
             </div>
-        `).join('');
-
+        `
+            )
+            .join('');
 
         return `
             <div class="t1-logic-table">
@@ -213,13 +236,17 @@ export class ExpressionFormatter {
         // Try parsing as CASE statement
         const caseRules = this.parseCaseStatement(expr);
         if (caseRules) {
-            return this.renderLogicTable(caseRules, (t) => this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set(), stepSet || new Set()));
+            return this.renderLogicTable(caseRules, (t) =>
+                this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set(), stepSet || new Set())
+            );
         }
 
         // Try parsing as IIF statement
         const iifRules = this.parseIifStatement(expr);
         if (iifRules) {
-            return this.renderLogicTable(iifRules, (t) => this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set(), stepSet || new Set()));
+            return this.renderLogicTable(iifRules, (t) =>
+                this.colouriseTextHTML(t, varSet || new Set(), tableSet || new Set(), stepSet || new Set())
+            );
         }
 
         // Default: just colorize

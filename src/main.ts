@@ -31,7 +31,6 @@ registerServiceWorker();
 let currentView: 'dashboard' | 'detail' = 'dashboard';
 let currentReportId: number | null = null;
 let currentType: 'report' | 'datamodel' | 'dashboard' = 'report';
-let currentMode: 'business' | 'technical' = 'business';
 
 // --- HTML Template Helpers ---
 function header() {
@@ -82,7 +81,7 @@ function dashboardLayout(items: any[]) {
             let summaryText = r.metadata.description;
             if (r.type === 'report') {
                 try {
-                    const flowData = EtlParser.parseSteps(r.rawSteps, 'business');
+                    const flowData = EtlParser.parseSteps(r.rawSteps);
                     summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
                 } catch (e) {
                     console.error('Failed dashboard summary', e);
@@ -186,10 +185,6 @@ async function render() {
                         Back to Library
                     </button>
 
-                    <div class="bg-white p-1 rounded-xl shadow-sm border border-gray-200 flex text-xs font-medium self-center">
-                        <button class="mode-btn ${currentMode === 'business' ? 'active' : ''} px-6 py-2 rounded-lg transition-all duration-200 text-gray-500 hover:text-gray-900" onclick="window.setMode('business')">Business View</button>
-                        <button class="mode-btn ${currentMode === 'technical' ? 'active' : ''} px-6 py-2 rounded-lg transition-all duration-200 text-gray-500 hover:text-gray-900" onclick="window.setMode('technical')">Technical View</button>
-                    </div>
                     <button onclick="window.exportDocx()" class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-sm flex items-center justify-center">
                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                          Export
@@ -215,11 +210,11 @@ async function render() {
         try {
             let html = '';
             if (currentType === 'report') {
-                html = await EtlGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await EtlGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'datamodel') {
-                html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await DataModelGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'dashboard') {
-                html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await DashboardGenerator.generateHtmlView(currentReportId);
             }
             const container = document.getElementById('detailContainer');
             if (container) {
@@ -313,7 +308,6 @@ function setupDragAndDrop() {
 declare global {
     interface Window {
         navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel' | 'dashboard') => void;
-        setMode: (mode: 'business' | 'technical') => void;
         exportDocx: () => void;
         deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard') => void;
         editStepNote: (reportId: string, stepId: string) => void;
@@ -332,20 +326,15 @@ window.navigateTo = (view, id, type) => {
     render();
 };
 
-window.setMode = (mode) => {
-    currentMode = mode;
-    render();
-};
-
 window.exportDocx = async () => {
     if (currentReportId) {
         try {
             if (currentType === 'report') {
-                await DocxGenerator.downloadDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDocx(currentReportId);
             } else if (currentType === 'datamodel') {
-                await DocxGenerator.downloadDataModelDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDataModelDocx(currentReportId);
             } else if (currentType === 'dashboard') {
-                await DocxGenerator.downloadDashboardDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDashboardDocx(currentReportId);
             }
         } catch (e) {
             console.error(e);

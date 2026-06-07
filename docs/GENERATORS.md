@@ -22,7 +22,7 @@ This class renders the detailed step-by-step view of an ETL process.
 
 2.  **Header Generation**:
     - Renders title, description, and a metadata grid.
-    - Colour-coded "Business View" or "Technical View" badge.
+    - Colour-coded "Technical View" badge.
 
 3.  **Automatic Summarisation**:
     - Scans the execution tree for key actions (Source extraction, Calculations, Exports).
@@ -34,7 +34,7 @@ This class renders the detailed step-by-step view of an ETL process.
 5.  **Recursive Step Rendering**:
     - Iterates through the execution tree.
     - **Grouping**: Handles nested structures like `loops`, `groups`, and `decisions` by rendering distinct visual containers with icons (e.g., ↻ for loops, ❓ for decisions).
-    - **Contextualisation**: Uses logic to determine if a step is "Technical" or "Business" relevant.
+    - **Contextualisation**: Derives a human-readable context description for each step.
     - **Formatting**: Applies `ExpressionFormatter` to SQL snippets or code blocks to provide syntax highlighting.
     - **Annotations**: Renders user-added "Step Notes" (persisted in DB).
 
@@ -64,7 +64,7 @@ Renders the visual representation of a `.t1dm` file.
 - **Transformation Layers**: Breakdown of intermediate queries leading to the final dataset.
 - **Joins Visualisation**: Renders join logic (e.g., `Left Join TableA.ID = TableB.ID`) in a readable table format.
 - **Filters**: Displays criteria/filters applied to queries (e.g., `Status = 'Active'`).
-- **Interactive Notes**: Allows users to add and persist technical/business notes to specific queries/steps.
+- **Interactive Notes**: Allows users to add and persist notes to specific queries/steps.
 - **Metadata**: Shows Process Mode (Stored vs Live), Indexes, and Global Variables.
 
 ## Shared Utilities

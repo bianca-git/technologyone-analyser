@@ -14,13 +14,6 @@ body {
   flex-direction: column;
 }
 
-/* UI Components */
-.mode-btn.active {
-  background-color: #2563eb;
-  color: white;
-  border-color: #2563eb;
-}
-
 /* Document Styling */
 .doc-paper {
   background: white;

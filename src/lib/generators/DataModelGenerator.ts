@@ -3,7 +3,7 @@ import { ExpressionFormatter } from '../formatters/ExpressionFormatter';
 import { asNode, type DataModelParsed, type XmlNode, type XmlValue } from '../parsers/types';
 
 export class DataModelGenerator {
-    static async generateHtmlView(id: number, _viewMode: 'business' | 'technical' = 'business'): Promise<string> {
+    static async generateHtmlView(id: number): Promise<string> {
         const dm = await db.dataModels.get(id);
         if (!dm) throw new Error('Data Model not found');
 

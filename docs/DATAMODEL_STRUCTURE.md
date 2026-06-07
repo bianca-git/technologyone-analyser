@@ -1,6 +1,6 @@
 # Data Model Structure
 
-This document describes all data extracted from TechnologyOne Data Model files (`.t1dm`) and indicates which fields are exposed in Business vs Technical reports.
+This document describes all data extracted from TechnologyOne Data Model files (`.t1dm`) and which fields are exposed in the generated reports.
 
 ## Overview
 
@@ -46,15 +46,15 @@ interface DataModel {
 
 ## Metadata Fields
 
-| Field | Source | Business | Technical | Notes |
-|-------|--------|:--------:|:---------:|-------|
-| `name` | `DataModelDef.Description` or filename | Yes | Yes | Display title |
-| `id` | `DataModelDef.DataModelId` | Yes | Yes | GUID identifier |
-| `description` | `DataModelDef.Description` | Yes | Yes | User-provided description |
-| `version` | `DataModelDef.Version` | Yes | Yes | Version number |
-| `owner` | `DataModelDef.Owner` | Yes | Yes | Owner username |
-| `processMode` | `Definition.DataModelDefinition.ProcessMode` | Yes | Yes | `Stored` or `Real-Time` |
-| `dateModified` | Derived | Yes | Yes | Modification timestamp |
+| Field | Source | Exposed | Notes |
+|-------|--------|:-------:|-------|
+| `name` | `DataModelDef.Description` or filename | Yes | Display title |
+| `id` | `DataModelDef.DataModelId` | Yes | GUID identifier |
+| `description` | `DataModelDef.Description` | Yes | User-provided description |
+| `version` | `DataModelDef.Version` | Yes | Version number |
+| `owner` | `DataModelDef.Owner` | Yes | Owner username |
+| `processMode` | `Definition.DataModelDefinition.ProcessMode` | Yes | `Stored` or `Real-Time` |
+| `dateModified` | Derived | Yes | Modification timestamp |
 
 ---
 
@@ -109,13 +109,13 @@ The `content` field contains parsed data from all XML files:
 
 Extracted from `Variables.xml`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `Name` | `VariableDef.Name` | Yes | Yes | Variable identifier |
-| `Value` | `VariableDef.DefaultValue` | Yes | Yes | Default value |
-| `Type` | `VariableDef.DataType` | Yes | Yes | Resolved type name |
-| `Source` | `VariableDef.DataSourceName` | No | Yes | Source if datasource-bound |
-| `Description` | `VariableDef.Description` | Yes | Yes | Variable description |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `Name` | `VariableDef.Name` | Yes | Variable identifier |
+| `Value` | `VariableDef.DefaultValue` | Yes | Default value |
+| `Type` | `VariableDef.DataType` | Yes | Resolved type name |
+| `Source` | `VariableDef.DataSourceName` | Yes | Source if datasource-bound |
+| `Description` | `VariableDef.Description` | Yes | Variable description |
 
 ### Type Resolution
 
@@ -134,10 +134,10 @@ Extracted from `Variables.xml`:
 
 Extracted from `DataModel.Definition.DataModelDefinition.Indexes`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `Name` | `Index.Name` | Yes | Yes | Index identifier |
-| `Columns` | `Index.Columns.Column[].Name` | Yes | Yes | Comma-separated column list |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `Name` | `Index.Name` | Yes | Index identifier |
+| `Columns` | `Index.Columns.Column[].Name` | Yes | Comma-separated column list |
 
 Indexes are used to identify filter columns in criteria (shown with "Index" badge in UI).
 
@@ -147,10 +147,10 @@ Indexes are used to identify filter columns in criteria (shown with "Index" badg
 
 Extracted from `DataModel.Definition.DataModelDefinition.DetailViews`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `Name` | `View.Name` | Yes | Yes | View identifier |
-| `Columns` | `View.Columns.Column[].Name` | Yes | Yes | Comma-separated column list |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `Name` | `View.Name` | Yes | View identifier |
+| `Columns` | `View.Columns.Column[].Name` | Yes | Comma-separated column list |
 
 ---
 
@@ -160,25 +160,25 @@ Queries are sorted by `Sequence` number. The last query is treated as the "Final
 
 ### Query Fields
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `QueryName` | `Query.QueryName` | Yes | Yes | Query identifier |
-| `Id` | `Query.Id` | Yes | Yes | GUID for notes |
-| `Sequence` | `Query.Sequence` | No | Yes | Execution order |
-| `Criteria` | `Query.Criteria.CriteriaSetItem` | Yes | Yes | Filter conditions |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `QueryName` | `Query.QueryName` | Yes | Query identifier |
+| `Id` | `Query.Id` | Yes | GUID for notes |
+| `Sequence` | `Query.Sequence` | Yes | Execution order |
+| `Criteria` | `Query.Criteria.CriteriaSetItem` | Yes | Filter conditions |
 
 ### Query Card Display
 
 Each query is rendered as a collapsible card showing:
 
-| Section | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Header | Yes | Yes | Query name + badges (cols, filters, joins) |
-| Notes | Yes | Yes | User-added annotations |
-| Filters | Yes | Yes | Criteria conditions |
-| Sources | Yes | Yes | Datasource list with types |
-| Joins | Yes | Yes | Join table with type/columns |
-| Columns | Yes | Yes | Column table with name/type/source |
+| Section | Exposed | Content |
+|---------|:-------:|---------|
+| Header | Yes | Query name + badges (cols, filters, joins) |
+| Notes | Yes | User-added annotations |
+| Filters | Yes | Criteria conditions |
+| Sources | Yes | Datasource list with types |
+| Joins | Yes | Join table with type/columns |
+| Columns | Yes | Column table with name/type/source |
 
 ---
 
@@ -186,16 +186,16 @@ Each query is rendered as a collapsible card showing:
 
 Extracted from `QueryColumns.xml`, filtered by `QueryName`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `ColumnName` | `QueryColumn.ColumnName` | Yes | Yes | Output column name |
-| `DataSourceName` | `QueryColumn.DataSourceName` | Yes | Yes | Source datasource |
-| `FieldId` | `QueryColumn.FieldId` | Yes | Yes | Source field name |
-| `Expression` | `QueryColumn.Expression` | Yes | Yes | Calculated expression |
-| `JavaType` | `QueryColumn.JavaType` | Yes | Yes | Primary data type |
-| `DataType` | `QueryColumn.DataType` | Yes | Yes | Fallback data type |
-| `Format` | `QueryColumn.Format` | Yes | Yes | Display format |
-| `Description` | `QueryColumn.Description` | Yes | Yes | Column description |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `ColumnName` | `QueryColumn.ColumnName` | Yes | Output column name |
+| `DataSourceName` | `QueryColumn.DataSourceName` | Yes | Source datasource |
+| `FieldId` | `QueryColumn.FieldId` | Yes | Source field name |
+| `Expression` | `QueryColumn.Expression` | Yes | Calculated expression |
+| `JavaType` | `QueryColumn.JavaType` | Yes | Primary data type |
+| `DataType` | `QueryColumn.DataType` | Yes | Fallback data type |
+| `Format` | `QueryColumn.Format` | Yes | Display format |
+| `Description` | `QueryColumn.Description` | Yes | Column description |
 
 ### Column Source Display Logic
 
@@ -214,13 +214,13 @@ else:
 
 Extracted from `QueryJoins.xml`, filtered by `QueryName`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `JoinType` | `QueryJoin.JoinType` | Yes | Yes | Inner, Left, Right, etc. |
-| `DataSource1` | `QueryJoin.DataSource1` | Yes | Yes | Left datasource |
-| `Field1` | `QueryJoin.Field1` | Yes | Yes | Left field |
-| `DataSource2` | `QueryJoin.DataSource2` | Yes | Yes | Right datasource |
-| `Field2` | `QueryJoin.Field2` | Yes | Yes | Right field |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `JoinType` | `QueryJoin.JoinType` | Yes | Inner, Left, Right, etc. |
+| `DataSource1` | `QueryJoin.DataSource1` | Yes | Left datasource |
+| `Field1` | `QueryJoin.Field1` | Yes | Left field |
+| `DataSource2` | `QueryJoin.DataSource2` | Yes | Right datasource |
+| `Field2` | `QueryJoin.Field2` | Yes | Right field |
 
 ---
 
@@ -228,12 +228,12 @@ Extracted from `QueryJoins.xml`, filtered by `QueryName`:
 
 Extracted from `QueryDatasources.xml`, filtered by `QueryName`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `DataSourceName` | `QueryDatasource.DataSourceName` | Yes | Yes | Alias/short name |
-| `DatasourceId` | `QueryDatasource.DatasourceId` | Yes | Yes | Full identifier |
-| `DataSourceType` | `QueryDatasource.DataSourceType` | Yes | Yes | Type category |
-| `ParameterValues` | `QueryDatasource.ParameterValues` | Yes | Yes | Source parameters |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `DataSourceName` | `QueryDatasource.DataSourceName` | Yes | Alias/short name |
+| `DatasourceId` | `QueryDatasource.DatasourceId` | Yes | Full identifier |
+| `DataSourceType` | `QueryDatasource.DataSourceType` | Yes | Type category |
+| `ParameterValues` | `QueryDatasource.ParameterValues` | Yes | Source parameters |
 
 ### Datasource Types & Styling
 
@@ -264,12 +264,12 @@ This is displayed alongside the alias: `Alias (RealName)`
 
 Criteria are recursively extracted from `Query.Criteria.CriteriaSetItem`:
 
-| Field | Source | Business | Technical | Description |
-|-------|--------|:--------:|:---------:|-------------|
-| `ColumnId` | `CriteriaValue.ColumnId` | Yes | Yes | Filtered column |
-| `Operator` | `CriteriaValue.Operator.Value` | Yes | Yes | Comparison operator |
-| `Value1` | `CriteriaValue.Value1` | Yes | Yes | Primary value |
-| `Value2` | `CriteriaValue.Value2` | Yes | Yes | Secondary value (Between) |
+| Field | Source | Exposed | Description |
+|-------|--------|:-------:|-------------|
+| `ColumnId` | `CriteriaValue.ColumnId` | Yes | Filtered column |
+| `Operator` | `CriteriaValue.Operator.Value` | Yes | Comparison operator |
+| `Value1` | `CriteriaValue.Value1` | Yes | Primary value |
+| `Value2` | `CriteriaValue.Value2` | Yes | Secondary value (Between) |
 
 ### Operator Normalization
 
@@ -318,48 +318,48 @@ to produce ${finalCols.length} output columns.`;
 
 ### Header Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Title | Yes | Yes | `metadata.name` |
-| Description | Yes | Yes | `metadata.description` |
-| Badge | Yes | Yes | "DATA MODEL" |
-| Meta Grid | Yes | Yes | Owner, Version, Process Mode, Date, ID |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Title | Yes | `metadata.name` |
+| Description | Yes | `metadata.description` |
+| Badge | Yes | "DATA MODEL" |
+| Meta Grid | Yes | Owner, Version, Process Mode, Date, ID |
 
 ### Executive Summary
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Summary | Yes | Yes | Auto-generated narrative |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Summary | Yes | Auto-generated narrative |
 
 ### Global Variables Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Table | Yes | Yes | Variable Name, Value, Type, Description |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Table | Yes | Variable Name, Value, Type, Description |
 
 ### Indexes Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Table | Yes | Yes | Index Name, Columns |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Table | Yes | Index Name, Columns |
 
 ### Drilldown Views Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Table | Yes | Yes | View Name, Columns |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Table | Yes | View Name, Columns |
 
 ### Final Output Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Query Card | Yes | Yes | Full query details (expanded by default) |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Query Card | Yes | Full query details (expanded by default) |
 
 ### Transformation Layers Section
 
-| Element | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Query Cards | Yes | Yes | All queries except final (collapsed by default) |
+| Element | Exposed | Content |
+|---------|:-------:|---------|
+| Query Cards | Yes | All queries except final (collapsed by default) |
 
 ---
 
@@ -367,17 +367,17 @@ to produce ${finalCols.length} output columns.`;
 
 The DOCX generator exports the following sections:
 
-| Section | Business | Technical | Content |
-|---------|:--------:|:---------:|---------|
-| Header | Yes | Yes | Name as heading |
-| Metadata Table | Yes | Yes | Description, Version, Process Mode, Date |
-| Executive Summary | Yes | Yes | Auto-generated narrative |
-| Global Variables | Yes | Yes | Variable table with Name, Value, Type, Description |
-| Indexes | Yes | Yes | Index table with Name, Columns |
-| Transformation Layers | Yes | Yes | Per-query sections |
-| Query Filters | Yes | Yes | Filter table with Column, Operator, Value |
-| Query Columns | Yes | Yes | Column table with Name/Desc, Type/Format, Source |
-| User Notes | Yes | Yes | Per-query annotations |
+| Section | Exposed | Content |
+|---------|:-------:|---------|
+| Header | Yes | Name as heading |
+| Metadata Table | Yes | Description, Version, Process Mode, Date |
+| Executive Summary | Yes | Auto-generated narrative |
+| Global Variables | Yes | Variable table with Name, Value, Type, Description |
+| Indexes | Yes | Index table with Name, Columns |
+| Transformation Layers | Yes | Per-query sections |
+| Query Filters | Yes | Filter table with Column, Operator, Value |
+| Query Columns | Yes | Column table with Name/Desc, Type/Format, Source |
+| User Notes | Yes | Per-query annotations |
 
 ### DOCX Column Table Format
 
