@@ -217,7 +217,7 @@ async function render() {
             if (currentType === 'report') {
                 html = await EtlGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'datamodel') {
-                html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await DataModelGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'dashboard') {
                 html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
             }
