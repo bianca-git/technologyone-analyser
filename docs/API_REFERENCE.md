@@ -17,7 +17,7 @@ The entry point for handling user uploads.
 ### `EtlParser` (`src/lib/parsers/EtlParser.ts`)
 Responsible for parsing ETL Process definitions.
 
-- **`parseSteps(stepsRaw: any, mode: 'business' | 'technical'): ExecutionFlow`**
+- **`parseSteps(stepsRaw: any): ExecutionFlow`**
   - Converts raw XML/JSON steps into a structured `ExecutionTree`.
   - Handles recursion (Groups, Loops).
   - Extracts used variables and tables into Sets.
@@ -35,7 +35,7 @@ Responsible for parsing Data Model definitions.
 ### `EtlGenerator` (`src/lib/generators/EtlGenerator.ts`)
 Generates HTML views for ETL processes.
 
-- **`generateHtmlView(id: number, viewMode: 'business' | 'technical'): Promise<string>`**
+- **`generateHtmlView(id: number): Promise<string>`**
   - Fetches report from DB.
   - Calls `EtlParser` to get execution flow.
   - Renders Header, Executive Summary, Variables Table, and Recursive Steps.

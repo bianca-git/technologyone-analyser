@@ -44,7 +44,7 @@ Responsible for presentation logic.
     -   Accept an ID.
     -   Fetch data from `db`.
     -   Return an **HTML string** representing the detail view.
-    -   Handle "Business" vs "Technical" view logic (hiding/showing specific details).
+    -   Render the full technical detail view (all steps, tables, and SmartDesc insights).
 -   **Docx Generator** (`DocxGenerator.ts`):
     -   Accepts an ID.
     -   Generates a downloadable Microsoft Word document mirroring the detail view.
