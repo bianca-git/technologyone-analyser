@@ -5,6 +5,7 @@ import { EtlParser } from './lib/parsers/EtlParser';
 import { EtlGenerator } from './lib/generators/EtlGenerator';
 import { DataModelGenerator } from './lib/generators/DataModelGenerator';
 import { DashboardGenerator } from './lib/generators/DashboardGenerator';
+import { XlOneGenerator } from './lib/generators/XlOneGenerator';
 import { DocxGenerator } from './lib/generators/DocxGenerator';
 import { OfflineVerifier } from './lib/ux/OfflineVerifier';
 
@@ -30,7 +31,7 @@ registerServiceWorker();
 // --- Routing State ---
 let currentView: 'dashboard' | 'detail' = 'dashboard';
 let currentReportId: number | null = null;
-let currentType: 'report' | 'datamodel' | 'dashboard' = 'report';
+let currentType: 'report' | 'datamodel' | 'dashboard' | 'xlreport' = 'report';
 
 // --- HTML Template Helpers ---
 function header() {
@@ -148,6 +149,13 @@ const SECTION_DEFS = [
         accent: 'border-emerald-200',
         head: 'text-emerald-700',
     },
+    {
+        type: 'xlreport',
+        title: 'XlOne Reports',
+        dot: 'bg-amber-500',
+        accent: 'border-amber-200',
+        head: 'text-amber-700',
+    },
 ] as const;
 
 function dashboardLayout(items: any[]) {
@@ -155,6 +163,7 @@ function dashboardLayout(items: any[]) {
         report: items.filter((i) => i.type === 'report').length,
         datamodel: items.filter((i) => i.type === 'datamodel').length,
         dashboard: items.filter((i) => i.type === 'dashboard').length,
+        xlreport: items.filter((i) => i.type === 'xlreport').length,
     };
 
     const sections = SECTION_DEFS.map((s) => {
@@ -187,16 +196,17 @@ function dashboardLayout(items: any[]) {
                     </div>
                     <div class="pointer-events-none">
                         <h2 class="text-2xl font-bold leading-tight">Upload Definitions</h2>
-                        <p class="text-sm text-blue-100 mt-1">Drag & drop <code class="bg-white/20 px-1 rounded">.t1etlp</code>, <code class="bg-white/20 px-1 rounded">.t1dm</code>, <code class="bg-white/20 px-1 rounded">.t1db</code> — everything stays on your device.</p>
+                        <p class="text-sm text-blue-100 mt-1">Drag & drop <code class="bg-white/20 px-1 rounded">.t1etlp</code>, <code class="bg-white/20 px-1 rounded">.t1dm</code>, <code class="bg-white/20 px-1 rounded">.t1db</code>, <code class="bg-white/20 px-1 rounded">.t1xl</code> — everything stays on your device.</p>
                     </div>
-                    <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm,.t1db" class="hidden">
+                    <input type="file" id="fileInput" multiple accept=".t1etlp,.t1dm,.t1db,.t1xl" class="hidden">
                 </div>
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 flex flex-col justify-center">
                     <p class="text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-3">Library (${items.length})</p>
-                    <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="grid grid-cols-4 gap-2 text-center">
                         <div><div class="text-2xl font-bold text-blue-600">${counts.report}</div><div class="text-[10px] text-gray-500">ETL</div></div>
                         <div><div class="text-2xl font-bold text-purple-600">${counts.datamodel}</div><div class="text-[10px] text-gray-500">Models</div></div>
                         <div><div class="text-2xl font-bold text-emerald-600">${counts.dashboard}</div><div class="text-[10px] text-gray-500">Dash</div></div>
+                        <div><div class="text-2xl font-bold text-amber-600">${counts.xlreport}</div><div class="text-[10px] text-gray-500">XlOne</div></div>
                     </div>
                 </div>
             </div>
@@ -218,10 +228,12 @@ async function render() {
         const reports = await db.reports.toArray();
         const dms = await db.dataModels.toArray();
         const dashboards = await db.dashboards.toArray();
+        const xlReports = await db.xlReports.toArray();
         const allItems = [
             ...reports.map((r) => ({ ...r, type: 'report' })),
             ...dms.map((d) => ({ ...d, type: 'datamodel' })),
             ...dashboards.map((d) => ({ ...d, type: 'dashboard' })),
+            ...xlReports.map((x) => ({ ...x, type: 'xlreport' })),
         ];
         allItems.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
         content += dashboardLayout(allItems);
@@ -236,10 +248,15 @@ async function render() {
                         Back to Library
                     </button>
 
-                    <button onclick="window.exportDocx()" class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-sm flex items-center justify-center">
+                    ${
+                        // XlOne reports have no .docx export in v1 — hide the button.
+                        currentType === 'xlreport'
+                            ? ''
+                            : `<button onclick="window.exportDocx()" class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition-all shadow-sm flex items-center justify-center">
                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                          Export
-                    </button>
+                    </button>`
+                    }
                     </div>
                  </div>
                  <div id="detailContainer" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden w-full flex flex-col max-w-4xl mx-auto">
@@ -267,6 +284,8 @@ async function render() {
                 html = await DataModelGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'dashboard') {
                 html = await DashboardGenerator.generateHtmlView(currentReportId);
+            } else if (currentType === 'xlreport') {
+                html = await XlOneGenerator.generateHtmlView(currentReportId);
             }
             const container = document.getElementById('detailContainer');
             if (container) {
@@ -444,9 +463,13 @@ function setupDragAndDrop() {
 // --- Global Actions ---
 declare global {
     interface Window {
-        navigateTo: (view: 'dashboard' | 'detail', id?: number, type?: 'report' | 'datamodel' | 'dashboard') => void;
+        navigateTo: (
+            view: 'dashboard' | 'detail',
+            id?: number,
+            type?: 'report' | 'datamodel' | 'dashboard' | 'xlreport'
+        ) => void;
         exportDocx: () => void;
-        deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard') => void;
+        deleteEntity: (id: number, type: 'report' | 'datamodel' | 'dashboard' | 'xlreport') => void;
         editStepNote: (reportId: string, stepId: string) => void;
         saveStepNote: (reportId: string, stepId: string) => void;
         cancelNote: (stepId: string) => void;
@@ -485,11 +508,12 @@ window.exportJson = async () => {
         const reports = await db.reports.toArray();
         const dataModels = await db.dataModels.toArray();
         const dashboards = await db.dashboards.toArray();
+        const xlReports = await db.xlReports.toArray();
         const exportData = {
             generated: new Date().toISOString(),
             version: '1.0',
             appVersion: '3.1',
-            library: { reports, dataModels, dashboards },
+            library: { reports, dataModels, dashboards, xlReports },
         };
         const filename = `library-backup-${new Date().toISOString().slice(0, 10)}.json`;
         const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
@@ -511,12 +535,20 @@ window.verifyOffline = () => {
     new OfflineVerifier();
 };
 
-window.deleteEntity = async (id: number, type: 'report' | 'datamodel' | 'dashboard') => {
-    const typeLabel = type === 'report' ? 'Report' : type === 'datamodel' ? 'Data Model' : 'Dashboard';
+window.deleteEntity = async (id: number, type: 'report' | 'datamodel' | 'dashboard' | 'xlreport') => {
+    const typeLabel =
+        type === 'report'
+            ? 'Report'
+            : type === 'datamodel'
+              ? 'Data Model'
+              : type === 'dashboard'
+                ? 'Dashboard'
+                : 'XlOne Report';
     if (confirm(`Are you sure you want to delete this ${typeLabel}?`)) {
         if (type === 'report') await db.reports.delete(id);
         else if (type === 'datamodel') await db.dataModels.delete(id);
         else if (type === 'dashboard') await db.dashboards.delete(id);
+        else if (type === 'xlreport') await db.xlReports.delete(id);
         render();
     }
 };
