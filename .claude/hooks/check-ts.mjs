@@ -33,8 +33,8 @@ try {
 const input = payload.tool_input ?? payload.toolInput ?? {};
 const file = normalize(input.file_path ?? input.filePath ?? input.path);
 
-// Only act on src TS/TSX files (accept absolute or relative paths).
-if (!/(?:^|\/)src\/.*\.(ts|tsx)$/.test(file)) process.exit(0);
+// Only act on src TS/TSX files (accept absolute or relative paths; case-insensitive for Windows).
+if (!/(?:^|\/)src\/.*\.(ts|tsx)$/i.test(file)) process.exit(0);
 
 const out = [];
 

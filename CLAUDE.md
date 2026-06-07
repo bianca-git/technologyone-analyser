@@ -12,9 +12,9 @@ backend, no telemetry, no network calls in the data path.
 
 ## Stack
 
-- **Vite** (rolldown-vite) + **TypeScript** (strict-ish, no framework — vanilla DOM)
+- **Vite** (rolldown-vite) + **TypeScript** (`strict: true`, no framework — vanilla DOM)
 - **Tailwind v4** styling
-- **Dexie** (IndexedDB) — `src/lib/db.ts`, stores `reports` + `dataModels`
+- **Dexie** (IndexedDB) — `src/lib/db.ts`, stores `reports`, `dataModels`, `dashboards`
 - **fast-xml-parser** — XML ingestion
 - **docx** — Word export; **mermaid** — flow diagrams (lazy-loaded); **jszip** — archive reads
 - **Vitest** + jsdom tests; **pnpm@11.1.2** (pinned)

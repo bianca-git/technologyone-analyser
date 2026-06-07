@@ -33,10 +33,13 @@ try {
 
 const input = payload.tool_input ?? payload.toolInput ?? {};
 const target = normalize(input.file_path ?? input.filePath ?? input.path);
+const basename = target.split('/').pop();
 
-if (GUARDED.some((name) => target.endsWith('/' + name) || target.endsWith(name))) {
+// Exact basename match only — don't block files that merely end with the
+// guarded name (e.g. docs/my-pnpm-lock.yaml).
+if (GUARDED.includes(basename)) {
     process.stderr.write(
-        `Blocked: ${target.split('/').pop()} is managed by pnpm and must not be hand-edited.\n` +
+        `Blocked: ${basename} is managed by pnpm and must not be hand-edited.\n` +
             `Change dependencies with \`pnpm add\` / \`pnpm remove\` and let pnpm regenerate it.\n`
     );
     process.exit(2);
