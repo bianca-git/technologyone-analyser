@@ -36,4 +36,9 @@ package-lock.json
 .opencode/
 .openwork/
 opencode.jsonc
-.claude/
+
+# Claude Code: commit shared config, ignore local-only overrides
+.claude/settings.local.json
+.claude/launch.json
+.claude/*.local
+.claude/.session*
