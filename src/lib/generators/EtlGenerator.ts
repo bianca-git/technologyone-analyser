@@ -365,10 +365,72 @@ export class EtlGenerator {
             `;
         }
 
-        // --- Section: Process Logic ---
-        // Heading removed per request ("Process Logic" hidden, content visible)
+        // --- Section: Process Logic (Linked Flow Diagram) ---
+
+        // Classify a token name so chips of the same kind look identical wherever
+        // they appear. Tables/warehouse = blue/green, recordset+variable = purple,
+        // file = green-file, analyser = purple-diamond. Normalised name is the link key.
+        const tokenKind = (name: string, asOutput: boolean): { cls: string; glyph: string } => {
+            const n = name.toLowerCase();
+            if (n.endsWith('.csv') || n.endsWith('.txt') || n.endsWith('.xlsx') || n.endsWith('.xls'))
+                return { cls: 'flow-tok-file', glyph: '📄' };
+            // Recordsets / memory tables / variables flowing between steps.
+            // The camelCase variable prefix (vName) is case-SENSITIVE — a lowercase
+            // `/i` match here wrongly tagged tables like `vendors` as recordsets.
+            if (/^rs|^mem|recordset|memory/i.test(name) || /^[vV][A-Z]/.test(name))
+                return { cls: 'flow-tok-rs', glyph: '⬡' };
+            return { cls: asOutput ? 'flow-tok-out' : 'flow-tok-table', glyph: '▦' };
+        };
+
+        const tokenChip = (rawName: string, role: 'producer' | 'consumer', asOutput: boolean): string => {
+            const name = (rawName || '').trim();
+            const placeholder = name.toUpperCase();
+            if (!name || placeholder === 'DATA' || placeholder === 'DATASET' || placeholder === 'TARGET') return '';
+            const key = name.toUpperCase().replace(/\s+/g, ' ');
+            const { cls, glyph } = tokenKind(name, asOutput);
+            return `<span class="flow-tok ${cls}" data-token="${ExpressionFormatter.escapeHtml(key)}" data-role="${role}"><span class="opacity-60">${glyph}</span> ${ExpressionFormatter.escapeHtml(name)}</span>`;
+        };
+
+        // A connector that carries the named data down the spine (only emitted when
+        // there is data to carry — otherwise a plain arrow).
+        const wire = (carriedHtml?: string): string =>
+            `<div class="flow-wire">${carriedHtml ? carriedHtml : ''}<span class="flow-head">▼</span></div>`;
+
+        // The in → out token row for a single step.
+        const ioRow = (item: any): string => {
+            const ins = (item.Inputs || []).map((i: string) => tokenChip(i, 'consumer', false)).filter(Boolean);
+            const outs = (item.Outputs || []).map((o: string) => tokenChip(o, 'producer', true)).filter(Boolean);
+            if (ins.length === 0 && outs.length === 0) return '';
+            const inPart = ins.length ? `<span class="text-slate-400">in</span> ${ins.join(' ')}` : '';
+            const outPart = outs.length ? `<span class="text-slate-400">out</span> ${outs.join(' ')}` : '';
+            const arrow = ins.length && outs.length ? `<span class="text-slate-300">→</span>` : '';
+            return `<div class="flex items-center gap-1.5 text-xs flex-wrap mb-2">${inPart} ${arrow} ${outPart}</div>`;
+        };
+
         html += `
-            <div class="pt-4 pb-2 space-y-1 px-2">
+            <div class="flow-spine flex flex-col items-center pt-4 pb-2 px-2">
+        `;
+
+        // Source pills at the top of the spine (always shown; placeholder if none).
+        const { sources, targets } = extractSourcesAndTargets(flowData.executionFlow, {
+            table: (n) => n,
+            file: (n) => n,
+            target: (n) => n,
+            analyser: (n) => n,
+            emailRecipients: () => 'Email recipients',
+        });
+        const sourcePills = sources.length
+            ? sources
+                  .map((s) => tokenChip(s, 'producer', false))
+                  .filter(Boolean)
+                  .join(' ')
+            : `<span class="flow-tok flow-tok-empty">none · generated internally</span>`;
+        html += `
+            <div class="flow-node text-center">
+                <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">Sources</div>
+                <div class="flex gap-2 flex-wrap justify-center max-w-2xl">${sourcePills}</div>
+            </div>
+            ${wire()}
         `;
 
         // --- Recursive Step Renderer ---
@@ -440,7 +502,7 @@ export class EtlGenerator {
             // --- Render ---
             // If Group/Loop -> Container with Boundary
             if (isGroup) {
-                let childrenHtml = item.children.map((child: any) => renderStep(child)).join('');
+                let childrenHtml = renderFlow(item.children || []);
 
                 // Container Logic (Group, Loop, Decision, Branch)
                 const isLoop = item.RawType === 'Loop';
@@ -476,11 +538,11 @@ export class EtlGenerator {
                 const stepId = item.id || item.StepId || '';
                 const stepAnchorId = stepId ? `step-${stepId.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
                 return `
-                    <div class="mt-4 mb-4 border-2 rounded-lg ${borderColor} ${bodyColor} overflow-hidden shadow-sm"${stepAnchorId ? ` id="${stepAnchorId}"` : ''}>
+                    <div class="flow-node w-full max-w-lg mt-1 mb-1 border-2 rounded-xl ${borderColor} ${bodyColor} overflow-hidden shadow-sm"${stepAnchorId ? ` id="${stepAnchorId}"` : ''}>
                         <details class="group" open>
                             <summary class="cursor-pointer list-none px-3 py-2 ${headerColor} border-b-2 ${borderColor} flex items-center justify-between hover:opacity-90">
                                  <div class="flex items-center gap-2">
-                                     
+
                                      <span class="${iconColor} font-bold font-mono text-lg">${icon}</span>
                                      <span class="font-bold text-slate-800 text-sm">${item.Phase}: ${item.Step}</span>
                                  </div>
@@ -491,7 +553,7 @@ export class EtlGenerator {
                                     ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
                                     ${item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${ExpressionFormatter.escapeHtml(item.SmartDesc)}</span>` : ''}
                                 </div>
-                                <div class="pl-2 space-y-4">
+                                <div class="flow-spine flex flex-col items-center">
                                     ${childrenHtml}
                                 </div>
                             </div>
@@ -554,41 +616,74 @@ export class EtlGenerator {
             const stepAnchorId = stepId ? `step-${stepId.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
 
             return `
-                <div class="relative pl-6 pb-6 border-l-2 border-slate-200 last:border-0 ml-2"${stepAnchorId ? ` id="${stepAnchorId}"` : ''}>
-                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-2 border-slate-300"></div>
+                <details class="flow-node step-collapse w-full max-w-lg rounded-xl border-2 border-slate-200 bg-white shadow-sm"${stepAnchorId ? ` id="${stepAnchorId}"` : ''}>
+                    <summary class="cursor-pointer list-none flex items-center justify-between flex-wrap gap-2 p-3 hover:bg-slate-50 rounded-xl transition-colors">
+                        <span class="font-bold text-slate-800 text-sm">${item.Step}</span>
+                        <span class="text-xs text-slate-400 font-mono">${filenameIcon ? `<span class="${filenameClass}">${filenameIcon} </span>` : ''}(${item.RawType})</span>
+                    </summary>
 
-                    <details class="step-collapse">
-                        <summary class="cursor-pointer list-none flex items-center justify-between flex-wrap gap-2 mb-1 hover:bg-slate-50 rounded px-1 -mx-1 transition-colors">
-                            <span class="font-bold text-slate-800 text-sm">${item.Step}</span>
-                            <span class="text-xs text-slate-400 font-mono">(${item.RawType})</span>
-                            ${filenameIcon ? `<span class="${filenameClass}">${filenameIcon} </span>` : ''}
-                        </summary>
+                    <div class="step-content px-3 pb-3 -mt-1">
+                        ${ioRow(item)}
+                        ${
+                            showContext
+                                ? `
+                        <div class="text-sm text-gray-600 mb-1">
+                            ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
+                            ${item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${ExpressionFormatter.escapeHtml(item.SmartDesc)}</span>` : ''}
+                        </div>`
+                                : ''
+                        }
 
-                        <div class="step-content pt-1">
-                            ${
-                                showContext
-                                    ? `
-                            <div class="text-sm text-gray-600 mb-1">
-                                ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
-                                ${item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${ExpressionFormatter.escapeHtml(item.SmartDesc)}</span>` : ''}
-                            </div>`
-                                    : ''
-                            }
+                        ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${ExpressionFormatter.colouriseTextHTML(item.Description, variableSet, tableSet)}</div>` : ''}
 
-                            ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${ExpressionFormatter.colouriseTextHTML(item.Description, variableSet, tableSet)}</div>` : ''}
-
-                            ${this.renderStepTechnicalDetails(item)}
-                            ${notesHtml}
-                            ${detailsHtml}
-                            ${tableHtml}
-                        </div>
-                    </details>
-                </div>
+                        ${this.renderStepTechnicalDetails(item)}
+                        ${notesHtml}
+                        ${detailsHtml}
+                        ${tableHtml}
+                    </div>
+                </details>
             `;
         };
 
-        html += executionTree.map((item: any) => renderStep(item)).join('');
-        html += `</div></div>`; // Close container div, Close doc-body (removed details)
+        // Interleave nodes with carried-data wires. Each wire carries the data that
+        // hands off from one step's Output to the next — emitted only when present,
+        // so the spine literally shows producer → consumer between steps.
+        const renderFlow = (items: any[]): string => {
+            return items
+                .map((item: any, idx: number) => {
+                    const nodeHtml = renderStep(item);
+                    if (idx === items.length - 1) return nodeHtml;
+                    // Carried data = this step's outputs (what flows down to the next node).
+                    const carried = (item.Outputs || [])
+                        .map((o: string) => tokenChip(o, 'consumer', true))
+                        .filter(Boolean)
+                        .join(' ');
+                    return nodeHtml + wire(carried || undefined);
+                })
+                .join('');
+        };
+
+        html += renderFlow(executionTree);
+
+        // Target pills at the bottom of the spine (always shown; placeholder if none).
+        // extractSourcesAndTargets decorates file targets with " (Excel)" / " (Text
+        // file)" suffixes; strip them so the pill's token key matches the bare
+        // filename used in step Outputs, keeping hover-to-trace lineage intact.
+        const targetPills = targets.length
+            ? targets
+                  .map((t) => tokenChip(t.replace(/\s*\((?:Excel|Text file)\)$/i, ''), 'consumer', true))
+                  .filter(Boolean)
+                  .join(' ')
+            : `<span class="flow-tok flow-tok-empty">none · no table output</span>`;
+        html += `
+            ${wire()}
+            <div class="flow-node text-center">
+                <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">Targets</div>
+                <div class="flex gap-2 flex-wrap justify-center max-w-2xl">${targetPills}</div>
+            </div>
+        `;
+
+        html += `</div></div>`; // Close flow-spine, Close doc-body
         return html;
     }
 
