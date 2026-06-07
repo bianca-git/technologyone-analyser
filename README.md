@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**TechnologyOne Analyser** is a web-based utility for analysing, visualising, and documenting Technology One (T1) ETL processes and Data Models. It allows users to upload `.t1etlp` (ETL) and `.t1dm` (Data Model) files, which are then parsed, stored locally (using IndexedDB), and presented in both "Business" and "Technical" views.
+**TechnologyOne Analyser** is a web-based utility for analysing, visualising, and documenting Technology One (T1) ETL processes and Data Models. It allows users to upload `.t1etlp` (ETL) and `.t1dm` (Data Model) files, which are then parsed, stored locally (using IndexedDB), and presented in a detailed technical view.
 
 ## Documentation Index
 
@@ -14,8 +14,8 @@
 
 ### File Format Specifications
 - **[File Formats](./docs/FILE_FORMATS.md)**: Detailed specification of `.t1etlp` and `.t1dm` file formats, XML schemas, and parsing strategies.
-- **[ETL Structure](./docs/ETL_STRUCTURE.md)**: Complete data structure reference for ETL processes - all extracted fields and Business/Technical report exposure.
-- **[Data Model Structure](./docs/DATAMODEL_STRUCTURE.md)**: Complete data structure reference for Data Models - all extracted fields and Business/Technical report exposure.
+- **[ETL Structure](./docs/ETL_STRUCTURE.md)**: Complete data structure reference for ETL processes - all extracted fields and report exposure.
+- **[Data Model Structure](./docs/DATAMODEL_STRUCTURE.md)**: Complete data structure reference for Data Models - all extracted fields and report exposure.
 
 ### Quality & Integration
 - **[Test Coverage Report](./docs/TEST_COVERAGE_REPORT.md)**: Current status of unit testing coverage for core libraries.
@@ -30,14 +30,13 @@
     - **ETL View**: Detailed step-by-step breakdown of ETL processes.
     - **Data Model View**: Visualisation of tables, joins, filters, and sources.
 4.  **Reporting**: Export documentation to Microsoft Word (`.docx`).
-5.  **Views**: Toggle between "Business" (high-level) and "Technical" (detailed) perspectives.
-6.  **Offline Security**: Integrated `OfflineVerifier` ensures zero-data exfiltration by enforcing a physical network disconnect before processing sensitive data.
+5.  **Offline Security**: Integrated `OfflineVerifier` ensures zero-data exfiltration by enforcing a physical network disconnect before processing sensitive data.
 
 ## 📢 Call for Feedback
 
 We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. We specifically seek feedback on:
 
-1.  **ETL Visualisation**: Does the "Business View" accurately summarise your complex ETL processes? Are complex loops and branches rendering logically?
+1.  **ETL Visualisation**: Does the technical view accurately represent your complex ETL processes? Are complex loops and branches rendering logically?
 2.  **Data Model Accuracy**: Are all Tables, Joins, and Filters displaying correctly for your `.t1dm` files?
 3.  **Parsing Edge Cases**: If you have a file that fails to parse or looks "empty", please report it.
 
@@ -58,7 +57,6 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
 - [x] **Data Models (`.t1dm`)**:
     - Visualisation of Tables, Joins, and Sources.
     - Deep parsing of "Query" definitions and variable dependencies.
-    - Business/Technical view toggles.
 - [ ] **Dashboards (`.t1db`)**:
     - Parsing `Dashboard.xml` and `Visualisations.xml` layouts.
     - Visualizing Widget placement and data binding.
