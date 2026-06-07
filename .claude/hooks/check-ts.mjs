@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+/**
+ * PostToolUse hook — typecheck + lint after editing a src TypeScript file.
+ *
+ * Surfaces type regressions and lint errors mid-session instead of at commit.
+ * Strict typing (no `any` on the XML spine) is a live project goal.
+ *
+ * Runs `eslint --fix` on the edited file, then a project-wide `tsc --noEmit`
+ * (tsc has no reliable single-file mode with project references). Non-blocking:
+ * always exits 0 so edits aren't rejected; findings are printed for Claude to act on.
+ */
+import { readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+
+function normalize(p) {
+    return String(p || '').replace(/\\/g, '/');
+}
+
+let raw = '';
+try {
+    raw = readFileSync(0, 'utf-8');
+} catch {
+    process.exit(0);
+}
+
+let payload;
+try {
+    payload = JSON.parse(raw);
+} catch {
+    process.exit(0);
+}
+
+const input = payload.tool_input ?? payload.toolInput ?? {};
+const file = normalize(input.file_path ?? input.filePath ?? input.path);
+
+// Only act on src TS/TSX files.
+if (!/\/src\/.*\.(ts|tsx)$/.test(file)) process.exit(0);
+
+const out = [];
+
+function run(label, cmd) {
+    try {
+        execSync(cmd, { stdio: 'pipe', encoding: 'utf-8' });
+    } catch (e) {
+        const msg = `${e.stdout || ''}${e.stderr || ''}`.trim();
+        if (msg) out.push(`[${label}]\n${msg}`);
+    }
+}
+
+run('eslint', `pnpm exec eslint --fix "${file}"`);
+run('tsc', `pnpm exec tsc --noEmit`);
+
+if (out.length) {
+    process.stderr.write(out.join('\n\n') + '\n');
+}
+process.exit(0);
