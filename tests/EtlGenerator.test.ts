@@ -124,6 +124,31 @@ describe('EtlGenerator', () => {
         expect(html).toContain('step-notes-container');
     });
 
+    it('shows a script icon for Script steps', async () => {
+        const mockReport = {
+            id: 1,
+            metadata: { name: 'Test', version: '1.0' },
+            rawSteps: {},
+            dateAdded: new Date(),
+        };
+        vi.mocked(db.reports.get).mockResolvedValue(mockReport as any);
+
+        const mockFlow = {
+            executionTree: [
+                { id: 's1', Step: 'Transform', RawType: 'Script', Phase: 'Script',
+                  Context: 'Script: VBScript', Details: [] },
+            ],
+            executionFlow: [],
+            variables: [],
+            variableSet: new Set(),
+            tableSet: new Set(),
+        };
+        vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
+
+        const html = await EtlGenerator.generateHtmlView(1);
+        expect(html).toContain('📜');
+    });
+
     it('renders variables table', async () => {
         const mockReport = {
             id: 1,

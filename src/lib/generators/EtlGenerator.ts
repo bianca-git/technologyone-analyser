@@ -611,7 +611,13 @@ export class EtlGenerator {
                         ? '📄'
                         : item.RawType === 'SendEmail'
                           ? '📧'
-                          : '';
+                          : item.RawType === 'Script' || item.RawType === 'ExecuteScript'
+                            ? '📜'
+                            : item.RawType === 'StartProcess' || item.RawType === 'RunProcess'
+                              ? '▶'
+                              : item.RawType === 'DTS' || item.RawType === 'ExecuteDTS' || item.RawType === 'RunDTS'
+                                ? '🔀'
+                                : item.Icon || '';
             const stepId = item.id || item.StepId || '';
             const stepAnchorId = stepId ? `step-${stepId.replace(/[^a-zA-Z0-9_-]/g, '_')}` : '';
 
