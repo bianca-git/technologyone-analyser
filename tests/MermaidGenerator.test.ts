@@ -109,4 +109,15 @@ describe('MermaidGenerator', () => {
         expect(syntax).toContain('End');
     });
 
+    it('gives Script/StartProcess/DTS steps an icon label', () => {
+        const syntax = MermaidGenerator.generateMermaidSyntax([
+            { RawType: 'Script', Step: 'Transform', FlowLabel: 'Script: VBScript', Details: [] },
+            { RawType: 'StartProcess', Step: 'Kick', FlowLabel: 'Run: Rollup', Details: [] },
+            { RawType: 'DTS', Step: 'Load', FlowLabel: 'DTS: LoadGL', Details: [] },
+        ]);
+        expect(syntax).toContain('📜');
+        expect(syntax).toContain('▶');
+        expect(syntax).toContain('🔀');
+    });
+
 });

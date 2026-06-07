@@ -171,6 +171,21 @@ export class MermaidGenerator {
                     shape = '[(';
                     shapeEnd = ')]';
                     className = 'process';
+                } else if (['Script', 'ExecuteScript'].includes(item.RawType)) {
+                    shape = '[/';
+                    shapeEnd = '/]';
+                    className = 'process';
+                    label = '📜 ' + label.trim();
+                } else if (['StartProcess', 'RunProcess'].includes(item.RawType)) {
+                    shape = '[[';
+                    shapeEnd = ']]';
+                    className = 'process';
+                    label = '▶ ' + label.trim();
+                } else if (['DTS', 'ExecuteDTS', 'RunDTS'].includes(item.RawType)) {
+                    shape = '[/';
+                    shapeEnd = '/]';
+                    className = 'process';
+                    label = '🔀 ' + label.trim();
                 }
 
                 steps.push(`    ${id}${shape}"${label}"${shapeEnd}:::${className}`);
