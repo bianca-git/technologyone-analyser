@@ -219,7 +219,7 @@ async function render() {
             } else if (currentType === 'datamodel') {
                 html = await DataModelGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'dashboard') {
-                html = await DashboardGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await DashboardGenerator.generateHtmlView(currentReportId);
             }
             const container = document.getElementById('detailContainer');
             if (container) {
