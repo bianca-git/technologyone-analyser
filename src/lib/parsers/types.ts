@@ -39,6 +39,8 @@ export interface EtlStep {
     Name?: string;
     /** Generic value field. */
     Value?: string;
+    /** Display glyph for this step type (single source of truth for HTML + Mermaid). */
+    Icon?: string;
 
     // Allow the remaining dynamically-attached parser fields (SmartDesc,
     // TableData, Headers, FlowLabel, IsActive, Depth, StepId, etc.) without

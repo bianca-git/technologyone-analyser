@@ -3,7 +3,7 @@ import { asNode } from './types';
 export type { EtlStep, LogicRule } from './types';
 
 /** A raw XML step node with the `children` array the parser grafts on. */
-type RawStep = XmlNode & { children?: RawStep[] };
+export type RawStep = XmlNode & { children?: RawStep[] };
 
 export class EtlParser {
     static getListSafe(obj: XmlValue, key: string): XmlNode[] {
