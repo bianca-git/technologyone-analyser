@@ -68,6 +68,71 @@ const groupDescriptor: DescriptorFn = (_storage, step, h) => {
     };
 };
 
+const scriptDescriptor: DescriptorFn = (storage, _step, h) => {
+    const lang = h.firstOf(storage, ['ScriptLanguage', 'Language']);
+    const body = h.firstOf(storage, ['ScriptText', 'Script']);
+    const details: string[] = [];
+    if (lang) details.push(`Language: ${lang}`);
+    if (body) {
+        const preview = body.length > 150 ? body.substring(0, 150) + '...' : body;
+        details.push(`Script: ${preview}`);
+    }
+    const label = lang ? `Script: ${lang}` : 'Script';
+    return {
+        contextText: label,
+        flowLabel: label,
+        details,
+        inputs: [],
+        outputs: [],
+        explicitOutput: null,
+        icon: '📜',
+    };
+};
+
+const startProcessDescriptor: DescriptorFn = (storage, _step, h) => {
+    const proc = h.firstOf(storage, ['ProcessName', 'ProcessToRun', 'Process', 'SubProcessName']);
+    const details: string[] = [];
+    if (proc) details.push(`Process: ${proc}`);
+    h.getListSafe(storage.Parameters, 'ParameterItem').forEach((p) => {
+        details.push(`Param: ${h.getTextSafe(p.Name)} = ${h.getTextSafe(p.Value)}`);
+    });
+    const label = proc ? `Run: ${proc}` : 'Run Process';
+    return {
+        contextText: label,
+        flowLabel: label,
+        details,
+        inputs: [],
+        outputs: proc ? [proc] : [],
+        explicitOutput: proc ? { type: 'PROCESS', name: proc } : null,
+        icon: '▶',
+    };
+};
+
+const dtsDescriptor: DescriptorFn = (storage, _step, h) => {
+    const pkg = h.firstOf(storage, ['DTSPackageName', 'PackageName', 'DTSPackage', 'Package']);
+    const conn = h.firstOf(storage, ['ConnectionString', 'Connection', 'DTSConnection']);
+    const details: string[] = [];
+    if (pkg) details.push(`Package: ${pkg}`);
+    if (conn) details.push(`Connection: ${conn}`);
+    const label = pkg ? `DTS: ${pkg}` : 'DTS';
+    return {
+        contextText: label,
+        flowLabel: label,
+        details,
+        inputs: [],
+        outputs: [],
+        explicitOutput: null,
+        icon: '🔀',
+    };
+};
+
 export const STEP_DESCRIPTORS: Record<string, DescriptorFn> = {
     Group: groupDescriptor,
+    Script: scriptDescriptor,
+    ExecuteScript: scriptDescriptor,
+    StartProcess: startProcessDescriptor,
+    RunProcess: startProcessDescriptor,
+    DTS: dtsDescriptor,
+    ExecuteDTS: dtsDescriptor,
+    RunDTS: dtsDescriptor,
 };
