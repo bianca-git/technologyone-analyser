@@ -553,7 +553,7 @@ This section documents what content is currently parsed vs ignored by the applic
 | File | Status | Contents | Contribution Opportunity |
 |------|--------|----------|-------------------------|
 | `Variables.xml` | **NOT PARSED** | Process parameters, default values, picklist definitions | Display variables in ETL view, show parameter dependencies |
-| `FileLocations.xml` | **NOT PARSED** | Server folder references, file paths used by steps | Show file I/O dependencies in technical view |
+| `FileLocations.xml` | **NOT PARSED** | Server folder references, file paths used by steps | Show file I/O dependencies in the report view |
 | `Attachments.xml` | **NOT PARSED** | Embedded file attachments (scripts, templates) | Extract and display attached files |
 | `[Content_Types].xml` | **Ignored** | Standard OPC MIME declarations | Not needed |
 
