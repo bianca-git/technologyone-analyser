@@ -521,7 +521,7 @@ AND, OR, NOT          -- Logical
 
 ### Common Parsing Issues
 
-1. **Empty Results**: Check if `IsActive` is `false` - inactive steps/queries are skipped
+1. **Empty Results**: Check that `Processes.xml` / `DataModel.xml` exists in the archive (the parser throws if the root file is missing). Note: `IsActive=false` steps are **not** skipped — they are parsed and rendered like any other step (the flag is metadata only; `Decision`/`Branch` are always treated as active).
 2. **Missing Data**: Nested XML wasn't recursively parsed
 3. **Malformed Expressions**: T1 allows some invalid XML characters in expressions
 4. **Version Differences**: Older T1 versions may have different XML structures
