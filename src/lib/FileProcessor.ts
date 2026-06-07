@@ -4,6 +4,7 @@ import { db } from './db';
 
 import { DataModelParser } from './parsers/DataModelParser';
 import { DashboardParser } from './parsers/DashboardParser';
+import { XlOneParser } from './parsers/XlOneParser';
 import { asNode, type XmlNode, type XmlValue } from './parsers/types';
 
 const parser = new XMLParser({
@@ -64,6 +65,10 @@ export class FileProcessor {
 
         if (file.name.toLowerCase().endsWith('.t1db')) {
             return this.processDashboard(file);
+        }
+
+        if (file.name.toLowerCase().endsWith('.t1xl')) {
+            return this.processXlReport(file);
         }
 
         // 1. Unzip
@@ -218,6 +223,33 @@ export class FileProcessor {
         });
 
         console.log(`Saved Dashboard ${id} to DB`);
+        return id as number;
+    }
+
+    private static async processXlReport(file: File): Promise<number> {
+        const content = await XlOneParser.parse(file);
+
+        const name = content.header.title || file.name.replace(/\.t1xl$/i, '');
+
+        const metadata = {
+            name,
+            id: content.header.reportId || 'N/A',
+            description: content.header.description,
+            owner: content.header.userId || 'Unknown',
+            parentPath: content.header.parentPath,
+            type: content.header.type,
+            datasource: content.header.datasource,
+            dateModified: new Date().toISOString(),
+        };
+
+        const id = await db.xlReports.add({
+            filename: file.name,
+            metadata,
+            content,
+            dateAdded: new Date(),
+        });
+
+        console.log(`Saved XlOne Report ${id} to DB`);
         return id as number;
     }
 }
