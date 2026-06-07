@@ -215,7 +215,7 @@ async function render() {
         try {
             let html = '';
             if (currentType === 'report') {
-                html = await EtlGenerator.generateHtmlView(currentReportId, currentMode);
+                html = await EtlGenerator.generateHtmlView(currentReportId);
             } else if (currentType === 'datamodel') {
                 html = await DataModelGenerator.generateHtmlView(currentReportId, currentMode);
             } else if (currentType === 'dashboard') {

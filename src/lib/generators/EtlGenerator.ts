@@ -21,7 +21,7 @@ export class EtlGenerator {
         return buildEtlNarrative(sources, targets, flow);
     }
 
-    static async generateHtmlView(reportId: number, mode: 'business' | 'technical' = 'technical'): Promise<string> {
+    static async generateHtmlView(reportId: number): Promise<string> {
         const report = await db.reports.get(reportId);
         if (!report) return '<p class="text-red-500">Report not found</p>';
 
@@ -90,43 +90,7 @@ export class EtlGenerator {
 
         // Build metadata grid - 3 columns across, space between, right-aligned col 3
         const hasNotes = !!metadata.narration;
-        const metaGrid =
-            mode === 'technical'
-                ? `
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4 bg-white border border-gray-200 rounded-lg text-sm shadow-sm">
-                <div>
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Publisher</span>
-                    <span class="font-medium text-gray-800">${metadata.owner || '-'}</span>
-                </div>
-                <div>
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Version</span>
-                    <span class="font-medium text-gray-800">${metadata.version} <span class="text-gray-400 font-normal">(${statusLabel})</span></span>
-                </div>
-                <div class="text-right">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">T1 Location</span>
-                    <span class="font-mono text-gray-600 text-xs">${metadata.parentPath || '-'}</span>
-                </div>
-                ${
-                    hasNotes
-                        ? `
-                <div>
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Version Notes</span>
-                    <span class="text-gray-600 text-xs italic">${metadata.narration}</span>
-                </div>
-                `
-                        : ''
-                }
-                <div class="${hasNotes ? '' : 'md:col-span-2'}">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Published Date</span>
-                    <span class="font-medium text-gray-800">${displayDate}</span>
-                </div>
-                <div class="text-right">
-                    <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Process ID</span>
-                    <span class="font-mono text-gray-500 text-[11px] truncate inline-block" title="${metadata.id}">${metadata.id}</span>
-                </div>
-            </div>
-        `
-                : `
+        const metaGrid = `
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 p-4 bg-white border border-gray-200 rounded-lg text-sm shadow-sm">
                 <div>
                     <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Publisher</span>
@@ -175,7 +139,7 @@ export class EtlGenerator {
                 // We'll use the .mermaid class div which is standard.
                 flowChartHtml = `
                     <div class="mt-6 border-t border-slate-200 pt-6">
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Process Flow (${mode})</h4>
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Process Flow</h4>
                         <div class="mermaid flex justify-center bg-white p-4 rounded-lg border border-slate-100 shadow-inner overflow-x-auto min-h-[150px]">
                             ${mermaidSyntax}
                         </div>
@@ -205,7 +169,7 @@ export class EtlGenerator {
                         <h2 class="text-3xl font-bold text-slate-800 tracking-tight">${metadata.name}</h2>
                         ${metadata.description ? `<p class="text-lg text-slate-600 mt-2 leading-relaxed">${metadata.description}</p>` : ''}
                     </div>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-blue-200">${mode} VIEW</span>
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-blue-200">TECHNICAL VIEW</span>
                 </div>
                 
                 ${metaGrid}
@@ -220,8 +184,8 @@ export class EtlGenerator {
                 const usedSteps = v.UsedIn && v.UsedIn.length > 0 ? v.UsedIn.join(', ') : '-';
                 return {
                     Col1: v.Name,
-                    Col2: mode === 'technical' ? v.Type || 'Var' : '',
-                    Col3: mode === 'technical' ? v.OriginStep || '-' : '',
+                    Col2: v.Type || 'Var',
+                    Col3: v.OriginStep || '-',
                     Col4: v.InitialValue || '-',
                     Col5: v.Value || 'N/A',
                     Col6: usedSteps,
@@ -238,16 +202,14 @@ export class EtlGenerator {
                     </summary>
                     <div class="pt-4 pb-2 px-2">
                           ${renderTable(
-                              mode === 'technical'
-                                  ? [
-                                        'Variable Name',
-                                        'Type',
-                                        'Origin Step',
-                                        'Initial Value',
-                                        'Value / Expression',
-                                        'Used In',
-                                    ]
-                                  : ['Parameter', 'Setting'],
+                              [
+                                  'Variable Name',
+                                  'Type',
+                                  'Origin Step',
+                                  'Initial Value',
+                                  'Value / Expression',
+                                  'Used In',
+                              ],
                               varRows,
                               varIds
                           )}
@@ -271,9 +233,8 @@ export class EtlGenerator {
                 return seqA - seqB;
             });
 
-            // Build badges for visibility/editability in technical mode
+            // Build badges for visibility/editability
             const buildBadges = (p: any) => {
-                if (mode !== 'technical') return '';
                 const badges: string[] = [];
                 if (p.IsDisplayable === 'false')
                     badges.push(
@@ -290,31 +251,19 @@ export class EtlGenerator {
                 return badges.length > 0 ? ` ${badges.join(' ')}` : '';
             };
 
-            const paramRows =
-                mode === 'technical'
-                    ? sortedParams.map((p: any) => ({
-                          Col1: `${p.Name}${buildBadges(p)}`,
-                          Col2: resolveVarType(p.VariableType),
-                          Col3: p.DefaultValue || '-',
-                          Col4: p.Description || '',
-                          Col5:
-                              p.IsMandatory === 'true'
-                                  ? '<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Required</span>'
-                                  : '<span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Optional</span>',
-                          Col6: p.Sequence || '-',
-                      }))
-                    : sortedParams.map((p: any) => ({
-                          Col1: p.Name,
-                          Col2: resolveVarType(p.VariableType),
-                          Col3: p.DefaultValue || '-',
-                          Col4: p.Description || '',
-                          Col5: p.IsMandatory === 'true' ? 'Required' : 'Optional',
-                      }));
+            const paramRows = sortedParams.map((p: any) => ({
+                Col1: `${p.Name}${buildBadges(p)}`,
+                Col2: resolveVarType(p.VariableType),
+                Col3: p.DefaultValue || '-',
+                Col4: p.Description || '',
+                Col5:
+                    p.IsMandatory === 'true'
+                        ? '<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Required</span>'
+                        : '<span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Optional</span>',
+                Col6: p.Sequence || '-',
+            }));
 
-            const headers =
-                mode === 'technical'
-                    ? ['Parameter Name', 'Type', 'Default', 'Description', 'Required', 'Order']
-                    : ['Parameter Name', 'Type', 'Default Value', 'Description', 'Required'];
+            const headers = ['Parameter Name', 'Type', 'Default', 'Description', 'Required', 'Order'];
 
             const paramRowsWithIds = paramRows.map((p: any) => ({
                 ...p,
@@ -322,7 +271,7 @@ export class EtlGenerator {
             }));
             const paramIds = paramRowsWithIds.map((p: any) => p.id);
             html += `
-                <details ${mode === 'technical' ? 'open' : ''} class="group">
+                <details open class="group">
                     <summary class="flex items-center justify-between cursor-pointer list-none py-3 px-6 -mx-6 bg-purple-50 hover:bg-purple-100 transition-colors select-none border-t border-b border-purple-200">
                         <span class="text-xl font-bold text-slate-800 flex items-center gap-3">
                             <span class="text-purple-500 text-lg">⚙</span> Process Parameters
@@ -339,7 +288,7 @@ export class EtlGenerator {
 
         // --- Section: File Locations (from FileLocations.xml) ---
         const fileLocations = this.extractFileLocations(report.rawFileLocations);
-        if (fileLocations.length > 0 && mode === 'technical') {
+        if (fileLocations.length > 0) {
             const locationRows = fileLocations.map((loc: any) => ({
                 Col1: loc.Name,
                 Col2: loc.LocationType || 'ServerFolder',
@@ -367,7 +316,7 @@ export class EtlGenerator {
 
         // --- Section: Attachments (from Attachments.xml) ---
         const attachments = this.extractAttachments(report.rawAttachments);
-        if (attachments.length > 0 && mode === 'technical') {
+        if (attachments.length > 0) {
             // Infer content type from file extension
             const getContentType = (filename: string, contentType?: string): string => {
                 if (contentType) return contentType;
@@ -461,21 +410,8 @@ export class EtlGenerator {
             }
 
             let tableHtml = '';
-            // Allow Query and Transformation tables to render in both modes as requested
-            if (
-                item.TableData &&
-                (mode === 'technical' ||
-                    [
-                        'ImportWarehouseData',
-                        'CreateTable',
-                        'RunDirectQuery',
-                        'RunTableQuery',
-                        'AddColumn',
-                        'UpdateColumn',
-                        'CalculateVariable',
-                        'SetVariable',
-                    ].includes(item.RawType))
-            ) {
+            // Allow all tables to render in technical view
+            if (item.TableData && item.TableData.length) {
                 tableHtml += `<div class="mt-3 w-full">${renderTable(item.Headers, item.TableData)}</div>`;
             }
 
@@ -548,12 +484,12 @@ export class EtlGenerator {
                                      <span class="${iconColor} font-bold font-mono text-lg">${icon}</span>
                                      <span class="font-bold text-slate-800 text-sm">${item.Phase}: ${item.Step}</span>
                                  </div>
-                                 ${isLoop && mode === 'business' ? '<span class="text-xs text-amber-700 font-bold px-2 py-0.5 bg-amber-200 rounded-full border border-amber-300">Loop Sequence</span>' : ''}
+                                 ${''}
                             </summary>
                             <div class="p-4">
                                 <div class="mb-3 text-sm text-gray-700">
                                     ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
-                                    ${mode === 'business' && item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${item.SmartDesc}</span>` : ''}
+                                    ${item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${item.SmartDesc}</span>` : ''}
                                 </div>
                                 <div class="pl-2 space-y-4">
                                     ${childrenHtml}
@@ -624,7 +560,7 @@ export class EtlGenerator {
                     <details class="step-collapse">
                         <summary class="cursor-pointer list-none flex items-center justify-between flex-wrap gap-2 mb-1 hover:bg-slate-50 rounded px-1 -mx-1 transition-colors">
                             <span class="font-bold text-slate-800 text-sm">${item.Step}</span>
-                            ${mode === 'technical' ? `<span class="text-xs text-slate-400 font-mono">(${item.RawType})</span>` : ''}
+                            <span class="text-xs text-slate-400 font-mono">(${item.RawType})</span>
                             ${filenameIcon ? `<span class="${filenameClass}">${filenameIcon} </span>` : ''}
                         </summary>
 
@@ -634,14 +570,14 @@ export class EtlGenerator {
                                     ? `
                             <div class="text-sm text-gray-600 mb-1">
                                 ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
-                                ${mode === 'business' && item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${item.SmartDesc}</span>` : ''}
+                                ${item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${item.SmartDesc}</span>` : ''}
                             </div>`
                                     : ''
                             }
 
                             ${item.Description ? `<div class="text-xs text-slate-500 italic mb-2">Note: ${ExpressionFormatter.colouriseTextHTML(item.Description, variableSet, tableSet)}</div>` : ''}
 
-                            ${mode === 'technical' ? this.renderStepTechnicalDetails(item) : ''}
+                            ${this.renderStepTechnicalDetails(item)}
                             ${notesHtml}
                             ${detailsHtml}
                             ${tableHtml}

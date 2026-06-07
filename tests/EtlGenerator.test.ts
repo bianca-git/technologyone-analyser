@@ -27,7 +27,7 @@ describe('EtlGenerator', () => {
 
     it('returns error html if report not found', async () => {
         vi.mocked(db.reports.get).mockResolvedValue(undefined);
-        const html = await EtlGenerator.generateHtmlView(999, 'technical');
+        const html = await EtlGenerator.generateHtmlView(999);
         expect(html).toContain('Report not found');
     });
 
@@ -52,7 +52,7 @@ describe('EtlGenerator', () => {
         };
         vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
-        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        const html = await EtlGenerator.generateHtmlView(1);
 
         expect(html).toContain('extracts data from <span class="t1-table-badge" data-type="table">𝄜 SRC</span>');
         expect(html).toContain('publishes results to <strong>the DEST</strong>');
@@ -88,7 +88,7 @@ describe('EtlGenerator', () => {
         };
         vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
-        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        const html = await EtlGenerator.generateHtmlView(1);
 
         expect(html).toContain('My Group');
         expect(html).toContain('Child Step');
@@ -118,7 +118,7 @@ describe('EtlGenerator', () => {
         };
         vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
-        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        const html = await EtlGenerator.generateHtmlView(1);
         
         expect(html).toContain('This is a note');
         expect(html).toContain('step-notes-container');
@@ -142,7 +142,7 @@ describe('EtlGenerator', () => {
         };
         vi.mocked(EtlParser.parseSteps).mockReturnValue(mockFlow as any);
 
-        const html = await EtlGenerator.generateHtmlView(1, 'technical');
+        const html = await EtlGenerator.generateHtmlView(1);
         expect(html).toContain('Var1');
         expect(html).toContain('100');
         expect(html).toContain('Variables & Parameters');
