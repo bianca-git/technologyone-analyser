@@ -74,7 +74,7 @@ describe('EtlParser', () => {
                 }
             };
 
-            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            const result = EtlParser.parseSteps(mockSteps);
 
             expect(result.executionTree).toHaveLength(1);
             const step = result.executionTree[0];
@@ -105,7 +105,7 @@ describe('EtlParser', () => {
                 }
             };
 
-            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            const result = EtlParser.parseSteps(mockSteps);
 
             expect(result.executionTree).toHaveLength(1); // Only root
             const root = result.executionTree[0];
@@ -123,7 +123,7 @@ describe('EtlParser', () => {
                     ]
                 }
             };
-            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            const result = EtlParser.parseSteps(mockSteps);
             expect(result.executionTree).toHaveLength(1);
             expect(result.executionTree[0].Step).toBe('Parent');
             expect(result.executionTree[0].children[0].Step).toBe('Child');
@@ -149,7 +149,7 @@ describe('EtlParser', () => {
                 }
             };
 
-            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            const result = EtlParser.parseSteps(mockSteps);
             expect(result.variableSet.has('myVar')).toBe(true);
             const variable = result.variables.find(v => v.Name === 'myVar');
             expect(variable?.Value).toBe('123');
@@ -163,7 +163,7 @@ describe('EtlParser', () => {
                     ]
                 }
             };
-            const result = EtlParser.parseSteps(mockSteps, 'technical');
+            const result = EtlParser.parseSteps(mockSteps);
             expect(result.executionTree).toHaveLength(1);
             expect(result.executionTree[0].Step).toBe("Orphan");
         });

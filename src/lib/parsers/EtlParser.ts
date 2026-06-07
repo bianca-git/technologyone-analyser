@@ -204,7 +204,7 @@ export class EtlParser {
      * Main Parsing Method
      * Returns a structured execution tree with metadata, variable usage, and logic rules pre-calculated.
      */
-    static parseSteps(json: XmlValue, mode: 'business' | 'technical' = 'technical') {
+    static parseSteps(json: XmlValue) {
         const stepsRaw = this.getListSafe(asNode(json)?.ArrayOfStep, 'Step') as RawStep[];
         const stepMap = new Map<number, RawStep>();
         const rootSteps: RawStep[] = [];
@@ -397,15 +397,6 @@ export class EtlParser {
                 }
             }
 
-            // Business Filtering
-            if (mode === 'business') {
-                const ignore = ['PurgeTable', 'CreateTable', 'DeleteTable'];
-                if (!isActive || ignore.includes(stepType)) {
-                    if (stepType !== 'Loop' && stepType !== 'Group' && stepType !== 'Decision' && stepType !== 'Branch')
-                        return null;
-                }
-            }
-
             const description = this.getTextSafe(step.Description || step.Narration || step.Comments);
 
             // Build Context String (Simplified for Parser, Formatter can enhance)
@@ -416,100 +407,69 @@ export class EtlParser {
             const target = this.getTextSafe(storage.OutputTableName || storage.TableName || 'target');
 
             // Replicating basic context string logic (without HTML formatting)
-            if (mode === 'business') {
-                switch (stepType) {
-                    case 'RunDirectQuery':
-                        contextText = `${stepNameDisplay} (from ${table})`;
-                        break;
-                    case 'RunTableQuery':
-                        contextText = stepNameDisplay;
-                        break;
-                    case 'AddColumn':
-                        contextText = `${stepNameDisplay} (in ${table})`;
-                        break;
-                    case 'UpdateColumn':
-                        contextText = `${stepNameDisplay} (in ${table})`;
-                        break;
-                    case 'ImportWarehouseData':
-                        contextText = stepNameDisplay;
-                        break;
-                    case 'DeleteWarehouseData':
-                        contextText = `${stepNameDisplay} (from ${target})`;
-                        break;
-                    case 'JoinTable':
-                        contextText = `${stepNameDisplay} (with ${this.getTextSafe(storage.JoinTable2)})`;
-                        break;
-                    case 'Loop':
-                        contextText = `${stepNameDisplay} (iterate ${this.getTextSafe(storage.InputVariable)})`;
-                        break;
-                    default:
-                        contextText = stepNameDisplay;
+            switch (stepType) {
+                case 'RunDirectQuery':
+                    contextText = `${stepNameDisplay}: pull ${table}`;
+                    break;
+                case 'RunTableQuery':
+                    contextText = `${stepNameDisplay}: read ${table}`;
+                    break;
+                case 'RunDatasourceQuery':
+                case 'RunSimpleQuery':
+                    contextText = `${stepNameDisplay}: ${this.getTextSafe(storage.DatasourceName || 'Datasource')} ➔ ${target}`;
+                    break;
+                case 'AddColumn':
+                    contextText = `${stepNameDisplay}: calculate in ${table}`;
+                    break;
+                case 'UpdateColumn':
+                    contextText = `${stepNameDisplay}: update values in ${table}`;
+                    break;
+                case 'ImportWarehouseData':
+                    contextText = `${stepNameDisplay}: publish to ${target}`;
+                    break;
+                case 'DeleteWarehouseData':
+                    contextText = `${stepNameDisplay}: remove from ${target}`;
+                    break;
+                case 'JoinTable':
+                    contextText = `${stepNameDisplay}: combine with ${this.getTextSafe(storage.JoinTable2)}`;
+                    break;
+                case 'Loop':
+                    contextText = `${stepNameDisplay}: iterate ${this.getTextSafe(storage.InputVariable)}`;
+                    break;
+                // New Support
+                case 'ExportToExcel': {
+                    const filename = this.getTextSafe(storage.ExportMemoryTableName || table);
+                    const path = this.getTextSafe(storage.FileName || '');
+                    const pathPart = path ? ` (${path})` : '';
+                    contextText = `${stepNameDisplay}: export ${filename} to Excel${pathPart}`;
+                    break;
                 }
-            } else {
-                switch (stepType) {
-                    case 'RunDirectQuery':
-                        contextText = `${stepNameDisplay}: pull ${table}`;
-                        break;
-                    case 'RunTableQuery':
-                        contextText = `${stepNameDisplay}: read ${table}`;
-                        break;
-                    case 'RunDatasourceQuery':
-                    case 'RunSimpleQuery':
-                        contextText = `${stepNameDisplay}: ${this.getTextSafe(storage.DatasourceName || 'Datasource')} ➔ ${target}`;
-                        break;
-                    case 'AddColumn':
-                        contextText = `${stepNameDisplay}: calculate in ${table}`;
-                        break;
-                    case 'UpdateColumn':
-                        contextText = `${stepNameDisplay}: update values in ${table}`;
-                        break;
-                    case 'ImportWarehouseData':
-                        contextText = `${stepNameDisplay}: publish to ${target}`;
-                        break;
-                    case 'DeleteWarehouseData':
-                        contextText = `${stepNameDisplay}: remove from ${target}`;
-                        break;
-                    case 'JoinTable':
-                        contextText = `${stepNameDisplay}: combine with ${this.getTextSafe(storage.JoinTable2)}`;
-                        break;
-                    case 'Loop':
-                        contextText = `${stepNameDisplay}: iterate ${this.getTextSafe(storage.InputVariable)}`;
-                        break;
-                    // New Support
-                    case 'ExportToExcel': {
-                        const filename = this.getTextSafe(storage.ExportMemoryTableName || table);
-                        const path = this.getTextSafe(storage.FileName || '');
-                        const pathPart = path ? ` (${path})` : '';
-                        contextText = `${stepNameDisplay}: export ${filename} to Excel${pathPart}`;
-                        break;
-                    }
-                    case 'SendEmail':
-                        contextText = `${stepNameDisplay}: send to ${this.getTextSafe(storage.SendTo)}`;
-                        break;
-                    case 'LoadTextFile': {
-                        const filename = this.getTextSafe(storage.FileName || '');
-                        const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
-                        const pathPart = path ? ` (${path})` : '';
-                        contextText = `${stepNameDisplay}: load ${pathPart ? `${filename}${pathPart}` : filename} into ${this.getTextSafe(storage.MemoryTableName || table)}`;
-                        break;
-                    }
-                    case 'SaveText':
-                    case 'SaveTextfile': {
-                        const filename = this.getTextSafe(storage.FileName || 'Text File');
-                        const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
-                        const pathPart = path ? ` (${path})` : '';
-                        contextText = `Save ${filename} to ${this.getTextSafe(storage.MemoryTableName || table)}${pathPart}`;
-                        break;
-                    }
-                    case 'Decision':
-                        contextText = `Decision on ${this.getTextSafe(storage.InputTableName || 'Table')}`;
-                        break;
-                    case 'Branch':
-                        contextText = `If ${this.getTextSafe(storage.Expression)}`;
-                        break;
-                    default:
-                        contextText = stepType;
+                case 'SendEmail':
+                    contextText = `${stepNameDisplay}: send to ${this.getTextSafe(storage.SendTo)}`;
+                    break;
+                case 'LoadTextFile': {
+                    const filename = this.getTextSafe(storage.FileName || '');
+                    const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
+                    const pathPart = path ? ` (${path})` : '';
+                    contextText = `${stepNameDisplay}: load ${pathPart ? `${filename}${pathPart}` : filename} into ${this.getTextSafe(storage.MemoryTableName || table)}`;
+                    break;
                 }
+                case 'SaveText':
+                case 'SaveTextfile': {
+                    const filename = this.getTextSafe(storage.FileName || 'Text File');
+                    const path = this.getTextSafe(storage.FileLocation || storage.Path || '');
+                    const pathPart = path ? ` (${path})` : '';
+                    contextText = `Save ${filename} to ${this.getTextSafe(storage.MemoryTableName || table)}${pathPart}`;
+                    break;
+                }
+                case 'Decision':
+                    contextText = `Decision on ${this.getTextSafe(storage.InputTableName || 'Table')}`;
+                    break;
+                case 'Branch':
+                    contextText = `If ${this.getTextSafe(storage.Expression)}`;
+                    break;
+                default:
+                    contextText = stepType;
             }
 
             // Collect Inputs and Outputs

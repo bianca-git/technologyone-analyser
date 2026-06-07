@@ -82,7 +82,7 @@ function dashboardLayout(items: any[]) {
             let summaryText = r.metadata.description;
             if (r.type === 'report') {
                 try {
-                    const flowData = EtlParser.parseSteps(r.rawSteps, 'business');
+                    const flowData = EtlParser.parseSteps(r.rawSteps);
                     summaryText = EtlGenerator.generateSummary(flowData.executionFlow);
                 } catch (e) {
                     console.error('Failed dashboard summary', e);

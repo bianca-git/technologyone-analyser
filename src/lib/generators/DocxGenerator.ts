@@ -41,7 +41,7 @@ export class DocxGenerator {
         const report = await db.reports.get(reportId);
         if (!report) throw new Error('Report not found');
 
-        const flowData = EtlParser.parseSteps(report.rawSteps, mode);
+        const flowData = EtlParser.parseSteps(report.rawSteps);
         const sections: any[] = [];
 
         // 1. Header Information

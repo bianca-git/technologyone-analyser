@@ -21,11 +21,11 @@ export class EtlGenerator {
         return buildEtlNarrative(sources, targets, flow);
     }
 
-    static async generateHtmlView(reportId: number, mode: 'business' | 'technical'): Promise<string> {
+    static async generateHtmlView(reportId: number, mode: 'business' | 'technical' = 'technical'): Promise<string> {
         const report = await db.reports.get(reportId);
         if (!report) return '<p class="text-red-500">Report not found</p>';
 
-        const flowData = EtlParser.parseSteps(report.rawSteps, mode);
+        const flowData = EtlParser.parseSteps(report.rawSteps);
         const metadata = report.metadata;
         const { executionTree, variables, variableSet, tableSet, stepSet } = flowData;
 
@@ -657,8 +657,8 @@ export class EtlGenerator {
     }
 
     // Legacy support if needed, but ideally usage should move to EtlParser
-    static parseSteps(json: any, mode: 'business' | 'technical') {
-        return EtlParser.parseSteps(json, mode);
+    static parseSteps(json: any, _mode?: 'business' | 'technical') {
+        return EtlParser.parseSteps(json); // mode dropped; only technical view remains
     }
 
     // --- Helper: Extract Process Parameters from Variables.xml ---

@@ -39,7 +39,7 @@ describe('EtlParser (Kitchen Sink)', () => {
             }
         };
 
-        const result = EtlParser.parseSteps(mockSteps, 'technical');
+        const result = EtlParser.parseSteps(mockSteps);
 
         expect(result.executionTree).toHaveLength(7);
         // We just want to ensure it runs without error and covers the branches.
