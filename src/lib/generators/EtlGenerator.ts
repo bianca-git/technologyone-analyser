@@ -374,14 +374,18 @@ export class EtlGenerator {
             const n = name.toLowerCase();
             if (n.endsWith('.csv') || n.endsWith('.txt') || n.endsWith('.xlsx') || n.endsWith('.xls'))
                 return { cls: 'flow-tok-file', glyph: '📄' };
-            // Recordsets / memory tables / variables flowing between steps
-            if (/^rs|^mem|^v[A-Z]|recordset|memory/i.test(name)) return { cls: 'flow-tok-rs', glyph: '⬡' };
+            // Recordsets / memory tables / variables flowing between steps.
+            // The camelCase variable prefix (vName) is case-SENSITIVE — a lowercase
+            // `/i` match here wrongly tagged tables like `vendors` as recordsets.
+            if (/^rs|^mem|recordset|memory/i.test(name) || /^[vV][A-Z]/.test(name))
+                return { cls: 'flow-tok-rs', glyph: '⬡' };
             return { cls: asOutput ? 'flow-tok-out' : 'flow-tok-table', glyph: '▦' };
         };
 
         const tokenChip = (rawName: string, role: 'producer' | 'consumer', asOutput: boolean): string => {
             const name = (rawName || '').trim();
-            if (!name || name === 'DATA' || name === 'dataset' || name === 'target') return '';
+            const placeholder = name.toUpperCase();
+            if (!name || placeholder === 'DATA' || placeholder === 'DATASET' || placeholder === 'TARGET') return '';
             const key = name.toUpperCase().replace(/\s+/g, ' ');
             const { cls, glyph } = tokenKind(name, asOutput);
             return `<span class="flow-tok ${cls}" data-token="${ExpressionFormatter.escapeHtml(key)}" data-role="${role}"><span class="opacity-60">${glyph}</span> ${ExpressionFormatter.escapeHtml(name)}</span>`;
@@ -662,9 +666,12 @@ export class EtlGenerator {
         html += renderFlow(executionTree);
 
         // Target pills at the bottom of the spine (always shown; placeholder if none).
+        // extractSourcesAndTargets decorates file targets with " (Excel)" / " (Text
+        // file)" suffixes; strip them so the pill's token key matches the bare
+        // filename used in step Outputs, keeping hover-to-trace lineage intact.
         const targetPills = targets.length
             ? targets
-                  .map((t) => tokenChip(t, 'consumer', true))
+                  .map((t) => tokenChip(t.replace(/\s*\((?:Excel|Text file)\)$/i, ''), 'consumer', true))
                   .filter(Boolean)
                   .join(' ')
             : `<span class="flow-tok flow-tok-empty">none · no table output</span>`;

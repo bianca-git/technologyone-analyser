@@ -384,6 +384,12 @@ details[open]>summary::after {
 }
 .flow-tok.pinned { box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.55); }
 
+/* Visible focus ring for keyboard navigation of tokens. */
+.flow-tok:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
  /* Step Output Badge (String) */
  .t1-step-output-badge {
       display: inline-flex;

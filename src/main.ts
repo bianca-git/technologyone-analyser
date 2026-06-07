@@ -75,8 +75,20 @@ function formatDate(date: Date) {
     return year === currentYear ? `${day} ${month}` : `${day} ${month} ${year}`;
 }
 
+/** Escape user-controlled text before interpolating into innerHTML (uploaded
+ *  definition metadata is untrusted — prevents stored XSS via crafted files). */
+function escapeHtml(val: unknown): string {
+    return String(val ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function itemSummary(r: any): string {
-    let summaryText = r.metadata.description;
+    // Default path: raw user-supplied description — must be escaped.
+    let summaryText = escapeHtml(r.metadata.description);
     if (r.type === 'report') {
         try {
             const flowData = EtlParser.parseSteps(r.rawSteps);
@@ -104,8 +116,8 @@ function itemRow(r: any): string {
     return `
         <div class="group flex items-center justify-between gap-4 bg-white px-4 py-3 rounded-lg border border-gray-200 hover:shadow-md hover:border-gray-300 transition cursor-pointer" onclick="window.navigateTo('detail', ${r.id}, '${r.type}')">
             <div class="min-w-0">
-                <h3 class="font-bold text-gray-800 group-hover:text-blue-600 leading-tight truncate">${r.metadata.name}</h3>
-                <p class="text-xs text-gray-500">${r.metadata.owner} • v${r.metadata.version || '-'}</p>
+                <h3 class="font-bold text-gray-800 group-hover:text-blue-600 leading-tight truncate">${escapeHtml(r.metadata.name)}</h3>
+                <p class="text-xs text-gray-500">${escapeHtml(r.metadata.owner)} • v${escapeHtml(r.metadata.version || '-')}</p>
                 <p class="text-[11px] text-gray-500 mt-0.5 line-clamp-1">${summaryText}</p>
             </div>
             <div class="flex items-center gap-4 shrink-0">
@@ -320,20 +332,46 @@ function wireFlowLineage(container: HTMLElement) {
 
     toks.forEach((tok) => {
         const name = tok.dataset.token!;
-        tok.addEventListener('mouseenter', () => {
-            if (pinned) return; // pinned lineage takes precedence over hover
+        const isEmpty = tok.classList.contains('flow-tok-empty');
+
+        // Keyboard accessibility: make real tokens focusable buttons so keyboard /
+        // assistive-tech users can trace and pin lineage too (empty placeholders
+        // are non-interactive and stay out of the tab order).
+        if (!isEmpty) {
+            tok.tabIndex = 0;
+            tok.setAttribute('role', 'button');
+            tok.setAttribute('aria-label', `Trace data lineage for ${name}`);
+        }
+
+        const preview = () => {
+            if (pinned) return; // pinned lineage takes precedence over hover/focus
             highlight(name, false);
-        });
-        tok.addEventListener('mouseleave', () => {
+        };
+        const unpreview = () => {
             if (pinned) return;
             clear();
-        });
-        tok.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (tok.classList.contains('flow-tok-empty')) return;
+        };
+        const toggle = () => {
+            if (isEmpty) return;
             pinned = pinned === name ? null : name;
             if (pinned) highlight(name, true);
             else clear();
+        };
+
+        tok.addEventListener('mouseenter', preview);
+        tok.addEventListener('mouseleave', unpreview);
+        tok.addEventListener('focus', preview);
+        tok.addEventListener('blur', unpreview);
+        tok.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggle();
+        });
+        tok.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                toggle();
+            }
         });
     });
 
