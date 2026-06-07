@@ -90,7 +90,7 @@ export class DocxGenerator {
         );
 
         try {
-            const imageBase64 = await MermaidGenerator.getFlowChartImage(flowData.executionTree, mode);
+            const imageBase64 = await MermaidGenerator.getFlowChartImage(flowData.executionTree);
             if (imageBase64) {
                 // Convert Base64 (data:image/png;base64,...) to Uint8Array/Buffer
                 const res = await fetch(imageBase64);

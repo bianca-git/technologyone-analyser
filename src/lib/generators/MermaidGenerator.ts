@@ -45,8 +45,8 @@ export class MermaidGenerator {
     /**
      * Generates the mermaid syntax for the given flow.
      */
-    static generateMermaidSyntax(flow: any[], mode: 'business' | 'technical'): string {
-        const isTech = mode === 'technical';
+    static generateMermaidSyntax(flow: any[]): string {
+        const isTech = true;
         let graph = 'flowchart TD\n';
 
         // Define classes for styling
@@ -168,28 +168,10 @@ export class MermaidGenerator {
                     shape = '[(';
                     shapeEnd = ')]';
                     className = 'process';
-                    if (!isTech) label = '⚙️' + label.trim(); // Simplified in business
                 } else if (['CalculateVariable', 'SetVariable'].includes(item.RawType)) {
                     shape = '[(';
                     shapeEnd = ')]';
                     className = 'process';
-                    if (!isTech) label = '🔢' + label.trim(); // Simplified in business
-                }
-
-                // Business Mode Simplification: Make calc steps smaller/simplified but still visible
-                if (
-                    !isTech &&
-                    (item.RawType === 'AddColumn' || item.RawType === 'CalculateVariable') &&
-                    !item.Description
-                ) {
-                    // Don't skip - just simplify label
-                    label = label.length > 30 ? label.substring(0, 30) + '...' : label;
-                    // Use minimal node style
-                    shape = '[(';
-                    shapeEnd = ')]';
-                    className = 'process';
-                    // Skip rendering this node in business mode
-                    return;
                 }
 
                 steps.push(`    ${id}${shape}"${label}"${shapeEnd}:::${className}`);
@@ -249,14 +231,10 @@ export class MermaidGenerator {
     /**
      * Renders the flow chart to an SVG string using Mermaid.
      */
-    static async renderToSvg(
-        flow: any[],
-        mode: 'business' | 'technical',
-        id: string = 'mermaid-chart'
-    ): Promise<string> {
+    static async renderToSvg(flow: any[], id: string = 'mermaid-chart'): Promise<string> {
         await this.initialize();
         const mermaid = await this.load();
-        const syntax = this.generateMermaidSyntax(flow, mode);
+        const syntax = this.generateMermaidSyntax(flow);
         try {
             const { svg } = await mermaid.render(id, syntax);
             return svg;
@@ -269,15 +247,15 @@ export class MermaidGenerator {
     /**
      * Renders simple syntax for direct embedding (if using mermaid.contentLoaded)
      */
-    static getRawSyntax(flow: any[], mode: 'business' | 'technical'): string {
-        return this.generateMermaidSyntax(flow, mode);
+    static getRawSyntax(flow: any[]): string {
+        return this.generateMermaidSyntax(flow);
     }
 
     /**
      * Generates a base64 PNG image for DOCX embedding.
      */
-    static async getFlowChartImage(flow: any[], mode: 'business' | 'technical'): Promise<string> {
-        const svg = await this.renderToSvg(flow, mode, 'mermaid-hidden-' + Date.now());
+    static async getFlowChartImage(flow: any[]): Promise<string> {
+        const svg = await this.renderToSvg(flow, 'mermaid-hidden-' + Date.now());
 
         // 1. Create a dummy container to parse SVG
         const parser = new DOMParser();

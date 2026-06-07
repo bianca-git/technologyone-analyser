@@ -167,7 +167,7 @@ export class EtlGenerator {
         let flowChartHtml = '';
         try {
             // Get simplified or detailed syntax
-            const mermaidSyntax = MermaidGenerator.getRawSyntax(flowData.executionTree, mode);
+            const mermaidSyntax = MermaidGenerator.getRawSyntax(flowData.executionTree);
             if (mermaidSyntax) {
                 // Initialize Mermaid (Client-Side)
                 // We inject a small script to render this specific block if needed, or rely on global init.
