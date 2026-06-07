@@ -547,17 +547,19 @@ This section documents what content is currently parsed vs ignored by the applic
 |------|--------|-------|
 | `Processes.xml` | **Parsed** | Full metadata extraction |
 | `Steps.xml` | **Parsed** | Full step tree with recursive `Definition` parsing |
+| `Variables.xml` | **Parsed** | Process parameters (`rawVariables`); rendered as a "Process Parameters" section in the ETL report + DOCX export |
+| `FileLocations.xml` | **Parsed** | Server folder references / file paths (`rawFileLocations`); rendered as a "File Locations" section via `extractFileLocations` |
+| `Attachments.xml` | **Parsed** | Embedded file attachments (`rawAttachments`); rendered as an "Attachments" section via `extractAttachments` |
+
+All five files are loaded by `FileProcessor.ts` and deep-parsed (nested XML resolved recursively). `EtlGenerator.ts` and `DocxGenerator.ts` extract them via `extractProcessParameters` / `extractFileLocations` / `extractAttachments`.
 
 #### Files NOT Parsed
 
 | File | Status | Contents | Contribution Opportunity |
 |------|--------|----------|-------------------------|
-| `Variables.xml` | **NOT PARSED** | Process parameters, default values, picklist definitions | Display variables in ETL view, show parameter dependencies |
-| `FileLocations.xml` | **NOT PARSED** | Server folder references, file paths used by steps | Show file I/O dependencies in the report view |
-| `Attachments.xml` | **NOT PARSED** | Embedded file attachments (scripts, templates) | Extract and display attached files |
 | `[Content_Types].xml` | **Ignored** | Standard OPC MIME declarations | Not needed |
 
-#### `Variables.xml` Structure (Not Parsed)
+#### `Variables.xml` Structure (Parsed)
 
 ```xml
 <ArrayOfC2GenericVariable>
@@ -579,13 +581,13 @@ This section documents what content is currently parsed vs ignored by the applic
 </ArrayOfC2GenericVariable>
 ```
 
-**Why it matters:** Variables define the inputs to an ETL process. Without parsing this, the application cannot show:
+**What it surfaces:** Variables define the inputs to an ETL process. `extractProcessParameters` reads this file and the ETL report / DOCX export show:
 - What parameters the process accepts
 - Default values
 - Whether parameters are required
 - Picklist/dropdown options
 
-#### `FileLocations.xml` Structure (Not Parsed)
+#### `FileLocations.xml` Structure (Parsed)
 
 ```xml
 <ArrayOfFileLocation>
@@ -605,7 +607,23 @@ This section documents what content is currently parsed vs ignored by the applic
 </ArrayOfFileLocation>
 ```
 
-**Why it matters:** File locations define where ETL steps read/write files. Steps like `ExportToExcel`, `LoadTextFile`, `SaveText` reference these locations.
+**What it surfaces:** File locations define where ETL steps read/write files. Steps like `ExportToExcel`, `LoadTextFile`, `SaveText` reference these locations. `extractFileLocations` flattens the nested `Definition` (ServerFolder + SubPath) into a `Path` for display.
+
+#### `Attachments.xml` Structure (Parsed)
+
+```xml
+<ArrayOfProcessAttachment>
+  <ProcessAttachment>
+    <AttachmentId>...</AttachmentId>
+    <ProcessId>a794effe-...</ProcessId>
+    <Name>script.sql</Name>
+    <Description><!-- optional --></Description>
+    <Data><!-- Base64 encoded payload --></Data>
+  </ProcessAttachment>
+</ArrayOfProcessAttachment>
+```
+
+**What it surfaces:** Attachments are files embedded in the ETL package (scripts, templates). `extractAttachments` handles both `ArrayOfAttachment/Attachment` and `ArrayOfProcessAttachment/ProcessAttachment` shapes and lists them in the report + DOCX export.
 
 ---
 
@@ -626,9 +644,9 @@ This section documents what content is currently parsed vs ignored by the applic
 
 | File | Status | Contents | Contribution Opportunity |
 |------|--------|----------|-------------------------|
-| `Resources.xml` | **NOT PARSED** | Embedded resources (images, templates) | Display resource inventory |
+| `Resources.xml` | **Loaded, not surfaced** | Embedded resources (images, templates) | `DataModelParser.ts` loads + deep-parses this into the tree, but `DataModelGenerator.ts` does not yet render it. Display a resource inventory. |
 
-#### `Resources.xml` Structure (Not Parsed)
+#### `Resources.xml` Structure (Loaded, Not Surfaced)
 
 ```xml
 <ArrayOfResourceModelCoreDef>
@@ -655,10 +673,10 @@ The parsers recursively parse nested XML in certain fields. Here's the current c
 | Field Pattern | Parsed | Location |
 |---------------|--------|----------|
 | `*Definition` | **Yes** | Any field containing "Definition" |
+| All nested XML strings | **Yes** | `deepParseAllXml` runs on every loaded file (`Processes`, `Steps`, `Variables`, `FileLocations`, `Attachments`) |
 
 **Not recursively parsed:**
 - `Attributes` field (contains custom colour settings)
-- Fields in `Variables.xml` (file not loaded)
 
 #### Data Model Parser (`DataModelParser.ts`)
 
