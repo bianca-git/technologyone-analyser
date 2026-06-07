@@ -178,7 +178,7 @@ export class EtlGenerator {
                 ${summaryHtml}
         `;
 
-        // --- Section: Variables (Show in both modes, as Parameters are relevant) ---
+        // --- Section: Variables ---
         if (variables.length > 0) {
             const varRows = variables.map((v: any) => {
                 const usedSteps = v.UsedIn && v.UsedIn.length > 0 ? v.UsedIn.join(', ') : '-';
@@ -410,7 +410,7 @@ export class EtlGenerator {
             }
 
             let tableHtml = '';
-            // Allow all tables to render in technical view
+            // Allow all tables to render
             if (item.TableData && item.TableData.length) {
                 tableHtml += `<div class="mt-3 w-full">${renderTable(item.Headers, item.TableData)}</div>`;
             }
@@ -484,7 +484,7 @@ export class EtlGenerator {
                                      <span class="${iconColor} font-bold font-mono text-lg">${icon}</span>
                                      <span class="font-bold text-slate-800 text-sm">${item.Phase}: ${item.Step}</span>
                                  </div>
-                                 ${''}
+
                             </summary>
                             <div class="p-4">
                                 <div class="mb-3 text-sm text-gray-700">
@@ -593,7 +593,7 @@ export class EtlGenerator {
     }
 
     // Legacy support if needed, but ideally usage should move to EtlParser
-    static parseSteps(json: any, _mode?: 'business' | 'technical') {
+    static parseSteps(json: any) {
         return EtlParser.parseSteps(json); // mode dropped; only technical view remains
     }
 
