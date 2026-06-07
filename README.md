@@ -40,7 +40,7 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
 2.  **Data Model Accuracy**: Are all Tables, Joins, and Filters displaying correctly for your `.t1dm` files?
 3.  **Parsing Edge Cases**: If you have a file that fails to parse or looks "empty", please report it.
 
-*Note: Dashboards and XlOne reports are currently in active development (see Roadmap).*
+*Note: Playlists and theming/responsiveness are currently in active development (see Roadmap).*
 
 ## Roadmap
 
@@ -57,11 +57,11 @@ We are currently acting as a "Beta" for the **ETL** and **Data Model** modules. 
 - [x] **Data Models (`.t1dm`)**:
     - Visualisation of Tables, Joins, and Sources.
     - Deep parsing of "Query" definitions and variable dependencies.
-- [ ] **Dashboards (`.t1db`)**:
+- [x] **Dashboards (`.t1db`)**:
     - Parsing `Dashboard.xml` and `Visualisations.xml` layouts.
     - Visualizing Widget placement and data binding.
     - Extracting Filter dependency chains.
-- [ ] **XlOne Reports (`.t1xl`)**:
+- [x] **XlOne Reports (`.t1xl`)**:
     - Decoding proprietary Excel-based report definitions.
     - Mapping Data Model dependencies within spreadsheet cells.
 

@@ -98,3 +98,85 @@ export interface DashboardParsed {
     Theme?: XmlNode;
     [key: string]: XmlNode | undefined;
 }
+
+/** A resolved data-source reference parsed from a Column Definition cell. */
+export interface XlDataSourceRef {
+    /** Raw cell text, e.g. "Transactions (Financial System Administration) (GUID)". */
+    raw: string;
+    /** Leading name portion, e.g. "Transactions". */
+    name: string;
+    /** Parenthesised system portion, e.g. "Financial System Administration". */
+    system: string;
+    /** Trailing GUID, e.g. "7f09c258-8b0e-40a8-851d-9d49c0ba6215" (empty if none). */
+    guid: string;
+}
+
+/** A row in the report Variables table. */
+export interface XlVariableRow {
+    name: string;
+    description: string;
+    type: string;
+    value: string;
+    listValues: string;
+}
+
+/** A single criteria row under a column definition. */
+export interface XlCriteriaRow {
+    columnName: string;
+    action: string;
+    field: string;
+    details: string;
+    display: string;
+}
+
+/** A parsed Column Definition block from the Definition sheet. */
+export interface XlColumnDefn {
+    name: string;
+    dataSource: XlDataSourceRef | null;
+    /** Parsed `key=value;` pairs from the Parameters cell. */
+    parameters: Record<string, string>;
+    /** Parsed `key=value;` pairs from the Runtime cell. */
+    runtime: Record<string, string>;
+    criteria: XlCriteriaRow[];
+}
+
+/** A row in the Row Commands table. */
+export interface XlRowCommand {
+    command: string;
+    details: string;
+    selection: string;
+    search: string;
+    valueFrom: string;
+    valueTo: string;
+}
+
+/** The reconstructed Definition worksheet, split into structured sections. */
+export interface XlDefinitionSheet {
+    /** Report Settings as key/value (e.g. Description, Narration, Created By). */
+    settings: Record<string, string>;
+    variables: XlVariableRow[];
+    columns: XlColumnDefn[];
+    rowCommands: XlRowCommand[];
+}
+
+/** Parsed XlOne report package: thin Report.xml header/definition + xlsx sheet. */
+export interface XlReportParsed {
+    /** Fields from the MyXLOneHeader wrapper. */
+    header: {
+        reportId: string;
+        title: string;
+        description: string;
+        category: string;
+        type: string;
+        sheetName: string;
+        userId: string;
+        datasource: string;
+        reportingSystem: string;
+        parentPath: string;
+        storageType: string;
+    };
+    /** Selected fields from the nested DbReportDef (raw node kept for depth). */
+    definition: XmlNode;
+    /** Reconstructed embedded-xlsx Definition sheet. */
+    sheet: XlDefinitionSheet;
+}
