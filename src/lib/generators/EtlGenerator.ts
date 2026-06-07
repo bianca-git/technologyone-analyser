@@ -489,7 +489,7 @@ export class EtlGenerator {
                             <div class="p-4">
                                 <div class="mb-3 text-sm text-gray-700">
                                     ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
-                                    ${item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${item.SmartDesc}</span>` : ''}
+                                    ${item.SmartDesc ? `<span class="text-xs text-blue-700 font-medium block mt-1 bg-blue-50 p-1 rounded border border-blue-100">💡 ${ExpressionFormatter.escapeHtml(item.SmartDesc)}</span>` : ''}
                                 </div>
                                 <div class="pl-2 space-y-4">
                                     ${childrenHtml}
@@ -570,7 +570,7 @@ export class EtlGenerator {
                                     ? `
                             <div class="text-sm text-gray-600 mb-1">
                                 ${ExpressionFormatter.colouriseTextHTML(item.Context, variableSet, tableSet)}
-                                ${item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${item.SmartDesc}</span>` : ''}
+                                ${item.SmartDesc ? `<span class="text-xs text-blue-600 font-medium block mt-1">💡 ${ExpressionFormatter.escapeHtml(item.SmartDesc)}</span>` : ''}
                             </div>`
                                     : ''
                             }

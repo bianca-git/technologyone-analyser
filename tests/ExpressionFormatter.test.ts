@@ -4,6 +4,20 @@ import { ExpressionFormatter } from '../src/lib/formatters/ExpressionFormatter';
 
 describe('ExpressionFormatter', () => {
 
+    describe('escapeHtml', () => {
+        it('escapes HTML special characters', () => {
+            const input = `<script>alert("x")</script> & 'quote'`;
+            const output = ExpressionFormatter.escapeHtml(input);
+            expect(output).toBe('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; &#039;quote&#039;');
+            expect(output).not.toContain('<script>');
+        });
+
+        it('returns empty string for null/undefined', () => {
+            expect(ExpressionFormatter.escapeHtml(null)).toBe('');
+            expect(ExpressionFormatter.escapeHtml(undefined)).toBe('');
+        });
+    });
+
     describe('colouriseTextHTML', () => {
         it('should wrap known variables in var-badges', () => {
             const varSet = new Set(['MyVar', 'OtherVar']);
