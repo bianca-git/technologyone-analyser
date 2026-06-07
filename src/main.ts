@@ -341,11 +341,11 @@ window.exportDocx = async () => {
     if (currentReportId) {
         try {
             if (currentType === 'report') {
-                await DocxGenerator.downloadDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDocx(currentReportId);
             } else if (currentType === 'datamodel') {
-                await DocxGenerator.downloadDataModelDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDataModelDocx(currentReportId);
             } else if (currentType === 'dashboard') {
-                await DocxGenerator.downloadDashboardDocx(currentReportId, currentMode);
+                await DocxGenerator.downloadDashboardDocx(currentReportId);
             }
         } catch (e) {
             console.error(e);

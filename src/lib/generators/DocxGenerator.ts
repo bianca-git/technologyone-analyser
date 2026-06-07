@@ -37,7 +37,7 @@ export class DocxGenerator {
     }
 
     // --- ETL Report Extraction ---
-    static async downloadDocx(reportId: number, mode: 'business' | 'technical' = 'technical') {
+    static async downloadDocx(reportId: number) {
         const report = await db.reports.get(reportId);
         if (!report) throw new Error('Report not found');
 
@@ -187,82 +187,76 @@ export class DocxGenerator {
             sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
-        // 3.2 File Locations (Technical mode only)
-        if (mode === 'technical') {
-            const fileLocations = this.extractFileLocations(report.rawFileLocations);
-            if (fileLocations.length > 0) {
-                sections.push(
-                    new Paragraph({
-                        children: [this.createText('File Locations', { bold: true, size: 28 })],
-                        heading: HeadingLevel.HEADING_2,
-                        spacing: { after: 150 },
+        // 3.2 File Locations
+        const fileLocations = this.extractFileLocations(report.rawFileLocations);
+        if (fileLocations.length > 0) {
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('File Locations', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
+
+            const fHeader = new TableRow({
+                children: [
+                    this.createHeaderCell('Location Name'),
+                    this.createHeaderCell('Type'),
+                    this.createHeaderCell('Path'),
+                    this.createHeaderCell('Description'),
+                ],
+            });
+
+            const fRows = fileLocations.map(
+                (loc: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(loc.Name, { bold: true }),
+                            this.createCell(loc.LocationType || 'ServerFolder'),
+                            this.createCell(loc.Path || loc.ServerFolder || '-', { font: 'Courier New', size: 18 }),
+                            this.createCell(loc.Description || ''),
+                        ],
                     })
-                );
+            );
 
-                const fHeader = new TableRow({
-                    children: [
-                        this.createHeaderCell('Location Name'),
-                        this.createHeaderCell('Type'),
-                        this.createHeaderCell('Path'),
-                        this.createHeaderCell('Description'),
-                    ],
-                });
+            sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
+        }
 
-                const fRows = fileLocations.map(
-                    (loc: any) =>
-                        new TableRow({
-                            children: [
-                                this.createCell(loc.Name, { bold: true }),
-                                this.createCell(loc.LocationType || 'ServerFolder'),
-                                this.createCell(loc.Path || loc.ServerFolder || '-', { font: 'Courier New', size: 18 }),
-                                this.createCell(loc.Description || ''),
-                            ],
-                        })
-                );
+        // 3.3 Attachments
+        const attachments = this.extractAttachments(report.rawAttachments);
+        if (attachments.length > 0) {
+            sections.push(
+                new Paragraph({
+                    children: [this.createText('Attachments', { bold: true, size: 28 })],
+                    heading: HeadingLevel.HEADING_2,
+                    spacing: { after: 150 },
+                })
+            );
 
-                sections.push(
-                    new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [fHeader, ...fRows] })
-                );
-                sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
-            }
+            const aHeader = new TableRow({
+                children: [
+                    this.createHeaderCell('File Name'),
+                    this.createHeaderCell('Description'),
+                    this.createHeaderCell('Size'),
+                ],
+            });
 
-            // 3.3 Attachments (Technical mode only)
-            const attachments = this.extractAttachments(report.rawAttachments);
-            if (attachments.length > 0) {
-                sections.push(
-                    new Paragraph({
-                        children: [this.createText('Attachments', { bold: true, size: 28 })],
-                        heading: HeadingLevel.HEADING_2,
-                        spacing: { after: 150 },
+            const aRows = attachments.map(
+                (att: any) =>
+                    new TableRow({
+                        children: [
+                            this.createCell(att.FileName || att.Name || 'Unknown', { bold: true }),
+                            this.createCell(att.Description || '-'),
+                            this.createCell(
+                                att.FileData ? `${Math.round((att.FileData.length * 0.75) / 1024)} KB` : '-'
+                            ),
+                        ],
                     })
-                );
+            );
 
-                const aHeader = new TableRow({
-                    children: [
-                        this.createHeaderCell('File Name'),
-                        this.createHeaderCell('Description'),
-                        this.createHeaderCell('Size'),
-                    ],
-                });
-
-                const aRows = attachments.map(
-                    (att: any) =>
-                        new TableRow({
-                            children: [
-                                this.createCell(att.FileName || att.Name || 'Unknown', { bold: true }),
-                                this.createCell(att.Description || '-'),
-                                this.createCell(
-                                    att.FileData ? `${Math.round((att.FileData.length * 0.75) / 1024)} KB` : '-'
-                                ),
-                            ],
-                        })
-                );
-
-                sections.push(
-                    new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [aHeader, ...aRows] })
-                );
-                sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
-            }
+            sections.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [aHeader, ...aRows] }));
+            sections.push(new Paragraph({ text: '', spacing: { after: 300 } }));
         }
 
         // 4. Process Logic (The Steps)
@@ -296,7 +290,7 @@ export class DocxGenerator {
                 })
             );
 
-            if (mode === 'business' && item.SmartDesc) {
+            if (item.SmartDesc) {
                 sections.push(
                     new Paragraph({
                         children: [this.createText('Summary: ' + item.SmartDesc, { italic: true, color: '0055AA' })],
@@ -469,7 +463,7 @@ export class DocxGenerator {
     }
 
     // --- Data Model Extraction ---
-    static async downloadDataModelDocx(id: number, _mode: 'business' | 'technical' = 'technical') {
+    static async downloadDataModelDocx(id: number) {
         const dm = await db.dataModels.get(id);
         if (!dm) throw new Error('Data Model not found');
 
@@ -901,7 +895,7 @@ export class DocxGenerator {
     }
 
     // --- Dashboard DOCX Export ---
-    static async downloadDashboardDocx(id: number, _mode: 'business' | 'technical' = 'business') {
+    static async downloadDashboardDocx(id: number) {
         const dashboard = await db.dashboards.get(id);
         if (!dashboard) throw new Error('Dashboard not found');
 
