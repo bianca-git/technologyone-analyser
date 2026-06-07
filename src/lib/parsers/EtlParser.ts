@@ -1,11 +1,18 @@
 import type { EtlStep, LogicRule, XmlNode, XmlValue } from './types';
 import { asNode } from './types';
+import { STEP_DESCRIPTORS, makeHelpers, type StepDescriptor } from './StepDescriptors';
 export type { EtlStep, LogicRule } from './types';
 
 /** A raw XML step node with the `children` array the parser grafts on. */
 export type RawStep = XmlNode & { children?: RawStep[] };
 
 export class EtlParser {
+    private static descriptorHelpers = {
+        getTextSafe: (v: XmlValue) => EtlParser.getTextSafe(v),
+        getListSafe: (v: XmlValue, key: string) => EtlParser.getListSafe(v, key),
+        firstOf: makeHelpers().firstOf,
+    };
+
     static getListSafe(obj: XmlValue, key: string): XmlNode[] {
         const node = asNode(obj);
         if (!node || node[key] == null) return [];
@@ -179,6 +186,14 @@ export class EtlParser {
     }
 
     static getExplicitOutput(stepType: string, storage: XmlNode, _step: XmlValue) {
+        const descriptor = STEP_DESCRIPTORS[stepType];
+        if (descriptor) {
+            try {
+                return descriptor(storage, _step as RawStep, this.descriptorHelpers).explicitOutput;
+            } catch {
+                return null;
+            }
+        }
         const target = this.getTextSafe(storage.OutputTableName || storage.TableName || storage.VariableName);
         switch (stepType) {
             case 'ImportWarehouseData':
@@ -588,6 +603,26 @@ export class EtlParser {
             }
 
             info.FlowLabel = fl;
+
+            // --- Advanced step descriptors (Group / Script / StartProcess / DTS) ---
+            const advDescriptor = STEP_DESCRIPTORS[stepType];
+            if (advDescriptor) {
+                try {
+                    const d: StepDescriptor = advDescriptor(storage, step, this.descriptorHelpers);
+                    info.Context = d.contextText;
+                    info.FlowLabel = d.flowLabel;
+                    if (d.icon) info.Icon = d.icon;
+                    if (d.smartDesc) info.SmartDesc = d.smartDesc;
+                    if (d.inputs.length) info.Inputs = d.inputs;
+                    if (d.outputs.length) info.Outputs = d.outputs;
+                    d.details.forEach((line) => {
+                        if (!info.Details.includes(line)) info.Details.push(line);
+                    });
+                } catch (e) {
+                    console.error(`Descriptor failed for ${stepType}:`, e);
+                    // Fall back to the generic context already set above.
+                }
+            }
 
             if (!isActive) info.Phase += ' [DISABLED]';
 

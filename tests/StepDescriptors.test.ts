@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { STEP_DESCRIPTORS, makeHelpers } from '../src/lib/parsers/StepDescriptors';
-import type { RawStep } from '../src/lib/parsers/EtlParser';
+import { EtlParser, type RawStep } from '../src/lib/parsers/EtlParser';
 
 const h = makeHelpers();
 
@@ -84,5 +84,50 @@ describe('StepDescriptors', () => {
             const d = STEP_DESCRIPTORS['RunDTS']({}, { StepType: 'RunDTS' }, h);
             expect(d.flowLabel).toBe('DTS');
         });
+    });
+});
+
+describe('parseSteps integration — advanced step types', () => {
+    const wrap = (steps: any[]) => ({ ArrayOfStep: { Step: steps } });
+
+    it('labels a Group by its Name with a child count', () => {
+        const tree = EtlParser.parseSteps(
+            wrap([
+                { StepId: '1', ParentStepId: '0', Sequence: '1', StepType: 'Group', Name: 'Prep COA',
+                  Definition: { StorageObject: { DefKey: 'g1' } } },
+                { StepId: '2', ParentStepId: '1', Sequence: '1', StepType: 'AddColumn', Name: 'Calc',
+                  Definition: { StorageObject: { Columns: { ColumnItemDef: { ColumnName: 'X', Expression: '1' } } } } },
+            ])
+        ).executionTree;
+        const group = tree[0];
+        expect(group.RawType).toBe('Group');
+        expect(group.FlowLabel).toBe('Prep COA');
+        expect(group.Context).toBe('Prep COA');
+        expect(group.SmartDesc).toBe('Groups 1 steps');
+        expect(group.Icon).toBe('🗂️');
+        expect(group.children).toHaveLength(1);
+    });
+
+    it('describes a StartProcess step', () => {
+        const tree = EtlParser.parseSteps(
+            wrap([
+                { StepId: '1', ParentStepId: '0', Sequence: '1', StepType: 'StartProcess', Name: 'Kick',
+                  Definition: { StorageObject: { ProcessName: 'NightlyRollup' } } },
+            ])
+        ).executionTree;
+        expect(tree[0].FlowLabel).toBe('Run: NightlyRollup');
+        expect(tree[0].Icon).toBe('▶');
+        expect(tree[0].Output).toEqual({ type: 'PROCESS', name: 'NightlyRollup' });
+    });
+
+    it('does not crash on a malformed StartProcess (no candidate keys)', () => {
+        const tree = EtlParser.parseSteps(
+            wrap([
+                { StepId: '1', ParentStepId: '0', Sequence: '1', StepType: 'StartProcess', Name: 'Empty',
+                  Definition: { StorageObject: {} } },
+            ])
+        ).executionTree;
+        expect(tree[0].RawType).toBe('StartProcess');
+        expect(tree[0].FlowLabel).toBe('Run Process');
     });
 });
