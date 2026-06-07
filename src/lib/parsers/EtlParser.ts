@@ -828,16 +828,8 @@ export class EtlParser {
                 if (breakCond) info.Details.push(`Break When: ${breakCond}`);
                 if (indexVar) info.Details.push(`Index Variable: ${indexVar}`);
             }
-            // --- Script/SQL execution steps ---
-            else if (stepType === 'Script' || stepType === 'ExecuteScript') {
-                const lang = this.getTextSafe(storage.ScriptLanguage || storage.Language);
-                const scriptText = this.getTextSafe(storage.ScriptText || storage.Script);
-                if (lang) info.Details.push(`Language: ${lang}`);
-                if (scriptText) {
-                    const preview = scriptText.length > 150 ? scriptText.substring(0, 150) + '...' : scriptText;
-                    info.Details.push(`Script: ${preview}`);
-                }
-            } else if (stepType === 'ExecuteSQL' || stepType === 'RunSQL') {
+            // --- SQL execution steps (Script/StartProcess/DTS handled by StepDescriptors) ---
+            else if (stepType === 'ExecuteSQL' || stepType === 'RunSQL') {
                 const sql = this.getTextSafe(storage.SqlStatement || storage.SQL || storage.Query);
                 const conn = this.getTextSafe(storage.ConnectionString || storage.Connection);
                 if (conn) info.Details.push(`Connection: ${conn}`);
@@ -845,16 +837,6 @@ export class EtlParser {
                     const preview = sql.length > 200 ? sql.substring(0, 200) + '...' : sql;
                     info.Details.push(`SQL: ${preview}`);
                 }
-            } else if (stepType === 'StartProcess' || stepType === 'RunProcess') {
-                const procName = this.getTextSafe(storage.ProcessName || storage.ProcessToRun);
-                const procId = this.getTextSafe(storage.ProcessId);
-                if (procName) info.Details.push(`Process: ${procName}`);
-                if (procId && !procName) info.Details.push(`Process ID: ${procId}`);
-                // Process parameters
-                const params = this.getListSafe(storage.Parameters, 'ParameterItem');
-                params.forEach((p) => {
-                    info.Details.push(`Param: ${this.getTextSafe(p.Name)} = ${this.getTextSafe(p.Value)}`);
-                });
             }
             // --- FilterTable and SortTable ---
             else if (stepType === 'FilterTable') {
